@@ -1,0 +1,6 @@
+#!/bin/bash
+
+kubectl delete configmap renew-sk-secret
+kubectl delete secret vault-token
+kubectl delete -f renew-sk-secret.yml
+

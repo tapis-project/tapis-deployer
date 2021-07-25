@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+kubectl delete -f deploy.yml
+
+kubectl delete configmap chords-start-script
+kubectl delete configmap chords-influxdb-yml
+kubectl delete configmap chords-database-yml
+kubectl delete configmap chords-production-rb
+
+if [ "$1" == "allofit" ]
+then
+  echo
+#  kubectl delete -f service.yml 
+fi
+

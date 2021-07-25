@@ -1,0 +1,14 @@
+Adding New Secrets
+==================
+
+This directory contains configuration and script files that allow new secrets to be imported into SK and Kubernetes.  The general approach follows that of the initial secrets loading process in the parent directory.  The main difference is that a staging directory contains one or more SkAdmin input files specified for a particular run.  
+
+Usage is as follows:
+
+    1. Put one or more SkAdmin input json files into the ./updateFiles directory.
+    2. ./burnup
+    3. Remove your json file from the staging directory 
+    
+Common use cases for this facility include creating secrets for new services, generating new secrets for an existing service after deleting that service's secrets in SK, and restoring secrets in Kubernetes that exist in SK.
+
+This facility assumes that SK was previously configured and initialized with secrets by running the burnup script in the parent directory.        

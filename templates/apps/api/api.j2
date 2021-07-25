@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apps-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apps-api
+  template:
+    metadata:
+      labels:
+        app: apps-api
+    spec:
+      containers:
+      - name: apps-api
+        image: tapis/apps:dev
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8080
+          - containerPort: 8000
+            name: "jvm-debug"
+        env:
+          - name: tapis.db.jdbc.url
+            value: jdbc:postgresql://apps-postgres:5432/tapisappdb
+          - name: tapis.db.user
+            value: tapis_app
+          - name: tapis.site.id
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: siteId
+          - name: tapis.tenant.svc.baseurl
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: service_tenant_base_url
+          - name: tapis.db.password
+            valueFrom:
+              secretKeyRef:
+                name: tapis-apps-secrets
+                key: postgres-password
+          - name: tapis.service.password
+            valueFrom:
+              secretKeyRef:
+                name: tapis-apps-secrets
+                key: service-password

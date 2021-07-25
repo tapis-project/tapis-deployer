@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: files-postgres
+  name: files-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: files-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: files-postgres
+    spec:
+      containers:
+      - name: files-postgres
+        image: postgres:11
+        ports:
+          - containerPort: 5432
+        env:
+        - name: PGDATA
+          value: "/pgdata/data"
+        - name: TOKENS_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: service_tenant_base_url
+        - name: TENANTS_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: service_tenant_base_url
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-files-secrets
+              key: postgres-password
+        envFrom:
+        - configMapRef:
+            name: files-environment-vars
+        volumeMounts:
+        - mountPath: /pgdata
+          name: pgdata
+          subPath: postgres
+      hostname: tapisfile-postgres
+      restartPolicy: Always
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: files-pgdata

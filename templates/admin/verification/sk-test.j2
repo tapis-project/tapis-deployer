@@ -1,0 +1,19 @@
+#!/bin/bash
+
+
+port=`kubectl get service sk-api -o json | jq ".spec.ports[].nodePort"`
+
+echo "hello"
+curl http://c002.rodeo.tacc.utexas.edu:$port/v3/security/hello
+
+echo
+
+echo "ready"
+curl http://c002.rodeo.tacc.utexas.edu:$port/v3/security/ready
+
+echo
+
+echo "healthcheck"
+curl http://c002.rodeo.tacc.utexas.edu:$port/v3/security/healthcheck
+
+echo

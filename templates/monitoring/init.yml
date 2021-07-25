@@ -1,0 +1,40 @@
+# # Create Namespace
+# {
+#   "kind": "Namespace",
+#   "apiVersion": "v1",
+#   "metadata": {
+#     "name": "tapis-monitoring",
+#     "labels": {
+#       "name": "tapis-monitoring"
+#     }
+#   }
+# }
+
+# Setup Storage
+# for Prometheus:
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: prometheus-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+# for Grafana:
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: grafana-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 20Gi
+

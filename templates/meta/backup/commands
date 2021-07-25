@@ -1,0 +1,13 @@
+# get pod info
+./km
+
+# get all the object for backup
+k get all | grep mongo-backup
+
+# logs for backup container
+k logs -f mongo-backup-869b6b69c4-gkv9x
+
+# describe for backup container
+k describe pod  mongo-backup-cff69b988-cmfdp
+
+

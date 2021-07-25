@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: files-rabbitmq
+  name: files-rabbitmq
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      app: files-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: files-rabbitmq
+    spec:
+      containers:
+        - name: files-rabbitmq
+          image: rabbitmq:3.8-alpine
+          ports:
+            - containerPort: 5672
+          env:
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-files-secrets
+                  key: rabbitmq-password
+          envFrom:
+            - configMapRef:
+                name: files-environment-vars
+          volumeMounts:
+            - name: files-rabbitmq-data
+              mountPath: "/var/lib/rabbitmq/mnesia"
+      volumes:
+        - name: files-rabbitmq-data
+          persistentVolumeClaim:
+            claimName: files-rabbitmq-data
+      restartPolicy: Always

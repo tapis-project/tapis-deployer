@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fl-stern-config
+data:
+  fluent.conf: |- 
+    <source>
+      @type exec
+      command 'cd /usr/bin; /usr/bin/stern_linux_amd64 --container .* --color never --tail 0 --exclude stern-fluentd-* --exclude kibana-*'
+      tag kubelogs
+    <parse>
+      @type none
+    </parse>
+    </source>
+
+    <match kubelogs.**>
+      @type elasticsearch
+      host elasticsearch
+      port 9200
+      index_name fluentd
+      type_name fluentd
+      logstash_format true 
+    </match>
+
+    <label @FLUENT_LOG>
+      <match fluent.*>
+        @type stdout
+      </match>
+    </label>

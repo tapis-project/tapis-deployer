@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-rdr-deadletter
+spec:
+  selector:
+    matchLabels:
+      app: jobrdr
+  template:
+    metadata:
+      labels:
+        app: jobrdr
+    spec:
+      initContainers:
+      automountServiceAccountToken: false
+      containers:
+      - name: jobs-rdr-deadletter
+        image: tapis/jobsworker:dev
+        imagePullPolicy: Always
+        env:
+        - name: tapis.site.id
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: siteId
+        - name: tapis.tenant.svc.baseurl
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: service_tenant_base_url
+        - name: tapis.service.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: service-password
+        - name: tapis.db.connection.pool.size
+          value: "2"
+        - name: tapis.db.user
+          value: "tapis"
+        - name: tapis.db.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: tapis-postgres-password
+        - name: tapis.db.jdbc.url
+          value: "jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+        - name: tapis.queue.host
+          value: jobs-rabbitmq
+        - name: tapis.queue.admin.user
+          value: "tapis"
+        - name: tapis.queue.admin.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: rabbitmq-tapis-password
+        - name: tapis.queue.user
+          value: "jobs"
+        - name: tapis.queue.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: rabbitmq-jobs-password
+        - name: tapis.request.logging.filter.prefixes
+          value: "/v3/jobs"
+        - name: JAVA_OPTS 
+          value: "-Xms1g -Xmx1g"
+        - name: MAIN_CLASS
+          value: "edu.utexas.tacc.tapis.jobs.reader.DeadLetterReader"
+        - name: JOBS_PARMS
+          value: "-n rdr-dead"

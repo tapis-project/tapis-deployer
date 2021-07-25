@@ -1,0 +1,25 @@
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: add-token-roles
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: add-token-roles
+        image: tapis/add_token_roles
+        imagePullPolicy: Always
+        env:
+        - name: tenants_service_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-secrets
+              key: service-password
+        - name: service_tenant_base_url
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: service_tenant_base_url

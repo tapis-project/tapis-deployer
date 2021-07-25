@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+if [ ! -f ~/vault-token ]
+then
+  echo "boo. need to create ~/vault-token"
+  exit 1
+fi
+
+kubectl delete secret vault-token 
+kubectl create secret generic vault-token --from-file ~/vault-token
+
+kubectl delete configmap renew-sk-secret
+kubectl create configmap renew-sk-secret --from-file renew-sk-secret
+kubectl delete -f renew-sk-secret.yml
+kubectl apply -f renew-sk-secret.yml
+
+

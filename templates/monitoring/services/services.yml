@@ -1,0 +1,43 @@
+# TAPIS Monitoring Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring-exporter
+spec:
+  selector:
+    app: monitoring-tapis-exporter
+  type: NodePort
+  ports:
+  - name: monitoring-exporter
+    port: 8000
+    targetPort: 8000
+
+---
+# Prometheus Service
+apiVersion: v1
+kind: Service
+metadata:  
+  name: monitoring-prometheus
+spec:
+  selector:    
+    app: monitoring-prometheus
+  type: NodePort
+  ports:  
+  - name: monitoring-prometheus
+    port: 9090
+    targetPort: 9090
+
+---
+# Grafana Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring-grafana
+spec:
+  selector:
+    app: monitoring-grafana
+  type: NodePort
+  ports:
+  - name: monitoring-grafana
+    port: 3000
+    targetPort: 3000

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#. ~/meta-mongo-secrets
+
+kubectl apply -f pvc.yml
+kubectl wait --for=condition=complete job/chown-restheart-mongo-pvc
+kubectl apply -f service.yml 
+kubectl apply -f deploy.yml

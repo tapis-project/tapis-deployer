@@ -1,0 +1,39 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sn-mongo-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 10Gi
+
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: chown-sn-mongo-pvc
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: chown-snmongo-volume
+        image: alpine:latest
+        command:
+        - chown
+        - -R
+        - 999:999
+        - /data/db
+        volumeMounts:
+        - name: sn-mongo-data
+          mountPath: /data/db
+      volumes:
+      - name: sn-mongo-data
+        persistentVolumeClaim:
+          claimName: sn-mongo-vol01
+

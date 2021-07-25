@@ -1,0 +1,22 @@
+
+cd /tmp/skadmin-policies
+for i in sk-admin-acl sk-admin-approle sk-admin-auth sk-admin-kv2 sk-admin-userpass
+do
+  echo ---
+  echo $i
+  data=$( cat ${i}-policy.hcl )
+  payload="$( jq -nc --arg str "$data" '{"policy": $str}' )"
+  curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" http://vault:8200/v1/sys/policies/acl/tapis/${i}  | jq
+done
+
+cd /tmp/sk-policies
+for i in sk-acl sk-approle sk-token
+do
+  echo ---
+  echo $i
+  data=$( cat ${i}-policy.hcl )
+  payload="$( jq -nc --arg str "$data" '{"policy": $str}' )"
+  curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" http://vault:8200/v1/sys/policies/acl/tapis/${i}  | jq
+done
+
+

@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sk-api
+spec:
+  selector:
+    matchLabels:
+      app: sk-api
+  template:
+    metadata:
+      labels:
+        app: sk-api
+    spec:
+      initContainers:
+      automountServiceAccountToken: false
+      containers:
+      - name: sk-api
+        image: tapis/securityapi:dev
+        imagePullPolicy: Always
+        ports:
+        - name: tomcat1
+          containerPort: 8000
+        - name: tomcat2
+          containerPort: 8080
+        - name: tomcat3
+          containerPort: 8443
+        - name: debug
+          containerPort: 6157
+        env:
+        - name: tapis.site.id
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: siteId
+        - name: tapis.tenant.svc.baseurl
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: service_tenant_base_url
+        - name: tapis.sk.vault.disable
+          value: "false"
+        - name: tapis.sk.vault.address
+          value: "http://vault:8200"
+        - name: tapis.sk.vault.secretid
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-vault-secrets
+              key: vault-secretid
+        - name: tapis.sk.vault.roleid
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-vault-secrets
+              key: vault-roleid
+        - name: tapis.db.connection.pool.size
+          value: "10"
+        - name: tapis.db.user
+          value: "tapis"
+        - name: tapis.db.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-secrets
+              key: tapis-postgres-password
+        - name: tapis.db.jdbc.url
+          value: "jdbc:postgresql://sk-postgres:5432/tapissecdb"
+        - name: tapis.request.logging.filter.prefixes
+          value: "/v3/security"
+        - name: tapis.request.logging.ignore.suffixes
+          value: "/healthcheck;/ready;/hello"
+#        - name: tapis.log.directory
+#          value: "/opt/tomcat/logs"
+        - name: CATALINA_OPTS 
+          value: "-Xms1g -Xmx3g -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=6157 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.ssl.need.client.auth=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.rmi.port=6157 -Djava.rmi.server.hostname=sk-api-debug -Dcom.sun.management.jmxremote.local.only=false"

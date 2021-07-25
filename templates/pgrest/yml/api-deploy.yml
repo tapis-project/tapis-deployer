@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgrest-api
+spec:
+  selector:
+    matchLabels:
+      app: pgrest-api
+  template:
+    metadata:
+      labels:
+        app: pgrest-api
+    spec:
+      initContainers: 
+      - name: pgrest-api-migrate
+        image: tapis/pgrest-api:dev
+        imagePullPolicy: Always
+        command: ["python", "/code/manage.py", "migrate", "--noinput"]
+        volumeMounts:
+        - name: pgrest-config
+          mountPath: /code/config.json
+          subPath: pgrest-config.json
+        - name: tapis-pgrest-secrets
+          mountPath: "/code/databases"
+          readOnly: true
+        env:
+        - name: TAPIS_CONFIGSCHEMA_PATH
+          value: /code/pgrest/configschema.json
+        - name: TAPIS_CONFIG_PATH
+          value: /code/config.json
+        - name: service_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pgrest-secrets
+              key: service-password
+      
+      containers:
+      - name: pgrest-api
+        image: tapis/pgrest-api:dev
+        imagePullPolicy: Always
+        command: ["/usr/local/bin/uwsgi", "--ini", "paas/uwsgi.ini"]
+        ports:
+        - name: http
+          containerPort: 5000
+        env:
+        - name: TAPIS_CONFIGSCHEMA_PATH
+          value: /code/pgrest/configschema.json
+        - name: TAPIS_CONFIG_PATH
+          value: /code/config.json
+        - name: service_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pgrest-secrets
+              key: service-password
+        volumeMounts:
+        - name: pgrest-config
+          mountPath: /code/config.json
+          subPath: pgrest-config.json
+        - name: tapis-pgrest-secrets
+          mountPath: "/code/databases"
+          readOnly: true
+      volumes:
+      - name: pgrest-config
+        configMap: 
+          name: global-config
+      - name: tapis-pgrest-secrets
+        secret:
+          secretName: tapis-pgrest-secrets
+
+

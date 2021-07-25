@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+spec:
+  selector:
+    matchLabels:
+      app: vault
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      containers:
+      - name: vault
+        image: vault
+        command: ['vault','server','-config=/vault/config']
+        ports:
+        - name: vault
+          containerPort: 8200
+        securityContext:
+          capabilities:
+            add:
+            - IPC_LOCK
+        env:
+        - name: VAULT_ADDR
+          value: http://127.0.0.1:8200
+        volumeMounts:
+#        - name: defaultconf
+#          mountPath: /etc/nginx/conf.d/default.conf
+        - name: vaultconf
+          mountPath: /vault/config/vault.hcl
+          subPath: vault.hcl
+        - name: vault-data
+          mountPath: "/vault/data"
+      volumes:
+#      - name: defaultconf
+#        configMap:
+#          name: defaultconf
+      - name: vaultconf
+        configMap:
+          name: vaultconf
+      - name: vault-data
+        persistentVolumeClaim:
+          claimName: vault-vol01
+
+

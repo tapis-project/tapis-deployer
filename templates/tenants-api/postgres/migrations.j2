@@ -1,0 +1,24 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tenants-migrations
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: tenants-migrations
+        image: tapis/tenants-api-migrations:dev
+        args: ["upgrade"]
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: tenants-config
+          mountPath: /home/tapis/config.json
+          subPath: config.json
+        imagePullPolicy: Always
+      volumes:
+      - name: tenants-config
+        configMap:
+          name: tenants-config

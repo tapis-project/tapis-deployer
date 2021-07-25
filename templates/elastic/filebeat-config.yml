@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+data:
+  filebeat.yml: |- 
+    filebeat.config:
+      modules:
+        path: ${path.config}/modules.d/*.yml
+        reload.enabled: false
+    
+    processors:
+    - add_kubernetes_metadata:
+        host: 172.16.120.1
+        # If kube_config is not set, KUBECONFIG environment variable will be checked
+        # and if not present it will fall back to InCluster
+        kube_config: ~/.kube/config
+        default_indexers.enabled: false
+        default_matchers.enabled: false
+        indexers:
+          - ip_port:
+        matchers:
+          - fields:
+              lookup_fields: ["metricset.host"]
+    
+    output.elasticsearch:
+      hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
+      username: '${ELASTICSEARCH_USERNAME:}'
+      password: '${ELASTICSEARCH_PASSWORD:}'
+
+    filebeat.autodiscover:
+      providers:
+        - type: kubernetes
+          templates:
+            - condition:
+                equals:
+                  kubernetes.namespace: mpackard01
+              config:
+                - type: container
+                  paths:
+                    - /var/log/containers/*-${data.kubernetes.container.id}.log
+                  exclude_lines: ["^\\s+[\\-`('.|_]"]  # drop asciiart lines
+    
+    output.elasticsearch:
+      hosts: ["elasticsearch"]
+    setup.kibana:
+      host: "kibana"

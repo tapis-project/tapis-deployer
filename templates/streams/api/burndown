@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#kubectl delete configmap streams-config-local
+kubectl delete -f api.yml 
+
+
+#kubectl delete -f deploy.yml
+
+#if [ "$1" == "allofit" ]
+#then
+#  kubectl delete -f pvc.yml 
+#fi
+

@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stern-fluentd
+  labels:
+    app: stern-fluentd
+spec:
+  selector:
+    matchLabels:
+      app: stern-fluentd
+  template:
+    metadata:
+      labels:
+        app: stern-fluentd
+    spec:
+      containers:
+      - name: stern-fluentd
+        imagePullPolicy: Always
+        image: mrghort/stern-fluentd:1
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /home/fluent/.kube/config
+          subPath: config
+        - name: fl-stern-config
+          mountPath: /fluentd/etc/fluent.conf
+          subPath: fluent.conf
+      volumes:
+      - name: kubeconfig
+        configMap:
+          name: kubeconfig
+          items:
+          - key: config
+            path: config
+      - name: fl-stern-config
+        configMap:
+          name: fl-stern-config
+          items:
+          - key: fluent.conf
+            path: fluent.conf

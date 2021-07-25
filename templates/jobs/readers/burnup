@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Start the queue readers.   
+kubectl apply -f jobrdr-Recovery.yml
+kubectl apply -f jobrdr-AltQueue.yml
+kubectl apply -f jobrdr-DeadLetter.yml 
+kubectl wait --for=condition=available deploy/jobs-rdr-recovery

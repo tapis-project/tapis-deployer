@@ -1,0 +1,24 @@
+
+- look for debug statements:
+  - todo
+  - qqq
+  - debug
+  - mpackard
+  - wow
+  - wut
+  - yolo
+
+- normalize postgres versions
+
+- normalize container versions 
+
+- implement check for pvc disk fullness 
+
+- very first time install needs some service ports to be defined so that we can complete the nginx proxy stuff
+
+- normalize names of services, pods, etc. e.g. files-api vs files
+
+- work on the chicken-and-egg problem of needing legit https://real-url for the auth stuff to work. because we can't deploy nginx proxy without service ports, which come up with deploys
+
+
+

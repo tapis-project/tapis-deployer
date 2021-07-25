@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metricbeat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metricbeat
+  template:
+    metadata:
+      labels:
+        app: metricbeat
+    spec:
+      containers:
+      - name: metricbeat
+        image: elastic/metricbeat:7.6.2
+        volumeMounts:
+        - name: metricbeat-config
+          mountPath: /usr/share/metricbeat/metricbeat.yml
+          subPath: metricbeat.yml
+      volumes:
+      - name: metricbeat-config
+        configMap:
+          name: metricbeat-config
+          items:
+          - key: metricbeat.yml
+            path: metricbeat.yml
+
+
+
+
+

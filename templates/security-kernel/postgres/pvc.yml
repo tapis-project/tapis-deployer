@@ -1,0 +1,63 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sk-postgres-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 20Gi
+
+# 20201110 commenting - mpackard
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: mkdir-sk-postgres-pvc
+#spec:
+#  ttlSecondsAfterFinished: 60
+#  template:
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: mkdir-sk-postgres-volume
+#        image: alpine:latest
+#        command:
+#        - mkdir 
+#        - /var/lib/postgresql/data
+#        volumeMounts:
+#        - name: sk-pg-data
+#          mountPath: /var/lib/postgresql
+#      volumes:
+#      - name: sk-pg-data
+#        persistentVolumeClaim:
+#          claimName: sk-postgres-vol01
+#
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: chown-sk-postgres-pvc
+#spec:
+#  ttlSecondsAfterFinished: 60
+#  template:
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: chown-sk-postgres-volume
+#        image: alpine:latest
+#        command:
+#        - chown
+#        - -R
+#        - 999:999
+#        - /var/lib/postgresql
+#        volumeMounts:
+#        - name: sk-pg-data
+#          mountPath: /var/lib/postgresql
+#      volumes:
+#      - name: sk-pg-data
+#        persistentVolumeClaim:
+#          claimName: sk-postgres-vol01
+#

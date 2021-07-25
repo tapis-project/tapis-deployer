@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+kubectl create configmap sk-admin-initialload --from-file ~/tapis-deploy/skadmin/initialLoad
+kubectl create configmap run-sk-admin2 --from-file run-sk-admin2
+kubectl apply -f sk-admin-rerun-job.yml
+
+

@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: notifications-rabbitmq
+  name: notifications-rabbitmq
+spec:
+  replicas: 1
+  strategy: {}
+  selector:
+    matchLabels:
+      app: notifications-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: notifications-rabbitmq
+    spec:
+      containers:
+      - name: notifications-rabbitmq
+        image: rabbitmq:3.8-alpine
+        ports:
+        - containerPort: 5672
+        env:
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: tapis-notifications-secrets
+              key: rabbitmq-password
+        envFrom:
+          - configMapRef:
+              name: notifications-environment-vars
+      restartPolicy: Always

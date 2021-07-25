@@ -1,0 +1,38 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: streams-mysql-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: chown-streams-mysql-pvc
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: chown-mysql-volume
+        image: alpine:latest
+        command:
+        - chown
+        - -R
+        - 999:999
+        - /var/lib/mysql
+        volumeMounts:
+        - name: streams-mysql-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: streams-mysql-data
+        persistentVolumeClaim:
+          claimName: streams-mysql-vol01
+

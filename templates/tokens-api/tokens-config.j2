@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tenants-config
+data:
+    {
+      "service_site_id": "{{universal_param["service_url"]}}",
+      "service_tenant_id": "{{universal_param["service_url"]}}",
+      "service_name": "{{service_param["service_name"]}}",
+      "use_sk": {{ local_param["use_sk"]|default("true") }},
+      "log_level": "{{local_param["log_level"]|default("DEBUG")}}",
+      "tenants": {{local_param["tenants"]|default(["dev", "tacc", "admin"])}},
+      "show_traceback": {{local_param["show_traceback"]|default("false")}},
+    }

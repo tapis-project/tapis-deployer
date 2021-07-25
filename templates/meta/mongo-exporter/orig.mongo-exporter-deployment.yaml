@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f mongo-query-exporter.yml
+    kompose.version: 1.22.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mongo-exporter
+  name: mongo-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mongo-exporter
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f mongo-query-exporter.yml
+        kompose.version: 1.22.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mongo-exporter
+    spec:
+      containers:
+        - env:
+            - name: MDBEXPORTER_MONGODB_URI
+              value: mongodb://tapisadmin:d3f%40ult@aloe-dev04.tacc.utexas.edu:27019/?authSource=admin
+          image: tapis/mqe:0.1
+          name: mongodb-query-exporter
+          ports:
+            - containerPort: 9412
+          resources: {}
+      restartPolicy: Always
+status: {}

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+kubectl apply -f ../service.yml 
+kubectl apply -f ../configmap.yml
+kubectl apply -f ../pvc.yml
+kubectl apply -f ../postgres.yml 
+kubectl wait --for=condition=available deploy/notifications-postgres
+kubectl apply -f ../rabbitmq.yml 
+kubectl wait --for=condition=available deploy/notifications-rabbitmq
+kubectl apply -f ../api.yml
+kubectl apply -f ../workers.yml
+kubectl apply -f ../migrations.yml

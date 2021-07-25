@@ -1,0 +1,35 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: actors-mongo
+spec:
+  selector:
+    matchLabels:
+      app: actors-mongo
+  template:
+    metadata:
+      labels:
+        app: actors-mongo
+    spec:
+      containers:
+      - name: actors-mongo
+        image: mongo:4.2.6
+        ports:
+        - name: mongo
+          containerPort: 27017
+        volumeMounts:
+        - name: actors-mongo-data
+          mountPath: "/data/db"
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: admin
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-abaco-secrets
+              key: mongo-password
+      volumes:
+      - name: actors-mongo-data
+        persistentVolumeClaim:
+          claimName: actors-mongo-vol01

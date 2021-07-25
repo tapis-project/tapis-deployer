@@ -1,0 +1,38 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: influx-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 200Gi
+
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: chown-postgres-pvc
+#spec:
+#  ttlSecondsAfterFinished: 60
+#  template:
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: chown-postgres-volume
+#        image: alpine:latest
+#        command:
+#        - chown
+#        - -R
+#        - 999:999
+#        - /var/lib/postgresql
+#        volumeMounts:
+#        - name: pg-data
+#          mountPath: /var/lib/postgresql
+#      volumes:
+#      - name: pg-data
+#        persistentVolumeClaim:
+#          claimName: postgres-vol01
+#

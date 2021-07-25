@@ -1,0 +1,13 @@
+#!/bin/bash
+
+kubectl apply -f elasticsearch-service.yml
+kubectl apply -f elasticsearch-deploy.yml 
+kubectl apply -f kibana-service.yml
+kubectl apply -f kibana-deploy.yml 
+#kubectl apply -f logstash-service.yml
+#kubectl apply -f logstash-deploy.yml 
+
+kubectl apply -f stern-fluentd-config.yml
+kubectl apply -f stern-fluentd.yml
+
+

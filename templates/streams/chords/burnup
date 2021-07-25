@@ -1,0 +1,9 @@
+#!/bin/bash
+
+kubectl create configmap chords-start-script --from-file=tapis_chords_start.sh
+kubectl create configmap chords-influxdb-yml --from-file=influxdb.yml
+kubectl create configmap chords-database-yml --from-file=database.yml
+kubectl create configmap chords-production-rb --from-file=production.rb
+
+kubectl apply -f deploy.yml
+kubectl apply -f service.yml 

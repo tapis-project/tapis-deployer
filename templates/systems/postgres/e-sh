@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "P=${POSTGRES_PASSWORD}"
+exit 0

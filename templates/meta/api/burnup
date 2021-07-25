@@ -1,0 +1,13 @@
+#!/bin/bash
+
+rhpass=`kubectl get secret tapis-meta-secrets -o jsonpath='{.data.mongo-password}' | base64 -d`
+# need to convert / and other wily characters to url encoded
+rhtmp=`python3 -c "import sys, urllib.parse as ul; print (ul.quote_plus(sys.argv[1]))" $rhpass`
+kubectl delete secret restheart-security-mongo-uri 
+kubectl create secret generic restheart-security-mongo-uri --from-literal=restheart-security-mongo-uri="mongodb://restheart:${rhtmp}@restheart-mongo:27017/?authSource=admin"
+
+#echo `k get secret tapis-meta-secrets -o jsonpath='{.data.mongo-password}'` | base64 -d 
+
+kubectl apply -f restheart.yml 
+kubectl apply -f restheart-security.yml 
+kubectl apply -f service.yml

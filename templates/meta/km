@@ -1,0 +1,20 @@
+
+echo ""
+echo "*****    Show environment for pods ..."
+echo " ** api containers ** "
+kubectl get all | grep restheart-
+echo ""
+echo " ** mongo-backup container ** "
+kubectl get all | grep mongo-backup
+echo ""
+echo " ** mongo-exporter container ** "
+kubectl get all | grep mongo-exporter
+echo ""
+echo "Service pwd: "
+kubectl get secret tapis-meta-secrets  -o json | jq -r '.data["service-password"]' | base64 -d
+echo "";echo ""
+echo "MongoDB pwd: "
+kubectl get secret tapis-meta-secrets  -o json | jq -r '.data["mongo-password"]' | base64 -d
+echo "";echo ""
+# echo "Using service password get token for service ..."
+# echo "TODO"

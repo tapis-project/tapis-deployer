@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Persistent storage
+kubectl apply -f init.yml
+
+# Configs
+kubectl apply -f secrets.yml 
+
+# Services
+kubectl apply -f services.yml
+
+# Apps
+kubectl apply -f apps.yml
+

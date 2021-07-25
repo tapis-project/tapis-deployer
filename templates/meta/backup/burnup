@@ -1,0 +1,4 @@
+#!/bin/bash
+
+kubectl apply -f mongo-backup-claim0-pvc.yaml
+kubectl apply -f mongo-backup-deployment.yaml

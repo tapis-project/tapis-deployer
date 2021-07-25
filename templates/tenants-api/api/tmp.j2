@@ -1,0 +1,30 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tenants-migrations
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: tenants-migrations
+        image: tapis/tenants-api-migrations:dev
+        command: ["sleep","3600"]
+        volumeMounts:
+        - name: configlocal
+          mountPath: /home/tapis/config.json
+          subPath: config-local.json
+#        - name: tenants-pg-data
+#          mountPath: "/var/lib/postgresql"
+        imagePullPolicy: Always
+      volumes:
+      - name: configlocal
+        configMap: 
+          name: tenantsconfiglocal
+#      - name: tenants-pg-data
+#        persistentVolumeClaim:
+#          claimName: tenants-postgres-vol01
+
+

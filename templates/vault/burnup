@@ -1,0 +1,38 @@
+#!/bin/bash
+
+kubectl apply -f service.yml
+kubectl create configmap vaultconf --from-file vault.hcl
+kubectl apply -f pvc.yml
+#kubectl wait --for=condition=complete job/prep-vault-pvc
+#kubectl delete job/prep-vault-pvc
+
+
+# only do this step once if vault is not initialized
+if [ ! -f ~/vault ]
+then
+  echo
+  echo "# WARNING! Important 1-time-only Vault information stored in ~/vault-token. If you lose it, your Vault may be locked forever!"
+  echo
+  kubectl apply -f vault-init.yml
+  kubectl wait --for=condition=available deploy/vault
+  pod=`kubectl get pods --selector=app=vault -o jsonpath='{.items[*].metadata.name}'`
+  kubectl exec -it $pod vault operator init | sed 's/\x1b\[[0-9;]*m//g' | tr -d "\r" >& ~/vault
+  chmod 400 ~/vault
+  kubectl delete deploy/vault
+fi
+
+if [ ! -f ~/vault-token ]
+then
+  grep "Initial Root Token" ~/vault | awk -F: '{print $2}' | tr -d " \t\n\r" > ~/vault-token
+  chmod 400 ~/vault-token
+fi
+
+u1=`grep '^Unseal Key 1:' ~/vault | awk '{print $4}'`
+u2=`grep '^Unseal Key 2:' ~/vault | awk '{print $4}'`
+u3=`grep '^Unseal Key 3:' ~/vault | awk '{print $4}'`
+
+kubectl delete secret vault-keys
+kubectl create secret generic vault-keys --from-literal=UNSEAL1=$u1 --from-literal=UNSEAL2=$u2 --from-literal=UNSEAL3=$u3
+
+kubectl apply -f vault-auto-unseal.yml
+

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+here=`pwd`
+
+echo "streams:"
+cd $here/mysql
+./burndown
+
+cd $here/influx
+./burndown
+
+cd $here/kapacitor
+./burndown
+
+cd $here/chords
+./burndown
+
+cd $here/api
+./burndown
+
+

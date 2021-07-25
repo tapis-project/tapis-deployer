@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Persistent storage
+# don't burn this
+
+# Configs
+kubectl apply -f secrets.yml 
+
+# Services
+# we don't burn service so ports stay same
+
+# Apps
+kubectl delete -f apps.yml
+

@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitor-kibana
+spec:
+  selector:
+    app: monitoring-kibana
+  type: NodePort
+  ports:
+  - name: monitoring-kibana
+    port: 5601
+    targetPort: 5601
+

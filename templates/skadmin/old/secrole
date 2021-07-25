@@ -1,0 +1,42 @@
+#!/bin/bash
+
+echo "debug100"
+
+#SK_TOKEN=`curl -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
+
+#SK_ADMIN_TOKEN=`curl -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk-admin/secret-id | jq -r .data.secret_id`
+
+#SK_ROLE_ID=`curl -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+
+#SK_ADMIN_ROLE_ID=`curl -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk-admin/role-id | jq -r .data.role_id`
+
+echo "debug110"
+
+#echo $SK_TOKEN
+#echo $SK_ADMIN_TOKEN
+#echo $SK_ROLE_ID
+#echo $SK_ADMIN_ROLE_ID
+
+echo "debug120"
+
+# TODO:  Remove vault token from script.  It should probably 
+#        be passed in from an environment variable.
+#VAULT_TOKEN="use_environment_var"
+
+echo "debug130"
+#echo "vault-token:"
+#echo $VAULT_TOKEN
+echo "secret-id:" 
+curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id
+echo "role-id:" 
+curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id
+
+# This secret and its two key/value pairs are regenerated on each invocation.
+# There's no point in keeping the short-lived secret-id in SK since it changes
+# each time this script runs.  There's little reason to keep the static role-id 
+# in SK since its always be retrieved from Vault before SK is started. 
+kubectl delete secret tapis-sk-vault-secrets
+kubectl create secret generic tapis-sk-vault-secrets \
+  --from-literal=vault-secretid=`curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id` \
+  --from-literal=vault-roleid=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+

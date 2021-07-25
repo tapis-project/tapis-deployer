@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stern-collector
+  labels:
+    app: stern-collector
+spec:
+  selector:
+    matchLabels:
+      app: stern-collector
+  template:
+    metadata:
+      labels:
+        app: stern-collector
+    spec:
+      containers:
+      - name: stern-collector
+        image: mrghort/stern-collector:13
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /root/.kube/config
+          subPath: config
+      volumes:
+      - name: kubeconfig
+        configMap:
+          name: kubeconfig
+          items:
+          - key: config
+            path: config

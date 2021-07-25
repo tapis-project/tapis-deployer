@@ -1,0 +1,48 @@
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sk-presetup-test
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: sk-presetup-test
+        image: mrghort/ubutil
+        #command: ["/tmp/create-sk-roles"]
+        command: ["sleep","3600"]
+        env:
+        - name: VAULT_ADDR
+          value: http://vault:8200
+        - name: VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: vault-token
+              key: vault-token
+        volumeMounts:
+        - name: create-sk-roles
+          mountPath: /tmp/create-sk-roles
+          subPath: create-sk-roles
+        - name: sk-policies
+          mountPath: /tmp/sk-policies
+        - name: sk-admin-policies
+          mountPath: /tmp/sk-admin-policies
+        - name: sk-roles
+          mountPath: /tmp/sk-roles
+      volumes:
+      - name: create-sk-roles
+        configMap: 
+          name: create-sk-roles
+          defaultMode: 0777
+      - name: sk-policies
+        configMap:
+          name: sk-policies
+      - name: sk-admin-policies
+        configMap:
+          name: sk-admin-policies
+      - name: sk-roles
+        configMap:
+          name: sk-roles
+

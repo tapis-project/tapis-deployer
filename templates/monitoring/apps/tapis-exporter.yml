@@ -1,0 +1,30 @@
+---
+# Tapis Exporter
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-tapis-exporter
+  labels:
+    app: monitoring-tapis-exporter
+spec:
+  selector:
+    matchLabels:
+      app: monitoring-tapis-exporter
+  template:
+    metadata:
+      labels:
+        app: monitoring-tapis-exporter
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: monitoring-tapis-exporter
+        image: tapis/tapis-prometheus-exporter
+        imagePullPolicy: Always
+        env:
+        - name: TAPIS_URL
+          value: service_tenant_base_url
+        ports:
+        - name: tapis-exporter
+          containerPort: 5000
+      imagePullSecrets:
+        - name: regcred

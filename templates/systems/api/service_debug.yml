@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:  
+  name: systems-api-debug
+spec:
+  type: NodePort
+  selector:    
+    podname: systems-api-debug
+  ports:  
+  - name: jconsole
+    port: 8000
+    targetPort: 8000
+

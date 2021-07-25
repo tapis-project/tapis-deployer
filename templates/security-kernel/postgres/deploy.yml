@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sk-postgres
+spec:
+  selector:
+    matchLabels:
+      app: sk-postgres
+  template:
+    metadata:
+      labels:
+        app: sk-postgres
+    spec:
+      containers:
+      - name: sk-postgres
+        image: postgres:12.4
+        ports:
+        - name: postgres
+          containerPort: 5432
+        env:
+        - name: PGDATA
+          value: "/pgdata/data"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-secrets 
+              key: postgres-password
+        volumeMounts:
+        - name: sk-pg-data
+          mountPath: "/pgdata"
+      volumes:
+      - name: sk-pg-data
+        persistentVolumeClaim:
+          claimName: sk-postgres-vol01

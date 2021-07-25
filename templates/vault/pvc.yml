@@ -1,0 +1,35 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: vault-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 10Gi
+
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: prep-vault-pvc
+#spec:
+#  ttlSecondsAfterFinished: 60
+#  template:
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: chown-vault-volume
+#        image: alpine:latest
+#        command: ['chown','-R','100:1000','/vault/data']
+#        volumeMounts:
+#        - name: vault-data
+#          mountPath: /vault/data
+#      volumes:
+#      - name: vault-data
+#        persistentVolumeClaim:
+#          claimName: vault-vol01
+
+

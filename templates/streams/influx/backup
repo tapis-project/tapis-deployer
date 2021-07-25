@@ -1,0 +1,24 @@
+
+  influxdb:
+    container_name: chords_influxdb
+    image: influxdb:1.6
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+      - influxdb-log:/var/log/influxdb
+      - /var/run/docker.sock:/var/run/docker.sock
+      - shared-tmp:/tmp/
+    environment:
+      - INFLUXDB_HTTP_MAX_ROW_LIMIT=1000000
+      - INFLUXDB_HTTP_AUTH_ENABLED=true
+      - INFLUXDB_DATA_QUERY_LOG_ENABLED=false
+      - INFLUXDB_REPORTING_DISABLED=true
+      - INFLUXDB_USERNAME=admin
+      - INFLUXDB_PASSWORD=${CHORDS_ADMIN_PW}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    ports:
+      - 8086:8086
+      - 8083:8083

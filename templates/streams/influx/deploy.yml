@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chords-influxdb
+spec:
+  selector:
+    matchLabels:
+      app: chords-influxdb
+  template:
+    metadata:
+      labels:
+        app: chords-influxdb
+    spec:
+      containers:
+      - name: chords-influxdb
+        image: influxdb:1.7.7
+        ports:
+        - name: influx1
+          containerPort: 8086
+        - name: influx2
+          containerPort: 8083
+        env:
+        - name: INFLUXDB_HTTP_MAX_ROW_LIMIT
+          value: "1000000"
+        - name: INFLUXDB_HTTP_AUTH_ENABLED
+          value: "true"
+        - name: INFLUXDB_DATA_QUERY_LOG_ENABLED
+          value: "false"
+        - name: INFLUXDB_REPORTING_DISABLED
+          value: "true"
+        - name: INFLUXDB_USERNAME
+          value: "admin"
+#        - name: INFLUXDB_PASSWORD
+#          value: "admin"
+        - name: INFLUXDB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-streams-secrets
+              key: mysql-password
+        volumeMounts:
+        - name: influx-data
+          mountPath: "/var/lib/influxdb"
+      volumes:
+      - name: influx-data
+        persistentVolumeClaim:
+          claimName: influx-vol01

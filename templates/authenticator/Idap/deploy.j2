@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authenticator-ldap
+spec:
+  selector:
+    matchLabels:
+      app: authenticator-ldap
+  template:
+    metadata:
+      labels:
+        app: authenticator-ldap
+    spec:
+      containers:
+      - name: authenticator-ldap
+        image: tacc/slapd
+        ports:
+        - name: ldap
+          containerPort: 389
+        env:
+        - name: LDAP_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: LDAP_DOMAIN
+        - name: LDAP_ORGANISATION
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: LDAP_ORGANISATION
+        - name: LDAP_ROOTPASS
+          valueFrom:
+            secretKeyRef:
+              name: tapis-authenticator-secrets
+              key: dev-ldap-bind-credential
+

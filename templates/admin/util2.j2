@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: util2
+spec:
+  containers:
+  - name: util2
+    command: ["sleep","3600"]
+    image: mrghort/skadminutil:latest
+    env:
+    - name: service_tenant_base_url
+      valueFrom:
+        configMapKeyRef:
+          name: global-config
+          key: service_tenant_base_url
+    volumeMounts:
+    - name: tenants-config
+      mountPath: /home/tapis/config.json
+      subPath: tenants-config.json
+  volumes:
+  - name: tenants-config
+    configMap:
+      name: global-config
+

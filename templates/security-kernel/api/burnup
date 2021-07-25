@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Migrate the db and start the service.
+kubectl apply -f migrate.yml 
+kubectl wait --for=condition=complete job/sk-migrate
+kubectl apply -f service.yml 
+
+# Always get a fresh role-id and secret-id from vault.
+# We add a sleep because seems to be some asynchrony
+# involved with Kubernetes secret propagation.
+cur=`pwd`
+cd ../../skadmin/renew-sk-secret
+./burnup
+sleep 5
+cd $cur
+
+# Start the SK service.
+kubectl apply -f api.yml 
+kubectl wait --for=condition=available deploy/sk-api

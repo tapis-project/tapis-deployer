@@ -1,0 +1,63 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jobs-postgres-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 20Gi
+
+# 20201112 commenting. -mpackard
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: mkdir-jobs-postgres-pvc
+#spec:
+#  ttlSecondsAfterFinished: 60
+#  template:
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: mkdir-jobs-postgres-volume
+#        image: alpine:latest
+#        command:
+#        - mkdir 
+#        - /var/lib/postgresql/data
+#        volumeMounts:
+#        - name: jobs-pg-data
+#          mountPath: /var/lib/postgresql
+#      volumes:
+#      - name: jobs-pg-data
+#        persistentVolumeClaim:
+#          claimName: jobs-postgres-vol01
+#
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: chown-jobs-postgres-pvc
+#spec:
+#  ttlSecondsAfterFinished: 60
+#  template:
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: chown-jobs-postgres-volume
+#        image: alpine:latest
+#        command:
+#        - chown
+#        - -R
+#        - 999:999
+#        - /var/lib/postgresql
+#        volumeMounts:
+#        - name: jobs-pg-data
+#          mountPath: /var/lib/postgresql
+#      volumes:
+#      - name: jobs-pg-data
+#        persistentVolumeClaim:
+#          claimName: jobs-postgres-vol01
+#

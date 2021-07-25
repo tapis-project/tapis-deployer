@@ -1,0 +1,151 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chords-app
+spec:
+  selector:
+    matchLabels:
+      app: chords-app
+  template:
+    metadata:
+      labels:
+        app: chords-app
+    spec:
+      containers:
+      - name: chords-app
+        image: scleveland/tapis-chords-app:0.9.8.2.3
+        #image: ncareol/chords:1.0
+        imagePullPolicy: Always
+        ports:
+         - name: http
+           containerPort: 80
+        env:
+        - name: CHORDS_ADMIN_PW
+          valueFrom:
+            secretKeyRef:
+              name: tapis-streams-secrets
+              key: mysql-password
+        - name: CHORDS_GUEST_PW
+          value: "guest"
+        - name: CHORDS_EMAIL_ADDRESS
+          value: "unknown@gmail.com"
+        - name: CHORDS_EMAIL_PASSWORD
+          value: "unknown"
+        - name: CHORDS_EMAIL_SERVER
+          value: "smtp.gmail.com"
+        - name: CHORDS_EMAIL_PORT
+          value: "587"
+        - name: CHORDS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tapis-streams-secrets
+              key: chords-api-key
+        - name: CHORDS_PORTAL_ADMIN_USER
+          value: "streams@admin.tapis"
+        - name: CHORDS_PORTAL_ADMIN_PASSWORD
+          value: "streamsrealtime"
+        - name: GRAFANA_ADMIN_PW
+          value: "admin"
+        - name: SECRET_KEY_BASE
+          value: "aaaaaaaaaaa"
+        - name: DB_RETENTION
+          value: "inf"
+        - name: DOCKER_TAG
+          value: "1.0"
+        - name: GIT_BRANCH
+          value: "master"
+        - name: CHORDS_HTTP_PORT
+          value: "80"
+        - name: GRAFANA_HTTP_PORT
+          value: "3000"
+        - name: PROXY
+          value: ""
+        - name: KAPACITOR_ENABLED
+          value: "false"
+        - name: RAILS_ENV
+          value: "production"
+        - name: WORKERS
+          value: "4"
+        - name: INFLUXDB_USERNAME
+          value: "admin"
+        - name: INFLUXDB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-streams-secrets
+              key: mysql-password
+        - name: INFLUXDB_HOST
+          value: "chords-influxdb"
+        - name: INFLUXDB_ADMIN_USER
+          value: "admin"
+        - name: INFLUXDB_ADMIN_PW
+          valueFrom:
+            secretKeyRef:
+              name: tapis-streams-secrets
+              key: mysql-password
+        - name: CHORDS_MYSQL_SERVICE_HOST
+          value: "chords-mysql"
+        - name: CHORDS_MYSQL_PORT_3306_TCP_ADDR
+          value: "chords-mysql"
+        - name: CHORDS_MYSQL_PORT_3306_TCP
+          value: "tcp://chords-mysql:3306"
+        - name: CHORDS_MYSQL_PORT
+          value: "tcp://chords-mysql:3306"
+        - name: MYSQL_HOST
+          value: "chords-mysql"
+        - name: MYSQL_USER
+          value: "chords_demo_user"
+        - name: MYSQL_PASSWORD
+          valueFrom:
+           secretKeyRef:
+             name: tapis-streams-secrets
+             key: mysql-password
+        - name: CHORDS_MYSQL_USER
+          value: "chords_demo_user"
+        - name: CHORDS_MYSQL_PASSWORD
+          valueFrom:
+           secretKeyRef:
+             name: tapis-streams-secrets
+             key: mysql-password
+        - name: CHORDS_INFLUXDB_PORT_8086_TCP
+          value: "tcp://chords-influxdb:8086"
+        - name: CHORDS_INFLUXDB_PORT_8083_TCP_ADDR
+          value: "chords-influxdb"
+        - name: CHORDS_INFLUXDB_PORT_8083_TCP
+          value: "tcp://chords-influxdb:8083"
+        - name: CHORDS_INFLUXDB_PORT_8086_TCP_ADDR
+          value: "chords-influxdb"
+        - name: CHORDS_INFLUXDB_PORT
+          value: "tcp://chords-influxdb:8086"
+        - name: CHORDS_INFLUXDB_SERVICE_HOST
+          value: "chords-influxdb"
+        #command: ["./chords_start.sh"]
+        command: ["./tapis_chords_start.sh"]
+        #command: ["sleep","3600"]
+        volumeMounts:
+        - name: chords-start-script
+          mountPath: "/chords/tapis_chords_start.sh"
+          subPath: "tapis_chords_start.sh"
+        - name: chords-influxdb-yml
+          mountPath: "/chords/config/influxdb.yml"
+          subPath: "influxdb.yml"
+        - name: chords-database-yml
+          mountPath: "/chords/config/database.yml"
+          subPath: "database.yml"
+        - name: chords-production-rb
+          mountPath: "/chords/config/environments/production.rb"
+          subPath: "production.rb"
+      volumes: 
+      - name: chords-start-script
+        configMap: 
+          defaultMode: 0755
+          name: chords-start-script
+      - name: chords-influxdb-yml
+        configMap: 
+          name: chords-influxdb-yml
+      - name: chords-database-yml
+        configMap: 
+          name: chords-database-yml
+      - name: chords-production-rb
+        configMap: 
+          name: chords-production-rb
+

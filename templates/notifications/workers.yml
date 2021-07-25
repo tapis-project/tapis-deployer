@@ -1,0 +1,64 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.16.0 (0c01309)
+  labels:
+    app: notifications-workers
+  name:  notifications-workers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  notifications-workers
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app:  notifications-workers
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name:  notifications-environment-vars
+          env:
+            - name: TOKENS_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: global-config
+                  key: service_tenant_base_url
+            - name: TENANTS_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: global-config
+                  key: service_tenant_base_url
+            - name: TAPIS_SITE_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: global-config
+                  key: siteId
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-notifications-secrets
+                  key: rabbitmq-password
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-notifications-secrets
+                  key: postgres-password
+            - name: SERVICE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-notifications-secrets
+                  key: service-password
+          image: tapis/tapis-notifications-workers:dev
+          imagePullPolicy: Always
+          name: notifications-workers
+          resources: {}
+          stdin: true
+          tty: true
+      restartPolicy: Always

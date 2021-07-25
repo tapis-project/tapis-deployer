@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-exporter
+spec:
+  selector:
+    matchLabels:
+      app: mongo-exporter
+  template:
+    metadata:
+      labels:
+        app: mongo-exporter
+    spec:
+      containers:
+        - name: mongodb-query-exporter
+          image: tapis/mqe:0.1
+          env:
+            - name: MDBEXPORTER_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: restheart-security-mongo-uri
+                  key: restheart-security-mongo-uri
+          ports:
+            - containerPort: 9412

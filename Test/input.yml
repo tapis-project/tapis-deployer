@@ -1,0 +1,378 @@
+--- # Test Yaml
+universal-parameters:
+  data:
+    service_url: https://admin.develop.tapis.io
+    service_tenant_id: admin
+    service_site_id: tacc
+
+burndown:
+  file_ext: ""
+  template: burndown.j2
+burnup:
+  file_ext: ""
+  template: burnup.j2
+
+actors:
+  service-parameters:
+      data:
+        service_name: "actors"
+  actors-config:
+    file_ext: ".yml"
+    template: actors-config.j2
+    data:
+      {
+      }
+  burndown:
+    file_ext: ""
+    template: burndown.j2
+  burnup:
+    file_ext: ""
+    template: burnup.j2
+  getports:
+    file_ext: ""
+    template: getports.j2
+  README:
+    file_ext: ".md"
+    template: README.md
+  admin:
+    file_ext: ".yml"
+    template: admin.j2
+  configmap:
+    file_ext: ".yml"
+    template: configmap.j2
+  events:
+    file_ext: ".yml"
+    template: events.j2
+  grafana:
+    file_ext: ".yml"
+    template: grafana.j2
+  mes:
+    file_ext: ".yml"
+    template: mes.j2
+  metrics:
+    file_ext: ".yml"
+    template: mongo-pvc.j2
+  mongo:
+    file_ext: ".yml"
+    template: mongo.j2
+  nginx-config:
+    file_ext: ".yml"
+    template: nginx-config.j2
+  nginx:
+    file_ext: ".yml"
+    template: nginx.j2
+  prometheus-config:
+    file_ext: ".yml"
+    template: prometheus-config.j2
+  prometheus:
+    file_ext: ".yml"
+    template: prometheus.j2
+  rabbit:
+    file_ext: ".yml"
+    template: rabbit.j2
+  rabitmq-pvc:
+    file_ext: ".yml"
+    template: rabbitmq-pvc.j2
+  reg:
+    file_ext: ".yml"
+    template: reg.j2
+  services:
+    file_ext: ".yml"
+    template: services.j2
+
+admin: 
+  service-parameters:
+      data:
+        service_name: "admin"
+  # admin-config:
+  #   file_ext: ".yml"
+  #   template: admin-config.j2
+  #   data:
+  #     {
+  #     }
+  add-token-roles:
+    create_tenant_token_roles:
+      file_ext: ".py"
+      template: create_tenant_token_roles.j2
+    Dockerfile-roles:
+      file_ext: ""
+      template: Dockerfile-roles.j2
+  backup:
+    pgbackup-sk:
+      file_ext: ""
+      template: pgbackup-sk.j2
+    README:
+      file_ext: ".md"
+      template: README.md
+  verification:
+    authenticator-test:
+      file_ext: ""
+      template: authenticator-test.j2
+    sk-test:
+      file_ext: ""
+      template: sk-test.j2
+    streams-test:
+      file_ext: ""
+      template: streams-test.j2
+    tenants-test:
+      file_ext: ""
+      template: tenants-test.j2
+    tokens-test:
+      file_ext: ""
+      template: tokens-test.j2
+    README:
+      file_ext: ".md"
+      template: README.md
+  createpass:
+    file_ext: ""
+    template: createpass.j2
+  init-all:
+    file_ext: ""
+    template: init-all.j2
+  tapis-dev-getall:
+    file_ext: ""
+    template: tapis-dev-getall.j2
+  TODO:
+    file_ext: ""
+    template: TODO
+  versionquery:
+    file_ext: ""
+    template: versionquery.j2
+  proxy:
+    file_ext: ".json"
+    template: proxy.j2
+  README:
+    file_ext: ".md"
+    template: README.md
+  util2:
+    file_ext: ".yml"
+    template: util2.j2
+
+apps:
+  api:
+    api:
+      file_ext: ".yml"
+      template: api.j2
+    burndown:
+      file_ext: ""
+      template: burndown.j2
+    burnup:
+      file_ext: ""
+      template: burnup.j2
+    service_debug:
+      file_ext: ".yml"
+      template: service_debug.j2
+    service:
+      file_ext: ".yml"
+      template: service.j2
+  postgres:
+    apps-init-db-sh:
+      file_ext: ""
+      template: apps-init-db-sh.j2
+    burndown:
+      file_ext: ""
+      template: burndown.j2
+    burnup:
+      file_ext: ""
+      template: burnup.j2
+    apps-init-db:
+      file_ext: ".yml"
+      template: apps-init-db.j2
+    deploy:
+      file_ext: ".yml"
+      template: deploy.j2
+    pgadmin:
+      file_ext: ".yml"
+      template: pgadmin.j2
+    pvc:
+      file_ext: ".yml"
+      template: pvc.j2
+    service:
+      file_ext: ".yml"
+      template: service.j2
+  burndown:
+    file_ext: ""
+    template: burndown.j2
+  README:
+    file_ext: ".md"
+    template: README.md
+
+authenticator:
+  service-parameters:
+      data:
+        service_name: "authenticator"
+  tokens-config:
+    file_ext: ".yml"
+    template: authenticator-config.j2
+    data:
+      {
+        "tenants": ["dev", "tacc", "admin"]
+      }
+  api:
+    burndown:
+      file_ext: ""
+      template: burndown.j2
+    burnup:
+      file_ext: ""
+      template: burnup.j2
+    api:
+      file_ext: ".yml"
+      template: api.j2
+    service:
+      file_ext: ".yml"
+      template: service.j2
+  Idap:
+    burnup:
+      file_ext: ""
+      template: burnup.j2
+    burndown:
+      file_ext: ""
+      template: burndown.j2
+    deploy:
+      file_ext: ".yml"
+      template: deploy.j2
+    service:
+      file_ext: ".yml"
+      template: service.j2
+  postgres:
+    burndown:
+      file_ext: ""
+      template: burndown.j2
+    burnup:
+      file_ext: ""
+      template: burnup.j2
+    deploy:
+      file_ext: ".yml"
+      template: deploy.j2
+    service:
+      file_ext: ".yml"
+      template: service.j2
+    migrations:
+      file_ext: ".yml"
+      template: migrations.j2
+    pvc:
+      file_ext: ".yml"
+      template: pvc.j2
+
+streams:
+  service-parameters:
+    data:
+      service_name: "streams"
+      service_site_id: "user"
+  streams-config:
+    file_ext: ".yml"
+    template: streams-config.j2
+    data:
+      {
+        "tenant": {
+          "<tenant_id1>":{"stream_db":"<db_name>","tapis_base_url":"<base_url>"},
+          "<tenant_id2>":{"stream_db":"<db_name>","tapis_base_url":"<base_url>"}
+        },
+        "log_level": "DEBUG",
+        "show_traceback": false,
+      }
+
+tenants-api:
+  service-parameters:
+    data:
+      service_name: "tenants"
+      service_site_id: "user"
+  tenants-config:
+    file_ext: ".yml"
+    template: tenants-config.j2
+    data:
+      {
+        "postgres_user": "test_user",
+        "log_level": "DEBUG",
+        "show_traceback": false,
+        # "test_jwt": "optional"
+      }
+  api:
+    burndown:
+      file_ext: ""
+      template: burndown.j2
+    burnup:
+      file_ext: ""
+      template: burnup.j2
+    combo:
+      file_ext: ""
+      template: combo.j2
+    configschema:
+      file_ext: ".json"
+      template: configschema.j2
+    new_db:
+      file_ext: ".sql"
+      template: new_db.j2
+    deploy: 
+      file_ext: ".yml"
+      template: deploy.j2
+    service: 
+      file_ext: ".yml"
+      template: service.j2
+    tmp:
+      file_ext: ".yml"
+      template: tmp.j2
+    README:
+      file_ext: ".md"
+      template: README.j2
+  postgres:
+    burndown:
+      file_ext: ""
+      template: burndown.j2
+    burnup:
+      file_ext: ""
+      template: burnup.j2
+    r:
+      file_ext: ""
+      template: r.j2
+    deploy: 
+      file_ext: ".yml"
+      template: deploy.j2
+    pvc:  
+      file_ext: ".yml"
+      template: pvc.j2
+    service: 
+      file_ext: ".yml"
+      template: service.j2
+    jobs:
+      file_ext: ".yml"
+      template: migrations.j2
+    README:
+      file_ext: ".md"
+      template: README.j2
+
+tokens-api:
+  service-parameters:
+      data:
+        service_name: "tokens"
+  tokens-config:
+    file_ext: ".yml"
+    template: tokens-config.j2
+    data:
+      {
+        "use_sk": true,
+        "tenants": ["dev", "tacc", "admin"],
+        "log_level": "DEBUG",
+        "show_traceback": false
+      }
+  add-token-roles:
+    file_ext: ".yml"
+    template: add-token-roles.j2
+  api:
+    file_ext: ".yml"
+    template: api.j2
+  service:
+    file_ext: ".yml"
+    template: service.j2
+  create_tenant_token_roles:
+    file_ext: ".py"
+    template: create_tenant_token_roles.j2
+  README:
+    file_ext: ".md"
+    template: README.j2
+  burndown:
+      file_ext: ""
+      template: burndown.j2
+  burnup:
+    file_ext: ""
+    template: burnup.j2

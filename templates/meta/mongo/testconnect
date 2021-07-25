@@ -1,0 +1,2 @@
+mongo --host restheart-mongo -u restheart -p change_me --authenticationDatabase admin restheart
+

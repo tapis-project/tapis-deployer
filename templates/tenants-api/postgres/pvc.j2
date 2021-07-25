@@ -1,0 +1,62 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: tenants-postgres-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mkdir-tenants-postgres-pvc
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: mkdir-tenants-postgres-volume
+        image: alpine:latest
+        command:
+        - mkdir 
+        - /var/lib/postgresql/data
+        volumeMounts:
+        - name: tenants-pg-data
+          mountPath: /var/lib/postgresql
+      volumes:
+      - name: tenants-pg-data
+        persistentVolumeClaim:
+          claimName: tenants-postgres-vol01
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: chown-tenants-postgres-pvc
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: chown-tenants-postgres-volume
+        image: alpine:latest
+        command:
+        - chown
+        - -R
+        - 999:999
+        - /var/lib/postgresql
+        volumeMounts:
+        - name: tenants-pg-data
+          mountPath: /var/lib/postgresql
+      volumes:
+      - name: tenants-pg-data
+        persistentVolumeClaim:
+          claimName: tenants-postgres-vol01
+
