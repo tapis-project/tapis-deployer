@@ -1,0 +1,3 @@
+#!/bin/bash
+
+kubectl exec -it `kubectl get pod --selector=app=stern -o name` -- bash

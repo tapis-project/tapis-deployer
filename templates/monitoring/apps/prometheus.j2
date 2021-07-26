@@ -1,0 +1,97 @@
+# Prometheus
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-prometheus
+  labels:
+    app: monitoring-prometheus
+spec:
+  selector:
+    matchLabels:
+      app: monitoring-prometheus
+  template:
+    metadata:
+      labels:
+        app: monitoring-prometheus
+    spec:
+      restartPolicy: Always
+      initContainers:
+      - name: chown-datadir
+        image: alpine:3.6
+        command:
+        - chown
+        - -R  
+        - 65534:65534
+        - /prometheus
+        volumeMounts:
+        - name: prometheus-data
+          mountPath: /prometheus
+      containers:
+      - name: monitoring-prometheus
+        image: prom/prometheus
+        {% if local_param["args"] == true%}
+        args:
+          - "--config.file=/etc/prometheus/prometheus.yml"
+          - "--web.enable-admin-api"
+        {%endif%}
+        ports:
+        - name: prometheus
+          containerPort: 9090
+        volumeMounts:
+        - name: prometheus-config
+          mountPath: /etc/prometheus/prometheus.yml
+          subPath: prometheus-config.yml
+        - name: prometheus-data
+          mountPath: /prometheus
+      volumes:
+      - name: prometheus-data
+        persistentVolumeClaim:
+          claimName: prometheus-vol01
+      - name: prometheus-config
+        configMap:
+          name: global-config
+
+#      - name: thanos
+#        image: quay.io/thanos/thanos:v0.8.0
+#        args:
+#          - sidecar
+#          - |
+#            --objstore.config=type: S3
+#            config:
+#              bucket: "prometheus-long-term"
+#              endpoint: "172.16.120.102:7480"
+#              region: ""
+#              insecure: true
+#              signature_version2: false
+#              encrypt_sse: false
+#              put_user_metadata: {}
+#              trace:
+#                enable: false
+#              part_size: 134217728
+#          - "--tsdb.path=/prometheus/data"
+#          - "--prometheus.url=http://127.0.0.1:9090"
+#          #- "--objstore.config-file=/etc/thanos/objstore-config.yml"
+#          - "--http-address=0.0.0.0:19191"
+#          - "--grpc-address=0.0.0.0:10901"
+#        env:
+#          - name: POD_NAME
+#            valueFrom:
+#              fieldRef:
+#                fieldPath: metadata.name
+#          - name: AWS_SECRET_ACCESS_KEY
+#            valueFrom:
+#              secretKeyRef:
+#                name: tapis-monitoring-secrets
+#                key: thanos-s3-secret-key
+#          - name: AWS_ACCESS_KEY_ID
+#            value: 'EVF6UU73C36GCHRLGXQV'
+#        ports:
+#          - name: http-sidecar
+#            containerPort: 19191
+#          - name: grpc
+#            containerPort: 10901
+#        volumeMounts:
+#        - name: prometheus-data
+#          mountPath: /prometheus
+#        #- name: objstore-config
+#        #  mountPath: /etc/thanos

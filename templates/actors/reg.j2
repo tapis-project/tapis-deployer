@@ -15,6 +15,9 @@ spec:
       containers:
       - name: actors-reg
         image: abaco/core-v3:latest
+        {% if local_param["image_pull"]%}
+        imagePullPolicy: Always
+        {% endif %}
         ports:
         - name: flask
           containerPort: 5000

@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitoring-elasticsearch
+  template:
+    metadata:
+      labels:
+        app: monitoring-elasticsearch
+    spec:
+      containers:
+      - name: monitoring-elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+        ports:
+        - name: el1
+          containerPort: 9200
+        - name: el2
+          containerPort: 9300
+        env:
+        - name: discovery.type
+          value: single-node
+        {% if local_param["max_buckets"]==true%}
+        - name: search.max_buckets
+          value: "65535"
+        {% endif %}
+        {% if local_param["volume_mounts"]==true%}
+        volumeMounts:
+        - name: elasticsearch-data
+          mountPath: /usr/share/elasticsearch/data
+        {% endif %}
+      {% if local_param["volumes"]==true%}
+      volumes:
+      - name: elasticsearch-data
+        persistentVolumeClaim:
+          claimName: elasticsearch-data-vol01
+      {% endif %}

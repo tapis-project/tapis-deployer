@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restheart-security
+spec:
+  selector:
+    matchLabels:
+      app: restheart-security
+  template:
+    metadata:
+      labels:
+        app: restheart-security
+    spec:
+      containers:
+      - name: restheart-security
+        image: tapis/metaapi:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        imagePullPolicy: Always
+        env:
+        - name: tapis.site.id
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: siteId
+        - name: tapis.meta.service.tenantBaseUrl
+          value: {{universal_param["service_url"]}}/
+        - name: tapis.meta.service.skSvcURL
+          value: {{universal_param["service_url"]}}/v3
+        - name: tapis.meta.service.tokenBaseUrl
+          value: {{universal_param["service_url"]}}/
+        - name: TAPIS_SERVICE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-meta-secrets
+              key: service-password
+        - name: MONGO_URI
+          valueFrom:
+            secretKeyRef:
+              name: restheart-security-mongo-uri
+              key: restheart-security-mongo-uri
+        - name: CATALINA_OPTS
+          value: "-Xms16g -Xmx16g -Dlogback.configurationFile=/usr/local/tomcat/etc/logback.xml"
+        ports:
+        - name: tomcat
+          containerPort: 8080

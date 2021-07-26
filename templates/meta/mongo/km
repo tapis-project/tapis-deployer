@@ -1,7 +1,7 @@
 
 echo ""
 echo "*****    Show environment for containers ..."
-kubectl get all | grep sn-
+kubectl get all | grep restheart-mongo
 echo "Service pwd: "
 kubectl get secret tapis-meta-secrets  -o json | jq -r '.data["service-password"]' | base64 -d
  echo ""

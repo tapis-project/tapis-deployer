@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd ~/tapis-deploy/skadmin/renew-sk-secret
+./burnup
+
+kubectl rollout restart deployment sk-api

@@ -10,54 +10,54 @@ spec:
     requests:
       storage: 20Gi
 
-# 20201110 commenting - mpackard
-#---
-#apiVersion: batch/v1
-#kind: Job
-#metadata:
-#  name: mkdir-authenticator-postgres-pvc
-#spec:
-#  ttlSecondsAfterFinished: 60
-#  template:
-#    spec:
-#      restartPolicy: Never
-#      containers:
-#      - name: mkdir-authenticator-postgres-volume
-#        image: alpine:latest
-#        command:
-#        - mkdir 
-#        - /var/lib/postgresql/data
-#        volumeMounts:
-#        - name: authenticator-pg-data
-#          mountPath: /var/lib/postgresql
-#      volumes:
-#      - name: authenticator-pg-data
-#        persistentVolumeClaim:
-#          claimName: authenticator-postgres-vol01
-#
-#---
-#apiVersion: batch/v1
-#kind: Job
-#metadata:
-#  name: chown-authenticator-postgres-pvc
-#spec:
-#  ttlSecondsAfterFinished: 60
-#  template:
-#    spec:
-#      restartPolicy: Never
-#      containers:
-#      - name: chown-authenticator-postgres-volume
-#        image: alpine:latest
-#        command:
-#        - chown
-#        - -R
-#        - 999:999
-#        - /var/lib/postgresql
-#        volumeMounts:
-#        - name: authenticator-pg-data
-#          mountPath: /var/lib/postgresql
-#      volumes:
-#      - name: authenticator-pg-data
-#        persistentVolumeClaim:
-#          claimName: authenticator-postgres-vol01
-#
+{% if local_param["uncomment"] == true%}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+ name: mkdir-authenticator-postgres-pvc
+spec:
+ ttlSecondsAfterFinished: 60
+ template:
+   spec:
+     restartPolicy: Never
+     containers:
+     - name: mkdir-authenticator-postgres-volume
+       image: alpine:latest
+       command:
+       - mkdir 
+       - /var/lib/postgresql/data
+       volumeMounts:
+       - name: authenticator-pg-data
+         mountPath: /var/lib/postgresql
+     volumes:
+     - name: authenticator-pg-data
+       persistentVolumeClaim:
+         claimName: authenticator-postgres-vol01
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+ name: chown-authenticator-postgres-pvc
+spec:
+ ttlSecondsAfterFinished: 60
+ template:
+   spec:
+     restartPolicy: Never
+     containers:
+     - name: chown-authenticator-postgres-volume
+       image: alpine:latest
+       command:
+       - chown
+       - -R
+       - 999:999
+       - /var/lib/postgresql
+       volumeMounts:
+       - name: authenticator-pg-data
+         mountPath: /var/lib/postgresql
+     volumes:
+     - name: authenticator-pg-data
+       persistentVolumeClaim:
+         claimName: authenticator-postgres-vol01
+{%endif%}

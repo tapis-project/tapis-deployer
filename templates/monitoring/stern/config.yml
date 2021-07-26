@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stern-config
+data:
+  stern.conf: |- 
+    /stern-data/all-pods {
+      rotate 100
+      size=100M
+      missingok
+      dateext
+      dateformat -%Y%m%d-%s
+    }

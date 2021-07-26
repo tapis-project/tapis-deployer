@@ -1,0 +1,5 @@
+#!/bin/bash
+
+kubectl delete -f deploy.yml
+kubectl delete -f config.yml
+kubectl delete configmap kubeconfig

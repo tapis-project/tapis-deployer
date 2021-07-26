@@ -10,15 +10,31 @@ spec:
       restartPolicy: Never
       containers:
       - name: tenants-migrations
-        image: tapis/tenants-api-migrations:dev
+        image: tapis/tenants-api-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        imagePullPolicy: Always
         args: ["upgrade"]
         imagePullPolicy: Always
+        env:
+        - name: sql_db_url
+          value: tenants-postgres:5432/tenants
+        - name: postgres_user
+          value: tenants
+        - name: postgres_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-secrets
+              key: postgres-password
+        - name: service_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-secrets
+              key: service-password
         volumeMounts:
         - name: tenants-config
           mountPath: /home/tapis/config.json
-          subPath: config.json
-        imagePullPolicy: Always
+          subPath: tenants-config.json
       volumes:
       - name: tenants-config
         configMap:
-          name: tenants-config
+          name: global-config
+

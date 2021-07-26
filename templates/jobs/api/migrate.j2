@@ -1,0 +1,38 @@
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jobs-migrate
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: jobs-migrate
+        image: tapis/jobsmigrate:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        imagePullPolicy: Always
+        {% if local_param["memory"]%}
+        resources:
+          requests:
+            memory: "{{local_param["memory"]}}"
+        {% endif%}
+        env:
+        - name: HOST
+          value: "jobs-postgres"
+        - name: PORT
+          value: "5432"
+        - name: USER
+          value: "postgres"
+        - name: PW
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets 
+              key: postgres-password
+        - name: TPW
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets 
+              key: tapis-postgres-password
+

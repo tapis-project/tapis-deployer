@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: systems-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: systems-api
+  template:
+    metadata:
+      labels:
+        app: systems-api
+    spec:
+      containers:
+      - name: systems-api
+        image: tapis/systems:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        imagePullPolicy: Always
+        {% if local_param["memory"]%}
+        resources:
+          requests:
+            memory: "{{local_param["memory"]}}"
+        {% endif%}
+        ports:
+          - containerPort: 8080
+          - containerPort: 8000
+            name: "jvm-debug"
+        env:
+          - name: tapis.db.jdbc.url
+            value: jdbc:postgresql://systems-postgres:5432/tapissysdb
+          - name: tapis.db.user
+            value: tapis_sys
+          - name: tapis.site.id
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: siteId
+          - name: tapis.tenant.svc.baseurl
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: service_tenant_base_url
+          - name: tapis.db.password
+            valueFrom:
+              secretKeyRef:
+                name: tapis-systems-secrets
+                key: postgres-password
+          - name: tapis.service.password
+            valueFrom:
+              secretKeyRef:
+                name: tapis-systems-secrets
+                key: service-password

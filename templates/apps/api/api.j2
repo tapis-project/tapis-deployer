@@ -14,8 +14,13 @@ spec:
     spec:
       containers:
       - name: apps-api
-        image: tapis/apps:dev
+        image: tapis/apps:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
         imagePullPolicy: Always
+        {% if local_param["memory"]%}
+        resources:
+          requests:
+            memory: "{{local_param["memory"]}}"
+        {% endif%}
         ports:
           - containerPort: 8080
           - containerPort: 8000

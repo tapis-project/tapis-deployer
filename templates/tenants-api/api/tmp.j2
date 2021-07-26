@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: tenants-migrations
-        image: tapis/tenants-api-migrations:dev
+        image: tapis/tenants-api-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
         command: ["sleep","3600"]
         volumeMounts:
         - name: configlocal

@@ -1,0 +1,38 @@
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sk-migrate
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: sk-migrate
+        image: tapis/securitymigrate:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        imagePullPolicy: Always
+        {% if local_param["memory"]%}
+        resources:
+          requests:
+            memory: "{{local_param["memory"]}}"
+        {% endif%}
+        env:
+        - name: HOST
+          value: "sk-postgres"
+        - name: PORT
+          value: "5432"
+        - name: USER
+          value: "postgres"
+        - name: PW
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-secrets 
+              key: postgres-password
+        - name: TPW
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-secrets 
+              key: tapis-postgres-password
+

@@ -2,7 +2,7 @@ import argparse
 import yaml
 from jinja2 import Environment, FileSystemLoader
 import os
-from shutil import copyfile
+from shutil import copy
 
 file_loader = FileSystemLoader('templates')
 env = Environment(loader=file_loader)
@@ -10,7 +10,7 @@ env.trim_blocks = True
 env.lstrip_blocks = True
 env.rstrip_blocks = True
 
-def write_tapis(input_yaml, path, uni_param="", ser_param=""):
+def write_tapis(input_yaml, path, service_list, uni_param="", ser_param="", is_sub=False, outDir = os.path.expanduser('~/tmp/')):
     for obj, data in input_yaml.items():
         if obj == "universal-parameters":
             uni_param = data 
@@ -20,26 +20,33 @@ def write_tapis(input_yaml, path, uni_param="", ser_param=""):
             file_path = path + obj + data["file_ext"]
             if data["template"].split(".")[-1] == "j2":
                 template = env.get_template(path + data["template"])
-                with open(os.path.expanduser("~/tmp/tapis-deploy/") + file_path, "w") as file:
-                    try:
-                        file.write(template.render(local_param=data['data'], service_param=ser_param['data'],universal_param=uni_param['data']))
-                    except:
-                        file.write(template.render())         
+                permissions = (os.stat("templates/" + path + data["template"])[0])
+                with open(outDir + "tapis-deploy/" + file_path, "w") as file:
+                    file.write(template.render(local_param=data['data'], service_param=ser_param['data'], universal_param=uni_param['data']))
+                    os.chmod(outDir + "tapis-deploy/" + file_path, permissions)
         else:
-            write_tapis(data, path + obj + "/", uni_param, ser_param)   
-    return
-
-def create_tapis(template_path):
-    for root, dir, files in os.walk(template_path):
-        root = root[root.index("/")+1:] + "/"
-        for name in dir:
+            if(obj not in service_list and not is_sub):
+                continue
             try:
-                os.makedirs(os.path.expanduser('~/tmp/tapis-deploy/' + root + name))
+                os.makedirs(outDir + "tapis-deploy/" + path + obj)
             except:
                 pass
+            write_tapis(data, path + obj + "/", service_list, uni_param, ser_param, True, outDir)   
+    return
+
+def create_tapis(template_path, service_list, outDir = os.path.expanduser('~/tmp/')):
+    for root, _, files in os.walk(template_path, topdown=False):
+        service = root.split('/')[1]
+        if(service not in service_list and service != ""):
+            continue
+        root = root[root.index("/")+1:] + "/"
         for name in files:
+            try:
+                os.makedirs(outDir + 'tapis-deploy/' + root)
+            except:
+                pass
             if name.split(".")[-1] != "j2":
-                copyfile(template_path + root + name, os.path.expanduser("~/tmp/tapis-deploy/") + root + name)
+                copy(template_path + root + name, outDir + "tapis-deploy/" + root + name)
 
 
 def main():
@@ -47,13 +54,17 @@ def main():
     parser.add_argument('input', metavar='inFile', nargs='?',type=argparse.FileType('r'), 
                         help="File location of yaml config")
 
+    parser.add_argument('-o', dest='outDir', metavar='outDir', nargs='?',
+                    help="File location of program output, if not specified defaults to tmp/tapis-deploy")
+
     args = parser.parse_args()
     if not args.input:
         parser.print_help()
         exit()
 
     parameters = yaml.load(args.input)
-
+    outDir = args.outDir
+    service_list = parameters.get("services")
     try:
         os.makedirs(os.path.expanduser('~/tmp/tapis-deploy/'))
     except:
@@ -61,8 +72,12 @@ def main():
 
     file_path = ""
 
-    create_tapis(template_path= "templates/")
-    write_tapis(parameters, file_path)
+    if(outDir):
+        create_tapis("templates/", service_list, outDir)
+        write_tapis(parameters, file_path, service_list, outDir)
+    else:
+        create_tapis("templates/", service_list)
+        write_tapis(parameters, file_path, service_list)
 
 if __name__ == '__main__':
     main()

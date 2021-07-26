@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-wkr-defaultqueue
+spec:
+  selector:
+    matchLabels:
+      app: jobworker
+  template:
+    metadata:
+      labels:
+        app: jobworker
+    spec:
+      initContainers:
+      automountServiceAccountToken: false
+      {% if local_param["node_selector"] == true%}
+      nodeSelector:
+        exempt: "yes"
+      {% endif%}
+      containers:
+      - name: jobs-wkr-defaultqueue
+        image: tapis/jobsworker:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        imagePullPolicy: Always
+        {% if local_param["memory"]%}
+        resources:
+          requests:
+            memory: "{{local_param["memory"]}}"
+        {% endif%}
+        env:
+        {% if local_param["node_name"] == true%}
+        - name: tapis.local.node.name
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        {% endif%}
+        - name: tapis.site.id
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: siteId
+        - name: tapis.tenant.svc.baseurl
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: service_tenant_base_url
+        - name: tapis.service.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: service-password
+        - name: tapis.db.connection.pool.size
+          value: "10"
+        - name: tapis.db.user
+          value: "tapis"
+        - name: tapis.db.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: tapis-postgres-password
+        - name: tapis.db.jdbc.url
+          value: "jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+        - name: tapis.queue.host
+          value: jobs-rabbitmq
+        - name: tapis.queue.admin.user
+          value: "tapis"
+        - name: tapis.queue.admin.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: rabbitmq-tapis-password
+        - name: tapis.queue.user
+          value: "jobs"
+        - name: tapis.queue.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: rabbitmq-jobs-password
+        - name: tapis.request.logging.filter.prefixes
+          value: "/v3/jobs"
+        - name: JAVA_OPTS 
+          value: "-Xms1g -Xmx3g"
+        - name: MAIN_CLASS
+          value: "edu.utexas.tacc.tapis.jobs.worker.JobWorker"
+        - name: JOBS_PARMS
+          value: "-n wkr-DefaultQueue -q tapis.jobq.submit.DefaultQueue -w 100"

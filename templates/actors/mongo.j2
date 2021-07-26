@@ -22,6 +22,10 @@ spec:
         - name: actors-mongo-data
           mountPath: "/data/db"
         env:
+        {% if local_param["init_database"]%}
+        - name: MONGO_INITDB_DATABASE
+          value: {{local_param["init_database"]}}
+        {%endif%}
         - name: MONGO_INITDB_ROOT_USERNAME
           value: admin
         - name: MONGO_INITDB_ROOT_PASSWORD

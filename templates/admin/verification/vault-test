@@ -1,0 +1,3 @@
+#!/bin/bash
+
+kubectl exec -it deploy/vault -- vault status

@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stern-util
+  labels:
+    app: stern-util
+spec:
+  selector:
+    matchLabels:
+      app: stern-util
+  template:
+    metadata:
+      labels:
+        app: stern-util
+    spec:
+      containers:
+      - name: stern-util
+        image: mrghort/stern-collector:14
+        command: ['sleep','infinity']
+        volumeMounts:
+        - name: stern-data
+          mountPath: "/stern-data"
+          readOnly: true
+        - name: stern-config
+          mountPath: /root/.kube/config
+          subPath: kubeconfig
+      volumes:
+      - name: stern-config
+        configMap:
+          name: stern-config
+      - name: stern-data
+        persistentVolumeClaim:
+          claimName: stern-data-vol01

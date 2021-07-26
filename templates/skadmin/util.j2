@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: skadmin-util
+spec:
+  containers:
+  - name: skadmin-util
+    command: ["sleep","3600"]
+    #command: ["/tmp/run-sk-admin"]
+    image: mrghort/skadminutil:{{local_param["image_version"]}}
+

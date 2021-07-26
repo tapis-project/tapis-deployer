@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meta-pbm
+spec:
+  selector:
+    matchLabels:
+      app: meta-pbm
+  template:
+    metadata:
+      labels:
+        app: meta-pbm
+    spec:
+      containers:
+        - name: meta-pbm
+          image: tapis/mongodb-backup:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("latest")))}}
+          imagePullPolicy: Always
+          env:
+            - name: PBM_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: restheart-security-mongo-uri
+                  key: restheart-security-mongo-uri
+          volumeMounts:
+            - name: config
+              mountPath: /pbm_config.yml
+              subPath: pbm_config.yml
+      volumes:
+        - name: config
+          configMap:
+            name: pbm-config
+
