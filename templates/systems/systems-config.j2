@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: systems-config
+data:
+    {
+      "service_site_id": "{{universal_param["service_url"]}}",
+      "service_tenant_id": "{{universal_param["service_url"]}}",
+      "service_name": "{{service_param["service_name"]}}",
+      "tenants": {{local_param["tenants"]|default(["dev", "tacc", "admin"])}},
+    }
