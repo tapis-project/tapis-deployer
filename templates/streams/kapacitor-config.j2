@@ -254,11 +254,11 @@ hostname = "7ba03c77345a"
         timing-movavg-size = 1000
       
       [udf]
-      {#}
+      {% raw %}
       [deadman]
         interval = "10s"
         threshold = 0.0
         id = "{{ .Group }}:NODE_NAME for task '{{ .TaskName }}'"
         message = "{{ .ID }} is {{ if eq .Level \"OK\" }}alive{{ else }}dead{{ end }}: {{ index .Fields \"emitted\" | printf \"%0.3f\" }} points/INTERVAL."
         global = false
-      {#}
+      {% endraw %}
