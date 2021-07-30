@@ -62,7 +62,7 @@ def main():
         parser.print_help()
         exit()
 
-    parameters = yaml.load(args.input)
+    parameters = yaml.safe_load(args.input)
     outDir = args.outDir
     service_list = parameters.get("services")
     try:
