@@ -13,8 +13,8 @@ spec:
     spec:
       containers:
       - name: tenants-api
-        image: tapis/tenants-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
-        imagePullPolicy: Always
+        image: tapis/tenants-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("latest")))}}
+        imagePullPolicy: {{local_param["image_pull"]|default(service_param["image_pull"]|default(universal_param["image_pull"]|default("Always")))}}
         ports:
         - name: http
           containerPort: 5000
@@ -40,5 +40,5 @@ spec:
       volumes:
       - name: tenants-config
         configMap: 
-          name: global-config
+          name: tenants-config
 

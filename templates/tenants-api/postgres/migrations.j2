@@ -10,10 +10,9 @@ spec:
       restartPolicy: Never
       containers:
       - name: tenants-migrations
-        image: tapis/tenants-api-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
-        imagePullPolicy: Always
+        image: tapis/tenants-api-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("latest")))}}
+        imagePullPolicy: {{local_param["image_pull"]|default(service_param["image_pull"]|default(universal_param["image_pull"]|default("Always")))}}
         args: ["upgrade"]
-        imagePullPolicy: Always
         env:
         - name: sql_db_url
           value: tenants-postgres:5432/tenants
@@ -36,5 +35,5 @@ spec:
       volumes:
       - name: tenants-config
         configMap:
-          name: global-config
+          name: tenants-config
 

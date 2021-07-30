@@ -1,5 +1,0 @@
-#!/bin/bash
-
-kubectl delete -f migrations-test.yml 
-kubectl apply -f migrations-test.yml 
-
