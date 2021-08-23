@@ -1,39 +1,39 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: actors-mongo-vol01
+  name: actors-rabbitmq-vol01
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rbd
+  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
   resources:
     requests:
-      storage: 40Gi
+      storage: 20Gi
 
 
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: chown-actors-mongo-pvc
+  name: chown-actors-rabbitmq-pvc
 spec:
   ttlSecondsAfterFinished: 60
   template:
     spec:
       restartPolicy: Never
       containers:
-      - name: chown-actors-mongo-volume
+      - name: chown-actors-rabbitmq-volume
         image: alpine:latest
         command:
         - chown
         - -R
         - 999:999
-        - /data/db
+        - /var/lib/rabbitmq
         volumeMounts:
-        - name: actors-mongo-data
-          mountPath: /data/db
+        - name: actors-rabbitmq-data
+          mountPath: /var/lib/rabbitmq
       volumes:
-      - name: actors-mongo-data
+      - name: actors-rabbitmq-data
         persistentVolumeClaim:
-          claimName: actors-mongo-vol01
+          claimName: actors-rabbitmq-vol01
 

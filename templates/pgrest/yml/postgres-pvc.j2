@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: apps-postgres-vol01
+  name: pgrest-postgres-vol01
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rbd
+  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
   resources:
     requests:
       storage: 20Gi

@@ -26,6 +26,7 @@ universal-parameters:
     service_url: https://admin.develop.tapis.io
     service_tenant_id: admin
     service_site_id: tacc
+    storge_class: rbd-new
 
 actors:
   service-parameters:
@@ -66,6 +67,11 @@ actors:
     template: mes.j2
     data:
       image_pull: null
+  mongo-pvc:
+    file_ext: ".yml"
+    template: "mongo-pvc.j2"
+    data:
+      
   mongo:
     file_ext: ".yml"
     template: "mongo.j2"
@@ -83,6 +89,11 @@ actors:
     data:
       volume_mount: true
       volumes: true
+  rabbitmq-pvc:
+    file_ext: ".yml"
+    template: "rabbitmq-pvc.j2"
+    data:
+      
   reg:
     file_ext: ".yml"
     template: "reg.j2"
@@ -93,10 +104,10 @@ admin:
   service-parameters:
     data:
       service_name: "admin"
-  # admin-config:
-  #   file_ext: ".yml"
-  #   template: admin-config.j2
-  #   data:
+  admin-config:
+    file_ext: ".yml"
+    template: admin-config.j2
+    data:
 
 apps:
   service-parameters:
@@ -115,6 +126,11 @@ apps:
       template: "apps-init-db.j2"
       data:
         monitor_password: true
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+        
     service:
       file_ext: ".yml"
       template: "service.j2"
@@ -148,10 +164,32 @@ authenticator:
       data:
         uncomment: false
       
+container-registry:
+  service-parameters:
+    data:
+      service_name: "container-registery"
+  container-registery-config:
+    file_ext: ".yml"
+    template: "container-registery-config.j2"
+    data:
+      
+elastic:
+  service-parameters:
+    data:
+      service_name: "container-registery"
+  elastic-config:
+    file_ext: ".yml"
+    template: "elastic-config.j2"
+    data:
+
 files:
   service-parameters:
     data:
       service_name: "files"
+  file-config:
+    file_ext: ".yml"
+    template: "file-config.j2"
+    data:
   api:
     file_ext: ".yml"
     template: api.j2
@@ -180,6 +218,11 @@ files:
     template: migrations.j2
     data:
       image_version: dev
+  pvc:
+    file_ext: ".yml"
+    template: "pvc.j2"
+    data:
+      
   service:
     file_ext: ".yml"
     template: "service.j2"
@@ -203,6 +246,11 @@ jobs:
   service-parameters:
     data:
       service_name: "jobs"
+  jobs-config:
+    file_ext: ".yml"
+    template: "jobs-config.j2"
+    data:
+      
   api:
     api:
       file_ext: ".yml"
@@ -218,6 +266,16 @@ jobs:
       data:
         image_version: dev
         memory: "8Gi"
+  postgres:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+  rabbitmq:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
   readers:
     jobrdr-AltQueue:
       file_ext: ".yml"
@@ -252,6 +310,11 @@ meta:
   service-parameters:
     data:
       service_name: "meta"
+  meta-config:
+    file_ext: ".yml"
+    template: "meta-config.j2"
+    data:
+      
   api:
     restheart-security:
       file_ext: ".yml"
@@ -275,11 +338,21 @@ meta:
       template: mongo-backup-deployment.j2
       data:
         image_version: .1
+  mongo:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
 
 monitoring:
   service-parameters:
     data:
       service_name: "monitoring"     
+  monitoring-config:
+    file_ext: ".yml"
+    template: "monitoring-config.j2"
+    data:
+      
   apps:
     elasticsearch:
       file_ext: ".yml"
@@ -293,11 +366,25 @@ monitoring:
       template: "prometheus.j2"
       data:
         args: true
-
+  pvc:
+    elasticsearch-data:
+      file_ext: ".yml"
+      template: "elasticsearch-data.j2"
+      data:
+  stren:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+        
 notifications:
   service-parameters:
     data:
       service_name: "notifications"
+  notifications-config:
+    file_ext: ".yml"
+    template: "notifications-config.j2"
+    data:
   api:
     file_ext: ".yml"
     template: api.j2
@@ -308,6 +395,11 @@ notifications:
     template: migrations.j2
     data:
       image_version: dev
+  pvc:
+    file_ext: ".yml"
+    template: "pvc.j2"
+    data:
+
   workers:
     file_ext: ".yml"
     template: workers.j2
@@ -317,18 +409,41 @@ notifications:
 pgrest:
   service-parameters:
     data:
-      service_name: "pgrest"        
+      service_name: "pgrest"   
+  pgrest-config:
+    file_ext: ".yml"
+    template: "pgrest-config.j2"
+    data:
+           
   yml:
     api-deploy:
       file_ext: ".yml"
       template: api-deploy.j2
       data:
         image_version: dev
+    postgres-pvc:
+      file_ext: ".yml"
+      template: "postgres-pvc.j2"
+      data:
 
+rabbitmq:
+  service-parameters:
+    data:
+      service_name: "rabbitmq"
+  pvc:
+    file_ext: ".yml"
+    template: "pvc.j2"
+    data:
+      
 security-kernel:
   service-parameters:
     data:
       service_name: "security-kernel"
+  security-kernal-config:
+    file_ext: ".yml"
+    template: "security-kernal-config.j2"
+    data:
+      
   api:
     api:
       file_ext: ".yml"
@@ -347,11 +462,20 @@ security-kernel:
       data:
         image_version: dev
         memory: "8Gi"
-
+  postgres:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+        
 skadmin:
   service-parameters:
       data:
         service_name: "skadmin"
+  skadmin-config:
+    file_ext: ".yml"
+    template: "skadmin-config.j2"
+    data:
   initialLoad:
     tapis-monitoring-secrets:
       file_ext: ".json"
@@ -423,6 +547,11 @@ systems:
   service-parameters:
       data:
         service_name: "systems"
+  systems-config:
+    file_ext: ".yml"
+    template: "systems-config.j2"
+    data:
+      
   api:
     api:
       file_ext: ".yml"
@@ -430,7 +559,12 @@ systems:
       data:
         image_version: dev
         memory: "8Gi"
-
+  postgres:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+        
 tenants-api:
   service-parameters:
     data:
@@ -458,7 +592,11 @@ tenants-api:
       data:
         image_version: dev
         image_pull: Always
-
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+        
 tokens-api:
   service-parameters:
       data:
@@ -477,4 +615,17 @@ tokens-api:
     data:
       image_version: dev
 
+vault: 
+  service-parameters:
+      data:
+        service_name: "vault"
+  vault-config:
+    file_ext: ".yml"
+    template: vault-config.j2
+    data: 
+  pvc:
+    file_ext: ".yml"
+    template: "pvc.j2"
+    data:
+  
     

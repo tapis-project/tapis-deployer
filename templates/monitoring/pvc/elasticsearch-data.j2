@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: actors-rabbitmq-vol01
+  name: elasticsearch-data-vol01
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rbd
+  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
   resources:
     requests:
       storage: 20Gi
@@ -15,25 +15,25 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: chown-actors-rabbitmq-pvc
+  name: chown-elasticsearch-data-pvc
 spec:
   ttlSecondsAfterFinished: 60
   template:
     spec:
       restartPolicy: Never
       containers:
-      - name: chown-actors-rabbitmq-volume
+      - name: chown-elasticsearch-data-volume
         image: alpine:latest
         command:
         - chown
         - -R
-        - 999:999
-        - /var/lib/rabbitmq
+        - 1000:1000
+        - /data/
         volumeMounts:
-        - name: actors-rabbitmq-data
-          mountPath: /var/lib/rabbitmq
+        - name: elasticsearch-data
+          mountPath: /data/
       volumes:
-      - name: actors-rabbitmq-data
+      - name: elasticsearch-data
         persistentVolumeClaim:
-          claimName: actors-rabbitmq-vol01
+          claimName: elasticsearch-data-vol01
 

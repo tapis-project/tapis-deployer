@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: tenants-config
 data:
+  tenants-config.json: |-
     {
       "service_site_id": "{{local_param["service_site_id"]|default(service_param["service_site_id"]|default(universal_param["service_site_id"]))}}",
       "service_tenant_id": "{{local_param["service_tenant_id"]|default(service_param["service_tenant_id"]|default(universal_param["service_tenant_id"]))}}",

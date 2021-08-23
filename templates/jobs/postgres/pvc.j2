@@ -1,52 +1,52 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: sk-postgres-vol01
+  name: jobs-postgres-vol01
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rbd
+  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
   resources:
     requests:
       storage: 20Gi
 
-# 20201110 commenting - mpackard
+# 20201112 commenting. -mpackard
 #---
 #apiVersion: batch/v1
 #kind: Job
 #metadata:
-#  name: mkdir-sk-postgres-pvc
+#  name: mkdir-jobs-postgres-pvc
 #spec:
 #  ttlSecondsAfterFinished: 60
 #  template:
 #    spec:
 #      restartPolicy: Never
 #      containers:
-#      - name: mkdir-sk-postgres-volume
+#      - name: mkdir-jobs-postgres-volume
 #        image: alpine:latest
 #        command:
 #        - mkdir 
 #        - /var/lib/postgresql/data
 #        volumeMounts:
-#        - name: sk-pg-data
+#        - name: jobs-pg-data
 #          mountPath: /var/lib/postgresql
 #      volumes:
-#      - name: sk-pg-data
+#      - name: jobs-pg-data
 #        persistentVolumeClaim:
-#          claimName: sk-postgres-vol01
+#          claimName: jobs-postgres-vol01
 #
 #---
 #apiVersion: batch/v1
 #kind: Job
 #metadata:
-#  name: chown-sk-postgres-pvc
+#  name: chown-jobs-postgres-pvc
 #spec:
 #  ttlSecondsAfterFinished: 60
 #  template:
 #    spec:
 #      restartPolicy: Never
 #      containers:
-#      - name: chown-sk-postgres-volume
+#      - name: chown-jobs-postgres-volume
 #        image: alpine:latest
 #        command:
 #        - chown
@@ -54,10 +54,10 @@ spec:
 #        - 999:999
 #        - /var/lib/postgresql
 #        volumeMounts:
-#        - name: sk-pg-data
+#        - name: jobs-pg-data
 #          mountPath: /var/lib/postgresql
 #      volumes:
-#      - name: sk-pg-data
+#      - name: jobs-pg-data
 #        persistentVolumeClaim:
-#          claimName: sk-postgres-vol01
+#          claimName: jobs-postgres-vol01
 #

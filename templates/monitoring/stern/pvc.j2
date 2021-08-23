@@ -1,13 +1,14 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: jobs-rabbitmq-vol01
+  name: stern-data-vol01
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rbd
+  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
   resources:
     requests:
-      storage: 10Gi
+      storage: 50Gi
+
 
 
