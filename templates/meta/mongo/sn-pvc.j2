@@ -1,38 +1,39 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: streams-mysql-vol01
+  name: sn-mongo-vol01
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rbd
+  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
   resources:
     requests:
-      storage: 20Gi
+      storage: 10Gi
+
 
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: chown-streams-mysql-pvc
+  name: chown-sn-mongo-pvc
 spec:
   ttlSecondsAfterFinished: 60
   template:
     spec:
       restartPolicy: Never
       containers:
-      - name: chown-mysql-volume
+      - name: chown-snmongo-volume
         image: alpine:latest
         command:
         - chown
         - -R
         - 999:999
-        - /var/lib/mysql
+        - /data/db
         volumeMounts:
-        - name: streams-mysql-data
-          mountPath: /var/lib/mysql
+        - name: sn-mongo-data
+          mountPath: /data/db
       volumes:
-      - name: streams-mysql-data
+      - name: sn-mongo-data
         persistentVolumeClaim:
-          claimName: streams-mysql-vol01
+          claimName: sn-mongo-vol01
 

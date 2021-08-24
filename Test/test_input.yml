@@ -222,6 +222,10 @@ files:
     file_ext: ".yml"
     template: "pvc.j2"
     data:
+  rabbitmq-pvc:
+    file_ext: ".yml"
+    template: "rabbitmq-pvc.j2"
+    data:
       
   service:
     file_ext: ".yml"
@@ -333,6 +337,11 @@ meta:
         file_ext: ".yml"
         template: pbm.j2
         data:
+    mongo-backup-claim0-pvc:
+      file_ext: ".yaml"
+      template: "mongo-backup-claim0-pvc.j2"
+      data:
+        
     mongo-backup-deployment:
       file_ext: ".yaml"
       template: mongo-backup-deployment.j2
@@ -343,6 +352,11 @@ meta:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
+    sn-pvc:
+      file_ext: ".yml"
+      template: "sn-pvc.j2"
+      data:
+        
 
 monitoring:
   service-parameters:
@@ -376,6 +390,11 @@ monitoring:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
+  init:
+    file_ext: ".yml"
+    template: "init.j2"
+    data:
+      
         
 notifications:
   service-parameters:
@@ -542,6 +561,22 @@ streams:
         noke_name: null
         process: 10
         threads: null
+  influx:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+  kapacitor:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+  mqsql:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+        
   
 systems:
   service-parameters:
