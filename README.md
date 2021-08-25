@@ -1,6 +1,7 @@
-# TACCSummerInternship2021
-Repo for code from 2021 summer internship
----
+# Tapis Deployer 
+
+This tool generates the scripts and Kubernetes YAML used to stand up an instance of Tapis.
+
 ## ymlGenerator use
 Generates a yaml file from an input yaml file based on the ymlTemplate.txt in the templates folder if the output file is specificed. 
 If there is not specified output file the program will just take the input yaml file and print it out in the ~/tmp/taps-deploy/tenants.
