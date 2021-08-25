@@ -54,13 +54,13 @@ spec:
         - name: tapis.site.id
           valueFrom:
             configMapKeyRef:
-              name: global-config
-              key: siteId
+              name: security-kernel-config
+              key: site_id
         - name: tapis.tenant.svc.baseurl
           valueFrom:
             configMapKeyRef:
-              name: global-config
-              key: service_tenant_base_url
+              name: security-kernel-config
+              key: service_site_url
         - name: tapis.sk.vault.disable
           value: "false"
         - name: tapis.sk.vault.address

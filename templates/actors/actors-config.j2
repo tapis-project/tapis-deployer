@@ -7,7 +7,7 @@ data:
     {
       "server": "dev",
       "primary_site_admin_tenant_base_url": "{{local_param["service_url"]|default(service_param["service_url"]|default(universal_param["service_url"]))}}",
-      "service_tenant_id": "admin",
+      "service_tenant_id": ""{{local_param["service_tenant_id"]|default(service_param["service_tenant_id"]|default(universal_param["service_tenant_id"]))}}"",
       "service_name": "abaco",
       "service_password": "$env{SERVICE_PASSWORD}",
       "tenants": [

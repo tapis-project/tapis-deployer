@@ -23,7 +23,7 @@ services:
 
 universal-parameters:
   data:
-    service_url: https://admin.develop.tapis.io
+    service_url: https://admin.test.tapis.io
     service_tenant_id: admin
     service_site_id: tacc
     storge_class: rbd-new
@@ -186,9 +186,9 @@ files:
   service-parameters:
     data:
       service_name: "files"
-  file-config:
+  files-config:
     file_ext: ".yml"
-    template: "file-config.j2"
+    template: "files-config.j2"
     data:
   api:
     file_ext: ".yml"
@@ -385,7 +385,7 @@ monitoring:
       file_ext: ".yml"
       template: "elasticsearch-data.j2"
       data:
-  stren:
+  stern:
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
@@ -458,9 +458,9 @@ security-kernel:
   service-parameters:
     data:
       service_name: "security-kernel"
-  security-kernal-config:
+  security-kernel-config:
     file_ext: ".yml"
-    template: "security-kernal-config.j2"
+    template: "security-kernel-config.j2"
     data:
       
   api:
@@ -571,7 +571,7 @@ streams:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-  mqsql:
+  mysql:
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
@@ -609,10 +609,10 @@ tenants-api:
     file_ext: ".yml"
     template: tenants-config.j2
     data:
-      "postgres_user": "test_user"
+      "postgres_user": "tenants"
       "log_level": "DEBUG"
       "show_traceback": false
-      # "test_jwt": "optional"
+      "test_jwt": null
   api:
     api:
       file_ext: ".yml"
