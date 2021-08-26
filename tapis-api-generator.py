@@ -63,11 +63,12 @@ def main():
         exit()
 
     parameters = yaml.safe_load(args.input)
-    outDir = args.outDir.strip()
+    outDir = args.outDir
     service_list = parameters.get("services")
     file_path = ""
 
     if(outDir):
+        outDir = outDir.strip()
         try:
             test = outDir+"/tapis-deploy/"
             test2 = os.path.expanduser(test)

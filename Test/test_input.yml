@@ -113,6 +113,10 @@ apps:
   service-parameters:
     data:
       service_name: "apps"
+  apps-config:
+    file_ext: ".yml"
+    template: apps-config.j2
+    data:
   api:
     api:
       file_ext: ".yml"

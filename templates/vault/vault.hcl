@@ -5,6 +5,11 @@ storage "file" {
   path = "/vault/data"
 }
 
+storage_destination "raft" {
+    path = "/opt/vault/data"
+    node_id = "raft_node_1"
+}
+
 listener "tcp" {
     address = "0.0.0.0:8200"
     #tls_cert_file = "/config/server.crt"
