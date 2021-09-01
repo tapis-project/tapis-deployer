@@ -1,9 +1,0 @@
-#!/bin/bash
-
-curl https://dev.develop.tapis.io/v3/streams/hello 
-
-
-curl https://admin.develop.tapis.io/v3/streams/hello
-
-
-

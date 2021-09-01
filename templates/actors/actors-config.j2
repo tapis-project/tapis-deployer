@@ -6,8 +6,8 @@ data:
   config.json: |-
     {
       "server": "dev",
-      "primary_site_admin_tenant_base_url": "{{local_param["service_url"]|default(service_param["service_url"]|default(universal_param["service_url"]))}}",
-      "service_tenant_id": ""{{local_param["service_tenant_id"]|default(service_param["service_tenant_id"]|default(universal_param["service_tenant_id"]))}}"",
+      "primary_site_admin_tenant_base_url": "{{universal_param["service_url"]}}",
+      "service_tenant_id": ""{{universal_param["service_tenant_id"]}}"",
       "service_name": "abaco",
       "service_password": "$env{SERVICE_PASSWORD}",
       "tenants": [

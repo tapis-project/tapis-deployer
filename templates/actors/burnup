@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set up configmap for actors
+kubectl apply -f actors-config.yml
+
 # pvc
 kubectl apply -f mongo-pvc.yml
 kubectl wait --for=condition=complete job/chown-actors-mongo-pvc

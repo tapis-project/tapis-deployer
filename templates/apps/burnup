@@ -12,6 +12,8 @@ cd $PRG_RELPATH/.
 export PRG_PATH=`pwd`
 cd $RUN_DIR
 
+# Set up configmap for apps
+kubectl apply -f apps-config.yml
 #
 # Deploy postgres and api
 #

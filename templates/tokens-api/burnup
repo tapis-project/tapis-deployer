@@ -1,5 +1,6 @@
 #!/bin/bash
 
+kubectl apply -f tokens-config.yml
 kubectl apply -f service.yml
 kubectl apply -f api.yml 
 

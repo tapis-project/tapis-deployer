@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set up configmap for elastic
+kubectl apply -f elastic-config.yml
+
 kubectl apply -f elasticsearch-service.yml
 kubectl apply -f elasticsearch-deploy.yml 
 kubectl apply -f kibana-service.yml

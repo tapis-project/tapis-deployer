@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set up configmap for jobs
+kubectl apply -f ../jobs-config.yml
+
 # Migrate the db and start the service.
 kubectl apply -f migrate.yml 
 kubectl wait --for=condition=complete job/jobs-migrate

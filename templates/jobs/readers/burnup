@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set up configmap for jobs
+kubectl apply -f ../jobs-config.yml
+
 # Start the queue readers.   
 kubectl apply -f jobrdr-Recovery.yml
 kubectl apply -f jobrdr-AltQueue.yml

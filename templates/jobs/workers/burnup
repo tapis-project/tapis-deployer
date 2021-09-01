@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set up configmap for jobs
+kubectl apply -f ../jobs-config.yml
+
 # Start a worker for each jobs queue.  There can be 1 or more worker instance for each
 # jobs queue.  Preferably, automated scaling will be managed by kubernetes on a per queue 
 # basis.  At this time, each jobs queue requires its own dedicated yml file that is used

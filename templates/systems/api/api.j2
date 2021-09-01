@@ -33,13 +33,13 @@ spec:
           - name: tapis.site.id
             valueFrom:
               configMapKeyRef:
-                name: global-config
-                key: siteId
+                name: systems-config
+                key: site_id
           - name: tapis.tenant.svc.baseurl
             valueFrom:
               configMapKeyRef:
-                name: global-config
-                key: service_tenant_base_url
+                name: systems-config
+                key: service_site_url
           - name: tapis.db.password
             valueFrom:
               secretKeyRef:

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set up configmap for system
+kubectl apply -f ../systems-config.yml
+
 # Setup the PVC for postgres
 kubectl apply -f pvc.yml
 

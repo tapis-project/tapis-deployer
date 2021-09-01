@@ -21,12 +21,12 @@ spec:
         - name: LDAP_DOMAIN
           valueFrom:
             configMapKeyRef:
-              name: global-config
+              name: authenticator-config
               key: LDAP_DOMAIN
         - name: LDAP_ORGANISATION
           valueFrom:
             configMapKeyRef:
-              name: global-config
+              name: authenticator-config
               key: LDAP_ORGANISATION
         - name: LDAP_ROOTPASS
           valueFrom:

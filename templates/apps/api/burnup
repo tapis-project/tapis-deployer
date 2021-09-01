@@ -1,4 +1,7 @@
 #!/bin/bash
 
+# Set up configmap for apps
+kubectl apply -f ../apps-config.yml
+
 kubectl apply -f service.yml 
 kubectl apply -f api.yml 

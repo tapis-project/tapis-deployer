@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set up configmap for streams and kapacitor
+kubectl apply -f streams-config.yml
+kubectl apply -f kapacitor-config.yml
+
 kubectl wait --for=condition=available deploy/chords-influxdb
 
 kubectl apply -f pvc.yml 

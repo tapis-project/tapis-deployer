@@ -1,5 +1,0 @@
-#!/bin/bash
-#
-## authenticator:
-curl -d '{"username": "testuser2", "password": "testuser2", "grant_type": "password"}' -H "Content-type: application/json"   https://dev.tapis.io/v3/oauth2/tokens
-# should return 200 and JSON with token

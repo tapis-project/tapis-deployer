@@ -1,9 +1,0 @@
-#!/bin/bash
-#
-s=`kubectl get secret tapis-tenants-secrets -o json | jq -r '.data["service-password"]' | base64 -d`
-
-#tokens:
-#
-curl -u "tenants:$s" -H "Content-type: application/json" -d '{"token_tenant_id": "admin", "account_type": "service", "token_username": "tenants", "target_site_id": "tacc"}'  https://admin.develop.tapis.io/v3/tokens
-
-# should return 200 and JSON with token

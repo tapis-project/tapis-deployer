@@ -6,6 +6,7 @@ then
   exit 1
 fi
 
+kubectl apply -f skadmin-config.yml
 kubectl create secret generic vault-token --from-file ~/vault-token
 
 if [ ! -d ~/tapis-vault ]

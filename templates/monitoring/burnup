@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set up configmap for monitoring
+kubectl apply -f monitoring-config.yml
+
 # Persistent storage
 kubectl apply -f init.yml
 

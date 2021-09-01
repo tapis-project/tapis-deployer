@@ -15,6 +15,7 @@ cd $RUN_DIR
 #
 # Deploy postgres and api
 #
+kubectl apply -f systems-config.yml
 cd $PRG_PATH/postgres
 ./burnup
 cd $PRG_PATH/api
