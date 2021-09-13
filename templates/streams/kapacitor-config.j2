@@ -3,6 +3,10 @@ kind: ConfigMap
 metadata:
   name: kapacitor-config
 data:
+  "service_site_url": "{{universal_param["service_url"]}}"
+  "service_tenant_id": "{{universal_param["service_tenant_id"]}}"
+  "site_id": "{{universal_param["service_site_id"]}}"
+  "service_name": "{{service_param["service_name"]}}"
   kapacitor.conf: |- 
     hostname = "7ba03c77345a"
     data_dir = "/var/lib/kapacitor"
@@ -174,8 +178,8 @@ data:
       url = "https://api.pushover.net/1/messages.json"
     {% for tenant, value in local_param["tenant"].items() %}
     [[httppost]]
-      endpoint = "api-alert"
-      url = "{{value}}/v3/streams/alerts?tenant=dev"
+      endpoint = "api-alert-{{tenant}}"
+      url = "{{value["tapis_base_url"]}}/v3/streams/alerts?tenant=dev"
       headers = {"Content-Type" = "application/json","alert-secret" = "testalert"}
       alert-template = ""
       alert-template-file = ""

@@ -25,8 +25,8 @@ spec:
         - name: tapis_base_url
           valueFrom:
             configMapKeyRef:
-              name: global-config
-              key: service_tenant_base_url
+              name: streams-config
+              key: service_site_url
         - name: chords_api_key
           valueFrom:
             secretKeyRef:
@@ -71,5 +71,5 @@ spec:
       volumes:
       - name: streams-config
         configMap:
-          name: global-config
+          name: streams-config
 

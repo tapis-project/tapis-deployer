@@ -19,8 +19,8 @@ spec:
         - name: tapis.site.id
           valueFrom:
             configMapKeyRef:
-              name: global-config
-              key: siteId
+              name: meta-config
+              key: site_id
         - name: tapis.meta.service.tenantBaseUrl
           value: {{universal_param["service_url"]}}/
         - name: tapis.meta.service.skSvcURL

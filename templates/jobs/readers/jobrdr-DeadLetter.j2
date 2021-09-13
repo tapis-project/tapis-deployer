@@ -26,13 +26,13 @@ spec:
         - name: tapis.site.id
           valueFrom:
             configMapKeyRef:
-              name: global-config
-              key: siteId
+              name: jobs-config
+              key: site_id
         - name: tapis.tenant.svc.baseurl
           valueFrom:
             configMapKeyRef:
-              name: global-config
-              key: service_tenant_base_url
+              name: jobs-config
+              key: service_site_url
         - name: tapis.service.password
           valueFrom:
             secretKeyRef:

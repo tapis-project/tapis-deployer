@@ -7,7 +7,7 @@ data:
     {
       "server": "dev",
       "primary_site_admin_tenant_base_url": "{{universal_param["service_url"]}}",
-      "service_tenant_id": ""{{universal_param["service_tenant_id"]}}"",
+      "service_tenant_id": "{{universal_param["service_tenant_id"]}}",
       "service_name": "abaco",
       "service_password": "$env{SERVICE_PASSWORD}",
       "tenants": [
@@ -61,6 +61,7 @@ data:
       "worker_leave_containers": true,
       "worker_socket_paths": "$env{abaco_host_path}/runtime_files/_abaco_results_sockets:/home/tapis/runtime_files/_abaco_results_sockets",
       "worker_fifo_paths": "$env{abaco_host_path}/runtime_files/_abaco_fifos:/home/tapis/runtime_files/_abaco_fifos",
+      "web_encryption_key": "5WXGUKgcN-r0-s5bO81ZZL2Mr1v6hFgkocjEydJQ-TM=",
       "web_access_control": "jwt",
       "web_user_role": "Internal/everyone",
       "web_accept_nonce": true,

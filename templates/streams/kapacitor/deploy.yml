@@ -45,7 +45,7 @@ spec:
       volumes:
       - name: kapacitor-config
         configMap:
-          name: global-config
+          name: kapacitor-config
       - name: streams-kapacitor-data
         persistentVolumeClaim:
           claimName: streams-kapacitor-vol01

@@ -21,9 +21,9 @@ spec:
             secretKeyRef:
               name: tapis-apps-secrets
               key: postgres-password
-        {%if local_param["monitor_password"] == true%}
+        {%if local_param["monitor_password"]%}
         - name: MONITOR_PASSWORD
-          value: #TODO
+          value: {{local_param["monitor_password"]}}
         {% endif %}
       volumes:
       - name: apps-init-db-vol

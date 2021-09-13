@@ -33,18 +33,18 @@ spec:
             - name: TOKENS_SERVICE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: global-config
-                  key: service_tenant_base_url
+                  name: files-config
+                  key: service_site_url
             - name: TENANTS_SERVICE_URL
               valueFrom:
                 configMapKeyRef:
-                  name: global-config
-                  key: service_tenant_base_url
+                  name: files-config
+                  key: service_site_url
             - name: TAPIS_SITE_ID
               valueFrom:
                 configMapKeyRef:
-                  name: global-config
-                  key: siteId
+                  name: files-config
+                  key: site_id
             - name: RABBITMQ_PASSWORD
               valueFrom:
                 secretKeyRef:

@@ -10,8 +10,8 @@ kubectl apply -f init.yml
 kubectl apply -f secrets.yml 
 
 # Services
-kubectl apply -f services.yml
+kubectl apply -f services
 
 # Apps
-kubectl apply -f apps.yml
+kubectl apply -f apps
 

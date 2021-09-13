@@ -29,6 +29,8 @@ universal-parameters:
     tenants: ["dev", "admin"]
     deployment: test
     storge_class: rbd-new
+    image_version: latest
+    image_pull: Always
 
 actors:
   service-parameters:
@@ -39,7 +41,6 @@ actors:
     template: actors-config.j2
     data:
       tenants:
-        - "tacc"
         - "dev"
         - "admin"
       docker_network: "develop"
@@ -149,7 +150,7 @@ apps:
       file_ext: ".yml"
       template: "apps-init-db.j2"
       data:
-        monitor_password: true
+        monitor_password: "test"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
@@ -324,6 +325,7 @@ jobs:
         image_version: dev
         memory: "8Gi"
         node_name: true
+        note_selector: true
   workers:
     jobwkr-DefaultQueue:
       file_ext: ".yml"
@@ -418,7 +420,12 @@ monitoring:
     file_ext: ".yml"
     template: "init.j2"
     data:
-      
+  secrets:
+    file_ext: ".yml"
+    template: "secrets.j2"
+    data:
+      username: YWRtaW4=
+      password: cGVyaGFwc0NhbXBTZWFyY2hGcmVxdWVudGx5
         
 notifications:
   service-parameters:
@@ -562,8 +569,8 @@ streams:
     template: streams-config.j2
     data:
       "tenant": {
-        "<tenant_id1>":{"stream_db":"<db_name>","tapis_base_url":"<base_url>"},
-        "<tenant_id2>":{"stream_db":"<db_name>","tapis_base_url":"<base_url>"}
+        "admin":{"stream_db":"streams_admin","tapis_base_url":"https://admin.test.tapis.io"},
+        "dev":{"stream_db":"streams_dev","tapis_base_url":"https://dev.test.tapis.io"}
       }
       "log_level": "DEBUG"
       "show_traceback": false
@@ -572,8 +579,8 @@ streams:
     template: kapacitor-config.j2
     data:
       "tenant": {
-        "<tenant_id1>":{"stream_db":"<db_name>","tapis_base_url":"<base_url>"},
-        "<tenant_id2>":{"stream_db":"<db_name>","tapis_base_url":"<base_url>"}
+        "admin":{"stream_db":"streams_admin","tapis_base_url":"https://admin.test.tapis.io"},
+        "dev":{"stream_db":"streams_dev","tapis_base_url":"https://dev.test.tapis.io"}
       }
   api: 
     api:
