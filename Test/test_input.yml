@@ -411,15 +411,20 @@ monitoring:
       file_ext: ".yml"
       template: "elasticsearch-data.j2"
       data:
+    grafana-pvc:
+      file_ext: ".yml"
+      template: "grafana-pvc.j2"
+      data:
+    prometheus-pvc:
+      file_ext: ".yml"
+      template: "prometheus-pvc.j2"
+      data:
+        
   stern:
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-  init:
-    file_ext: ".yml"
-    template: "init.j2"
-    data:
   secrets:
     file_ext: ".yml"
     template: "secrets.j2"

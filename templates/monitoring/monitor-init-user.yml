@@ -8,24 +8,63 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: apps-init-db
+      # TAPIS Apps
+      - name: monitor-init-user-apps
         image: bitnami/postgresql:latest
         imagePullPolicy: Always
-        command: ["/tmp/apps-init-db-sh"]
-#        volumeMounts:
-#        - name: apps-init-db-vol
-#          mountPath: /tmp
+        command: ["/tmp/monitor-init-user-sh"]
+        volumeMounts:
+        - name: monitor-init-user-vol
+          mountPath: /tmp
         env:
+        - name: DB_HOST
+          value: apps-postgres
+        - name: DB_USER
+          value: postgres
+        - name: DB_NAME
+          value: tapisappdb
+        - name: DB_SCHEMA
+          value: tapis_app
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-apps-secrets
               key: postgres-password
         - name: MONITOR_PASSWORD
-          value: #TODO
-#      volumes:
-#      - name: apps-init-db-vol
-#        configMap:
-#          name: apps-init-db-configmap
-#          defaultMode: 0777
+          valueFrom:
+            secretKeyRef:
+              name: tapis-monitoring-secrets
+              key: postgres-ro-password
+      # TAPIS Jobs
+      - name: monitor-init-user-jobs
+        image: bitnami/postgresql:latest
+        imagePullPolicy: Always
+        command: ["/tmp/monitor-init-user-sh"]
+        volumeMounts:
+        - name: monitor-init-user-vol
+          mountPath: /tmp
+        env:
+        - name: DB_HOST
+          value: jobs-postgres
+        - name: DB_USER
+          value: postgres
+        - name: DB_NAME
+          value: tapisjobsdb
+        - name: DB_SCHEMA
+          value: public
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: postgres-password
+        - name: MONITOR_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-monitoring-secrets
+              key: postgres-ro-password
+      volumes:
+      - name: monitor-init-user-vol
+        configMap:
+          name: monitor-init-user-configmap
+          defaultMode: 0555
   backoffLimit: 4

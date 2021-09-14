@@ -10,5 +10,5 @@ kubectl apply -f secrets.yml
 # we don't burn service so ports stay same
 
 # Apps
-kubectl delete -f apps.yml
+kubectl delete -f apps
 

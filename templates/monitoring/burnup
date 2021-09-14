@@ -4,7 +4,7 @@
 kubectl apply -f monitoring-config.yml
 
 # Persistent storage
-kubectl apply -f init.yml
+kubectl apply -f pvc
 
 # Configs
 kubectl apply -f secrets.yml 
@@ -15,3 +15,7 @@ kubectl apply -f services
 # Apps
 kubectl apply -f apps
 
+# Initialize the DB
+kubectl create configmap monitor-init-user-configmap --from-file monitor-init-user-sh
+kubectl apply -f monitor-init-user.yml
+kubectl wait --timeout=120s --for=condition=complete job/monitor-init-user
