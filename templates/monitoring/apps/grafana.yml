@@ -43,8 +43,8 @@ spec:
         - name: GF_SERVER_DOMAIN
           valueFrom:
             configMapKeyRef:
-              name: global-config
-              key: tenant_domain
+              name: monitoring-config
+              key: service_site_url
         - name: GF_SERVER_ROOT_URL
           value: "%(protocol)s://%(domain)s/grafana"
         - name: GF_SERVER_SERVE_FROM_SUB_PATH
@@ -77,7 +77,7 @@ spec:
           claimName: grafana-vol01
       - name: grafana-datasources
         configMap:
-          name: global-config
+          name: monitoring-config
       - name: grafana-ldap
         configMap:
-          name: global-config
+          name: monitoring-config

@@ -23,6 +23,8 @@ spec:
         env:
         - name: TAPIS_URL
           value: service_tenant_base_url
+        - name: TAPIS_SERVICES
+          value: '["security", "streams","meta"]'
         ports:
         - name: tapis-exporter
           containerPort: 5000

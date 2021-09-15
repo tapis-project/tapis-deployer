@@ -33,9 +33,9 @@ done
 # ----------- Burndown Services & DBs -------------
 here=`pwd`
 
-echo "elastic:"
-cd $here/elastic
-./burndown
+# echo "elastic:"
+# cd $here/elastic
+# ./burndown
 
 echo "monitoring:"
 cd $here/monitoring

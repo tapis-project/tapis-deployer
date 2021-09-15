@@ -8,14 +8,14 @@
 
 here=`pwd`
 
-if [ ! -f ~/global-config.yml ]
-then
-  echo "Could not find ~/global-config.yml. Exiting."
-  exit 1
-fi
+# if [ ! -f ~/global-config.yml ]
+# then
+#   echo "Could not find ~/global-config.yml. Exiting."
+#   exit 1
+# fi
 
-echo "global config init:"
-kubectl apply -f ~/global-config.yml
+# echo "global config init:"
+# kubectl apply -f ~/global-config.yml
 
 echo "vault:"
 cd $here/vault 
@@ -27,6 +27,8 @@ cd $here/skadmin/renew-sk-secret
 
 cd $here/skadmin
 ./burnup
+
+exit 1
 
 echo "tenants:"
 cd $here/tenants-api/postgres
@@ -122,6 +124,6 @@ echo "monitoring:"
 cd $here/monitoring
 ./burnup
 
-echo "elastic:"
-cd $here/elastic
-./burnup
+# echo "elastic:"
+# cd $here/elastic
+# ./burnup

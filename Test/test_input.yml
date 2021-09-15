@@ -5,7 +5,6 @@ services:
   - apps
   - authenticator
   - container-registry
-  - elastic
   - files
   - jobs
   - meta
@@ -198,15 +197,6 @@ container-registry:
     template: "container-registery-config.j2"
     data:
       
-elastic:
-  service-parameters:
-    data:
-      service_name: "container-registery"
-  elastic-config:
-    file_ext: ".yml"
-    template: "elastic-config.j2"
-    data:
-
 files:
   service-parameters:
     data:

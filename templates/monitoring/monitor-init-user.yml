@@ -35,6 +35,33 @@ spec:
             secretKeyRef:
               name: tapis-monitoring-secrets
               key: postgres-ro-password
+      # TAPIS Streams
+      - name: monitor-init-user-jobs
+        image: bitnami/postgresql:latest
+        imagePullPolicy: Always
+        command: ["/tmp/monitor-init-user-sh"]
+        volumeMounts:
+        - name: monitor-init-user-vol
+          mountPath: /tmp
+        env:
+        - name: DB_HOST
+          value: streams-postgres
+        - name: DB_USER
+          value: postgres
+        - name: DB_NAME
+          value: 
+        - name: DB_SCHEMA
+          value: public
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-
+              key: postgres-password
+        - name: MONITOR_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-monitoring-secrets
+              key: postgres-ro-password
       # TAPIS Jobs
       - name: monitor-init-user-jobs
         image: bitnami/postgresql:latest
