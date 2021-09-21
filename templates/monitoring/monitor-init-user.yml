@@ -36,7 +36,7 @@ spec:
               name: tapis-monitoring-secrets
               key: postgres-ro-password
       # TAPIS Streams
-      - name: monitor-init-user-jobs
+      - name: monitor-init-user-streams
         image: bitnami/postgresql:latest
         imagePullPolicy: Always
         command: ["/tmp/monitor-init-user-sh"]
@@ -55,7 +55,7 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: tapis-
+              name: tapis-apps-secrets
               key: postgres-password
         - name: MONITOR_PASSWORD
           valueFrom:

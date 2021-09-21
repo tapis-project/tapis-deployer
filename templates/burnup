@@ -20,6 +20,7 @@ here=`pwd`
 echo "vault:"
 cd $here/vault 
 ./burnup
+./unseal
 
 echo "skadmin:"
 cd $here/skadmin/renew-sk-secret 
@@ -27,8 +28,6 @@ cd $here/skadmin/renew-sk-secret
 
 cd $here/skadmin
 ./burnup
-
-exit 1
 
 echo "tenants:"
 cd $here/tenants-api/postgres

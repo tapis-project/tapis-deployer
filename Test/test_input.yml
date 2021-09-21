@@ -664,7 +664,7 @@ tokens-api:
     file_ext: ".yml"
     template: tokens-config.j2
     data:
-      "use_sk": true
+      "use_sk": false
       "tenants": ["dev", "admin"]
       "log_level": "DEBUG"
       "show_traceback": false
