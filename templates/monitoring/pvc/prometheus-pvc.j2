@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: prometheus-vol01
+  name: prometheus-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce

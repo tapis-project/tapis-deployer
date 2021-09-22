@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: vault-vol01
+  name: vault-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -30,6 +30,6 @@ spec:
 #      volumes:
 #      - name: vault-data
 #        persistentVolumeClaim:
-#          claimName: vault-vol01
+#          claimName: vault-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 
 

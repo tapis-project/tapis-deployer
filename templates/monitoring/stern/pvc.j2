@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: stern-data-vol01
+  name: stern-data-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce

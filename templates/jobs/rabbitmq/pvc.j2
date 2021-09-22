@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: jobs-rabbitmq-vol01
+  name: jobs-rabbitmq-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce

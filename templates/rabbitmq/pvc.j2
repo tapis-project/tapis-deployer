@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: rabbitmq-vol01
+  name: rabbitmq-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -30,6 +30,6 @@ spec:
       volumes:
       - name: rabbitmq-data
         persistentVolumeClaim:
-          claimName: rabbitmq-vol01
+          claimName: rabbitmq-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 
 

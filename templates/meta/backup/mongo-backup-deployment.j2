@@ -36,9 +36,9 @@ spec:
             - name: MONGO_INITDB_ROOT_USERNAME
               value: restheart
           volumeMounts:
-            - name: mongo-backup-vol01
+            - name: mongo-backup-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
               mountPath: /backup/
       volumes:
-        - name: mongo-backup-vol01
+        - name: mongo-backup-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
           persistentVolumeClaim:
             claimName: mongo-backup-claim0

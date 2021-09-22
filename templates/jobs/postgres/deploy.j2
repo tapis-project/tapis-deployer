@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apps-postgres
+  name: jobs-postgres
 spec:
   selector:
     matchLabels:
-      app: apps-postgres
+      app: jobs-postgres
   template:
     metadata:
       labels:
-        app: apps-postgres
+        app: jobs-postgres
     spec:
       containers:
-      - name: apps-postgres
+      - name: jobs-postgres
         image: postgres:12.4
         ports:
         - name: postgres
@@ -23,12 +23,12 @@ spec:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: tapis-apps-secrets
+              name: tapis-jobs-secrets 
               key: postgres-password
         volumeMounts:
-        - name: apps-pg-data
+        - name: jobs-pg-data
           mountPath: "/pgdata"
       volumes:
-      - name: apps-pg-data
+      - name: jobs-pg-data
         persistentVolumeClaim:
-          claimName: apps-postgres-vol01
+          claimName: jobs-postgres-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}

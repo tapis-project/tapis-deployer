@@ -37,5 +37,5 @@ spec:
       volumes:
       - name: elasticsearch-data
         persistentVolumeClaim:
-          claimName: elasticsearch-data-vol01
+          claimName: elasticsearch-data-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
       {% endif %}

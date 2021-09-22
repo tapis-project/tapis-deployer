@@ -31,4 +31,4 @@ spec:
           name: stern-config
       - name: stern-data
         persistentVolumeClaim:
-          claimName: stern-data-vol01
+          claimName: stern-data-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}

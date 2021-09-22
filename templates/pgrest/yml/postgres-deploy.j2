@@ -35,4 +35,4 @@ spec:
       volumes:
       - name: pgrest-data
         persistentVolumeClaim:
-          claimName: pgrest-postgres-vol01
+          claimName: pgrest-postgres-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}

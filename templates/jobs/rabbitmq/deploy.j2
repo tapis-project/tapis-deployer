@@ -40,4 +40,4 @@ spec:
       volumes:
       - name: jobs-rabbitmq-data
         persistentVolumeClaim:
-          claimName: jobs-rabbitmq-vol01
+          claimName: jobs-rabbitmq-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}

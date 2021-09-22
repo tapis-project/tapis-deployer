@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: streams-mysql-vol01
+  name: streams-mysql-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -34,5 +34,5 @@ spec:
       volumes:
       - name: streams-mysql-data
         persistentVolumeClaim:
-          claimName: streams-mysql-vol01
+          claimName: streams-mysql-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 

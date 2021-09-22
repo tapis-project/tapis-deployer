@@ -46,7 +46,7 @@ spec:
       volumes:
       - name: prometheus-data
         persistentVolumeClaim:
-          claimName: prometheus-vol01
+          claimName: prometheus-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
       - name: prometheus-config
         configMap:
           name: monitoring-config

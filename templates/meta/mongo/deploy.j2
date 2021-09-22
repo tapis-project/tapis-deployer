@@ -1,20 +1,19 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sn-mongo
+  name: restheart-mongo
 spec:
   selector:
     matchLabels:
-      app: sn-mongo
+      app: restheart-mongo
   template:
     metadata:
       labels:
-        app: sn-mongo
+        app: restheart-mongo
     spec:
       containers:
-        - name: sn-mongo
-          image: tapis/mongo-singlenode:4.4.5-bionic
+        - name: restheart-mongo
+          image: tapis/mongo-singlenode:4.4.6-bionic
           imagePullPolicy: Always
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
@@ -25,18 +24,12 @@ spec:
                   name: tapis-meta-secrets
                   key: mongo-password
           ports:
-            - name: snmongo
+            - name: mongo
               containerPort: 27017
           volumeMounts:
-            - name: sn-mongo-data
+            - name: restheart-mongo-data
               mountPath: "/data/db"
-#            - name: mongo-server-keyfile
-#              mountPath: /
-#              subPath: metakeyfile
       volumes:
-        - name: sn-mongo-data
+        - name: restheart-mongo-data
           persistentVolumeClaim:
-            claimName: sn-mongo-vol01
-#        - name: mongo-server-keyfile
-#          configMap:
-#            name: global-config
+            claimName: restheart-mongo-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}

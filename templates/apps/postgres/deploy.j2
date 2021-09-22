@@ -1,39 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: authenticator-postgres
+  name: apps-postgres
 spec:
   selector:
     matchLabels:
-      app: authenticator-postgres
+      app: apps-postgres
   template:
     metadata:
       labels:
-        app: authenticator-postgres
+        app: apps-postgres
     spec:
       containers:
-      - name: authenticator-postgres
-        image: postgres:11.4
+      - name: apps-postgres
+        image: postgres:12.4
         ports:
         - name: postgres
           containerPort: 5432
         env:
         - name: PGDATA
           value: "/pgdata/data"
-        - name: POSTGRES_USER
-          value: "authenticator"
-        - name: POSTGRES_DB
-          value: "authenticator"
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: tapis-authenticator-secrets
+              name: tapis-apps-secrets
               key: postgres-password
         volumeMounts:
-        - name: authenticator-pg-data
+        - name: apps-pg-data
           mountPath: "/pgdata"
       volumes:
-      - name: authenticator-pg-data
+      - name: apps-pg-data
         persistentVolumeClaim:
-          claimName: authenticator-postgres-vol01
-
+          claimName: apps-postgres-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}

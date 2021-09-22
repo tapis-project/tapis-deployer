@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: sn-mongo-vol01
+  name: sn-mongo-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: sn-mongo-data
         persistentVolumeClaim:
-          claimName: sn-mongo-vol01
+          claimName: sn-mongo-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 

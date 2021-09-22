@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: sk-pg-data
         persistentVolumeClaim:
-          claimName: sk-postgres-vol01
+          claimName: sk-postgres-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}

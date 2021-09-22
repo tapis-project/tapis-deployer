@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: restheart-mongo-vol01
+  name: restheart-mongo-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: restheart-mongo-data
         persistentVolumeClaim:
-          claimName: restheart-mongo-vol01
+          claimName: restheart-mongo-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 

@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: influx-vol01
+  name: influx-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -34,5 +34,5 @@ spec:
 #      volumes:
 #      - name: pg-data
 #        persistentVolumeClaim:
-#          claimName: postgres-vol01
+#          claimName: postgres-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
 #
