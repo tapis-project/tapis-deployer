@@ -1,0 +1,4 @@
+#!/bin/bash
+
+kubectl delete -f actors-mongo-backup.yml
+#kubectl delete -f actors-mongo-backup-pvc.yml

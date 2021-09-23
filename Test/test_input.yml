@@ -48,65 +48,77 @@ actors:
       mongo_tls: false
       log_ex: true
       object: "tenant"
-  admin:
-    file_ext: ".yml"
-    template: admin.j2
-    data:
+  api:
+    admin:
+      file_ext: ".yml"
+      template: admin.j2
+      data:
+        image_pull: null
+    configmap:
+      file_ext: ".yml"
+      template: configmap.j2
+      data:
+        path: "develop"
+        timeout: "60"
+    events:
+      file_ext: ".yml"
+      template: events.j2
+      data:
+        image_pull: null
+    mes:
+      file_ext: ".yml"
+      template: mes.j2
+      data:
+        image_pull: null
+    mongo-pvc:
+      file_ext: ".yml"
+      template: "mongo-pvc.j2"
+      data:
+        volume_number: "02"
+    mongo:
+      file_ext: ".yml"
+      template: "mongo.j2"
+      data:
+        init_database: null
+        volume_number: "02" 
+    nginx-config:
+      file_ext: ".yml"
+      template: nginx-config.j2
+      data:
+        stage: dev
+        proxy_set_header: true
+    prometheus:
+      file_ext: ".yml"
+      template: "prometheus.j2"
+      data:
+        volume_mount: true
+        volumes: true
+    rabbit:
+      file_ext: ".yml"
+      template: "rabbit.j2"
+      data:
+        volume_number: "02"
+    rabbitmq-pvc:
+      file_ext: ".yml"
+      template: "rabbitmq-pvc.j2"
+      data:
+        volume_number: "02"
+    reg:
+      file_ext: ".yml"
+      template: "reg.j2"
+      data:
       image_pull: null
-  configmap:
-    file_ext: ".yml"
-    template: configmap.j2
-    data:
-      path: "develop"
-      timeout: "60"
-  events:
-    file_ext: ".yml"
-    template: events.j2
-    data:
-      image_pull: null
-  mes:
-    file_ext: ".yml"
-    template: mes.j2
-    data:
-      image_pull: null
-  mongo-pvc:
-    file_ext: ".yml"
-    template: "mongo-pvc.j2"
-    data:
-      volume_number: "02"
-  mongo:
-    file_ext: ".yml"
-    template: "mongo.j2"
-    data:
-      init_database: null
-      volume_number: "02" 
-  nginx-config:
-    file_ext: ".yml"
-    template: nginx-config.j2
-    data:
-      stage: dev
-      proxy_set_header: true
-  prometheus:
-    file_ext: ".yml"
-    template: "prometheus.j2"
-    data:
-      volume_mount: true
-      volumes: true
-  rabbit:
-    file_ext: ".yml"
-    template: "rabbit.j2"
-    data:
-      volume_number: "02"
-  rabbitmq-pvc:
-    file_ext: ".yml"
-    template: "rabbitmq-pvc.j2"
-    data:
-      volume_number: "02"
-  reg:
-    file_ext: ".yml"
-    template: "reg.j2"
-    data:
-      image_pull: null
+  backup:
+    actors-mongo-backup-pvc:
+      file_ext: ".yml"
+      template: "actors-mongo-backup-pvc.j2"
+      data:
+        volume_name: "actors-mongo-backup-vol02"
+    actors-mongo-backup:
+      file_ext: ".yml"
+      template: "actors-mongo-backup.j2"
+      data:
+        volume_name: "actors-mongo-backup-vol02"
 
 admin: 
   service-parameters:
