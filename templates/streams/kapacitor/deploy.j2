@@ -48,4 +48,4 @@ spec:
           name: kapacitor-config
       - name: streams-kapacitor-data
         persistentVolumeClaim:
-          claimName: streams-kapacitor-vol01
+          claimName: {{local_param["volume_name"]|default("streams-kapacitor-vol01")}}
