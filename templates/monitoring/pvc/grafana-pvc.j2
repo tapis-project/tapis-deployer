@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: grafana-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+  name: {{local_param["volume_name"]|default("grafana-vol01")}}
 spec:
   accessModes:
     - ReadWriteOnce
