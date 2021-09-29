@@ -416,16 +416,6 @@ meta:
       template: "pvc.j2"
       data:
         volume_number: "02"
-    sn-deploy:
-      file_ext: ".yml"
-      template: "sn-deploy.j2"
-      data:
-        volume_number: "02"
-    sn-pvc:
-      file_ext: ".yml"
-      template: "sn-pvc.j2"
-      data:
-        volume_number: "02"
 
 monitoring:
   service-parameters:
