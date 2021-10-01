@@ -77,7 +77,6 @@ actors:
       file_ext: ".yml"
       template: "mongo-pvc.j2"
       data:
-        volume_number: "02"
     mongo:
       file_ext: ".yml"
       template: "mongo.j2"
@@ -99,12 +98,10 @@ actors:
       file_ext: ".yml"
       template: "rabbit.j2"
       data:
-        volume_number: "02"
     rabbitmq-pvc:
       file_ext: ".yml"
       template: "rabbitmq-pvc.j2"
       data:
-        volume_number: "02"
     reg:
       file_ext: ".yml"
       template: "reg.j2"
@@ -175,12 +172,10 @@ apps:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
     service:
       file_ext: ".yml"
       template: "service.j2"
@@ -208,7 +203,6 @@ authenticator:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     migrations:
       file_ext: ".yml"
       template: migrations.j2
@@ -219,7 +213,6 @@ authenticator:
       template: "pvc.j2"
       data:
         uncomment: false
-        volume_number: "02"
       
 container-registry:
   service-parameters:
@@ -325,23 +318,19 @@ jobs:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
   rabbitmq:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
   readers:
     jobrdr-AltQueue:
       file_ext: ".yml"
@@ -412,18 +401,15 @@ meta:
       template: mongo-backup-deployment.j2
       data:
         image_version: .1
-        volume_number: "02"
   mongo:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
 
 monitoring:
   service-parameters:
@@ -540,12 +526,10 @@ pgrest:
       file_ext: ".yml"
       template: "postgres-deploy.j2"
       data:
-        volume_number: "02"
     postgres-pvc:
       file_ext: ".yml"
       template: "postgres-pvc.j2"
       data:
-        volume_number: "02"
 
 rabbitmq:
   service-parameters:
@@ -556,7 +540,6 @@ rabbitmq:
     file_ext: ".yml"
     template: "pvc.j2"
     data:
-      volume_number: "02"
       
 security-kernel:
   service-parameters:
@@ -591,12 +574,10 @@ security-kernel:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
         
 skadmin:
   service-parameters:
@@ -679,18 +660,15 @@ streams:
       file_ext: ".OLD"
       template: "deploy.yml.j2"
       data:
-        volume_number: "02"
   influx:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
   kapacitor:
     pvc:
       file_ext: ".yml"
@@ -701,12 +679,10 @@ streams:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
         
   
 systems:
@@ -731,12 +707,10 @@ systems:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
 
 tenants-api:
   service-parameters:
@@ -763,7 +737,6 @@ tenants-api:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        volume_number: "02"
     migrations:
       file_ext: ".yml"
       template: migrations.j2
@@ -774,7 +747,6 @@ tenants-api:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        volume_number: "02"
         
 tokens-api:
   service-parameters:
@@ -807,16 +779,13 @@ vault:
     file_ext: ".yml"
     template: "pvc.j2"
     data:
-      volume_number: "02"
   vault-auto-unseal:
     file_ext: ".yml"
     template: "vault-auto-unseal.j2"
     data:
-      volume_number: "02"
   vault-init:
     file_ext: ".yml"
     template: "vault-init.j2"
     data:
-      volume_number: "02"
 
     
