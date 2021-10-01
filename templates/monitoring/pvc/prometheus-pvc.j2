@@ -2,11 +2,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{local_param["volume_name"]|default("prometheus-vol01")}}
+  name: {{service_param["prometheus_pvc"]|default(defaults["prometheus_pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
+  storageClassName: {{universal_param["storage_class"]}}
   resources:
     requests:
       storage: 20Gi

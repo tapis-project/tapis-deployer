@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: notifications-api
-        image: tapis/tapis-notifications-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        image: tapis/tapis-notifications-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
         command: ["java"]
         args: ["-Xdebug", "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", "-cp", "target/tapis-notifications.jar:target/dependencies/*", "edu.utexas.tacc.tapis.notifications.api.Application"]
         imagePullPolicy: Always

@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{local_param["volume_name"]|default("stern-data-vol01")}}
+  name: {{service_param["stern_pvc"]|default(defaults["stern_pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
+  storageClassName: {{universal_param["storage_class"]}}
   resources:
     requests:
       storage: 50Gi

@@ -8,7 +8,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
+  storageClassName: {{universal_param["storage_class"]}}
   resources:
     requests:
       storage: 10G

@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: actors-rabbitmq-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+  name: {{service_param["rabbit_pvc"]|default(defaults["rabbit_pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
+  storageClassName: {{universal_param["storage_class"]}}
   resources:
     requests:
       storage: 20Gi
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: actors-rabbitmq-data
         persistentVolumeClaim:
-          claimName: actors-rabbitmq-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+          claimName: {{service_param["rabbit_pvc"]|default(defaults["rabbit_pvc"])}}
 

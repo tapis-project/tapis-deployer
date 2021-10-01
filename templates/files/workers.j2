@@ -6,7 +6,7 @@ metadata:
     app: files-workers
   name: files-workers
 spec:
-  replicas: {{local_param["replicas"]|default(1)}}
+  replicas: {{local_param["replicas"]|default(defaults["replicas"])}}
   selector:
     matchLabels:
       app: files-workers
@@ -60,7 +60,7 @@ spec:
                 secretKeyRef:
                   name: tapis-files-secrets
                   key: service-password
-          image: tapis/tapis-files-workers:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+          image: tapis/tapis-files-workers:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
           {% if local_param["memory"]%}
           resources:
             requests:

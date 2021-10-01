@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{local_param["volume_name"]|default("actors-mongo-backup-vol01")}}
+  name: {{service_param["mongo_backup_pvc"]|default(defaults["mongo_backup_pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce

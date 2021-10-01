@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: jobs-rabbitmq-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+  name: {{service_param["rabbitmq_pvc"]|default(defaults["rabbitmq_pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
+  storageClassName: {{universal_param["storage_class"]}}
   resources:
     requests:
       storage: 10Gi

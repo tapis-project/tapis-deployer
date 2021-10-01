@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: apps-pg-data
         persistentVolumeClaim:
-          claimName: apps-postgres-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+          claimName: {{service_param["postgres_pvc"]|default(defaults["postgres_pvc"])}}

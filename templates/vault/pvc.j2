@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: vault-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+  name: {{service_param["pvc"]|default(defaults["pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
+  storageClassName: {{universal_param["storage_class"]}}
   resources:
     requests:
       storage: 10Gi
@@ -30,6 +30,6 @@ spec:
 #      volumes:
 #      - name: vault-data
 #        persistentVolumeClaim:
-#          claimName: vault-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+#          claimName: {{service_param["pvc"]|default(defaults["pvc"])}}
 
 

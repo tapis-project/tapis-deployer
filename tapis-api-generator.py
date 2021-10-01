@@ -10,7 +10,7 @@ env.trim_blocks = True
 env.lstrip_blocks = True
 env.rstrip_blocks = True
 
-def write_tapis(input_yaml, path, service_list, outDir = os.path.expanduser('~/tmp'), uni_param="", ser_param="", is_sub=False):
+def write_tapis(input_yaml, path, service_list, outDir = os.path.expanduser('~/tmp'), defaults_file="", uni_param="", ser_param="", is_sub=False):
     for obj, data in input_yaml.items():
         if obj == "universal-parameters":
             uni_param = data 
@@ -21,8 +21,13 @@ def write_tapis(input_yaml, path, service_list, outDir = os.path.expanduser('~/t
             if data["template"].split(".")[-1] == "j2":
                 template = env.get_template(path + data["template"])
                 permissions = (os.stat("templates/" + path + data["template"])[0])
+                def_param = defaults_file["defaults"]["universal"]
+                try:
+                    def_param.update(defaults_file["defaults"][ser_param["data"]["service_name"]])
+                except:
+                    pass
                 with open(outDir + "/tapis-deploy/" + file_path, "w") as file:
-                    file.write(template.render(local_param=data['data'], service_param=ser_param['data'], universal_param=uni_param['data']))
+                    file.write(template.render(local_param=data['data'], service_param=ser_param['data'], universal_param=uni_param['data'], defaults=def_param))
                     os.chmod(outDir + "/tapis-deploy/" + file_path, permissions)
         else:
             if(obj not in service_list and not is_sub):
@@ -31,7 +36,7 @@ def write_tapis(input_yaml, path, service_list, outDir = os.path.expanduser('~/t
                 os.makedirs(outDir + "/tapis-deploy/" + path + obj)
             except:
                 pass
-            write_tapis(data, path + obj + "/", service_list, outDir, uni_param, ser_param, True)   
+            write_tapis(data, path + obj + "/", service_list, outDir, defaults_file, uni_param, ser_param, True)   
     return
 
 def create_tapis(template_path, service_list, outDir = os.path.expanduser('~/tmp')):
@@ -63,6 +68,8 @@ def main():
         exit()
 
     parameters = yaml.safe_load(args.input)
+    f = open("defaults.yml", "r")
+    defaults = yaml.safe_load(f)
     outDir = args.outDir
     service_list = parameters.get("services")
     file_path = ""
@@ -76,14 +83,14 @@ def main():
         except:
             pass
         create_tapis("templates/", service_list, os.path.abspath(outDir))
-        write_tapis(parameters, file_path, service_list, os.path.abspath(outDir))
+        write_tapis(parameters, file_path, service_list, os.path.abspath(outDir), defaults_file=defaults)
     else:
         try:
             os.makedirs(os.path.expanduser('~/tmp/tapis-deploy/'))
         except:
             pass
         create_tapis("templates/", service_list)
-        write_tapis(parameters, file_path, service_list)
+        write_tapis(parameters, file_path, service_list, defaults_file=defaults)
 
 if __name__ == '__main__':
     main()

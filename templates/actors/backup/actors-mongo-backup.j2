@@ -41,5 +41,5 @@ spec:
       volumes:
         - name: actors-mongo-backup-vol
           persistentVolumeClaim:
-            claimName: {{local_param["volume_name"]|default("actors-mongo-backup-vol01")}}
+            claimName: {{service_param["mongo_backup_pvc"]|default(defaults["mongo_backup_pvc"])}}
 

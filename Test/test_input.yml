@@ -27,7 +27,7 @@ universal-parameters:
     service_site_id: tacc
     tenants: ["dev", "admin"]
     deployment: test
-    storge_class: rbd-new
+    storage_class: rbd-new
     image_version: latest
     image_pull: Always
 
@@ -35,6 +35,9 @@ actors:
   service-parameters:
       data:
         service_name: "actors"
+        rabbit_pvc: "actors-rabbitmq-vol02"
+        mongo_pvc: "actors-mongo-vol02"
+        mongo_backup_pvc: "actors-mongo-backup-vol02"
   actors-config:
     file_ext: ".yml"
     template: actors-config.j2
@@ -80,7 +83,6 @@ actors:
       template: "mongo.j2"
       data:
         init_database: null
-        volume_number: "02" 
     nginx-config:
       file_ext: ".yml"
       template: nginx-config.j2
@@ -151,6 +153,7 @@ apps:
   service-parameters:
     data:
       service_name: "apps"
+      postgres_pvc: "apps-postgres-vol02"
   apps-config:
     file_ext: ".yml"
     template: apps-config.j2
@@ -188,6 +191,7 @@ authenticator:
   service-parameters:
     data:
       service_name: "authenticator"
+      postgres_pvc: "authenticator-postgres-vol02"
   authenticator-config:
     file_ext: ".yml"
     template: authenticator-config.j2
@@ -294,6 +298,8 @@ jobs:
   service-parameters:
     data:
       service_name: "jobs"
+      postgres_pvc: "jobs-postgres-vol02"
+      rabbitmq_pvc: "jobs-rabbitmq-vol02"
   jobs-config:
     file_ext: ".yml"
     template: "jobs-config.j2"
@@ -371,6 +377,8 @@ meta:
   service-parameters:
     data:
       service_name: "meta"
+      mongo_backup_pvc: "mongo-backup-vol02"
+      restheart_mongo_pvc: "restheart-mongo-vol02"
   meta-config:
     file_ext: ".yml"
     template: "meta-config.j2"
@@ -421,7 +429,10 @@ monitoring:
   service-parameters:
     data:
       service_name: "monitoring"   
-      volume_number: "02"  
+      elastic_pvc: "elasticsearch-data-vol02"
+      grafana_pvc: "grafana-vol02"
+      prometheus_pvc: "prometheus-vol02"
+      stern_pvc: "stern-data-vol02"
   monitoring-config:
     file_ext: ".yml"
     template: "monitoring-config.j2"
@@ -513,6 +524,7 @@ pgrest:
   service-parameters:
     data:
       service_name: "pgrest"   
+      postgres_pvc: "pgrest-postgres-vol01"
   pgrest-config:
     file_ext: ".yml"
     template: "pgrest-config.j2"
@@ -539,6 +551,7 @@ rabbitmq:
   service-parameters:
     data:
       service_name: "rabbitmq"
+      pvc: "rabbitmq-vol01"
   pvc:
     file_ext: ".yml"
     template: "pvc.j2"
@@ -549,6 +562,7 @@ security-kernel:
   service-parameters:
     data:
       service_name: "security-kernel"
+      postgres_pvc: "sk-postgres-vol01"
   security-kernel-config:
     file_ext: ".yml"
     template: "security-kernel-config.j2"
@@ -630,6 +644,10 @@ streams:
   service-parameters:
     data:
       service_name: "streams"
+      influx_pvc: "influx-vol01"
+      postgres_pvc: "postgres-vol01"
+      kapacitor_pvc: "streams-kapacitor-vol01"
+      mysql_pvc: "streams-mysql-vol01"
   streams-config:
     file_ext: ".yml"
     template: streams-config.j2
@@ -695,6 +713,7 @@ systems:
   service-parameters:
       data:
         service_name: "systems"
+        postgres_pvc: "systems-postgres-vol02"
   systems-config:
     file_ext: ".yml"
     template: "systems-config.j2"
@@ -723,6 +742,7 @@ tenants-api:
   service-parameters:
     data:
       service_name: "tenants"
+      postgres_pvc: "tenants-postgres-vol02"
   tenants-config:
     file_ext: ".yml"
     template: tenants-config.j2
@@ -778,6 +798,7 @@ vault:
   service-parameters:
       data:
         service_name: "vault"
+        pvc: "vault-vol02"
   vault-config:
     file_ext: ".yml"
     template: vault-config.j2

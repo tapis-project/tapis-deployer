@@ -36,4 +36,4 @@ spec:
       volumes:
       - name: streams-mysql-data
         persistentVolumeClaim:
-          claimName: streams-mysql-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+          claimName: {{service_param["mysql_pvc"]|default(defaults["mysql_pvc"])}}

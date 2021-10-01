@@ -74,7 +74,7 @@ spec:
       volumes:
       - name: grafana-data
         persistentVolumeClaim:
-          claimName: {{local_param["volume_name"]|default("grafana-vol01")}}
+          claimName: {{service_param["grafana_pvc"]|default(defaults["grafana_pvc"])}}
       - name: grafana-datasources
         configMap:
           name: monitoring-config

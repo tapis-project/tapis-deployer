@@ -1,12 +1,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{local_param["volume_name"]|default("streams-kapacitor-vol01")}}
+  name: {{service_param["kapacitor_pvc"]|default(defaults["kapacitor_pvc"])}}
 
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]|default("rbd-new")}}
+  storageClassName: {{universal_param["storage_class"]}}
   resources:
     requests:
       storage: 20Gi
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: streams-kapacitor-data
         persistentVolumeClaim:
-          claimName: {{local_param["volume_name"]|default("streams-kapacitor-vol01")}}
+          claimName: {{service_param["kapacitor_pvc"]|default(defaults["kapacitor_pvc"])}}
 

@@ -13,7 +13,7 @@ spec:
     spec:
       initContainers: 
       - name: pgrest-api-migrate
-        image: tapis/pgrest-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        image: tapis/pgrest-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
         imagePullPolicy: Always
         command: ["python", "/code/manage.py", "migrate", "--noinput"]
         volumeMounts:
@@ -36,7 +36,7 @@ spec:
       
       containers:
       - name: pgrest-api
-        image: tapis/pgrest-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        image: tapis/pgrest-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
         imagePullPolicy: Always
         command: ["/usr/local/bin/uwsgi", "--ini", "paas/uwsgi.ini"]
         ports:

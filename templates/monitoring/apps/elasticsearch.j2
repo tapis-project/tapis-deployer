@@ -37,5 +37,5 @@ spec:
       volumes:
       - name: elasticsearch-data
         persistentVolumeClaim:
-          claimName: {{local_param["volume_name"]|default("elasticsearch-data-vol01")}}
+          claimName: {{service_param["elastic_pvc"]|default(defaults["elastic_pvc"])}}
       {% endif %}

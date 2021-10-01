@@ -36,4 +36,4 @@ spec:
       volumes:
       - name: actors-mongo-data
         persistentVolumeClaim:
-          claimName: actors-mongo-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+          claimName: {{service_param["mongo_pvc"]|default(defaults["mongo_pvc"])}}

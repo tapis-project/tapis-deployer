@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: restheart-security
-        image: tapis/metaapi:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        image: tapis/metaapi:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
         imagePullPolicy: Always
         env:
         - name: tapis.site.id

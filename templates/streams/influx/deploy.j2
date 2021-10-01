@@ -43,4 +43,4 @@ spec:
       volumes:
       - name: influx-data
         persistentVolumeClaim:
-          claimName: influx-vol{{local_param["volume_number"]|default(service_param["volume_number"]|default(universal_param["volume_number"]|default("01")))}}
+          claimName: {{service_param["influx_pvc"]|default(defaults["influx_pvc"])}}
