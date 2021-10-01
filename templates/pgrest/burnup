@@ -1,3 +1,12 @@
 #!/bin/bash
 
-kubectl apply -f yml
+# Services
+kubectl apply -f postgres-service.yml
+kubectl apply -f api-service.yml
+
+# PVC
+kubectl apply -f postgres-pvc.yml
+
+# Deploy
+kubectl apply -f postgres-deploy.yml
+kubectl apply -f api-deploy.yml

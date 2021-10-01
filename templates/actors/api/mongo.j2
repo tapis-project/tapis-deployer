@@ -1,4 +1,3 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,13 +18,17 @@ spec:
         - name: mongo
           containerPort: 27017
         volumeMounts:
-        - name: actors-mongo-data
-          mountPath: "/data/db"
+        #- name: actors-mongo-data
+        #  mountPath: "/data/db"
+        - name: actors-mongo-keyfile-secret
+          mountPath: "/keyfiles"
         env:
         {% if local_param["init_database"]%}
         - name: MONGO_INITDB_DATABASE
           value: {{local_param["init_database"]}}
         {%endif%}
+        - name: MONGO_REPLICA_SET_NAME
+          value: rs0
         - name: MONGO_INITDB_ROOT_USERNAME
           value: admin
         - name: MONGO_INITDB_ROOT_PASSWORD
@@ -33,7 +36,22 @@ spec:
             secretKeyRef:
               name: tapis-abaco-secrets
               key: mongo-password
+        command:
+        - bash
+        - -c
+        - |
+          cp /keyfiles/keyfile-base /keyfile-to-use
+          chmod 400 /keyfile-to-use
+          chown 999:999 /keyfile-to-use
+          exec docker-entrypoint.sh $$@
+        args: ["mongod", "--bind_ip_all", "--replSet", "rs0", "--keyFile", "/keyfile-to-use"]
       volumes:
-      - name: actors-mongo-data
-        persistentVolumeClaim:
-          claimName: {{service_param["mongo_pvc"]|default(defaults["mongo_pvc"])}}
+      #- name: actors-mongo-data
+      #  persistentVolumeClaim:
+      #    claimName: {{service_param["mongo_pvc"]|default(defaults["mongo_pvc"])}}
+      - name: actors-mongo-keyfile-secret
+        secret:
+          secretName: tapis-abaco-secrets
+          items:
+          - key: mongo-password
+            path: keyfile-base

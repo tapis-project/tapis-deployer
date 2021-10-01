@@ -11,7 +11,6 @@ services:
   - monitoring
   - notifications
   - pgrest
-  - rabbitmq
   - security-kernel
   - skadmin
   - streams
@@ -71,6 +70,11 @@ actors:
     mes:
       file_ext: ".yml"
       template: mes.j2
+      data:
+        image_pull: null
+    metrics:
+      file_ext: ".yml"
+      template: metrics.j2
       data:
         image_pull: null
     mongo-pvc:
@@ -547,17 +551,6 @@ pgrest:
       data:
         volume_number: "02"
 
-rabbitmq:
-  service-parameters:
-    data:
-      service_name: "rabbitmq"
-      pvc: "rabbitmq-vol01"
-  pvc:
-    file_ext: ".yml"
-    template: "pvc.j2"
-    data:
-      volume_number: "02"
-      
 security-kernel:
   service-parameters:
     data:
@@ -818,5 +811,9 @@ vault:
     template: "vault-init.j2"
     data:
       volume_number: "02"
+  vault:
+    file_ext: ".hcl"
+    template: "vault.hcl.j2"
+    data:
+ 
 
-    

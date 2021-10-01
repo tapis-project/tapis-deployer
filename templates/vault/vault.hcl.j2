@@ -5,10 +5,12 @@ storage "file" {
   path = "/vault/data"
 }
 
+{% if local_param["raft_storage"]|default(defaults["image_version"])%}
 storage_destination "raft" {
     path = "/opt/vault/data"
     node_id = "raft_node_1"
 }
+{% endif%}
 
 listener "tcp" {
     address = "0.0.0.0:8200"

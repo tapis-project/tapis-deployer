@@ -25,6 +25,15 @@ spec:
           value: service_tenant_base_url
         - name: TAPIS_SERVICES
           value: '["security", "streams","meta"]'
+        - name: STREAMS_DB
+          value: 'StreamsDevDB'
+        - name: META_USER
+          value: 'restheart'
+        - name: META_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-meta-secrets
+              key: mongo-password
         ports:
         - name: tapis-exporter
           containerPort: 5000

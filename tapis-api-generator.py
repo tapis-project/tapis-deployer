@@ -55,17 +55,22 @@ def create_tapis(template_path, service_list, outDir = os.path.expanduser('~/tmp
 
 
 def main():
+
+    import os 
+    basedir = os.path.dirname(os.path.realpath(__file__))
+    print(basedir)
+
     parser = argparse.ArgumentParser(description="Generate yaml config file")
     parser.add_argument('input', metavar='inFile', nargs='?',type=argparse.FileType('r'), 
                         help="File location of yaml config")
 
     parser.add_argument('-o', dest='outDir', metavar='outDir', nargs='?',
-                    help="File location of program output, if not specified defaults to tmp/tapis-deploy")
+                        help="File location of program output, if not specified defaults to tmp/tapis-deploy")
 
     args = parser.parse_args()
     if not args.input:
         parser.print_help()
-        exit()
+        exit(1)
 
     parameters = yaml.safe_load(args.input)
     f = open("defaults.yml", "r")
