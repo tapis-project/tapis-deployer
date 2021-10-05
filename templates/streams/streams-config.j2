@@ -14,7 +14,7 @@ data:
       "service_tenant_id": "{{universal_param["service_site_id"]}}",
       "service_name": "{{service_param["service_name"]}}",
       "tenant": "{{local_param["tenant"]|default(service_param["tenant"]|default(universal_param["tenant"]))}}",
-      "tenants": ["dev", "admin"],
+      "tenants": "{{local_param["tenants"]|default(service_param["tenants"]|default(universal_param["tenants"]))}}",
       "log_level": "{{local_param["log_level"]|default("DEBUG")}}",
       "show_traceback": {{local_param["show_traceback"]|default("false")|tojson}},
       "chords_url": "http://chords-app:80",
