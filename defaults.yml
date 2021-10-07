@@ -32,6 +32,7 @@ defaults:
     postgres_pvc: "sk-postgres-vol01"
   streams:
     influx_pvc: "influx-vol01"
+    influx2_pvc: "influx2-vol01"
     postgres_pvc: "postgres-vol01"
     kapacitor_pvc: "streams-kapacitor-vol01"
     mysql_pvc: "streams-mysql-vol01"
