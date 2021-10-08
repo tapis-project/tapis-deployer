@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# don't delete the postgres pod unless we have to...
-#kubectl delete -f yml/postgres-deploy.yml
-#kubectl delete -f yml/postgres-pvc.yml
-kubectl delete -f yml/api-deploy.yml 

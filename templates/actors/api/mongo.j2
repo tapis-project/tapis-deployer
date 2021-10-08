@@ -18,8 +18,8 @@ spec:
         - name: mongo
           containerPort: 27017
         volumeMounts:
-        #- name: actors-mongo-data
-        #  mountPath: "/data/db"
+        - name: actors-mongo-data
+          mountPath: "/data/db"
         - name: actors-mongo-keyfile-secret
           mountPath: "/keyfiles"
         env:
@@ -46,9 +46,9 @@ spec:
           exec docker-entrypoint.sh $$@
         args: ["mongod", "--bind_ip_all", "--replSet", "rs0", "--keyFile", "/keyfile-to-use"]
       volumes:
-      #- name: actors-mongo-data
-      #  persistentVolumeClaim:
-      #    claimName: {{service_param["mongo_pvc"]|default(defaults["mongo_pvc"])}}
+      - name: actors-mongo-data
+        persistentVolumeClaim:
+          claimName: {{service_param["mongo_pvc"]|default(defaults["mongo_pvc"])}}
       - name: actors-mongo-keyfile-secret
         secret:
           secretName: tapis-abaco-secrets
