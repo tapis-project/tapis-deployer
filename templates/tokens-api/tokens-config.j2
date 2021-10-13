@@ -12,5 +12,8 @@ data:
       "use_sk": {{ local_param["use_sk"]|default("true")|lower }},
       "log_level": "{{local_param["log_level"]|default("DEBUG")}}",
       "tenants": {{local_param["tenants"]|default(["dev", "admin"])|tojson}},
-      "show_traceback": {{local_param["show_traceback"]|default("false")|lower}}
+      "show_traceback": {{local_param["show_traceback"]|default("false")|lower}},
+      "use_allservices_password": {{local_param["use_allservices_password"]|default("false")|lower}},
+      "allservices_password": {{local_param["allservices_password"]}},
+      "dev_jwt_private_key": {{local_param["dev_jwt_private_key"]}}
     }

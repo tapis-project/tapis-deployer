@@ -30,6 +30,7 @@ data:
       "mongo_port": 27017,
       {% if local_param["mongo_tls"] == false%}
       "mongo_tls": false,
+      "mongo_replica_set": true,
       {% endif %}
       "admin_rabbitmq_user": "admin",
       "admin_rabbitmq_pass": "$env{RABBITMQ_PASSWORD}",
@@ -80,7 +81,9 @@ data:
       ],
       "site_id": "tacc",
       "global_site_object": {
-        "web_log_ex": 43200
+        "web_log_ex": 43200,
+        "site_mongo_pass": "THISIsAtemP0raryPASs!",
+        "site_rabbitmq_pass": "rEplac3meUSingSKplz!"
       },
       "tacc_site_object": {
         "site_mongo_pass": "THISIsAtemP0raryPASs!",

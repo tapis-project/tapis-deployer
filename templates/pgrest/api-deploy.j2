@@ -15,24 +15,26 @@ spec:
       - name: pgrest-api-migrate
         image: tapis/pgrest-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
         imagePullPolicy: Always
-        command: ["python", "/code/manage.py", "migrate", "--noinput"]
-        volumeMounts:
-        - name: pgrest-config
-          mountPath: /code/config.json
-          subPath: pgrest-config.json
-        - name: tapis-pgrest-secrets
-          mountPath: "/code/databases"
-          readOnly: true
+        command: ["python", "/home/tapis/manage.py", "migrate_schemas", "--shared"]
         env:
         - name: TAPIS_CONFIGSCHEMA_PATH
-          value: /code/pgrest/configschema.json
+          value: /home/tapis/configschema.json
         - name: TAPIS_CONFIG_PATH
-          value: /code/config.json
+          value: /home/tapis/config.json
         - name: service_password
           valueFrom:
             secretKeyRef:
               name: tapis-pgrest-secrets
               key: service-password
+        - name: K8-POSTGRES-PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pgrest-secrets
+              key: kubernetes-postgres
+        volumeMounts:
+        - name: pgrest-config
+          mountPath: /home/tapis/config.json
+          subPath: pgrest-config.json
       
       containers:
       - name: pgrest-api
@@ -44,21 +46,23 @@ spec:
           containerPort: 5000
         env:
         - name: TAPIS_CONFIGSCHEMA_PATH
-          value: /code/pgrest/configschema.json
+          value: /home/tapis/configschema.json
         - name: TAPIS_CONFIG_PATH
-          value: /code/config.json
+          value: /home/tapis/config.json
         - name: service_password
           valueFrom:
             secretKeyRef:
               name: tapis-pgrest-secrets
               key: service-password
+        - name: K8-POSTGRES-PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pgrest-secrets
+              key: kubernetes-postgres
         volumeMounts:
         - name: pgrest-config
-          mountPath: /code/config.json
+          mountPath: /home/tapis/config.json
           subPath: pgrest-config.json
-        - name: tapis-pgrest-secrets
-          mountPath: "/code/databases"
-          readOnly: true
       volumes:
       - name: pgrest-config
         configMap: 

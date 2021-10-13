@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:  
+  name: chords-influxdb2
+spec:
+  selector:    
+    app: chords-influxdb2
+  ports:  
+  - name: influx1
+    port: 8086
+    targetPort: 8086
+  - name: influx2
+    port: 8083
+    targetPort: 8083
+
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:  
+#  name: influxdb2
+#spec:
+#  selector:    
+#    app: chords-influxdb2
+#  ports:  
+#  - name: influx1
+#    port: 8086
+#    targetPort: 8086
+#  - name: influx2
+#    port: 8083
+#    targetPort: 8083
+

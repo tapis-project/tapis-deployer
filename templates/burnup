@@ -123,6 +123,10 @@ echo "monitoring:"
 cd $here/monitoring
 ./burnup
 
+echo "pgrest:"
+cd $here/pgrest
+./burnup
+
 # echo "elastic:"
 # cd $here/elastic
 # ./burnup
