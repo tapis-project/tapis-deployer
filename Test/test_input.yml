@@ -11,6 +11,8 @@ services:
   - monitoring
   - notifications
   - pgrest
+  - pgrest-a2cps-dev
+  - pgrest-a2cps-prod
   - security-kernel
   - skadmin
   - streams
@@ -519,21 +521,61 @@ pgrest:
     file_ext: ".yml"
     template: "pgrest-config.j2"
     data:
-           
-  yml:
-    api-deploy:
-      file_ext: ".yml"
-      template: api-deploy.j2
-      data:
-        image_version: dev
-    postgres-deploy:
-      file_ext: ".yml"
-      template: "postgres-deploy.j2"
-      data:
-    postgres-pvc:
-      file_ext: ".yml"
-      template: "postgres-pvc.j2"
-      data:
+  api-deploy:
+    file_ext: ".yml"
+    template: api-deploy.j2
+    data:
+      image_version: dev
+  postgres-deploy:
+    file_ext: ".yml"
+    template: "postgres-deploy.j2"
+    data:
+  postgres-pvc:
+    file_ext: ".yml"
+    template: "postgres-pvc.j2"
+    data:
+
+pgrest-a2cps-dev:
+  service-parameters:
+    data:
+      service_name: "pgrest-a2cps-dev"   
+      template_directory: "pgrest"
+  pgrest-config:
+    file_ext: ".yml"
+    template: "pgrest-config.j2"
+    data:    
+      tenants: ["a2cps-dev"]     
+  api-deploy:
+    file_ext: ".yml"
+    template: api-deploy.j2
+    data:
+      image_version: dev
+  api-service:
+    file_ext: ".yml"
+    template: "api-service.j2"
+    data:
+      service_name: "pgrest-a2cps-prod"
+
+pgrest-a2cps-prod:
+  service-parameters:
+    data:
+      service_name: "pgrest-a2cps-prod"   
+      template_directory: "pgrest"
+  pgrest-config:
+    file_ext: ".yml"
+    template: "pgrest-config.j2"
+    data:          
+      tenants: ["a2cps"]
+  api-deploy:
+    file_ext: ".yml"
+    template: api-deploy.j2
+    data:
+      image_version: dev
+  api-service:
+    file_ext: ".yml"
+    template: "api-service.j2"
+    data:
+      service_name: "pgrest-a2cps-prod"
 
 security-kernel:
   service-parameters:
