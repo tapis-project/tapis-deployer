@@ -19,8 +19,15 @@ def write_tapis(input_yaml, path, service_list, outDir = os.path.expanduser('~/t
         elif "file_ext" in data:
             file_path = path + obj + data["file_ext"]
             if data["template"].split(".")[-1] == "j2":
-                template = env.get_template(path + data["template"])
-                permissions = (os.stat("templates/" + path + data["template"])[0])
+                if "template_directory" in ser_param['data']:
+                    new_path = path.split("/")
+                    new_path[0] = ser_param['data']["template_directory"]
+                    new_path = '/'.join(new_path) 
+                    template = env.get_template(new_path + data["template"])
+                    permissions = (os.stat("templates/" + new_path + data["template"])[0])
+                else:
+                    template = env.get_template(path + data["template"])
+                    permissions = (os.stat("templates/" + path + data["template"])[0])
                 def_param = defaults_file["defaults"]["universal"]
                 try:
                     def_param.update(defaults_file["defaults"][ser_param["data"]["service_name"]])
