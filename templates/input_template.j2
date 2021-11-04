@@ -23,6 +23,7 @@ services:
 
 universal-parameters:
   data:
+    wildcard_url: changeme
     service_url: {{user_params["site_url"]}}
     service_tenant_id: {{user_params["site_id"]}}
     service_site_id: tacc
@@ -133,6 +134,19 @@ admin:
     file_ext: ".yml"
     template: admin-config.j2
     data:
+  ingress:
+    burnup:
+      file_ext: ""
+      template: "burnup"
+      data:
+    ingress-host-source:
+      file_ext: ".yml"
+      template: "ingress-host-source.j2"
+      data:
+    ingress-host-localhost:
+      file_ext: ".yml"
+      template: "ingress-host-localhost.j2"
+      data:
   verification:
     authenticator-test:
       file_ext: ""

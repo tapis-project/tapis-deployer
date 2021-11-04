@@ -45,7 +45,7 @@ prompts = {
     },
      "associate_site":
     {
-        "template": "associate_input.j2",
+        "template": "associate_template.j2",
         "number": 2,
         "prompts": 
         {

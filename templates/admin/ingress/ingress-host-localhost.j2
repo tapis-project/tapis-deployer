@@ -1,0 +1,101 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tapisdev-ingress-host-localhost
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 50G
+    nginx.ingress.kubernetes.io/upstream-vhost: localhost:5000
+spec:
+  tls:
+    - hosts:
+      - "{{universal_param["wildcard_url"]}}"
+      secretName: tapis-ingress-cert
+  ingressClassName: nginx
+  rules:
+  - host: "{{universal_param["wildcard_url"]}}"
+    http:
+      paths:
+      - path: /v3/security
+        pathType: Prefix
+        backend:
+          service:
+            name: sk-api
+            port:
+              number: 8080
+      - path: /v3/tenants
+        pathType: Prefix
+        backend:
+          service:
+            name: tenants-api
+            port:
+              number: 5000
+      - path: /v3/sites
+        pathType: Prefix
+        backend:
+          service:
+            name: tenants-api
+            port:
+              number: 5000
+      - path: /v3/meta
+        pathType: Prefix
+        backend:
+          service:
+            name: restheart-security
+            port:
+              number: 8080
+      - path: /v3/files
+        pathType: Prefix
+        backend:
+          service:
+            name: files-api
+            port:
+              number: 8080
+      - path: /v3/systems
+        pathType: Prefix
+        backend:
+          service:
+            name: systems-api
+            port:
+              number: 8080
+      - path: /v3/tokens
+        pathType: Prefix
+        backend:
+          service:
+            name: tokens-api
+            port:
+              number: 5000
+      - path: /v3/jobs
+        pathType: Prefix
+        backend:
+          service:
+            name: jobs-api
+            port:
+              number: 8080
+      - path: /v3/actors
+        pathType: Prefix
+        backend:
+          service:
+            name: actors-nginx
+            port:
+              number: 80
+      - path: /v3/apps
+        pathType: Prefix
+        backend:
+          service:
+            name: apps-api
+            port:
+              number: 8080
+      - path: /grafana
+        pathType: Prefix
+        backend:
+          service:
+            name: monitoring-grafana
+            port:
+              number: 3000
+      - path: /v3/pgrest
+        pathType: Prefix
+        backend:
+          service:
+            name: pgrest-api
+            port:
+              number: 5000
