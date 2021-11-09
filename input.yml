@@ -1,30 +1,18 @@
 --- # Test Yaml
 services:
-  - actors
-  - admin
-  - apps
-  - authenticator
-  - container-registry
   - files
   - jobs
+  - security
+  - tokens
+  - authenticator
   - meta
-  - monitoring
-  - notifications
-  - pgrest
-  - security-kernel
-  - skadmin
-  - streams
-  - systems
-  - tenants-api
-  - tokens-api
-  - vault
 
 universal-parameters:
   data:
-    service_url: http://jweaston99.myddns.me
-    service_tenant_id: dev
-    service_site_id: tacc
-    tenants: ["dev", "admin", "tacc"]
+    service_url: https://admin.develop.tapis.io
+    service_tenant_id: assocadm
+    service_site_id: assoc
+    tenants: ["dev", "admin"]
     deployment: test
     storage_class: rbd-new
     image_version: latest
@@ -535,7 +523,7 @@ pgrest:
       template: "postgres-pvc.j2"
       data:
 
-security-kernel:
+security:
   service-parameters:
     data:
       service_name: "security-kernel"
@@ -742,7 +730,7 @@ tenants-api:
       template: "pvc.j2"
       data:
         
-tokens-api:
+tokens:
   service-parameters:
       data:
         service_name: "tokens"

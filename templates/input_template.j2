@@ -13,12 +13,12 @@ services:
   - pgrest
   - pgrest-a2cps-dev
   - pgrest-a2cps-prod
-  - security-kernel
+  - security
   - skadmin
   - streams
   - systems
   - tenants-api
-  - tokens-api
+  - tokens
   - vault
 
 universal-parameters:
@@ -577,7 +577,7 @@ pgrest-a2cps-prod:
     data:
       service_name: "pgrest-a2cps-prod"
       
-security-kernel:
+security:
   service-parameters:
     data:
       service_name: "security-kernel"
@@ -784,7 +784,7 @@ tenants-api:
       template: "pvc.j2"
       data:
         
-tokens-api:
+tokens:
   service-parameters:
       data:
         service_name: "tokens"

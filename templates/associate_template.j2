@@ -1,30 +1,15 @@
 --- # Test Yaml
 services:
-  - actors
-  - admin
-  - apps
-  - authenticator
-  - container-registry
-  - files
-  - jobs
-  - meta
-  - monitoring
-  - notifications
-  - pgrest
-  - security-kernel
-  - skadmin
-  - streams
-  - systems
-  - tenants-api
-  - tokens-api
-  - vault
+  {% for service in user_params["services"]%}
+  - {{service}}
+  {% endfor%}
 
 universal-parameters:
   data:
     service_url: {{user_params["site_url"]}}
-    service_tenant_id: {{user_params["site_id"]}}
-    service_site_id: tacc
-    tenants: {{user_params["tenants"]}}
+    service_tenant_id: {{user_params["tenant_id"]}}
+    service_site_id: {{user_params["site_id"]}}
+    tenants: ["dev", "admin"]
     deployment: test
     storage_class: rbd-new
     image_version: latest
@@ -535,7 +520,7 @@ pgrest:
       template: "postgres-pvc.j2"
       data:
 
-security-kernel:
+security:
   service-parameters:
     data:
       service_name: "security-kernel"
@@ -742,7 +727,7 @@ tenants-api:
       template: "pvc.j2"
       data:
         
-tokens-api:
+tokens:
   service-parameters:
       data:
         service_name: "tokens"
