@@ -1,5 +1,0 @@
-#!/bin/bash
-
-kubectl create secret tls tapis-ingress-cert --cert=$HOME/pem/cert.pem --key=$HOME/pem/key.key
-kubectl apply -f ingress-host-localhost.yml
-kubectl apply -f ingress-host-source.yml

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# Set up configmap for monitoring
-kubectl apply -f monitoring-config.yml
-
-kubectl apply -f pvc.yml
-kubectl apply -f config.yml
-kubectl create configmap kubeconfig --from-file=$HOME/.kube/config
-kubectl apply -f deploy.yml

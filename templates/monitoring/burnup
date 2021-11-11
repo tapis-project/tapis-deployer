@@ -15,6 +15,9 @@ kubectl apply -f services
 # Apps
 kubectl apply -f apps
 
+# Logging
+kubectl apply -f stern-fluentd
+
 # Initialize the DB
 kubectl create configmap monitor-init-user-configmap --from-file monitor-init-user-sh
 kubectl apply -f monitor-init-user.yml

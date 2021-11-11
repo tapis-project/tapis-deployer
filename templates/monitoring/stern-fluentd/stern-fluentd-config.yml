@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fl-stern-config
+data:
+  fluent.conf: |- 
+    <source>
+      @type exec
+      command 'cd /usr/bin; /usr/bin/stern --container .* --color never --tail 0 --exclude-pod "(tapis-nginx-*|stern-fluentd-*|monitoring-kibana-*)"'
+    <parse>
+      @type none
+    </parse>
+    </source>
+
+
+    <source>
+      @type exec
+      command 'cd /usr/bin; /usr/bin/stern --container .* --color never --tail 0 --exclude-pod "(tapis-nginx-*|stern-fluentd-*|monitoring-kibana-*)"'
+      <parse>
+        @type regexp
+        expression /^(?<remote>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<host>[^ ]*)" "(?<method>\S+) (?<path>[^\"]*?) (?:[^ ]*?)" (?<code>[^ ]*) (?<size>[^ ]*) "(?<referer>[^\"]*)" "(?<agent>[^\"]*)"/                            
+        time_format %d/%b/%Y:%H:%M:%S %z
+      </parse>
+      path /var/log/nginx/access.log
+      pos_file /var/log/td-agent/nginx-access.log.pos
+      tag nginx.access
+    </source>
+
+    <match kubelogs.**>
+      @type elasticsearch
+      host monitoring-elasticsearch
+      port 9200
+      index_name fluentd
+      type_name fluentd
+      logstash_format true 
+    </match>
+
+    <label @FLUENT_LOG>
+      <match fluent.*>
+        @type stdout
+      </match>
+    </label>
+

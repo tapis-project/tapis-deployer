@@ -131,6 +131,10 @@ admin:
   service-parameters:
     data:
       service_name: "admin"
+      nginx_server_name: "~^(?<user>.+)\.test\.tapis\.io$;"
+      nginx_cert_file: "$HOME/cert.pem"
+      nginx_key_file: "$HOME/ssl/key.key"
+
   admin-config:
     file_ext: ".yml"
     template: admin-config.j2
@@ -139,18 +143,14 @@ admin:
     file_ext: ""
     template: "tapischex.j2"
     data:
-  ingress:
+  nginx:
     burnup:
       file_ext: ""
-      template: "burnup"
+      template: "burnup.j2"
       data:
-    ingress-host-source:
-      file_ext: ".yml"
-      template: "ingress-host-source.j2"
-      data:
-    ingress-host-localhost:
-      file_ext: ".yml"
-      template: "ingress-host-localhost.j2"
+    tapis-nginx:
+      file_ext: ".conf"
+      template: "tapis-nginx.j2"
       data:
   verification:
     authenticator-test:
@@ -443,7 +443,6 @@ monitoring:
       elastic_pvc: "elasticsearch-data-vol02"
       grafana_pvc: "grafana-vol02"
       prometheus_pvc: "prometheus-vol02"
-      stern_pvc: "stern-data-vol02"
   monitoring-config:
     file_ext: ".yml"
     template: "monitoring-config.j2"
@@ -479,13 +478,10 @@ monitoring:
       file_ext: ".yml"
       template: "prometheus-pvc.j2"
       data:
-        
-  stern:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
@@ -494,7 +490,6 @@ monitoring:
       file_ext: ".bak"
       template: "util.yml.j2"
       data:
-        
   secrets:
     file_ext: ".yml"
     template: "secrets.j2"
@@ -853,6 +848,10 @@ tokens:
     template: api.j2
     data:
       image_version: dev
+  create_tenant_token_roles:
+    file_ext: ".py"
+    template: create_tenant_token_roles.j2
+    data:
 
 vault: 
   service-parameters:

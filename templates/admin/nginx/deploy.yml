@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tapis-nginx
+spec:
+  selector:
+    matchLabels:
+      app: tapis-nginx
+  template:
+    metadata:
+      labels:
+        app: tapis-nginx
+    spec:
+      containers:
+      - name: tapis-nginx
+        image: nginx:latest
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx/conf.d/tapis-nginx.conf
+          subPath: tapis-nginx.conf
+        - name: certs
+          mountPath: /tmp/ssl
+      volumes:
+      - name: config
+        configMap:
+          name: tapis-nginx-config
+          items:
+          - key: tapis-nginx.conf
+            path: tapis-nginx.conf
+      - name: certs
+        secret: 
+          secretName: tapis-tls-cert
