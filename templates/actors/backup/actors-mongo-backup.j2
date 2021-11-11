@@ -36,10 +36,10 @@ spec:
                   name: tapis-abaco-secrets
                   key: mongo-password
           volumeMounts:
-            - name: actors-mongo-backup-vol
+            - name: {{service_param["mongo_backup_pvc"]|default(defaults["mongo_backup_pvc"])}}
               mountPath: /backup/
       volumes:
-        - name: actors-mongo-backup-vol
+        - name: {{service_param["mongo_backup_pvc"]|default(defaults["mongo_backup_pvc"])}}
           persistentVolumeClaim:
             claimName: {{service_param["mongo_backup_pvc"]|default(defaults["mongo_backup_pvc"])}}
 

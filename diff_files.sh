@@ -1,0 +1,1 @@
+code --diff /home/jweaston/State_deployment/tapis-deploy/$1 /home/jweaston/from-mike/stage/tapis-deploy/$1

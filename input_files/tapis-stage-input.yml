@@ -4,30 +4,25 @@ services:
   - admin
   - apps
   - authenticator
-  - container-registry
   - files
   - jobs
   - meta
   - monitoring
-  - notifications
   - pgrest
-  - pgrest-a2cps-dev
-  - pgrest-a2cps-prod
-  - security-kernel
+  - security
   - skadmin
   - streams
   - systems
   - tenants-api
-  - tokens-api
-  - vault
+  - tokens
 
 universal-parameters:
   data:
-    service_url: https://admin.test.tapis.io
+    service_url: https://admin.staging.tapis.io
     service_tenant_id: admin
     service_site_id: tacc
-    tenants: ["dev", "admin"]
-    deployment: test
+    tenants: ["dev", "admin", "a2cps", "tacc", "cii", "github-demo"]
+    deployment: develop
     storage_class: rbd-new
     image_version: latest
     image_pull: Always
@@ -46,6 +41,10 @@ actors:
       tenants:
         - "dev"
         - "admin"
+        - "a2cps"
+        - "tacc"
+        - "cii"
+        - "github-demo"
       docker_network: "develop"
       log_file: true
       web_tenat_name: null
@@ -57,28 +56,32 @@ actors:
       file_ext: ".yml"
       template: admin.j2
       data:
-        image_pull: null
+        image_pull: Always
+        image_version: "1.0.1"
     configmap:
       file_ext: ".yml"
       template: configmap.j2
       data:
-        path: "develop"
+        path: "staging"
         timeout: "60"
     events:
       file_ext: ".yml"
       template: events.j2
       data:
-        image_pull: null
+        image_pull: Always
+        image_version: "1.0.1"
     mes:
       file_ext: ".yml"
       template: mes.j2
       data:
-        image_pull: null
+        image_pull: Always
+        image_version: "1.0.1"
     metrics:
       file_ext: ".yml"
       template: metrics.j2
       data:
-        image_pull: null
+        image_pull: Always
+        image_version: "1.0.1"
     mongo-pvc:
       file_ext: ".yml"
       template: "mongo-pvc.j2"
@@ -92,7 +95,7 @@ actors:
       file_ext: ".yml"
       template: nginx-config.j2
       data:
-        stage: dev
+        stage: stage
         proxy_set_header: true
     prometheus:
       file_ext: ".yml"
@@ -104,28 +107,29 @@ actors:
       file_ext: ".yml"
       template: "rabbit.j2"
       data:
+        volume_number: "02"
     rabbitmq-pvc:
       file_ext: ".yml"
       template: "rabbitmq-pvc.j2"
       data:
+        volume_number: "02"
     reg:
       file_ext: ".yml"
       template: "reg.j2"
       data:
-      image_pull: null
+        image_pull: Always
+        image_version: "1.0.1"
   backup:
     actors-mongo-backup-pvc:
       file_ext: ".yml"
       template: "actors-mongo-backup-pvc.j2"
       data:
-        volume_name: "actors-mongo-backup-vol02"
     actors-mongo-backup:
       file_ext: ".yml"
       template: "actors-mongo-backup.j2"
       data:
-        volume_name: "actors-mongo-backup-vol02"
 
-admin: 
+admin:
   service-parameters:
     data:
       service_name: "admin"
@@ -150,13 +154,12 @@ admin:
       file_ext: ""
       template: "tokens-test.j2"
       data:
-        
+
 
 apps:
   service-parameters:
     data:
       service_name: "apps"
-      postgres_pvc: "apps-postgres-vol02"
   apps-config:
     file_ext: ".yml"
     template: apps-config.j2
@@ -166,14 +169,14 @@ apps:
       file_ext: ".yml"
       template: api.j2
       data:
-        image_version: dev
-        memory: "8Gi" 
+        image_version: staging
+        memory: "8Gi"
   postgres:
     apps-init-db:
       file_ext: ".yml"
       template: "apps-init-db.j2"
       data:
-        monitor_password: "test"
+        monitor_password: "60f0c5bf8ed23120fc60"
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
@@ -192,34 +195,35 @@ authenticator:
   service-parameters:
     data:
       service_name: "authenticator"
-      postgres_pvc: "authenticator-postgres-vol02"
   authenticator-config:
     file_ext: ".yml"
     template: authenticator-config.j2
     data:
-      "tenants": ["dev", "admin"]
+      tenants: ["dev", "admin", "a2cps", "tacc", "cii", "github-demo"]
   api:
     api:
       file_ext: ".yml"
       template: api.j2
       data:
-        image_version: dev
+        image_version: staging
   postgres:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
+        volume_number: "02"
     migrations:
       file_ext: ".yml"
       template: migrations.j2
       data:
-        image_version: dev
+        image_version: staging
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
         uncomment: false
-      
+        volume_number: "02"
+
 container-registry:
   service-parameters:
     data:
@@ -228,7 +232,7 @@ container-registry:
     file_ext: ".yml"
     template: "container-registery-config.j2"
     data:
-      
+
 files:
   service-parameters:
     data:
@@ -242,14 +246,14 @@ files:
     template: api.j2
     data:
       replicas: 1
-      image_version: dev
+      image_version: staging
       nodeSelector: "yes"
       memory: "8Gi"
-      args: ["-Xdebug", 
-             "-Xmx3g", 
-             "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", 
-             "-cp", 
-             "target/tapis-files.jar:target/dependencies/*", 
+      args: ["-Xdebug",
+             "-Xmx3g",
+             "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n",
+             "-cp",
+             "target/tapis-files.jar:target/dependencies/*",
              "edu.utexas.tacc.tapis.files.api.FilesApplication"]
       site_id: true
       node_name: true
@@ -264,7 +268,7 @@ files:
     file_ext: ".yml"
     template: migrations.j2
     data:
-      image_version: dev
+      image_version: staging
   pvc:
     file_ext: ".yml"
     template: "pvc.j2"
@@ -273,24 +277,23 @@ files:
     file_ext: ".yml"
     template: "rabbitmq-pvc.j2"
     data:
-      
   service:
     file_ext: ".yml"
     template: "service.j2"
     data:
-      nodePort: 31451
+      nodePort: 32039
   workers:
     file_ext: ".yml"
     template: workers.j2
     data:
-      image_version: dev
+      image_version: staging
       replicas: 1
       node_name: true
       memory: "8Gi"
       commands: [ "java",
-                  "-Xmx3g", 
+                  "-Xmx3g",
                   "-cp",
-                  "target/tapis-files.jar:target/dependencies/*", 
+                  "target/tapis-files.jar:target/dependencies/*",
                   "edu.utexas.tacc.tapis.files.lib.transfers.TransfersApp" ]
 
 jobs:
@@ -303,70 +306,73 @@ jobs:
     file_ext: ".yml"
     template: "jobs-config.j2"
     data:
-      
   api:
     api:
       file_ext: ".yml"
       template: api.j2
       data:
-        image_version: dev
-        memory: "8Gi"
-        node_name: true
-        node_selector: true
+        image_version: staging
+        memory: null
+        node_name: false
+        node_selector: false
     migrate:
       file_ext: ".yml"
       template: migrate.j2
       data:
-        image_version: dev
-        memory: "8Gi"
+        image_version: staging
+        memory: null
   postgres:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
+        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
+        volume_number: "02"
   rabbitmq:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
+        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
+        volume_number: "02"
   readers:
     jobrdr-AltQueue:
       file_ext: ".yml"
       template: jobrdr-AltQueue.j2
       data:
-        image_version: dev
-        memory: "4Gi"
+        image_version: staging
+        memory: null
     jobrdr-DeadLetter:
       file_ext: ".yml"
       template: jobrdr-DeadLetter.j2
       data:
-        image_version: dev
-        memory: "4Gi"
+        image_version: staging
+        memory: null
     jobrdr-Recovery:
       file_ext: ".yml"
       template: jobrdr-Recovery.j2
       data:
-        image_version: dev
-        memory: "8Gi"
-        node_name: true
-        note_selector: true
+        image_version: staging
+        memory: null
+        node_name: false
+        note_selector: false
   workers:
     jobwkr-DefaultQueue:
       file_ext: ".yml"
       template: jobwkr-DefaultQueue.j2
       data:
-        image_version: dev
-        memory: "8Gi"
-        node_name: true
-        node_selector: true
+        image_version: staging
+        memory: null
+        node_name: false
+        note_selector: false
 
 meta:
   service-parameters:
@@ -378,19 +384,19 @@ meta:
     file_ext: ".yml"
     template: "meta-config.j2"
     data:
-      
+
   api:
     restheart-security:
       file_ext: ".yml"
       template: restheart-security.j2
       data:
-        image_version: dev
+        image_version: staging
         stage: develop
     restheart:
       file_ext: ".yml"
       template: restheart.j2
       data:
-        image_version: dev
+        image_version: staging
   backup:
     pbm:
       pbm:
@@ -401,30 +407,32 @@ meta:
       file_ext: ".yaml"
       template: "mongo-backup-claim0-pvc.j2"
       data:
-        
+
     mongo-backup-deployment:
       file_ext: ".yaml"
       template: mongo-backup-deployment.j2
       data:
         image_version: .1
+        volume_number: "02"
   mongo:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
+        volume_number: "02"
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
+        volume_number: "02"
 
 monitoring:
   service-parameters:
     data:
-      service_name: "monitoring"   
+      service_name: "monitoring"
       elastic_pvc: "elasticsearch-data-vol02"
       grafana_pvc: "grafana-vol02"
       prometheus_pvc: "prometheus-vol02"
-      stern_pvc: "stern-data-vol02"
   monitoring-config:
     file_ext: ".yml"
     template: "monitoring-config.j2"
@@ -441,7 +449,7 @@ monitoring:
       file_ext: ".yml"
       template: "grafana.j2"
       data:
-        
+
     prometheus:
       file_ext: ".yml"
       template: "prometheus.j2"
@@ -460,13 +468,13 @@ monitoring:
       file_ext: ".yml"
       template: "prometheus-pvc.j2"
       data:
-        
+
   stern:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        
+
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
@@ -475,14 +483,14 @@ monitoring:
       file_ext: ".bak"
       template: "util.yml.j2"
       data:
-        
+
   secrets:
     file_ext: ".yml"
     template: "secrets.j2"
     data:
       username: YWRtaW4=
       password: cGVyaGFwc0NhbXBTZWFyY2hGcmVxdWVudGx5
-        
+
 notifications:
   service-parameters:
     data:
@@ -495,12 +503,12 @@ notifications:
     file_ext: ".yml"
     template: api.j2
     data:
-      image_version: dev
+      image_version: staging
   migrations:
     file_ext: ".yml"
     template: migrations.j2
     data:
-      image_version: dev
+      image_version: staging
   pvc:
     file_ext: ".yml"
     template: "pvc.j2"
@@ -510,13 +518,13 @@ notifications:
     file_ext: ".yml"
     template: workers.j2
     data:
-      image_version: dev
-        
+      image_version: staging
+
 pgrest:
   service-parameters:
     data:
-      service_name: "pgrest"   
-      postgres_pvc: "pgrest-postgres-vol01"
+      service_name: "pgrest"
+      postgres_pvc: "pgrest-postgres-vol02"
   pgrest-config:
     file_ext: ".yml"
     template: "pgrest-config.j2"
@@ -525,7 +533,7 @@ pgrest:
     file_ext: ".yml"
     template: api-deploy.j2
     data:
-      image_version: dev
+      image_version: staging
   postgres-deploy:
     file_ext: ".yml"
     template: "postgres-deploy.j2"
@@ -535,64 +543,22 @@ pgrest:
     template: "postgres-pvc.j2"
     data:
 
-pgrest-a2cps-dev:
-  service-parameters:
-    data:
-      service_name: "pgrest-a2cps-dev"   
-      template_directory: "pgrest"
-  pgrest-config:
-    file_ext: ".yml"
-    template: "pgrest-config.j2"
-    data:    
-      tenants: ["a2cps-dev"]     
-  api-deploy:
-    file_ext: ".yml"
-    template: api-deploy.j2
-    data:
-      image_version: dev
-  api-service:
-    file_ext: ".yml"
-    template: "api-service.j2"
-    data:
-      service_name: "pgrest-a2cps-prod"
-
-pgrest-a2cps-prod:
-  service-parameters:
-    data:
-      service_name: "pgrest-a2cps-prod"   
-      template_directory: "pgrest"
-  pgrest-config:
-    file_ext: ".yml"
-    template: "pgrest-config.j2"
-    data:          
-      tenants: ["a2cps"]
-  api-deploy:
-    file_ext: ".yml"
-    template: api-deploy.j2
-    data:
-      image_version: dev
-  api-service:
-    file_ext: ".yml"
-    template: "api-service.j2"
-    data:
-      service_name: "pgrest-a2cps-prod"
-
 security:
   service-parameters:
     data:
       service_name: "security-kernel"
-      postgres_pvc: "sk-postgres-vol01"
+      postgres_pvc: "sk-postgres-vol02"
   security-kernel-config:
     file_ext: ".yml"
     template: "security-kernel-config.j2"
     data:
-      
+
   api:
     api:
       file_ext: ".yml"
       template: api.j2
       data:
-        image_version: dev
+        image_version: staging
         memory: "16Gi"
         auto_service: false
         renew_sk: something
@@ -603,8 +569,8 @@ security:
       file_ext: ".yml"
       template: migrate.j2
       data:
-        image_version: dev
-        memory: "8Gi"
+        image_version: staging
+        memory: null
   postgres:
     deploy:
       file_ext: ".yml"
@@ -614,7 +580,7 @@ security:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        
+
 skadmin:
   service-parameters:
       data:
@@ -639,57 +605,64 @@ skadmin:
     file_ext: ".yml"
     template: sk-admin-init.j2
     data:
-      image_version: dev
+      image_version: staging
   updateSecrets:
     sk-admin-update:
       file_ext: ".yml"
       template: sk-admin-update.j2
       data:
-        image_version: dev
+        image_version: staging
   util:
     file_ext: ".yml"
     template: "util.j2"
     data:
-      image_version: dev
+      image_version: staging
   util3-job:
     file_ext: ".yml"
     template: util3-job.j2
     data:
-      image_version: dev
+      image_version: staging
 
 streams:
   service-parameters:
     data:
       service_name: "streams"
-      influx_pvc: "influx-vol01"
-      postgres_pvc: "postgres-vol01"
-      kapacitor_pvc: "streams-kapacitor-vol01"
-      mysql_pvc: "streams-mysql-vol01"
+      influx_pvc: "influx-vol02"
+      influx2_pvc: "influx2-vol01"
+      postgres_pvc: "postgres-vol02"
+      kapacitor_pvc: "streams-kapacitor-vol02"
+      mysql_pvc: "streams-mysql-vol02"
   streams-config:
     file_ext: ".yml"
     template: streams-config.j2
     data:
-      "tenant": {
-        "admin":{"stream_db":"streams_admin","tapis_base_url":"https://admin.test.tapis.io"},
-        "dev":{"stream_db":"streams_dev","tapis_base_url":"https://dev.test.tapis.io"}
-      }
+      tenant:
+        dev:
+          stream_db: StreamsDevDB
+          tapis_base_url: https://dev.staging.tapis.io
+        tacc:
+          stream_db: StreamsTACCDB
+          tapis_base_url: https://tacc.staging.tapis.io
       "log_level": "DEBUG"
       "show_traceback": false
   kapacitor-config:
     file_ext: ".yml"
     template: kapacitor-config.j2
     data:
-      "tenant": {
-        "admin":{"stream_db":"streams_admin","tapis_base_url":"https://admin.test.tapis.io"},
-        "dev":{"stream_db":"streams_dev","tapis_base_url":"https://dev.test.tapis.io"}
-      }
-  api: 
+      tenant:
+        dev:
+          stream_db: StreamsDevDB
+          tapis_base_url: https://dev.staging.tapis.io
+        tacc:
+          stream_db: StreamsTACCDB
+          tapis_base_url: https://tacc.staging.tapis.io
+  api:
     api:
       file_ext: ".yml"
       template: api.j2
       data:
-        image_version: dev
-        noke_name: null
+        image_version: staging
+        node_name: c04
         process: 10
         threads: null
     deploy.yml:
@@ -705,12 +678,7 @@ streams:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-  kapacitor:
-    pvc:
-      file_ext: ".yml"
-      template: "pvc.j2"
-      data:
-  mysql:
+  influx2:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
@@ -719,24 +687,45 @@ streams:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        
-  
+  kapacitor:
+    deploy:
+      file_ext: ".yml"
+      template: "deploy.j2"
+      data:
+        volume_name: "streams-kapacitor-vol02"
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+        volume_name: "streams-kapacitor-vol02"
+
+  mysql:
+    deploy:
+      file_ext: ".yml"
+      template: "deploy.j2"
+      data:
+        volume_number: "02"
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+
+
 systems:
   service-parameters:
       data:
         service_name: "systems"
-        postgres_pvc: "systems-postgres-vol02"
   systems-config:
     file_ext: ".yml"
     template: "systems-config.j2"
     data:
-      
   api:
     api:
       file_ext: ".yml"
       template: api.j2
       data:
-        image_version: dev
+        nodeSelector: "yes"
+        image_version: staging
         memory: "8Gi"
   postgres:
     deploy:
@@ -766,24 +755,26 @@ tenants-api:
       file_ext: ".yml"
       template: api.j2
       data:
-        image_version: dev
+        image_version: staging
         image_pull: Always
   postgres:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
+        volume_number: "02"
     migrations:
       file_ext: ".yml"
       template: migrations.j2
       data:
-        image_version: dev
+        image_version: staging
         image_pull: Always
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
-        
+        volume_number: "02"
+
 tokens:
   service-parameters:
       data:
@@ -792,41 +783,21 @@ tokens:
     file_ext: ".yml"
     template: tokens-config.j2
     data:
-      "use_sk": false
-      "tenants": ["dev", "admin"]
+      "use_sk": true
+      "tenants": ["dev", "admin", "a2cps", "tacc", "cii", "github-demo"]
       "log_level": "DEBUG"
       "show_traceback": false
-      # "dev_jwt_private_key": "-----BEGIN PRIVATE KEY-----\\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHP3gxDezoHCX0+9tGZe9Vxu7tqJvJYIScjoJOW6gHIBb1TiEMq86VRjoN1XD8HZWvsHysCu1pnefkVAeevMSJeFN2qQ3yMCLzwPsL8yQePWhe8IzD/vGof0EdlSpFLSYeAXcvLGCl4iaDm5KgucohoxvCC30HqCnFG2ZoxVCPczc81I80sGfd89vi4F45aiPWr/lxHp1pDR8xyoP7IU/MJEOSvqsnTFUzFeti2WUQcU2+VBN6a0/YVVzvB1cuT3Bt8IkKv8fjnX5TdrLCNVhIA7vuNhLHCqKoUoxzL9llmOyEY2DE0GH/X/KibVqcdLsNbOrCGJBjhg8IkmR8YZZHAgMBAAECggEAL2gJh9phWKSB33UhKfHM7SLE7GTmlBZT1xANLumd4/wdmkX5lRM3tsqbu3jiRgof+EpMj36WGEAK0YewvHL7bB3l9eCpQct0NXzf/mreWBeSQqyHQYbiJo4IhypbgVQJsq/0lJPBdxaExWF5lKY/0psFWrjzCaRYM96eEiWIUmjSwUfW3727vgWIlosOmD0jvhYrDiIIJQarhphcKa/+gSLq8gVfxL0IvO4++xiVM3oP/UKz7la+sHIQVpvwoE1LSw0vD5DFpx6e0v3HlsZrROroxEqvtywVVDPa8F0m0yaYGwuIpnOQRdEbKyDoVzzxRQutWsQ9nOGgdfdswKbQKQKBgQDvEPC4XiZlBAoSVsduRew0dyJNM/Vh6fj37h8lOia5XNNHWYUPxv/pOzLH43Kpx0hEtbgEMYfRt+f7nQyXIPYP0lSkfQWrpPDIHNNTfegHTlB8UiJ0yNYMS+mDPgCIE/FJrMOR5hgt5fjJ9jvL2Bw/gjMNWU1FY5K/2n5GL2FWxQKBgQDVXH4pjpIY2tgxqqPYNNajyGXXYSWmGFccnxF1eZvfCArlpnqj/lquS8xJarB9t/3ImwbrOx6csXK8YLOXpPeZxLHGkA+gSyXGuDI2XISTyiKp5OGgGMW+ZhwuyLqAz2gtgu6AtLhB3gwKk0U34ezwVsn9FoxoQQakxZDdNCKpmwKBgDmJbTYiSsFTKI1jX1o17/Rsm8/S6oLnSel54PsXtMw2AA+TBwhWD691dPJQ1n7wHH+U8LXpqdOanHWdRbN11mLWb1KrWFsINn8jGOVmTxq7CXnyVqKe141cE9ZnbL9TdWYS83rA0x7w02DgJ2IXIC1Uy66xyHwjy+Tq1CtWKeo1AoGALIAnHDnNRPvYHbvOgpi6r9xrSVnMxXDMMn8G4C6mEQWXaECp0ayKc1IB4Mos13vZpc6XydZB00K7gIjWzGku71Z0EcsYR0GFNoZSir4PNNfzFOZVHNQt4kFf3W4mYBliTCPD5PpMeAh9EHOY+0fW6GXhqTTbwh7V6OYACfMGy8MCgYAnpo5VhSZayPlrVn6s+NbOtnJEavuAHwCA8OmsE/mdIy5iee8OB9LxpHLle/xdY0uJRZnkUzBds0auoF1OBj7c5jnEaRMncskhFi3gJjxfNudqmIYELDaYP50B0Fza4GQBiFoeiYbXlUMENt4iEzjzeaJTiiWID+dmhxF+YY5r/w==\\n-----END PRIVATE KEY-----"
+      "use_allservices_password": false
+      "allservices_password": ""
+      "dev_jwt_private_key": "\"-----BEGIN PRIVATE KEY-----\\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCodlCk4xNcsDt4n56U0dmOkzOyXltlfhL0rn1QP05PzVCV4ajTv8toMPL8JoT8bp7yz0MqSLBoxYWpBOYe6taVRrKR0jiLYd+B3mS3FtZwPlM47EqLee9Iu0btN6y6gvhb995VDK0iE47hswMJTstMaNsVuHpGhJSfUVoGkkvj6sPl39pHkDvJtw5aWREXcRZ+jUY2wKRpp99mw2VSRZGYWiXi8lshwNv3zBhsn/Tzcj+xwsf0+BTCfWDCIjGtZnud31UQv5F/OY6y0Tt2PIvUEgNZBFBfEfhosGvN+SqEK2v9joZ95LAjXPiQt6dR0sVIXe5qRz5pSwVk+EcMRLYPAgMBAAECggEAI5C2/dii4dKi+5hXVnvnPl59b47UJN01C0s7UZHL6rUh6kK17d50Bw8ufWV0dga0r/Zp66dk9vmcek56dtSFcQZ39Kk5HtQO59AX2z+LDi9aSo44PrIDfotrMfGrGcVEwcXWvoXql2Mhqyyr228zJHKOrktAJVsgNXJrWy/PrdIuOrqDhTiPCmuXj4QneHVhpGWWWyXcefHaHKKoeolgHFx49jos5mQigg7z1wHuEVlwjXcVm5GTm9lWpH94p0HTSLrAA+QNMwpEaThXakXiQV0h3gC3bc7qpaqGXeauNF42vKImokHLjbYOJLqotvce8g2J2uEeTLBSx+0WfH6noQKBgQDpMxR67JWxK2SjNIaznAP0MmR6YkdNMNiF5zUiPnUBTfd1fa3Udm1VPMeo512MQR6xsHp6RNnANzXx9iYDTeUOnGkfrTvCAfQ0PCNXlzPkem4VNa3Xo/8vV+Hl409EgWeHteOcjeyzeKi0PhUPhFk12thtM0qjAvI955HVuzSsywKBgQC47uBsdcTONVPJv7GGBzcRY+5HCvDyknd/tx9y3ZrueRMtkfxPANzMQlqyKsliDI2w9Tm9naGQnRkOed57XefO8oxS3qp/Wn8EZk8lUlEsbwpfwlZMDl1z8Y2KuCtp6fbTuRu35jED2trUJXlqs1o4ACBC0Rgd63EjZ8qua2OXTQKBgQCD13kwtik7bUkMbFnrmb0yhnsAJighoAgKTFlh7uW/wxCwwElS4VGW6zIGcCgXb4mm9BuKnPpvDcfV8FA1dgiWZh+Y5Rvv56LlFUr17mpMNlueaibKz9EqNwlkK0tZc7/Qnij9DdBQ91qJ7L+DclPterj5pBICb1v9W7q7l4eEWQKBgQCNMHsQ81zdHmOo7Pxo2ktVsJizjovkdqRbUoDlHoFxvehBa2pZGsx3+dTqn7X+cJ0g1ChQNu+py/bcUXjlcQ1Qt2cgwbUj5ACDaGTWlqE4rlIaR/HAwVrh8TJiDTe/9gsnG/UokssrKUTWoQGwz9t6U8ZNnPuvpBhNsqlQPtbbJQKBgQCQkkBT997FNoz2q/MDLYhh+Q3C+rPXDwHD1kjkf/ANjz/RELwAvK+6INACEfIqrbRAJ5K1f2cNR8WDEDg4wBobSDnyd21xYM4P00E0hEJIIHmNjJcaiW2I8S3yDVVzBmMBR9E+vTK+4e3BOwrFdAbUMXNKjVSXFn9q8P03Y2ke4g==\\n-----END PRIVATE KEY-----\""
+
   api:
     file_ext: ".yml"
     template: api.j2
     data:
-      image_version: dev
+      image_version: staging
+  create_tenant_token_roles:
+    file_ext: ".py"
+    template: create_tenant_token_roles.j2
+    data:
 
-vault: 
-  service-parameters:
-      data:
-        service_name: "vault"
-        pvc: "vault-vol02"
-  vault-config:
-    file_ext: ".yml"
-    template: vault-config.j2
-    data: 
-  pvc:
-    file_ext: ".yml"
-    template: "pvc.j2"
-    data:
-  vault-auto-unseal:
-    file_ext: ".yml"
-    template: "vault-auto-unseal.j2"
-    data:
-  vault-init:
-    file_ext: ".yml"
-    template: "vault-init.j2"
-    data:
-      volume_number: "02"
-  vault:
-    file_ext: ".hcl"
-    template: "vault.hcl.j2"
-    data:
- 

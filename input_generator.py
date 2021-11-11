@@ -79,6 +79,12 @@ prompts = {
                 "regex": r"\w",
                 "description": "Please enter the associate site admin tenant id",
                 "example": "assocadm"
+            },
+            "tenants": 
+            {
+                "regex": r'\[("\w*"\,\s?)+("\w*")\]',
+                "description": "Please enter an array of tenants",
+                "example": '["assocadm", "assocdev"]'
             }
         }
     }

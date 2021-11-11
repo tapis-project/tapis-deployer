@@ -1,2 +1,2 @@
-diff -r -B -q -w ~/tapis-deploy ~/from-mike/tapis-deploy | grep '.yml' | grep 'Only in'
+diff -r -B -w -q ~/State_deployment/tapis-deploy/$1 ~/from-mike/stage/tapis-deploy/$1 | grep ".yml" | grep -v "Only in"
 

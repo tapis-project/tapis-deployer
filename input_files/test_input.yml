@@ -1,17 +1,32 @@
 --- # Test Yaml
 services:
-  {% for service in user_params["services"]%}
-  - {{service}}
-  {% endfor%}
+  - actors
+  - admin
+  - apps
+  - authenticator
+  - container-registry
+  - files
+  - jobs
+  - meta
+  - monitoring
+  - notifications
+  - pgrest
+  - pgrest-a2cps-dev
+  - pgrest-a2cps-prod
+  - security-kernel
   - skadmin
+  - streams
+  - systems
+  - tenants-api
+  - tokens
   - vault
 
 universal-parameters:
   data:
-    service_url: {{user_params["site_url"]}}
-    service_tenant_id: {{user_params["tenant_id"]}}
-    service_site_id: {{user_params["site_id"]}}
-    tenants: {{user_params["tenants"]}}
+    service_url: https://admin.test.tapis.io
+    service_tenant_id: admin
+    service_site_id: tacc
+    tenants: ["dev", "admin"]
     deployment: test
     storage_class: rbd-new
     image_version: latest
@@ -506,21 +521,61 @@ pgrest:
     file_ext: ".yml"
     template: "pgrest-config.j2"
     data:
-           
-  yml:
-    api-deploy:
-      file_ext: ".yml"
-      template: api-deploy.j2
-      data:
-        image_version: dev
-    postgres-deploy:
-      file_ext: ".yml"
-      template: "postgres-deploy.j2"
-      data:
-    postgres-pvc:
-      file_ext: ".yml"
-      template: "postgres-pvc.j2"
-      data:
+  api-deploy:
+    file_ext: ".yml"
+    template: api-deploy.j2
+    data:
+      image_version: dev
+  postgres-deploy:
+    file_ext: ".yml"
+    template: "postgres-deploy.j2"
+    data:
+  postgres-pvc:
+    file_ext: ".yml"
+    template: "postgres-pvc.j2"
+    data:
+
+pgrest-a2cps-dev:
+  service-parameters:
+    data:
+      service_name: "pgrest-a2cps-dev"   
+      template_directory: "pgrest"
+  pgrest-config:
+    file_ext: ".yml"
+    template: "pgrest-config.j2"
+    data:    
+      tenants: ["a2cps-dev"]     
+  api-deploy:
+    file_ext: ".yml"
+    template: api-deploy.j2
+    data:
+      image_version: dev
+  api-service:
+    file_ext: ".yml"
+    template: "api-service.j2"
+    data:
+      service_name: "pgrest-a2cps-prod"
+
+pgrest-a2cps-prod:
+  service-parameters:
+    data:
+      service_name: "pgrest-a2cps-prod"   
+      template_directory: "pgrest"
+  pgrest-config:
+    file_ext: ".yml"
+    template: "pgrest-config.j2"
+    data:          
+      tenants: ["a2cps"]
+  api-deploy:
+    file_ext: ".yml"
+    template: api-deploy.j2
+    data:
+      image_version: dev
+  api-service:
+    file_ext: ".yml"
+    template: "api-service.j2"
+    data:
+      service_name: "pgrest-a2cps-prod"
 
 security:
   service-parameters:
@@ -741,6 +796,7 @@ tokens:
       "tenants": ["dev", "admin"]
       "log_level": "DEBUG"
       "show_traceback": false
+      # "dev_jwt_private_key": "-----BEGIN PRIVATE KEY-----\\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHP3gxDezoHCX0+9tGZe9Vxu7tqJvJYIScjoJOW6gHIBb1TiEMq86VRjoN1XD8HZWvsHysCu1pnefkVAeevMSJeFN2qQ3yMCLzwPsL8yQePWhe8IzD/vGof0EdlSpFLSYeAXcvLGCl4iaDm5KgucohoxvCC30HqCnFG2ZoxVCPczc81I80sGfd89vi4F45aiPWr/lxHp1pDR8xyoP7IU/MJEOSvqsnTFUzFeti2WUQcU2+VBN6a0/YVVzvB1cuT3Bt8IkKv8fjnX5TdrLCNVhIA7vuNhLHCqKoUoxzL9llmOyEY2DE0GH/X/KibVqcdLsNbOrCGJBjhg8IkmR8YZZHAgMBAAECggEAL2gJh9phWKSB33UhKfHM7SLE7GTmlBZT1xANLumd4/wdmkX5lRM3tsqbu3jiRgof+EpMj36WGEAK0YewvHL7bB3l9eCpQct0NXzf/mreWBeSQqyHQYbiJo4IhypbgVQJsq/0lJPBdxaExWF5lKY/0psFWrjzCaRYM96eEiWIUmjSwUfW3727vgWIlosOmD0jvhYrDiIIJQarhphcKa/+gSLq8gVfxL0IvO4++xiVM3oP/UKz7la+sHIQVpvwoE1LSw0vD5DFpx6e0v3HlsZrROroxEqvtywVVDPa8F0m0yaYGwuIpnOQRdEbKyDoVzzxRQutWsQ9nOGgdfdswKbQKQKBgQDvEPC4XiZlBAoSVsduRew0dyJNM/Vh6fj37h8lOia5XNNHWYUPxv/pOzLH43Kpx0hEtbgEMYfRt+f7nQyXIPYP0lSkfQWrpPDIHNNTfegHTlB8UiJ0yNYMS+mDPgCIE/FJrMOR5hgt5fjJ9jvL2Bw/gjMNWU1FY5K/2n5GL2FWxQKBgQDVXH4pjpIY2tgxqqPYNNajyGXXYSWmGFccnxF1eZvfCArlpnqj/lquS8xJarB9t/3ImwbrOx6csXK8YLOXpPeZxLHGkA+gSyXGuDI2XISTyiKp5OGgGMW+ZhwuyLqAz2gtgu6AtLhB3gwKk0U34ezwVsn9FoxoQQakxZDdNCKpmwKBgDmJbTYiSsFTKI1jX1o17/Rsm8/S6oLnSel54PsXtMw2AA+TBwhWD691dPJQ1n7wHH+U8LXpqdOanHWdRbN11mLWb1KrWFsINn8jGOVmTxq7CXnyVqKe141cE9ZnbL9TdWYS83rA0x7w02DgJ2IXIC1Uy66xyHwjy+Tq1CtWKeo1AoGALIAnHDnNRPvYHbvOgpi6r9xrSVnMxXDMMn8G4C6mEQWXaECp0ayKc1IB4Mos13vZpc6XydZB00K7gIjWzGku71Z0EcsYR0GFNoZSir4PNNfzFOZVHNQt4kFf3W4mYBliTCPD5PpMeAh9EHOY+0fW6GXhqTTbwh7V6OYACfMGy8MCgYAnpo5VhSZayPlrVn6s+NbOtnJEavuAHwCA8OmsE/mdIy5iee8OB9LxpHLle/xdY0uJRZnkUzBds0auoF1OBj7c5jnEaRMncskhFi3gJjxfNudqmIYELDaYP50B0Fza4GQBiFoeiYbXlUMENt4iEzjzeaJTiiWID+dmhxF+YY5r/w==\\n-----END PRIVATE KEY-----"
   api:
     file_ext: ".yml"
     template: api.j2
