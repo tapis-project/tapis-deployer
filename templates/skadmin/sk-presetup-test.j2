@@ -15,7 +15,7 @@ spec:
         command: ["sleep","3600"]
         env:
         - name: VAULT_ADDR
-          value: http://vault:8200
+          value: {{universal_param["vault_url"]}}
         - name: VAULT_TOKEN
           valueFrom:
             secretKeyRef:

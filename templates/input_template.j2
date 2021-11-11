@@ -32,6 +32,7 @@ universal-parameters:
     storage_class: rbd-new
     image_version: latest
     image_pull: Always
+    vault_url: {{user_params["vault_url"]}}
 
 actors:
   service-parameters:
@@ -670,6 +671,22 @@ skadmin:
     template: util3-job.j2
     data:
       image_version: dev
+  create-sk-roles:
+    file_ext: ""
+    template: create-sk-roles.j2
+    data:
+  run-sk-admin:
+    file_ext: ""
+    template: run-sk-admin.j2
+    data:
+  sk-presetup:
+    file_ext: ".yml"
+    template: sk-presetup.j2
+    data:
+  sk-presetup-test:
+    file_ext: ".yml"
+    template: sk-presetup-test.j2
+    data:
 
 streams:
   service-parameters:
