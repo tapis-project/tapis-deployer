@@ -169,7 +169,7 @@ default-retention-policy = ""
 
 [[httppost]]
   endpoint = "api-alert"
-  url = "https://dev.tapis.io/v3/streams/alerts"
+  url = "{{universal_param["service_url"]}}/v3/streams/alerts"
   headers = {"Content-Type" = "application/json", "X-Tapis-Token" = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIyZjIxMTgwNy1lYTc3LTRkMWItYWU1Mi1kMDQ2NTI2ZjcyODYiLCJpc3MiOiJodHRwczovL2Rldi5kZXZlbG9wLnRhcGlzLmlvL3YzL3Rva2VuIiwic3ViIjoic3RyZWFtc1RBQ0NBZG1pbkBkZXYiLCJ0YXBpcy90ZW5hbnRfaWQiOiJkZXYiLCJ0YXBpcy90b2tlbl90eXBlIjoiYWNjZXNzIiwidGFwaXMvZGVsZWdhdGlvbiI6ZmFsc2UsInRhcGlzL2RlbGVnYXRpb25fc3ViIjpudWxsLCJ0YXBpcy91c2VybmFtZSI6InN0cmVhbXNUQUNDQWRtaW4iLCJ0YXBpcy9hY2NvdW50X3R5cGUiOiJzZXJ2aWNlIiwiZXhwIjoxNTk1MTU4MDIzfQ.HWyi2SA2CnnubwbE0TOhJPU6fVT6xjLxawyg2vmSNsCVz4UPaKD8ziIVkOr1qcYAHFJVex-mBIcfH71YsOkHFxajf2fxdD0vwk29uTJpzaQ_mGzzEFCAy5kAWG1u3XHbvFTGYHzodPJ4OSQ8nLs8XuM08-aNj3xFj52IynnZ5p3cY7lrxa6yHg2TiLa_hZA0tQAVs6TUiaqJJEdLh9TBxWiPyl4mR6fKuf9F8B_GPgt8emAyCesoULLW6VBbAI2b56t5G6n3kDWOGScxJzHSav77cyaWcCGG2Fv1poBxcMe-dkcVmF__XvWN_EdFYgyWoTcnmkqnZdj0Dj2NMja1QA"}
   alert-template = ""
   alert-template-file = ""
@@ -258,7 +258,9 @@ default-retention-policy = ""
 [deadman]
   interval = "10s"
   threshold = 0.0
+{%- raw %}   
   id = "{{ .Group }}:NODE_NAME for task '{{ .TaskName }}'"
-  message = "{{ .ID }} is {{ if eq .Level \"OK\" }}alive{{ else }}dead{{ end }}: {{ index .Fields \"emitted\" | printf \"%0.3f\" }} points/INTERVAL."
+  message = "{{ .ID }} is {{ if eq .Level \"OK\" }}alive{{ else }}dead{{ end }}: {{ index .Fields \"emitted\" | printf \"%0.3f\" }} points/INTERVAL." 
+{% endraw %}
   global = false
 

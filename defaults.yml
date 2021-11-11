@@ -7,6 +7,7 @@ defaults:
     log_level: "DEBUG"
     show_traceback: "false"
     use_sk: "true"
+    vault_url: "http://vault:8200"
   actors:
     rabbit_pvc: "actors-rabbitmq-vol01"
     mongo_pvc: "actors-mongo-vol01"

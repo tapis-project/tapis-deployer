@@ -1,0 +1,7 @@
+#!/bin/bash
+
+kubectl create secret tls tapis-tls-cert --cert={{service_param["nginx_cert_file"]}} --key={{service_param["nginx_key_file"]}}
+kubectl apply -f service.yml
+
+kubectl create configmap tapis-nginx-config --from-file=tapis-nginx.conf
+kubectl apply -f deploy.yml 

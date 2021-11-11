@@ -1,9 +1,0 @@
-#!/bin/bash
-
-
-kubectl delete -f getshort.yml
-kubectl delete configmap secrole-script
-kubectl create configmap secrole-script --from-file ./secrole
-kubectl apply -f getshort.yml
-
-

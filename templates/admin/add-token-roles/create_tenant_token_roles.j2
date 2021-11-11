@@ -18,10 +18,10 @@ if not password:
     print("Did not fing tenants_service_password variable, exiting...")
     raise Exception()
 
-url = os.environ.get('service_tenant_base_url', 'https://admin.develop.tapis.io')
+url = os.environ.get('service_tenant_base_url', '{{universal_param["service_url"]}}')
 print(f"targetting {url}")
 
-t = DynaTapy(base_url='https://admin.develop.tapis.io', username='tenants', account_type='service', service_password=os.environ.get('tenants_service_password'))
+t = DynaTapy(base_url='{{universal_param["service_url"]}}', username='tenants', account_type='service', service_password=os.environ.get('tenants_service_password'))
 t.get_tokens()
 print("client created..")
 

@@ -40,7 +40,7 @@ spec:
           name: tapis-sk-vault-secrets
           key: vault-secretid
     #- name: SKADMIN_PARMS
-    #  value: "-c -i /tmp/initialLoad -vr VAULT_ROLEID -vs VAULT_SECRETID -b http://vault:8200 -kt KUBE_TOKEN -kn KUBE_NAMEPSACE -ku https://kubernetes.default.svc.cluster.local"
+    #  value: "-c -i /tmp/initialLoad -vr VAULT_ROLEID -vs VAULT_SECRETID -b {{universal_param["vault_url"]}} -kt KUBE_TOKEN -kn KUBE_NAMEPSACE -ku https://kubernetes.default.svc.cluster.local"
     volumeMounts:
     - name: initialload
       mountPath: /tmp/initialLoad

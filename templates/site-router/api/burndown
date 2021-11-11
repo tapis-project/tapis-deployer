@@ -1,0 +1,11 @@
+#!/bin/bash
+
+kubectl delete -f api.yml 
+
+#kubectl delete -f util.yml 
+
+#if [ "$1" == "allofit" ]
+#then
+#  kubectl delete -f service.yml 
+#fi
+

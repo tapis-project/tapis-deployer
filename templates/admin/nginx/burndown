@@ -1,0 +1,4 @@
+#!/bin/bash
+
+kubectl delete configmap tapis-nginx-config
+kubectl delete -f deploy.yml 

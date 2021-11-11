@@ -32,6 +32,7 @@ universal-parameters:
     storage_class: rbd-new
     image_version: latest
     image_pull: Always
+    vault_url: {{user_params["vault_url"]}}
 
 actors:
   service-parameters:
@@ -130,22 +131,26 @@ admin:
   service-parameters:
     data:
       service_name: "admin"
+      nginx_server_name: "~^(?<user>.+)\.test\.tapis\.io$;"
+      nginx_cert_file: "$HOME/cert.pem"
+      nginx_key_file: "$HOME/ssl/key.key"
+
   admin-config:
     file_ext: ".yml"
     template: admin-config.j2
     data:
-  ingress:
+  tapischex:
+    file_ext: ""
+    template: "tapischex.j2"
+    data:
+  nginx:
     burnup:
       file_ext: ""
-      template: "burnup"
+      template: "burnup.j2"
       data:
-    ingress-host-source:
-      file_ext: ".yml"
-      template: "ingress-host-source.j2"
-      data:
-    ingress-host-localhost:
-      file_ext: ".yml"
-      template: "ingress-host-localhost.j2"
+    tapis-nginx:
+      file_ext: ".conf"
+      template: "tapis-nginx.j2"
       data:
   verification:
     authenticator-test:
@@ -438,7 +443,6 @@ monitoring:
       elastic_pvc: "elasticsearch-data-vol02"
       grafana_pvc: "grafana-vol02"
       prometheus_pvc: "prometheus-vol02"
-      stern_pvc: "stern-data-vol02"
   monitoring-config:
     file_ext: ".yml"
     template: "monitoring-config.j2"
@@ -474,13 +478,10 @@ monitoring:
       file_ext: ".yml"
       template: "prometheus-pvc.j2"
       data:
-        
-  stern:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
       data:
-        
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
@@ -489,7 +490,6 @@ monitoring:
       file_ext: ".bak"
       template: "util.yml.j2"
       data:
-        
   secrets:
     file_ext: ".yml"
     template: "secrets.j2"
@@ -637,6 +637,10 @@ skadmin:
     file_ext: ".yml"
     template: "skadmin-config.j2"
     data:
+  burnup:
+    file_ext: ""
+    template: "burnup.j2"
+    data:
   initialLoad:
     tapis-monitoring-secrets:
       file_ext: ".json"
@@ -660,6 +664,10 @@ skadmin:
       template: sk-admin-update.j2
       data:
         image_version: dev
+    run-sk-update:
+      file_ext: ""
+      template: run-sk-update.j2
+      data:
   util:
     file_ext: ".yml"
     template: "util.j2"
@@ -670,6 +678,46 @@ skadmin:
     template: util3-job.j2
     data:
       image_version: dev
+  create-sk-roles:
+    file_ext: ""
+    template: create-sk-roles.j2
+    data:
+  run-sk-admin:
+    file_ext: ""
+    template: run-sk-admin.j2
+    data:
+  sk-presetup:
+    file_ext: ".yml"
+    template: sk-presetup.j2
+    data:
+  sk-presetup-test:
+    file_ext: ".yml"
+    template: sk-presetup-test.j2
+    data:
+  rerun:
+    run-sk-admin2:
+      file_ext: ""
+      template: run-sk-admin2.j2
+      data:
+
+service-router:
+  service-parameters:
+    data:
+      service_name: "site-router"
+      service_router_pvc: "site-router-redis-vol1"
+  api:
+    api:
+      file_ext: ".yml"
+      template: api.j2
+      data:
+    pvc:
+      file_ext: ".yml"
+      template: pvc.j2
+      data:
+    site-router-config:
+      file_ext: ".yml"
+      template: site-router-config.j2
+      data:
 
 streams:
   service-parameters:
@@ -723,6 +771,10 @@ streams:
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
+      data:
+    kapacitor:
+      file_ext: ".conf"
+      template: "kapacitor.j2"
       data:
   mysql:
     deploy:
@@ -815,6 +867,10 @@ tokens:
     template: api.j2
     data:
       image_version: dev
+  create_tenant_token_roles:
+    file_ext: ".py"
+    template: create_tenant_token_roles.j2
+    data:
 
 vault: 
   service-parameters:

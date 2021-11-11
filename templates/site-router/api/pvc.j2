@@ -1,12 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["postgres_pvc"]|default(defaults["postgres_pvc"])}}
+  name: {{service_param["service_router_pvc"]|default(defaults["service_router_pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]}}
+  storageClassName: rbd-new
   resources:
     requests:
       storage: 20Gi
-

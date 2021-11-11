@@ -6,12 +6,12 @@ slackurl () {
 
 alertcmd () {
   s="$(slackurl)"
-  p='payload={"channel": "#tapisv3_dev_stg_alerts", "username": "tapisdev", "text": "'$1'"}'
+  p='payload={"channel": "{{service_param["slack_channel"]}}", "username": "{{service_param["slack_username"]}}", "text": "'$1'"}'
   echo $p | curl -X POST --data-binary @- $s
 }
 
 checkvault () {
-  kubectl exec -it deploy/vault -- sh -c "wget -q -O - http://vault:8200/v1/sys/health" | jq -r ".sealed"
+  kubectl exec -it deploy/vault -- sh -c "wget -q -O - {{universal_param["vault_url"]}}" | jq -r ".sealed"
 }
 
 tenantdomain () {
