@@ -46,7 +46,7 @@ data:
         params:
           format: ['prometheus']
         static_configs:
-        - targets: ['vault:8200']
+        - targets: ['{{universal_param["vault_url"]}}']
   # monitoring: grafana prometheus resources
   grafana-datasources.yaml: |-
     {

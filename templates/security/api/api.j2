@@ -64,7 +64,7 @@ spec:
         - name: tapis.sk.vault.disable
           value: "false"
         - name: tapis.sk.vault.address
-          value: "http://vault:8200"
+          value: "{{universal_param["vault_url"]}}"
         - name: tapis.sk.vault.secretid
           valueFrom:
             secretKeyRef:

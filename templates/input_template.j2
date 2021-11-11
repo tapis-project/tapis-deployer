@@ -135,6 +135,10 @@ admin:
     file_ext: ".yml"
     template: admin-config.j2
     data:
+  tapischex:
+    file_ext: ""
+    template: "tapischex.j2"
+    data:
   ingress:
     burnup:
       file_ext: ""
@@ -638,6 +642,10 @@ skadmin:
     file_ext: ".yml"
     template: "skadmin-config.j2"
     data:
+  burnup:
+    file_ext: ""
+    template: "burnup.j2"
+    data:
   initialLoad:
     tapis-monitoring-secrets:
       file_ext: ".json"
@@ -661,6 +669,10 @@ skadmin:
       template: sk-admin-update.j2
       data:
         image_version: dev
+    run-sk-update:
+      file_ext: ""
+      template: run-sk-update.j2
+      data:
   util:
     file_ext: ".yml"
     template: "util.j2"
@@ -687,6 +699,11 @@ skadmin:
     file_ext: ".yml"
     template: sk-presetup-test.j2
     data:
+  rerun:
+    run-sk-admin2:
+      file_ext: ""
+      template: run-sk-admin2.j2
+      data:
 
 streams:
   service-parameters:
