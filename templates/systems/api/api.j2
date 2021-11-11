@@ -12,6 +12,8 @@ spec:
       labels:
         app: systems-api
     spec:
+      nodeSelector:
+        exempt: "yes"
       containers:
       - name: systems-api
         image: tapis/systems:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
