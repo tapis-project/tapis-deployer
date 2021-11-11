@@ -700,6 +700,25 @@ skadmin:
       template: run-sk-admin2.j2
       data:
 
+service-router:
+  service-parameters:
+    data:
+      service_name: "site-router"
+      service_router_pvc: "site-router-redis-vol1"
+  api:
+    api:
+      file_ext: ".yml"
+      template: api.j2
+      data:
+    pvc:
+      file_ext: ".yml"
+      template: pvc.j2
+      data:
+    site-router-config:
+      file_ext: ".yml"
+      template: site-router-config.j2
+      data:
+
 streams:
   service-parameters:
     data:

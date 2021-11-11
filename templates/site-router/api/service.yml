@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:  
+  name: site-router-api
+spec:
+  type: NodePort
+  selector:    
+    app: site-router-api
+  ports:  
+  - name: site-router-api
+    port: 8000
+    targetPort: 8000
+
