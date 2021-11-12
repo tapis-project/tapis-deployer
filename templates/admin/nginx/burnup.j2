@@ -3,4 +3,4 @@
 kubectl create secret tls tapis-tls-cert --cert={{service_param["nginx_cert_file"]}} --key={{service_param["nginx_key_file"]}}
 kubectl apply -f service.yml
 
-kubectl create configmap tapis-nginx-config --from-file=nginx.con
+kubectl create configmap tapis-nginx-config --from-file=nginx.conf
