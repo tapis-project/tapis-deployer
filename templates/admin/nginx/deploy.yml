@@ -21,8 +21,8 @@ spec:
           containerPort: 443
         volumeMounts:
         - name: config
-          mountPath: /etc/nginx/conf.d/tapis-nginx.conf
-          subPath: tapis-nginx.conf
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
         - name: certs
           mountPath: /tmp/ssl
       volumes:
@@ -30,8 +30,8 @@ spec:
         configMap:
           name: tapis-nginx-config
           items:
-          - key: tapis-nginx.conf
-            path: tapis-nginx.conf
+          - key: nginx.conf
+            path: nginx.conf
       - name: certs
         secret: 
           secretName: tapis-tls-cert

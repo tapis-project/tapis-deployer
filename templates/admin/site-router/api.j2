@@ -34,7 +34,7 @@ spec:
       volumes:
       - name: site-router-redis-data
         persistentVolumeClaim:
-          claimName: {{service_param["service_router_pvc"]|default(defaults["service_router_pvc"])}}
+          claimName: {{service_param["site_router_pvc"]|default(defaults["site_router_pvc"])}}
       - name: site-router-config
         configMap: 
           name: site-router-config
