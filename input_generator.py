@@ -90,14 +90,13 @@ prompts = {
     }
 }
 
-
-print("What preset would you like to use")
-for key in prompts:
-    print(key, ":", str(prompts[key]["number"]), "\n")
-
-preset_num = int(input())
-
 while True:
+    print("What preset would you like to use")
+    for key in prompts:
+        print(key, ":", str(prompts[key]["number"]), "\n")
+
+    preset_num = int(input())
+
     for key in prompts:
         if preset_num == prompts[key]["number"]:
             preset = prompts[key]
@@ -112,7 +111,9 @@ for key, value in preset["prompts"].items():
     match = False
     validate = False
     while True:
-        user_input = input(value["description"] + ":\n")
+        print(value["description"])
+        print("Here is an example", value["example"] + ":\n")
+        user_input = input()
         regex = value["regex"]
         if (re.match(regex, user_input)):
             match = True

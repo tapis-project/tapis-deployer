@@ -1,25 +1,6 @@
 --- # Test Yaml
 services:
-  - actors
-  - admin
-  - apps
-  - authenticator
-  - container-registry
-  - files
-  - jobs
-  - meta
-  - monitoring
-  - notifications
-  - pgrest
-  - pgrest-a2cps-dev
-  - pgrest-a2cps-prod
-  - security-kernel
-  - skadmin
   - streams
-  - systems
-  - tenants-api
-  - tokens
-  - vault
 
 universal-parameters:
   data:
