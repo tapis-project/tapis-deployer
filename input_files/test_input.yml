@@ -17,7 +17,7 @@ services:
   - skadmin
   - streams
   - systems
-  - tenants-api
+  - tenants
   - tokens
   - vault
 
@@ -741,7 +741,7 @@ systems:
       template: "pvc.j2"
       data:
 
-tenants-api:
+tenants:
   service-parameters:
     data:
       service_name: "tenants"

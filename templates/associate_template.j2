@@ -650,6 +650,15 @@ streams:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
+  influx2:
+    deploy:
+      file_ext: ".yml"
+      template: "deploy.j2"
+      data:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
   kapacitor:
     pvc:
       file_ext: ".yml"
@@ -693,7 +702,7 @@ systems:
       template: "pvc.j2"
       data:
 
-tenants-api:
+tenants:
   service-parameters:
     data:
       service_name: "tenants"
