@@ -1,6 +1,8 @@
 import re
 import requests
 from jinja2 import Environment, FileSystemLoader
+import argparse
+import os
 
 file_loader = FileSystemLoader('templates')
 env = Environment(loader=file_loader)
@@ -15,6 +17,8 @@ def validate_url(url):
     if r.status_code == 200:
         return True
     else:
+        print("Validate Function failed")
+        print(r.text)
         return False
 
 def associate_site_services(url):
@@ -90,51 +94,74 @@ prompts = {
     }
 }
 
-while True:
-    print("What preset would you like to use")
-    for key in prompts:
-        print(key, ":", str(prompts[key]["number"]), "\n")
+def main():
 
-    preset_num = int(input())
+    parser = argparse.ArgumentParser(description="Generate yaml config file")
 
-    for key in prompts:
-        if preset_num == prompts[key]["number"]:
-            preset = prompts[key]
-            break
-    if preset:
-        break
-    else:
-        print("Input did not match any preset")
+    parser.add_argument('-o', dest='outDir', metavar='outDir', nargs='?',
+                        help="File location of program output, if not specified defaults current location")
 
-for key, value in preset["prompts"].items():
-    user_input = ""
-    match = False
-    validate = False
+    args = parser.parse_args()
+
     while True:
-        print(value["description"])
-        print("Here is an example", value["example"] + ":\n")
-        user_input = input()
-        regex = value["regex"]
-        if (re.match(regex, user_input)):
-            match = True
-        else:
-            print("Input did not match expected format")
-        if ("function" in value):
-            try:
-                validate = value["function"](user_input)
-            except Exception as e:
-                print("Validate Function failed")
-                print(e)
-        else:
-            validate = True
-        if(match and validate):
-            if(type(validate) == tuple):
-                user_dict[key] = validate[1]
-            else:
-                user_dict[key] = user_input
-            break
-    
-template = env.get_template(preset["template"])
-with open("input.yml", "w") as file:
-    file.write(template.render(user_params = user_dict))
+        print("What preset would you like to use")
+        for key in prompts:
+            print(key, ":", str(prompts[key]["number"]), "\n")
 
+        preset_num = int(input())
+
+        for key in prompts:
+            if preset_num == prompts[key]["number"]:
+                preset = prompts[key]
+                break
+        if preset:
+            break
+        else:
+            print("Input did not match any preset")
+
+    for key, value in preset["prompts"].items():
+        user_input = ""
+        match = False
+        validate = False
+        while True:
+            print(value["description"])
+            print("Here is an example", value["example"] + ":\n")
+            user_input = input()
+            regex = value["regex"]
+            if (re.match(regex, user_input)):
+                match = True
+            else:
+                print("Input did not match expected format")
+            if ("function" in value):
+                try:
+                    validate = value["function"](user_input)
+                except Exception as e:
+                    print("Validate Function failed")
+                    print(e)
+            else:
+                validate = True
+            if(match and validate):
+                if(type(validate) == tuple):
+                    user_dict[key] = validate[1]
+                else:
+                    user_dict[key] = user_input
+                break
+        
+    template = env.get_template(preset["template"])
+    outDir = args.outDir
+    if(outDir):
+        outDir = outDir.strip()
+        try:
+            test = outDir+"/tapis-deploy/"
+            test2 = os.path.expanduser(test)
+            os.makedirs(test2)
+        except:
+            pass
+        with open(os.path.abspath(outDir)+"input.yml", "w") as file:
+            file.write(template.render(user_params = user_dict))
+    else:
+        with open("input.yml", "w") as file:
+            file.write(template.render(user_params = user_dict))
+
+if __name__ == "__main__":
+    main()
