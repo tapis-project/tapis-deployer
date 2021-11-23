@@ -17,25 +17,33 @@ here=`pwd`
 # echo "global config init:"
 # kubectl apply -f ~/global-config.yml
 
+
+{% if "vault" in service_list %}
 echo "vault:"
 cd $here/vault 
 ./burnup
 ./unseal
+{% endif%}
 
+{% if "skadmin" in service_list %}
 echo "skadmin:"
 cd $here/skadmin/renew-sk-secret 
 ./burnup
 
 cd $here/skadmin
 ./burnup
+{% endif%}
 
+{% if  "tenants" in service_list %}
 echo "tenants:"
 cd $here/tenants-api/postgres
 ./burnup
 
-cd $here/tenants-api/api
+cd $here/tenants/api
 ./burnup
+{% endif %}
 
+{% if  "security" in service_list %}
 echo "security-kernel:"
 cd $here/security-kernel/postgres
 ./burnup
@@ -43,11 +51,15 @@ cd $here/security-kernel/postgres
 # vault secret renewed in here
 cd $here/security-kernel/api
 ./burnup
+{% endif %}
 
+{% if  "tokens" in service_list %}
 echo "tokens:"
-cd $here/tokens-api
+cd $here/tokens
 ./burnup
+{% endif %}
 
+{% if  "authenticator" in service_list %}
 echo "authenticator:"
 cd $here/authenticator/ldap
 ./burnup
@@ -57,25 +69,33 @@ cd $here/authenticator/postgres
 
 cd $here/authenticator/api
 ./burnup
+{% endif %}
 
+{% if  "systems" in service_list %}
 echo "systems:"
 cd $here/systems/postgres
 ./burnup
 
 cd $here/systems/api
 ./burnup
+{% endif %}
 
+{% if  "files" in service_list %}
 echo "files:"
 cd $here/files/api
 ./burnup
+{% endif %}
 
+{% if  "apps" in service_list %}
 echo "apps:"
 cd $here/apps/postgres
 ./burnup
 
 cd $here/apps/api
 ./burnup
+{% endif %}
 
+{% if  "jobs" in service_list %}
 echo "jobs:"
 cd $here/jobs/postgres
 ./burnup
@@ -91,14 +111,18 @@ cd $here/jobs/workers
 
 cd $here/jobs/readers
 ./burnup
+{% endif %}
 
+{% if  "meta" in service_list %}
 echo "meta:"
 cd $here/meta/mongo
 ./burnup
 
 cd $here/meta/api
 ./burnup
+{% endif %}
 
+{% if  "streams" in service_list %}
 echo "streams:"
 cd $here/streams/mysql
 ./burnup
@@ -114,19 +138,28 @@ cd $here/streams/chords
 
 cd $here/streams/api
 ./burnup
+{% endif %}
 
+{% if  "actors" in service_list %}
 echo "actors:"
 cd $here/actors
 ./burnup
+{% endif %}
 
+{% if  "monitoring" in service_list %}
 echo "monitoring:"
 cd $here/monitoring
 ./burnup
+{% endif %}
 
+{% if  "pgrest" in service_list %}
 echo "pgrest:"
 cd $here/pgrest
 ./burnup
+{% endif %}
 
+{% if  "elastic" in service_list %}
 # echo "elastic:"
 # cd $here/elastic
 # ./burnup
+{% endif %}
