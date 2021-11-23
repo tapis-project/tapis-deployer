@@ -569,11 +569,60 @@ skadmin:
     template: "skadmin-config.j2"
     data:
   initialLoad:
+    tapis-abaco-secrets:
+      file_ext: ".json"
+      template: "tapis-abaco-secrets.j2"
+      data:
+    tapis-apps-secrets:
+      file_ext: ".json"
+      template: "tapis-apps-secrets.j2"
+      data:
+    tapis-authenticator-secrets:
+      file_ext: ".json"
+      template: "tapis-authenticator-secrets.j2"
+      data:
+    tapis-files-secrets:
+      file_ext: ".json"
+      template: "tapis-files-secrets.j2"
+      data:
+    tapis-jobs-secrets:
+      file_ext: ".json"
+      template: "tapis-jobs-secrets.j2"
+      data:
+    tapis-meta-secrets:
+      file_ext: ".json"
+      template: "tapis-meta-secrets.j2"
+      data:
     tapis-monitoring-secrets:
       file_ext: ".json"
       template: tapis-monitoring-secrets.j2
       data:
         passwords: something
+    tapis-notifications-secrets:
+      file_ext: ".json"
+      template: "tapis-notifications-secrets.j2"
+      data:
+    tapis-pgrest-secrets:
+      file_ext: ".json"
+      template: "tapis-pgrest-secrets.j2"
+      data:
+    tapis-sk-secrets:
+      file_ext: ".json"
+      template: "tapis-sk-secrets.j2"
+      data:
+    tapis-streams-secrets:
+      file_ext: ".json"
+      template: "tapis-streams-secrets.j2"
+      data:
+    tapis-systems-secrets:
+      file_ext: ".json"
+      template: "tapis-systems-secrets.j2"
+      data:
+    tapis-tokens-secrets:
+      file_ext: ".json"
+      template: "tapis-tokens-secrets.j2"
+      data:
+        tenants: ["admin", "assoc", "dev", "tacc"]
   renew-sk-secret:
      renew-sk-secret:
        file_ext: ".yml"
