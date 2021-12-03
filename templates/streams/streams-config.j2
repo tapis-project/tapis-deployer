@@ -19,7 +19,7 @@ data:
       "show_traceback": {{local_param["show_traceback"]|default("false")|tojson}},
       "chords_url": "http://chords-app:80",
       "chords_user_email": "streams@admin.tapis",
-      "influxdb_host": "chords-influxdb",
+      "influxdb_host": "http://chords-influxdb",
       "influxdb_port": "8086",
       "influxdb_database": "chords_ts_production",
       "influxdb_username": "admin",
@@ -28,5 +28,8 @@ data:
       "kapacitor_url": "http://kapacitor:9092",
       "kapacitor_username": "admin",
       "kapacitor_port": "9092",
-      "ignore_auth": true
+      "ignore_auth": true,
+      "influxdb_token": "{{local_param["influxdb_token"]|default(service_param["influxdb_token"])}}",
+      "influxdb_bucket": "streams",
+      "influxdb_org": "tapis"
     }
