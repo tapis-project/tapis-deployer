@@ -13,6 +13,7 @@ services:
   - pgrest
   - pgrest-a2cps-dev
   - pgrest-a2cps-prod
+  - proxy
   - security
   - skadmin
   - streams
@@ -33,6 +34,12 @@ universal-parameters:
     image_version: latest
     image_pull: Always
     vault_url: {{user_params["vault_url"]}}
+
+
+burnup:
+  file_ext: ""
+  template: "burnup.j2"
+  data:
 
 actors:
   service-parameters:
@@ -131,9 +138,6 @@ admin:
   service-parameters:
     data:
       service_name: "admin"
-      nginx_server_name: "~^(?<user>.+)\.test\.tapis\.io$;"
-      nginx_cert_file: "$HOME/cert.pem"
-      nginx_key_file: "$HOME/ssl/key.key"
   admin-config:
     file_ext: ".yml"
     template: admin-config.j2
@@ -142,28 +146,6 @@ admin:
     file_ext: ""
     template: "tapischex.j2"
     data:
-  site-router:
-    api:
-      file_ext: ".yml"
-      template: "api.j2"
-      data:
-    pvc:
-      file_ext: ".yml"
-      template: "pvc.j2"
-      data:
-    site-router-config:
-      file_ext: ".yml"
-      template: "site-router-config.j2"
-      data:
-  nginx:
-    burnup:
-      file_ext: ""
-      template: "burnup.j2"
-      data:
-    tapis-nginx:
-      file_ext: ".conf"
-      template: "tapis-nginx.j2"
-      data:
   verification:
     authenticator-test:
       file_ext: ""
@@ -489,6 +471,11 @@ monitoring:
       file_ext: ".yml"
       template: "prometheus-pvc.j2"
       data:
+    services:
+      service:
+        file_ext: ".yml"
+        template: "service.j2"
+        data:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
@@ -551,6 +538,10 @@ pgrest:
     template: api-deploy.j2
     data:
       image_version: dev
+  api-service:
+    file_ext: ".yml"
+    template: "api-service.j2"
+    data:
   postgres-deploy:
     file_ext: ".yml"
     template: "postgres-deploy.j2"
@@ -601,7 +592,43 @@ pgrest-a2cps-prod:
     template: "api-service.j2"
     data:
       service_name: "pgrest-a2cps-prod"
-      
+
+
+proxy:
+  service-parameters:
+    data:
+      service_name: "proxy"   
+      template_directory: "proxy"
+      nginx_server_name: '~^(?<user>.+)\.test\.tapis\.io$;'
+      nginx_cert_file: "$HOME/cert.pem"
+      nginx_key_file: "$HOME/key.key"
+      site_router_pvc: "site-router-redis-vol1"
+  proxy-config:
+    file_ext: ".yml"
+    template: "proxy-config.j2"
+    data:          
+  site-router:
+      api:
+        file_ext: ".yml"
+        template: "api.j2"
+        data:
+      pvc:
+        file_ext: ".yml"
+        template: "pvc.j2"
+        data:
+      site-router-config:
+        file_ext: ".yml"
+        template: "site-router-config.j2"
+        data:
+    nginx:
+      burnup:
+        file_ext: ""
+        template: "burnup.j2"
+        data:
+      nginx:
+        file_ext: ".conf"
+        template: "nginx.j2"
+        data:
 security:
   service-parameters:
     data:

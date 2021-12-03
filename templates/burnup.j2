@@ -17,8 +17,23 @@ here=`pwd`
 # echo "global config init:"
 # kubectl apply -f ~/global-config.yml
 
+create_kservice(){
+    echo "creating kubernetes servies:"
+    find -name '*service*.yml' -exec kubectl apply -f {} \;
+}
+
 
 init(){
+    {% if "proxy" in service_list %}
+    echo "nginx:"
+    cd $here/proxy/nginx 
+    ./burnup
+
+    echo "site-router:"
+    cd $here/proxy/site-router 
+    ./burnup
+    {% endif%}
+
     {% if "vault" in service_list %}
     echo "vault:"
     cd $here/vault 
@@ -37,7 +52,7 @@ init(){
 
     {% if  "tenants" in service_list %}
     echo "tenants:"
-    cd $here/tenants-api/postgres
+    cd $here/tenants/postgres
     ./burnup
 
     cd $here/tenants/api
@@ -46,11 +61,11 @@ init(){
 
     {% if  "security" in service_list %}
     echo "security-kernel:"
-    cd $here/security-kernel/postgres
+    cd $here/security/postgres
     ./burnup
 
     # vault secret renewed in here
-    cd $here/security-kernel/api
+    cd $here/security/api
     ./burnup
     {% endif %}
 
@@ -173,4 +188,5 @@ services() {
 case $1 in
     init) "$@"; exit;;
     services) "$@"; exit;;
+    create_kservice) "$@"; exit;;
 esac

@@ -1,53 +1,32 @@
 --- # Test Yaml
 services:
-  - actors
-  - admin
-  - apps
-  - authenticator
-  - container-registry
   - files
   - jobs
-  - meta
-  - monitoring
-  - notifications
-  - pgrest
-  - pgrest-a2cps-dev
-  - pgrest-a2cps-prod
-  - proxy
   - security
-  - skadmin
-  - streams
-  - systems
-  - tenants
   - tokens
+  - authenticator
+  - meta
+  - skadmin
   - vault
 
 universal-parameters:
   data:
-    wildcard_url: changeme
-    service_url: https://admin.test.tapis.io
-    service_tenant_id: admin
-    service_site_id: tacc
-    tenants: ["dev", "admin"]
+    service_url: https://admin.develop.tapis.io
+    service_tenant_id: assocadm
+    service_site_id: assoc
+    tenants: ["assocadm", "assocdev"]
     deployment: test
     storage_class: rbd-new
     image_version: latest
     image_pull: Always
-    vault_url: 
-
-burnup:
-  file_ext: ""
-  template: "burnup.j2"
-  data:
-    
 
 actors:
   service-parameters:
-    data:
-      service_name: "actors"
-      rabbit_pvc: "actors-rabbitmq-vol02"
-      mongo_pvc: "actors-mongo-vol02"
-      mongo_backup_pvc: "actors-mongo-backup-vol02"
+      data:
+        service_name: "actors"
+        rabbit_pvc: "actors-rabbitmq-vol02"
+        mongo_pvc: "actors-mongo-vol02"
+        mongo_backup_pvc: "actors-mongo-backup-vol02"
   actors-config:
     file_ext: ".yml"
     template: actors-config.j2
@@ -66,7 +45,7 @@ actors:
       file_ext: ".yml"
       template: admin.j2
       data:
-        image_pull: null 
+        image_pull: null
     configmap:
       file_ext: ".yml"
       template: configmap.j2
@@ -142,10 +121,6 @@ admin:
     file_ext: ".yml"
     template: admin-config.j2
     data:
-  tapischex:
-    file_ext: ""
-    template: "tapischex.j2"
-    data:
   verification:
     authenticator-test:
       file_ext: ""
@@ -163,6 +138,7 @@ admin:
       file_ext: ""
       template: "tokens-test.j2"
       data:
+        
 
 apps:
   service-parameters:
@@ -436,6 +412,7 @@ monitoring:
       elastic_pvc: "elasticsearch-data-vol02"
       grafana_pvc: "grafana-vol02"
       prometheus_pvc: "prometheus-vol02"
+      stern_pvc: "stern-data-vol02"
   monitoring-config:
     file_ext: ".yml"
     template: "monitoring-config.j2"
@@ -452,6 +429,7 @@ monitoring:
       file_ext: ".yml"
       template: "grafana.j2"
       data:
+        
     prometheus:
       file_ext: ".yml"
       template: "prometheus.j2"
@@ -470,10 +448,20 @@ monitoring:
       file_ext: ".yml"
       template: "prometheus-pvc.j2"
       data:
-  services:
-    service:
+        
+  stern:
+    deploy:
       file_ext: ".yml"
-      template: "service.j2"
+      template: "deploy.j2"
+      data:
+        
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+    util.yml:
+      file_ext: ".bak"
+      template: "util.yml.j2"
       data:
         
   secrets:
@@ -521,102 +509,22 @@ pgrest:
     file_ext: ".yml"
     template: "pgrest-config.j2"
     data:
-  api-deploy:
-    file_ext: ".yml"
-    template: api-deploy.j2
-    data:
-      image_version: dev
-  api-service:
-    file_ext: ".yml"
-    template: "api-service.j2"
-    data:
-  postgres-deploy:
-    file_ext: ".yml"
-    template: "postgres-deploy.j2"
-    data:
-  postgres-pvc:
-    file_ext: ".yml"
-    template: "postgres-pvc.j2"
-    data:
-
-pgrest-a2cps-dev:
-  service-parameters:
-    data:
-      service_name: "pgrest-a2cps-dev"   
-      template_directory: "pgrest"
-  pgrest-config:
-    file_ext: ".yml"
-    template: "pgrest-config.j2"
-    data:    
-      tenants: ["a2cps-dev"]     
-  api-deploy:
-    file_ext: ".yml"
-    template: api-deploy.j2
-    data:
-      image_version: dev
-  api-service:
-    file_ext: ".yml"
-    template: "api-service.j2"
-    data:
-      service_name: "pgrest-a2cps-prod"
-
-pgrest-a2cps-prod:
-  service-parameters:
-    data:
-      service_name: "pgrest-a2cps-prod"   
-      template_directory: "pgrest"
-  pgrest-config:
-    file_ext: ".yml"
-    template: "pgrest-config.j2"
-    data:          
-      tenants: ["a2cps"]
-  api-deploy:
-    file_ext: ".yml"
-    template: api-deploy.j2
-    data:
-      image_version: dev
-  api-service:
-    file_ext: ".yml"
-    template: "api-service.j2"
-    data:
-      service_name: "pgrest-a2cps-prod"
-
-
-proxy:
-  service-parameters:
-    data:
-      service_name: "proxy"   
-      template_directory: "proxy"
-      nginx_server_name: '~^(?<user>.+)\.test\.tapis\.io$;'
-      nginx_cert_file: "$HOME/cert.pem"
-      nginx_key_file: "$HOME/key.key"
-      site_router_pvc: "site-router-redis-vol1"
-  proxy-config:
-    file_ext: ".yml"
-    template: "proxy-config.j2"
-    data:          
-  site-router:
-    api:
+           
+  yml:
+    api-deploy:
       file_ext: ".yml"
-      template: "api.j2"
+      template: api-deploy.j2
       data:
-    pvc:
+        image_version: dev
+    postgres-deploy:
       file_ext: ".yml"
-      template: "pvc.j2"
+      template: "postgres-deploy.j2"
       data:
-    site-router-config:
+    postgres-pvc:
       file_ext: ".yml"
-      template: "site-router-config.j2"
+      template: "postgres-pvc.j2"
       data:
-  nginx:
-    burnup:
-      file_ext: ""
-      template: "burnup.j2"
-      data:
-    nginx:
-      file_ext: ".conf"
-      template: "nginx.j2"
-      data:
+
 security:
   service-parameters:
     data:
@@ -662,10 +570,6 @@ skadmin:
   skadmin-config:
     file_ext: ".yml"
     template: "skadmin-config.j2"
-    data:
-  burnup:
-    file_ext: ""
-    template: "burnup.j2"
     data:
   initialLoad:
     tapis-abaco-secrets:
@@ -739,10 +643,6 @@ skadmin:
       template: sk-admin-update.j2
       data:
         image_version: dev
-    run-sk-update:
-      file_ext: ""
-      template: run-sk-update.j2
-      data:
   util:
     file_ext: ".yml"
     template: "util.j2"
@@ -753,28 +653,6 @@ skadmin:
     template: util3-job.j2
     data:
       image_version: dev
-  create-sk-roles:
-    file_ext: ""
-    template: create-sk-roles.j2
-    data:
-  run-sk-admin:
-    file_ext: ""
-    template: run-sk-admin.j2
-    data:
-  sk-presetup:
-    file_ext: ".yml"
-    template: sk-presetup.j2
-    data:
-  sk-presetup-test:
-    file_ext: ".yml"
-    template: sk-presetup-test.j2
-    data:
-  rerun:
-    run-sk-admin2:
-      file_ext: ""
-      template: run-sk-admin2.j2
-      data:
-
 
 streams:
   service-parameters:
@@ -837,10 +715,6 @@ streams:
     pvc:
       file_ext: ".yml"
       template: "pvc.j2"
-      data:
-    kapacitor:
-      file_ext: ".conf"
-      template: "kapacitor.j2"
       data:
   mysql:
     deploy:
@@ -933,10 +807,6 @@ tokens:
     template: api.j2
     data:
       image_version: dev
-  create_tenant_token_roles:
-    file_ext: ".py"
-    template: create_tenant_token_roles.j2
-    data:
 
 vault: 
   service-parameters:
