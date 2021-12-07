@@ -525,6 +525,46 @@ pgrest:
       template: "postgres-pvc.j2"
       data:
 
+
+proxy:
+  service-parameters:
+    data:
+      service_name: "proxy"
+      template_directory: "proxy"
+      nginx_server_name: '~^(?<user>.+)\.assoc\.tapis\.io$;'
+      nginx_cert_file: "$HOME/cert.pem"
+      nginx_key_file: "$HOME/key.key"
+      site_router_pvc: "site-router-redis-vol1"
+  proxy-config:
+    file_ext: ".yml"
+    template: "proxy-config.j2"
+    data:
+  site-router:
+    api:
+      file_ext: ".yml"
+      template: "api.j2"
+      data:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+    site-router-config:
+      file_ext: ".yml"
+      template: "site-router-config.j2"
+      data:
+  nginx:
+    burnup:
+      file_ext: ""
+      template: "burnup.j2"
+      data:
+    nginx:
+      file_ext: ".conf"
+      template: "nginx.j2"
+      data:
+
+
+
+
 security:
   service-parameters:
     data:

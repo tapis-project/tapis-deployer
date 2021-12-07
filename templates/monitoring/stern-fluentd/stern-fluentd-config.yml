@@ -8,15 +8,6 @@ data:
     <source>
       @type exec
       command 'cd /usr/bin; /usr/bin/stern --container .* --color never --tail 0 --exclude-pod "(tapis-nginx-*|stern-fluentd-*|monitoring-kibana-*)"'
-    <parse>
-      @type none
-    </parse>
-    </source>
-
-
-    <source>
-      @type exec
-      command 'cd /usr/bin; /usr/bin/stern --container .* --color never --tail 0 --exclude-pod "(tapis-nginx-*|stern-fluentd-*|monitoring-kibana-*)"'
       <parse>
         @type regexp
         expression /^(?<remote>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<host>[^ ]*)" "(?<method>\S+) (?<path>[^\"]*?) (?:[^ ]*?)" (?<code>[^ ]*) (?<size>[^ ]*) "(?<referer>[^\"]*)" "(?<agent>[^\"]*)"/                            

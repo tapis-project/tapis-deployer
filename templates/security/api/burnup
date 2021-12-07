@@ -9,11 +9,12 @@ kubectl apply -f service.yml
 # Always get a fresh role-id and secret-id from vault.
 # We add a sleep because seems to be some asynchrony
 # involved with Kubernetes secret propagation.
-cur=`pwd`
-cd ../../skadmin/renew-sk-secret
-./burnup
-sleep 5
-cd $cur
+# cur=`pwd`
+# cd ../../skadmin/renew-sk-secret
+# ./burnup
+# sleep 5
+# cd $cur
+# This is now moved to the init container
 
 # Start the SK service.
 kubectl apply -f api.yml 

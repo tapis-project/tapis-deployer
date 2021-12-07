@@ -33,7 +33,7 @@ universal-parameters:
     storage_class: rbd-new
     image_version: latest
     image_pull: Always
-    vault_url: 
+    vault_url: http://vault:8200
 
 burnup:
   file_ext: ""
@@ -521,6 +521,7 @@ pgrest:
     file_ext: ".yml"
     template: "pgrest-config.j2"
     data:
+      tenants: ["dev"]
   api-deploy:
     file_ext: ".yml"
     template: api-deploy.j2
@@ -617,6 +618,8 @@ proxy:
       file_ext: ".conf"
       template: "nginx.j2"
       data:
+
+
 security:
   service-parameters:
     data:
@@ -723,11 +726,15 @@ skadmin:
       data:
         tenants: ["admin", "assoc", "dev", "tacc"]
   renew-sk-secret:
-     renew-sk-secret:
-       file_ext: ".yml"
-       template: "renew-sk-secret.j2"
-       data:
-         image_pull: Always
+    renew-sk-secret:
+      file_ext: ".yml"
+      template: "renew-sk-secret.j2"
+      data:
+        image_pull: Always
+    renew-sk-secret-script:
+      file_ext: ""
+      template: "renew-sk-secret-script.j2"
+      data:
   sk-admin-init:
     file_ext: ".yml"
     template: sk-admin-init.j2
