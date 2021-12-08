@@ -49,7 +49,9 @@ init(){
     cd $here/skadmin
     ./burnup
     {% endif%}
+}
 
+primary_services(){
     {% if  "tenants" in service_list %}
     echo "tenants:"
     cd $here/tenants/postgres
@@ -74,9 +76,6 @@ init(){
     cd $here/tokens
     ./burnup
     {% endif %}
-}
-
-services() {
 
     {% if  "authenticator" in service_list %}
     echo "authenticator:"
@@ -89,6 +88,10 @@ services() {
     cd $here/authenticator/api
     ./burnup
     {% endif %}
+}
+
+secondary_services() {
+
 
     {% if  "systems" in service_list %}
     echo "systems:"
@@ -187,6 +190,7 @@ services() {
 
 case $1 in
     init) "$@"; exit;;
-    services) "$@"; exit;;
+    primary_services) "$@"; exit;;
+    secondary_services) "$@"; exit;;
     create_kservice) "$@"; exit;;
 esac

@@ -39,7 +39,6 @@ burnup:
   file_ext: ""
   template: "burnup.j2"
   data:
-    
 
 actors:
   service-parameters:

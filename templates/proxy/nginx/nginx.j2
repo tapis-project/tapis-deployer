@@ -115,7 +115,7 @@ http {
     #    {
     #        rewrite https://tapis.io break;
     #    }
-    
+        {% if "authenticator" in service_list %}
         location /v3/oauth2
         {
     #        auth_request /_auth;
@@ -133,7 +133,7 @@ http {
             }
     
         }
-    
+        {% endif %}
         location /v3/site-router
         {
            # this location intentionally does NOT get an auth_request directive since the site-router endpoints IS the target of auth_request.
@@ -141,15 +141,16 @@ http {
            proxy_redirect off;
            proxy_set_header Host $host;
         }
-    
+        {% if "security" in service_list %} 
         location /v3/security
         {
     #        auth_request /_auth;
             proxy_pass http://sk-api:8080;
             proxy_redirect off;
             proxy_set_header Host localhost:5000;
-        }
-    
+        } 
+        {% endif %}
+        {% if "tenants" in service_list %}
         location /v3/tenants
         {
     
@@ -158,7 +159,7 @@ http {
             proxy_redirect off;
             proxy_set_header Host localhost:5000;
         }
-    
+        {% endif %}
         location /_auth {
             internal;
            
@@ -183,7 +184,7 @@ http {
             proxy_pass https://admin.develop.tapis.io/v3/site-router/check;
           }
     
-    
+        {% if "tenants" in service_list %}
         location /v3/sites
         {
     #        auth_request /_auth;
@@ -191,7 +192,8 @@ http {
             proxy_redirect off;
             proxy_set_header Host localhost:5000;
         }
-    
+        {% endif %}
+        {% if "meta" in service_list %}
         location /v3/meta
         {
     #        auth_request /_auth;
@@ -199,7 +201,8 @@ http {
             proxy_redirect off;
             proxy_set_header Host localhost:5000;
         }
-    
+        {% endif %}
+        {% if "streams" in service_list %}
         location /v3/streams
         {
     #        auth_request /_auth;
@@ -215,7 +218,8 @@ http {
                 return 204;
             }
         }
-    
+        {% endif %}
+        {% if "files" in service_list %}
         location /v3/files
         {
     #        auth_request /_auth;
@@ -224,7 +228,8 @@ http {
             proxy_set_header Host localhost:5000;
             client_max_body_size 50G;
         }
-    
+        {% endif %}
+        {% if "systems" in service_list %}
         location /v3/systems
         {
     #        auth_request /_auth;
@@ -232,7 +237,8 @@ http {
             proxy_redirect off;
             proxy_set_header Host localhost:5000;
         }
-    
+        {% endif %}
+        {% if "tokens" in service_list %}
         location /v3/tokens
         {
             # we intentionally do NOT include an auth_request for Tokens because tokens only handles service requests.
@@ -240,7 +246,8 @@ http {
             proxy_redirect off;
             proxy_set_header Host localhost:5000;
         }
-    
+        {% endif %}
+        {% if "jobs" in service_list %}
         location /v3/jobs
         {
     #        auth_request /_auth;
@@ -248,7 +255,8 @@ http {
             proxy_redirect off;
             proxy_set_header Host localhost:5000;
         }
-    
+        {% endif %}
+        {% if "actors" in service_list %}
         location /v3/actors
         {
     #        auth_request /_auth;
@@ -256,7 +264,8 @@ http {
             proxy_redirect off;
             proxy_set_header Host $host;
         }
-    
+        {% endif %}        
+        {% if "apps" in service_list %}
         location /v3/apps
         {
     #        auth_request /_auth;
@@ -264,14 +273,16 @@ http {
             proxy_redirect off;
             proxy_set_header Host localhost:5000;
         }
-    
+        {% endif %}
+        {% if "monitoring" in service_list %}
         location /grafana/
         {
             proxy_pass http://monitoring-grafana:3000;
             proxy_redirect off;
             proxy_set_header Host $host;
         }
-    
+        {% endif %}
+        {% if "pgrest" in service_list %}
         location /v3/pgrest
         {
     #        auth_request /_auth;
@@ -279,5 +290,6 @@ http {
             proxy_redirect off;
             proxy_set_header Host $host;
         }
+        {% endif %}
     }
 }
