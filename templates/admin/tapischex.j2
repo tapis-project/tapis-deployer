@@ -1,7 +1,7 @@
 #!/bin/bash
 
 slackurl () {
-  kubectl get configmap global-config -o json | jq -r '.data.slack_url'
+  kubectl get configmap admin-config -o json | jq -r '.data.slack_url'
 }
 
 alertcmd () {
@@ -15,7 +15,7 @@ checkvault () {
 }
 
 tenantdomain () {
-  kubectl get configmap global-config -o json | jq -r '.data.tenant_domain'
+  kubectl get configmap admin-config -o json | jq -r '.data.tenant_domain'
 }
 
 # vault seal check

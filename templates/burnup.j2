@@ -1,21 +1,10 @@
 #!/bin/bash
 
-# global tapis burnup script
+# global Tapis burnup script
 
-# ... run all the components in the correct order
-
-# You should copy global-config.yml.template to ~/global-config.yml and edit for your site
+# Helps run all the components in the correct order
 
 here=`pwd`
-
-# if [ ! -f ~/global-config.yml ]
-# then
-#   echo "Could not find ~/global-config.yml. Exiting."
-#   exit 1
-# fi
-
-# echo "global config init:"
-# kubectl apply -f ~/global-config.yml
 
 create_kservice(){
     echo "creating kubernetes servies:"

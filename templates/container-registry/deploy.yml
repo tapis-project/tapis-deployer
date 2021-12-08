@@ -26,5 +26,5 @@ spec:
       volumes:
       - name: container-registry-config
         configMap:
-          name: global-config
+          name: container-registry-config
 
