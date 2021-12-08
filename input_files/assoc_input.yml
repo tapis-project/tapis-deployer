@@ -665,7 +665,7 @@ skadmin:
       file_ext: ".json"
       template: "tapis-tokens-secrets.j2"
       data:
-        tenants: ["admin", "assoc", "dev", "tacc"]
+        tenants: ["assocdev", "assocadm"]
   renew-sk-secret:
      renew-sk-secret:
        file_ext: ".yml"
