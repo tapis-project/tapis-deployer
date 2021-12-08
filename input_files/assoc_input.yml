@@ -6,13 +6,15 @@ services:
   - tokens
   - authenticator
   - meta
+  - skadmin
+  - vault
 
 universal-parameters:
   data:
     service_url: https://admin.develop.tapis.io
     service_tenant_id: assocadm
     service_site_id: assoc
-    tenants: ["dev", "admin"]
+    tenants: ["assocadm", "assocdev"]
     deployment: test
     storage_class: rbd-new
     image_version: latest
@@ -523,6 +525,46 @@ pgrest:
       template: "postgres-pvc.j2"
       data:
 
+
+proxy:
+  service-parameters:
+    data:
+      service_name: "proxy"
+      template_directory: "proxy"
+      nginx_server_name: '~^(?<user>.+)\.assoc\.tapis\.io$;'
+      nginx_cert_file: "$HOME/cert.pem"
+      nginx_key_file: "$HOME/key.key"
+      site_router_pvc: "site-router-redis-vol1"
+  proxy-config:
+    file_ext: ".yml"
+    template: "proxy-config.j2"
+    data:
+  site-router:
+    api:
+      file_ext: ".yml"
+      template: "api.j2"
+      data:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+    site-router-config:
+      file_ext: ".yml"
+      template: "site-router-config.j2"
+      data:
+  nginx:
+    burnup:
+      file_ext: ""
+      template: "burnup.j2"
+      data:
+    nginx:
+      file_ext: ".conf"
+      template: "nginx.j2"
+      data:
+
+
+
+
 security:
   service-parameters:
     data:
@@ -570,11 +612,60 @@ skadmin:
     template: "skadmin-config.j2"
     data:
   initialLoad:
+    tapis-abaco-secrets:
+      file_ext: ".json"
+      template: "tapis-abaco-secrets.j2"
+      data:
+    tapis-apps-secrets:
+      file_ext: ".json"
+      template: "tapis-apps-secrets.j2"
+      data:
+    tapis-authenticator-secrets:
+      file_ext: ".json"
+      template: "tapis-authenticator-secrets.j2"
+      data:
+    tapis-files-secrets:
+      file_ext: ".json"
+      template: "tapis-files-secrets.j2"
+      data:
+    tapis-jobs-secrets:
+      file_ext: ".json"
+      template: "tapis-jobs-secrets.j2"
+      data:
+    tapis-meta-secrets:
+      file_ext: ".json"
+      template: "tapis-meta-secrets.j2"
+      data:
     tapis-monitoring-secrets:
       file_ext: ".json"
       template: tapis-monitoring-secrets.j2
       data:
         passwords: something
+    tapis-notifications-secrets:
+      file_ext: ".json"
+      template: "tapis-notifications-secrets.j2"
+      data:
+    tapis-pgrest-secrets:
+      file_ext: ".json"
+      template: "tapis-pgrest-secrets.j2"
+      data:
+    tapis-sk-secrets:
+      file_ext: ".json"
+      template: "tapis-sk-secrets.j2"
+      data:
+    tapis-streams-secrets:
+      file_ext: ".json"
+      template: "tapis-streams-secrets.j2"
+      data:
+    tapis-systems-secrets:
+      file_ext: ".json"
+      template: "tapis-systems-secrets.j2"
+      data:
+    tapis-tokens-secrets:
+      file_ext: ".json"
+      template: "tapis-tokens-secrets.j2"
+      data:
+        tenants: ["assocdev", "assocadm"]
   renew-sk-secret:
      renew-sk-secret:
        file_ext: ".yml"
@@ -651,6 +742,15 @@ streams:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
+  influx2:
+    deploy:
+      file_ext: ".yml"
+      template: "deploy.j2"
+      data:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
   kapacitor:
     pvc:
       file_ext: ".yml"
@@ -694,7 +794,7 @@ systems:
       template: "pvc.j2"
       data:
 
-tenants-api:
+tenants:
   service-parameters:
     data:
       service_name: "tenants"

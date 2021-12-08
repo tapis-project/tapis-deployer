@@ -29,7 +29,7 @@ data:
       "kapacitor_username": "admin",
       "kapacitor_port": "9092",
       "ignore_auth": true,
-      "influxdb_token":"myawesometapistoken",
-      "influxdb_bucket":"streams",
-      "influxdb_org":"tapis"
+      "influxdb_token": "{{local_param["influxdb_token"]|default(service_param["influxdb_token"])}}",
+      "influxdb_bucket": "streams",
+      "influxdb_org": "tapis"
     }

@@ -10,7 +10,7 @@ env.trim_blocks = True
 env.lstrip_blocks = True
 env.rstrip_blocks = True
 
-def write_tapis(input_yaml, path, service_list, outDir = os.path.expanduser('~/tmp'), defaults_file="", uni_param="", ser_param="", is_sub=False):
+def write_tapis(input_yaml, path, service_list, outDir = os.path.expanduser('~/tmp'), defaults_file="", uni_param="", ser_param={"data": ""}, is_sub=False):
     for obj, data in input_yaml.items():
         if obj == "universal-parameters":
             uni_param = data 
@@ -34,7 +34,7 @@ def write_tapis(input_yaml, path, service_list, outDir = os.path.expanduser('~/t
                 except:
                     pass
                 with open(outDir + "/tapis-deploy/" + file_path, "w") as file:
-                    file.write(template.render(local_param=data['data'], service_param=ser_param['data'], universal_param=uni_param['data'], defaults=def_param))
+                    file.write(template.render(local_param=data['data'], service_param=ser_param['data'], universal_param=uni_param['data'], service_list = service_list, defaults=def_param))
                     os.chmod(outDir + "/tapis-deploy/" + file_path, permissions)
         else:
             if(obj not in service_list and not is_sub):

@@ -45,8 +45,13 @@ data:
         metrics_path: '/v1/sys/metrics'
         params:
           format: ['prometheus']
+        scheme: {%-if "https" in universal_param["vault_url"] -%} 
+         https 
+        {% else -%} 
+         http 
+        {% endif %}
         static_configs:
-        - targets: ['{{universal_param["vault_url"]}}']
+        - targets: ['{{universal_param["vault_url"] | replace('http://', "") | replace('https://', "")}}']
   # monitoring: grafana prometheus resources
   grafana-datasources.yaml: |-
     {

@@ -13,16 +13,18 @@ services:
   - pgrest
   - pgrest-a2cps-dev
   - pgrest-a2cps-prod
-  - security-kernel
+  - proxy
+  - security
   - skadmin
   - streams
   - systems
-  - tenants-api
+  - tenants
   - tokens
   - vault
 
 universal-parameters:
   data:
+    wildcard_url: changeme
     service_url: https://admin.test.tapis.io
     service_tenant_id: admin
     service_site_id: tacc
@@ -31,14 +33,20 @@ universal-parameters:
     storage_class: rbd-new
     image_version: latest
     image_pull: Always
+    vault_url: http://vault:8200
+
+burnup:
+  file_ext: ""
+  template: "burnup.j2"
+  data:
 
 actors:
   service-parameters:
-      data:
-        service_name: "actors"
-        rabbit_pvc: "actors-rabbitmq-vol02"
-        mongo_pvc: "actors-mongo-vol02"
-        mongo_backup_pvc: "actors-mongo-backup-vol02"
+    data:
+      service_name: "actors"
+      rabbit_pvc: "actors-rabbitmq-vol02"
+      mongo_pvc: "actors-mongo-vol02"
+      mongo_backup_pvc: "actors-mongo-backup-vol02"
   actors-config:
     file_ext: ".yml"
     template: actors-config.j2
@@ -57,7 +65,7 @@ actors:
       file_ext: ".yml"
       template: admin.j2
       data:
-        image_pull: null
+        image_pull: null 
     configmap:
       file_ext: ".yml"
       template: configmap.j2
@@ -133,6 +141,10 @@ admin:
     file_ext: ".yml"
     template: admin-config.j2
     data:
+  tapischex:
+    file_ext: ""
+    template: "tapischex.j2"
+    data:
   verification:
     authenticator-test:
       file_ext: ""
@@ -150,7 +162,6 @@ admin:
       file_ext: ""
       template: "tokens-test.j2"
       data:
-        
 
 apps:
   service-parameters:
@@ -424,7 +435,6 @@ monitoring:
       elastic_pvc: "elasticsearch-data-vol02"
       grafana_pvc: "grafana-vol02"
       prometheus_pvc: "prometheus-vol02"
-      stern_pvc: "stern-data-vol02"
   monitoring-config:
     file_ext: ".yml"
     template: "monitoring-config.j2"
@@ -441,7 +451,6 @@ monitoring:
       file_ext: ".yml"
       template: "grafana.j2"
       data:
-        
     prometheus:
       file_ext: ".yml"
       template: "prometheus.j2"
@@ -459,7 +468,13 @@ monitoring:
     prometheus-pvc:
       file_ext: ".yml"
       template: "prometheus-pvc.j2"
-      data:        
+      data:
+  services:
+    service:
+      file_ext: ".yml"
+      template: "service.j2"
+      data:
+        
   secrets:
     file_ext: ".yml"
     template: "secrets.j2"
@@ -505,11 +520,16 @@ pgrest:
     file_ext: ".yml"
     template: "pgrest-config.j2"
     data:
+      tenants: ["dev"]
   api-deploy:
     file_ext: ".yml"
     template: api-deploy.j2
     data:
       image_version: dev
+  api-service:
+    file_ext: ".yml"
+    template: "api-service.j2"
+    data:
   postgres-deploy:
     file_ext: ".yml"
     template: "postgres-deploy.j2"
@@ -561,6 +581,44 @@ pgrest-a2cps-prod:
     data:
       service_name: "pgrest-a2cps-prod"
 
+
+proxy:
+  service-parameters:
+    data:
+      service_name: "proxy"   
+      template_directory: "proxy"
+      nginx_server_name: '~^(?<user>.+)\.test\.tapis\.io$;'
+      nginx_cert_file: "$HOME/cert.pem"
+      nginx_key_file: "$HOME/key.key"
+      site_router_pvc: "site-router-redis-vol1"
+  proxy-config:
+    file_ext: ".yml"
+    template: "proxy-config.j2"
+    data:          
+  site-router:
+    api:
+      file_ext: ".yml"
+      template: "api.j2"
+      data:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+    site-router-config:
+      file_ext: ".yml"
+      template: "site-router-config.j2"
+      data:
+  nginx:
+    burnup:
+      file_ext: ""
+      template: "burnup.j2"
+      data:
+    nginx:
+      file_ext: ".conf"
+      template: "nginx.j2"
+      data:
+
+
 security:
   service-parameters:
     data:
@@ -607,18 +665,75 @@ skadmin:
     file_ext: ".yml"
     template: "skadmin-config.j2"
     data:
+  burnup:
+    file_ext: ""
+    template: "burnup.j2"
+    data:
   initialLoad:
+    tapis-abaco-secrets:
+      file_ext: ".json"
+      template: "tapis-abaco-secrets.j2"
+      data:
+    tapis-apps-secrets:
+      file_ext: ".json"
+      template: "tapis-apps-secrets.j2"
+      data:
+    tapis-authenticator-secrets:
+      file_ext: ".json"
+      template: "tapis-authenticator-secrets.j2"
+      data:
+    tapis-files-secrets:
+      file_ext: ".json"
+      template: "tapis-files-secrets.j2"
+      data:
+    tapis-jobs-secrets:
+      file_ext: ".json"
+      template: "tapis-jobs-secrets.j2"
+      data:
+    tapis-meta-secrets:
+      file_ext: ".json"
+      template: "tapis-meta-secrets.j2"
+      data:
     tapis-monitoring-secrets:
       file_ext: ".json"
       template: tapis-monitoring-secrets.j2
       data:
         passwords: something
+    tapis-notifications-secrets:
+      file_ext: ".json"
+      template: "tapis-notifications-secrets.j2"
+      data:
+    tapis-pgrest-secrets:
+      file_ext: ".json"
+      template: "tapis-pgrest-secrets.j2"
+      data:
+    tapis-sk-secrets:
+      file_ext: ".json"
+      template: "tapis-sk-secrets.j2"
+      data:
+    tapis-streams-secrets:
+      file_ext: ".json"
+      template: "tapis-streams-secrets.j2"
+      data:
+    tapis-systems-secrets:
+      file_ext: ".json"
+      template: "tapis-systems-secrets.j2"
+      data:
+    tapis-tokens-secrets:
+      file_ext: ".json"
+      template: "tapis-tokens-secrets.j2"
+      data:
+        tenants: ["admin", "assoc", "dev", "tacc"]
   renew-sk-secret:
-     renew-sk-secret:
-       file_ext: ".yml"
-       template: "renew-sk-secret.j2"
-       data:
-         image_pull: Always
+    renew-sk-secret:
+      file_ext: ".yml"
+      template: "renew-sk-secret.j2"
+      data:
+        image_pull: Always
+    renew-sk-secret-script:
+      file_ext: ""
+      template: "renew-sk-secret-script.j2"
+      data:
   sk-admin-init:
     file_ext: ".yml"
     template: sk-admin-init.j2
@@ -630,6 +745,10 @@ skadmin:
       template: sk-admin-update.j2
       data:
         image_version: dev
+    run-sk-update:
+      file_ext: ""
+      template: run-sk-update.j2
+      data:
   util:
     file_ext: ".yml"
     template: "util.j2"
@@ -640,6 +759,28 @@ skadmin:
     template: util3-job.j2
     data:
       image_version: dev
+  create-sk-roles:
+    file_ext: ""
+    template: create-sk-roles.j2
+    data:
+  run-sk-admin:
+    file_ext: ""
+    template: run-sk-admin.j2
+    data:
+  sk-presetup:
+    file_ext: ".yml"
+    template: sk-presetup.j2
+    data:
+  sk-presetup-test:
+    file_ext: ".yml"
+    template: sk-presetup-test.j2
+    data:
+  rerun:
+    run-sk-admin2:
+      file_ext: ""
+      template: run-sk-admin2.j2
+      data:
+
 
 streams:
   service-parameters:
@@ -703,6 +844,10 @@ streams:
       file_ext: ".yml"
       template: "pvc.j2"
       data:
+    kapacitor:
+      file_ext: ".conf"
+      template: "kapacitor.j2"
+      data:
   mysql:
     deploy:
       file_ext: ".yml"
@@ -741,7 +886,7 @@ systems:
       template: "pvc.j2"
       data:
 
-tenants-api:
+tenants:
   service-parameters:
     data:
       service_name: "tenants"
@@ -789,12 +934,15 @@ tokens:
       "tenants": ["dev", "admin"]
       "log_level": "DEBUG"
       "show_traceback": false
-      # "dev_jwt_private_key": "-----BEGIN PRIVATE KEY-----\\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDHP3gxDezoHCX0+9tGZe9Vxu7tqJvJYIScjoJOW6gHIBb1TiEMq86VRjoN1XD8HZWvsHysCu1pnefkVAeevMSJeFN2qQ3yMCLzwPsL8yQePWhe8IzD/vGof0EdlSpFLSYeAXcvLGCl4iaDm5KgucohoxvCC30HqCnFG2ZoxVCPczc81I80sGfd89vi4F45aiPWr/lxHp1pDR8xyoP7IU/MJEOSvqsnTFUzFeti2WUQcU2+VBN6a0/YVVzvB1cuT3Bt8IkKv8fjnX5TdrLCNVhIA7vuNhLHCqKoUoxzL9llmOyEY2DE0GH/X/KibVqcdLsNbOrCGJBjhg8IkmR8YZZHAgMBAAECggEAL2gJh9phWKSB33UhKfHM7SLE7GTmlBZT1xANLumd4/wdmkX5lRM3tsqbu3jiRgof+EpMj36WGEAK0YewvHL7bB3l9eCpQct0NXzf/mreWBeSQqyHQYbiJo4IhypbgVQJsq/0lJPBdxaExWF5lKY/0psFWrjzCaRYM96eEiWIUmjSwUfW3727vgWIlosOmD0jvhYrDiIIJQarhphcKa/+gSLq8gVfxL0IvO4++xiVM3oP/UKz7la+sHIQVpvwoE1LSw0vD5DFpx6e0v3HlsZrROroxEqvtywVVDPa8F0m0yaYGwuIpnOQRdEbKyDoVzzxRQutWsQ9nOGgdfdswKbQKQKBgQDvEPC4XiZlBAoSVsduRew0dyJNM/Vh6fj37h8lOia5XNNHWYUPxv/pOzLH43Kpx0hEtbgEMYfRt+f7nQyXIPYP0lSkfQWrpPDIHNNTfegHTlB8UiJ0yNYMS+mDPgCIE/FJrMOR5hgt5fjJ9jvL2Bw/gjMNWU1FY5K/2n5GL2FWxQKBgQDVXH4pjpIY2tgxqqPYNNajyGXXYSWmGFccnxF1eZvfCArlpnqj/lquS8xJarB9t/3ImwbrOx6csXK8YLOXpPeZxLHGkA+gSyXGuDI2XISTyiKp5OGgGMW+ZhwuyLqAz2gtgu6AtLhB3gwKk0U34ezwVsn9FoxoQQakxZDdNCKpmwKBgDmJbTYiSsFTKI1jX1o17/Rsm8/S6oLnSel54PsXtMw2AA+TBwhWD691dPJQ1n7wHH+U8LXpqdOanHWdRbN11mLWb1KrWFsINn8jGOVmTxq7CXnyVqKe141cE9ZnbL9TdWYS83rA0x7w02DgJ2IXIC1Uy66xyHwjy+Tq1CtWKeo1AoGALIAnHDnNRPvYHbvOgpi6r9xrSVnMxXDMMn8G4C6mEQWXaECp0ayKc1IB4Mos13vZpc6XydZB00K7gIjWzGku71Z0EcsYR0GFNoZSir4PNNfzFOZVHNQt4kFf3W4mYBliTCPD5PpMeAh9EHOY+0fW6GXhqTTbwh7V6OYACfMGy8MCgYAnpo5VhSZayPlrVn6s+NbOtnJEavuAHwCA8OmsE/mdIy5iee8OB9LxpHLle/xdY0uJRZnkUzBds0auoF1OBj7c5jnEaRMncskhFi3gJjxfNudqmIYELDaYP50B0Fza4GQBiFoeiYbXlUMENt4iEzjzeaJTiiWID+dmhxF+YY5r/w==\\n-----END PRIVATE KEY-----"
   api:
     file_ext: ".yml"
     template: api.j2
     data:
       image_version: dev
+  create_tenant_token_roles:
+    file_ext: ".py"
+    template: create_tenant_token_roles.j2
+    data:
 
 vault: 
   service-parameters:

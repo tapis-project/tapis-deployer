@@ -19,11 +19,11 @@ spec:
         - name: http
           containerPort: 5000
         env:
-        - name: admin_privatekey
+        - name: site_admin_privatekey
           valueFrom:
             secretKeyRef:
               name: tapis-tokens-secrets
-              key: admin-privatekey
+              key: {{universal_param["service_tenant_id"]}}-privatekey
         volumeMounts:
         - name: tokens-config
           mountPath: /home/tapis/config.json

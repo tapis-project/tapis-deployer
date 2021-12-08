@@ -13,11 +13,12 @@ services:
   - pgrest
   - pgrest-a2cps-dev
   - pgrest-a2cps-prod
+  - proxy
   - security
   - skadmin
   - streams
   - systems
-  - tenants-api
+  - tenants
   - tokens
   - vault
 
@@ -33,6 +34,12 @@ universal-parameters:
     image_version: latest
     image_pull: Always
     vault_url: {{user_params["vault_url"]}}
+
+
+burnup:
+  file_ext: ""
+  template: "burnup.j2"
+  data:
 
 actors:
   service-parameters:
@@ -131,9 +138,6 @@ admin:
   service-parameters:
     data:
       service_name: "admin"
-      nginx_server_name: "~^(?<user>.+)\.test\.tapis\.io$;"
-      nginx_cert_file: "$HOME/cert.pem"
-      nginx_key_file: "$HOME/ssl/key.key"
   admin-config:
     file_ext: ".yml"
     template: admin-config.j2
@@ -142,28 +146,6 @@ admin:
     file_ext: ""
     template: "tapischex.j2"
     data:
-  site-router:
-    api:
-      file_ext: ".yml"
-      template: "api.j2"
-      data:
-    pvc:
-      file_ext: ".yml"
-      template: "pvc.j2"
-      data:
-    site-router-config:
-      file_ext: ".yml"
-      template: "site-router-config.j2"
-      data:
-  nginx:
-    burnup:
-      file_ext: ""
-      template: "burnup.j2"
-      data:
-    tapis-nginx:
-      file_ext: ".conf"
-      template: "tapis-nginx.j2"
-      data:
   verification:
     authenticator-test:
       file_ext: ""
@@ -489,6 +471,11 @@ monitoring:
       file_ext: ".yml"
       template: "prometheus-pvc.j2"
       data:
+    services:
+      service:
+        file_ext: ".yml"
+        template: "service.j2"
+        data:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
@@ -551,6 +538,10 @@ pgrest:
     template: api-deploy.j2
     data:
       image_version: dev
+  api-service:
+    file_ext: ".yml"
+    template: "api-service.j2"
+    data:
   postgres-deploy:
     file_ext: ".yml"
     template: "postgres-deploy.j2"
@@ -601,7 +592,43 @@ pgrest-a2cps-prod:
     template: "api-service.j2"
     data:
       service_name: "pgrest-a2cps-prod"
-      
+
+
+proxy:
+  service-parameters:
+    data:
+      service_name: "proxy"   
+      template_directory: "proxy"
+      nginx_server_name: '~^(?<user>.+)\.test\.tapis\.io$;'
+      nginx_cert_file: "$HOME/cert.pem"
+      nginx_key_file: "$HOME/key.key"
+      site_router_pvc: "site-router-redis-vol1"
+  proxy-config:
+    file_ext: ".yml"
+    template: "proxy-config.j2"
+    data:          
+  site-router:
+      api:
+        file_ext: ".yml"
+        template: "api.j2"
+        data:
+      pvc:
+        file_ext: ".yml"
+        template: "pvc.j2"
+        data:
+      site-router-config:
+        file_ext: ".yml"
+        template: "site-router-config.j2"
+        data:
+    nginx:
+      burnup:
+        file_ext: ""
+        template: "burnup.j2"
+        data:
+      nginx:
+        file_ext: ".conf"
+        template: "nginx.j2"
+        data:
 security:
   service-parameters:
     data:
@@ -653,11 +680,60 @@ skadmin:
     template: "burnup.j2"
     data:
   initialLoad:
+    tapis-abaco-secrets:
+      file_ext: ".json"
+      template: "tapis-abaco-secrets.j2"
+      data:
+    tapis-apps-secrets:
+      file_ext: ".json"
+      template: "tapis-apps-secrets.j2"
+      data:
+    tapis-authenticator-secrets:
+      file_ext: ".json"
+      template: "tapis-authenticator-secrets.j2"
+      data:
+    tapis-files-secrets:
+      file_ext: ".json"
+      template: "tapis-files-secrets.j2"
+      data:
+    tapis-jobs-secrets:
+      file_ext: ".json"
+      template: "tapis-jobs-secrets.j2"
+      data:
+    tapis-meta-secrets:
+      file_ext: ".json"
+      template: "tapis-meta-secrets.j2"
+      data:
     tapis-monitoring-secrets:
       file_ext: ".json"
       template: tapis-monitoring-secrets.j2
       data:
         passwords: something
+    tapis-notifications-secrets:
+      file_ext: ".json"
+      template: "tapis-notifications-secrets.j2"
+      data:
+    tapis-pgrest-secrets:
+      file_ext: ".json"
+      template: "tapis-pgrest-secrets.j2"
+      data:
+    tapis-sk-secrets:
+      file_ext: ".json"
+      template: "tapis-sk-secrets.j2"
+      data:
+    tapis-streams-secrets:
+      file_ext: ".json"
+      template: "tapis-streams-secrets.j2"
+      data:
+    tapis-systems-secrets:
+      file_ext: ".json"
+      template: "tapis-systems-secrets.j2"
+      data:
+    tapis-tokens-secrets:
+      file_ext: ".json"
+      template: "tapis-tokens-secrets.j2"
+      data:
+        tenants: ["admin", "assoc", "dev", "tacc"]
   renew-sk-secret:
      renew-sk-secret:
        file_ext: ".yml"
@@ -720,6 +796,7 @@ streams:
       postgres_pvc: "postgres-vol01"
       kapacitor_pvc: "streams-kapacitor-vol01"
       mysql_pvc: "streams-mysql-vol01"
+      influxdb_token: myawesometapistoken
   streams-config:
     file_ext: ".yml"
     template: streams-config.j2
@@ -752,6 +829,15 @@ streams:
       template: "deploy.yml.j2"
       data:
   influx:
+    deploy:
+      file_ext: ".yml"
+      template: "deploy.j2"
+      data:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+  influx2:
     deploy:
       file_ext: ".yml"
       template: "deploy.j2"
@@ -807,7 +893,7 @@ systems:
       template: "pvc.j2"
       data:
 
-tenants-api:
+tenants:
   service-parameters:
     data:
       service_name: "tenants"

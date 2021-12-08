@@ -1,0 +1,196 @@
+#!/bin/bash
+
+# global tapis burnup script
+
+# ... run all the components in the correct order
+
+# You should copy global-config.yml.template to ~/global-config.yml and edit for your site
+
+here=`pwd`
+
+# if [ ! -f ~/global-config.yml ]
+# then
+#   echo "Could not find ~/global-config.yml. Exiting."
+#   exit 1
+# fi
+
+# echo "global config init:"
+# kubectl apply -f ~/global-config.yml
+
+create_kservice(){
+    echo "creating kubernetes servies:"
+    find -name '*service*.yml' -exec kubectl apply -f {} \;
+}
+
+
+init(){
+    {% if "proxy" in service_list %}
+    echo "nginx:"
+    cd $here/proxy/nginx 
+    ./burnup
+
+    echo "site-router:"
+    cd $here/proxy/site-router 
+    ./burnup
+    {% endif%}
+
+    {% if "vault" in service_list %}
+    echo "vault:"
+    cd $here/vault 
+    ./burnup
+    ./unseal
+    {% endif%}
+
+    {% if "skadmin" in service_list %}
+    echo "skadmin:"
+    cd $here/skadmin/renew-sk-secret 
+    ./burnup
+
+    cd $here/skadmin
+    ./burnup
+    {% endif%}
+}
+
+primary_services(){
+    {% if  "tenants" in service_list %}
+    echo "tenants:"
+    cd $here/tenants/postgres
+    ./burnup
+
+    cd $here/tenants/api
+    ./burnup
+    {% endif %}
+
+    {% if  "security" in service_list %}
+    echo "security-kernel:"
+    cd $here/security/postgres
+    ./burnup
+
+    # vault secret renewed in here
+    cd $here/security/api
+    ./burnup
+    {% endif %}
+
+    {% if  "tokens" in service_list %}
+    echo "tokens:"
+    cd $here/tokens
+    ./burnup
+    {% endif %}
+
+    {% if  "authenticator" in service_list %}
+    echo "authenticator:"
+    cd $here/authenticator/ldap
+    ./burnup
+
+    cd $here/authenticator/postgres
+    ./burnup
+
+    cd $here/authenticator/api
+    ./burnup
+    {% endif %}
+}
+
+secondary_services() {
+
+
+    {% if  "systems" in service_list %}
+    echo "systems:"
+    cd $here/systems/postgres
+    ./burnup
+
+    cd $here/systems/api
+    ./burnup
+    {% endif %}
+
+    {% if  "files" in service_list %}
+    echo "files:"
+    cd $here/files/api
+    ./burnup
+    {% endif %}
+
+    {% if  "apps" in service_list %}
+    echo "apps:"
+    cd $here/apps/postgres
+    ./burnup
+
+    cd $here/apps/api
+    ./burnup
+    {% endif %}
+
+    {% if  "jobs" in service_list %}
+    echo "jobs:"
+    cd $here/jobs/postgres
+    ./burnup
+
+    cd $here/jobs/rabbitmq
+    ./burnup
+
+    cd $here/jobs/api
+    ./burnup
+
+    cd $here/jobs/workers
+    ./burnup
+
+    cd $here/jobs/readers
+    ./burnup
+    {% endif %}
+
+    {% if  "meta" in service_list %}
+    echo "meta:"
+    cd $here/meta/mongo
+    ./burnup
+
+    cd $here/meta/api
+    ./burnup
+    {% endif %}
+
+    {% if  "streams" in service_list %}
+    echo "streams:"
+    cd $here/streams/mysql
+    ./burnup
+
+    cd $here/streams/influx
+    ./burnup
+
+    cd $here/streams/kapacitor
+    ./burnup
+
+    cd $here/streams/chords
+    ./burnup
+
+    cd $here/streams/api
+    ./burnup
+    {% endif %}
+
+    {% if  "actors" in service_list %}
+    echo "actors:"
+    cd $here/actors
+    ./burnup
+    {% endif %}
+
+    {% if  "monitoring" in service_list %}
+    echo "monitoring:"
+    cd $here/monitoring
+    ./burnup
+    {% endif %}
+
+    {% if  "pgrest" in service_list %}
+    echo "pgrest:"
+    cd $here/pgrest
+    ./burnup
+    {% endif %}
+
+    {% if  "elastic" in service_list %}
+    # echo "elastic:"
+    # cd $here/elastic
+    # ./burnup
+    {% endif %}
+
+}
+
+case $1 in
+    init) "$@"; exit;;
+    primary_services) "$@"; exit;;
+    secondary_services) "$@"; exit;;
+    create_kservice) "$@"; exit;;
+esac
