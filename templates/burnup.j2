@@ -11,6 +11,10 @@ create_kservice(){
     find -name '*service*.yml' -exec kubectl apply -f {} \;
 }
 
+get_public_keys(){
+    cd $here/admin
+    ./get-tenant-publickeys
+}
 
 init(){
     {% if "proxy" in service_list %}
@@ -182,4 +186,5 @@ case $1 in
     primary_services) "$@"; exit;;
     secondary_services) "$@"; exit;;
     create_kservice) "$@"; exit;;
+    get_public_keys) "$@"; exit;;
 esac
