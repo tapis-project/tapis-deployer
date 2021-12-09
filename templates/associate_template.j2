@@ -1,5 +1,6 @@
 --- # Test Yaml
 services:
+  - admin
   {% for service in user_params["services"]%}
   - {{service}}
   {% endfor%}
