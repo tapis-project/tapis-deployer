@@ -12,9 +12,9 @@ data:
       "log_level": "{{local_param["log_level"]|default("DEBUG")}}",
       "tenants": {{universal_param["tenants"]|default(["dev", "admin"])|tojson}},
       "show_traceback": {{local_param["show_traceback"]|default("false")|tojson}},
-      "use_allservices_password": {{local_param["use_allservices_password"]|default("false")|tojson}},
+      "use_allservices_password": {{local_param["use_allservices_password"]|default(false)|tojson}},
       {% if local_param["allservices_password"]%}
-      "allservices_password": "{{local_param["allservices_password"]}}",
+      "allservices_password": {{local_param["allservices_password"]}},
       {% endif %}
       {% if local_param["dev_jwt_private_key"]%}
       "dev_jwt_private_key": "{{local_param["dev_jwt_private_key"]}}",

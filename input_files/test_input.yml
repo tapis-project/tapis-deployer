@@ -491,25 +491,21 @@ notifications:
     template: "notifications-config.j2"
     data:
   api:
-    file_ext: ".yml"
-    template: api.j2
-    data:
-      image_version: dev
-  migrations:
-    file_ext: ".yml"
-    template: migrations.j2
-    data:
-      image_version: dev
-  pvc:
-    file_ext: ".yml"
-    template: "pvc.j2"
-    data:
-
-  workers:
-    file_ext: ".yml"
-    template: workers.j2
-    data:
-      image_version: dev
+    api:
+      file_ext: ".yml"
+      template: api.j2
+      data:
+        image_version: dev
+  postgres:
+    deploy:
+      file_ext: ".yml"
+      template: deploy.j2
+      data:
+        image_version: dev
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
         
 pgrest:
   service-parameters:
@@ -930,7 +926,6 @@ tokens:
     file_ext: ".yml"
     template: tokens-config.j2
     data:
-      "use_sk": false
       "tenants": ["dev", "admin"]
       "log_level": "DEBUG"
       "show_traceback": false
@@ -938,7 +933,7 @@ tokens:
     file_ext: ".yml"
     template: api.j2
     data:
-      image_version: dev
+      image_version: test
   create_tenant_token_roles:
     file_ext: ".py"
     template: create_tenant_token_roles.j2

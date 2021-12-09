@@ -46,7 +46,7 @@ defaults:
   tenants:
     postgres_pvc: "tenants-postgres-vol01"
   tokens:
-    use_sk: "true"
+    use_sk: true
   vault:
     pvc: "vault-vol01"
     raft_storage: "true"
