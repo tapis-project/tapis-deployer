@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifications-pgadmin
+spec:
+  selector:
+    matchLabels:
+      app: notifications-pgadmin
+  template:
+    metadata:
+      labels:
+        app: notifications-pgadmin
+    spec:
+      containers:
+      - name: notifications-pgadmin
+        image: dpage/pgadmin4:latest
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: "wow@example.com"
+        - name: PGADMIN_DEFAULT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-notifications-secrets 
+              key: pgadmin-password

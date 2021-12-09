@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["mongo_pvc"]|default(defaults["actors_mongo_pvc"])}}
+  name: {{service_param["mongo_pvc"]|default(defaults["mongo_pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce

@@ -1,14 +1,12 @@
----
-apiVersion: v1
 kind: PersistentVolumeClaim
+apiVersion: v1
 metadata:
-  labels:
-    app: pgdata
-  name: notifications-pgdata
+  name: {{service_param["postgres_pvc"]|default(defaults["postgres_pvc"])}}
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: {{universal_param["storage_class"]}}
   resources:
     requests:
-      storage: 10G
+      storage: 20Gi
+

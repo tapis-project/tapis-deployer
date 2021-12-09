@@ -11,7 +11,7 @@ data:
       "service_name": "abaco",
       "service_password": "$env{SERVICE_PASSWORD}",
       "tenants": [
-        {% for tenant in local_param["tenants"]%}
+        {% for tenant in service_param["tenants"]|default(universal_param["tenants"]) %}
         {{"\"" + tenant + "\""}}
         {{-("," if not loop.last)}}
         {% endfor%}

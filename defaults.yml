@@ -27,6 +27,8 @@ defaults:
     grafana_pvc: "grafana-vol01"
     prometheus_pvc: "prometheus-vol01"
     stern_pvc: "stern-data-vol01"
+  notifications:
+    postgres_pvc: "notifications-postgres-vol01"
   pgrest:
     postgres_pvc: "pgrest-postgres-vol01"
   proxy:

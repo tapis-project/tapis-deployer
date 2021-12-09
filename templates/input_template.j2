@@ -504,26 +504,21 @@ notifications:
     template: "notifications-config.j2"
     data:
   api:
-    file_ext: ".yml"
-    template: api.j2
-    data:
-      image_version: dev
-  migrations:
-    file_ext: ".yml"
-    template: migrations.j2
-    data:
-      image_version: dev
-  pvc:
-    file_ext: ".yml"
-    template: "pvc.j2"
-    data:
+    api:
+      file_ext: ".yml"
+      template: api.j2
+      data:
+        image_version: dev
+  postgres:
+    pvc:
+      file_ext: ".yml"
+      template: "pvc.j2"
+      data:
+    deploy:
+      file_ext: ".yml"
+      template: "deploy.j2"
+      data:
 
-  workers:
-    file_ext: ".yml"
-    template: workers.j2
-    data:
-      image_version: dev
-        
 pgrest:
   service-parameters:
     data:
