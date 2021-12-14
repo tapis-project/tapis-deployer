@@ -33,6 +33,16 @@ spec:
             secretKeyRef:
               name: tapis-tenants-secrets
               key: service-password
+        - name: admin_tenant_public_key
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-publickeys
+              key: admin-publickey
+        - name: dev_tenant_public_key
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-publickeys
+              key: dev-publickey
         volumeMounts:
         - name: tenants-config
           mountPath: /home/tapis/config.json
