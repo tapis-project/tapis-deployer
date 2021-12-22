@@ -31,9 +31,9 @@ spec:
             name: "jvm-debug"
         env:
           - name: tapis.db.jdbc.url
-            value: jdbc:postgresql://notifications-postgres:5432/tapissysdb
+            value: jdbc:postgresql://notifications-postgres:5432/tapisntfdb
           - name: tapis.db.user
-            value: tapis_sys
+            value: tapis_ntf
           - name: tapis.site.id
             valueFrom:
               configMapKeyRef:
