@@ -8,7 +8,7 @@ if [ -z "$DB_HOST" ]; then
 fi
 
 DB_USER=postgres
-DB_NAME=tapissysdb
+DB_NAME=tapisntfdb
 
 if [ -z "${POSTGRES_PASSWORD}" ]; then
   echo "Please set env var POSTGRES_PASSWORD before running this script"
@@ -29,15 +29,15 @@ psql --host=${DB_HOST} --username=${DB_USER} --dbname=${DB_NAME} -q << EOB
 -- Create user if it does not exist
 DO \$\$
 BEGIN
-  CREATE ROLE tapis_sys WITH LOGIN;
+  CREATE ROLE tapis_ntf WITH LOGIN;
   EXCEPTION WHEN DUPLICATE_OBJECT THEN
-  RAISE NOTICE 'User already exists. User name: tapis_sys';
+  RAISE NOTICE 'User already exists. User name: tapis_ntf';
 END
 \$\$;
-ALTER USER tapis_sys WITH ENCRYPTED PASSWORD '${POSTGRES_PASSWORD}';
-GRANT ALL PRIVILEGES ON DATABASE tapissysdb TO tapis_sys;
+ALTER USER tapis_ntf WITH ENCRYPTED PASSWORD '${POSTGRES_PASSWORD}';
+GRANT ALL PRIVILEGES ON DATABASE tapisntfdb TO tapis_ntf;
 
 -- Create schema if it does not exist
-CREATE SCHEMA IF NOT EXISTS tapis_sys AUTHORIZATION tapis_sys;
-ALTER ROLE tapis_sys SET search_path = 'tapis_sys';
+CREATE SCHEMA IF NOT EXISTS tapis_ntf AUTHORIZATION tapis_ntf;
+ALTER ROLE tapis_ntf SET search_path = 'tapis_ntf';
 EOB
