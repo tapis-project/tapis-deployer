@@ -2,7 +2,7 @@
   "service_name": "streams",
   "tenant": "dev",
   "tenants": ["dev"],
-  "use_sk": false,
+  "use_sk": true,
   "log_level": "DEBUG",
   "show_traceback": false,
   "dev_token": "sometoken",
