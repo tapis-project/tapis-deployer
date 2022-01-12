@@ -1,0 +1,7 @@
+# Eclipse metadata files
+.project
+.settings
+.classpath
+.pydevproject
+.externalToolBuilders
+

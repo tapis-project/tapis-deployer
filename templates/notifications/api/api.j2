@@ -18,7 +18,7 @@ spec:
       {% endif%}
       containers:
       - name: notifications-api
-        image: tapis/notifications:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/notifications:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
         {% if local_param["memory"]%}
         resources:
@@ -31,9 +31,9 @@ spec:
             name: "jvm-debug"
         env:
           - name: tapis.db.jdbc.url
-            value: jdbc:postgresql://notifications-postgres:5432/tapissysdb
+            value: jdbc:postgresql://notifications-postgres:5432/tapisntfdb
           - name: tapis.db.user
-            value: tapis_sys
+            value: tapis_ntf
           - name: tapis.site.id
             valueFrom:
               configMapKeyRef:

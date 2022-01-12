@@ -16,7 +16,7 @@ Create a ~/tenants-config-local.json, something like this. Note that you will ne
     {
       "service_name": "tenants",
       "tenants": ["dev"],
-      "use_sk": false,
+      "use_sk": true,
       "log_level": "DEBUG",
       "show_traceback": false,
       "test_jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2RXdi5hcGkudGFwaXMuaW8vdG9rZW5zL3YzIiwic3ViIjoianN0dWJic0BkZXYiLCJ0YXBpcy90ZW5hbnRfaWQiOiJkZXYiLCJ0YXBpcy90b2tlbl90eXBlIjoiYWNjZXNzIiwidGFwaXMvZGVsZWdhdGlvbiI6ZmFsc2UsInRhcGlzL2RlbGVnYXRpb25fc3ViIjpudWxsLCJ0YXBpcy91c2VybmFtZSI6ImpzdHViYnMiLCJ0YXBpcy9hY2NvdW50X3R5cGUiOiJzZXJ2aWNlIiwiZXhwIjozMTQ5MDc4MDU2fQ.NoiGj7l8uCGhDyo-12345i5M9TKBXNb3bTzaJuTOwma9gUPTOtAO2C9yfeistsZY8fuhpCx0lL0D8Bnr3jWrGMVM_wGAKbF-fRcBEiRX6YfL0oi03MU4w2Ab9z-CD9woBdBeS93IBvelYun7yvGDmaUizFzgaVvF120vsWdJB0Y",

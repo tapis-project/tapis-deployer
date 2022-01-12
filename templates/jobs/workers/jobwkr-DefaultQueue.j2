@@ -19,7 +19,7 @@ spec:
       {% endif%}
       containers:
       - name: jobs-wkr-defaultqueue
-        image: tapis/jobsworker:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/jobsworker:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
         {% if local_param["memory"]%}
         resources:

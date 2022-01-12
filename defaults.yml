@@ -2,52 +2,7 @@
 defaults: 
   universal:
     image_pull: "Always"
-    image_version: "dev" # not consistant everywhere
     replicas: 1
     log_level: "DEBUG"
+    # Python tracing
     show_traceback: "false"
-    use_sk: "true"
-    vault_url: "http://vault:8200"
-  actors:
-    rabbit_pvc: "actors-rabbitmq-vol01"
-    mongo_pvc: "actors-mongo-vol01"
-    mongo_backup_pvc: "actors-mongo-backup-vol02"
-  apps:
-    postgres_pvc: "apps-postgres-vol01"
-  authenticator:
-    postgres_pvc: "authenticator-postgres-vol01"
-  jobs:
-    postgres_pvc: "jobs-postgres-vol01"
-    rabbitmq_pvc: "jobs-rabbitmq-vol01"
-  meta:
-    mongo_backup_pvc: "mongo-backup-vol01"
-    restheart_mongo_pvc: "restheart-mongo-vol01"
-  monitoring:
-    elastic_pvc: "elasticsearch-data-vol01"
-    grafana_pvc: "grafana-vol01"
-    prometheus_pvc: "prometheus-vol01"
-    stern_pvc: "stern-data-vol01"
-  notifications:
-    postgres_pvc: "notifications-postgres-vol01"
-  pgrest:
-    postgres_pvc: "pgrest-postgres-vol01"
-  proxy:
-    site_router_pvc: "site-router-redis-vol1"
-  security-kernel:
-    postgres_pvc: "sk-postgres-vol01"
-  streams:
-    influx_pvc: "influx-vol01"
-    influx2_pvc: "influx2-vol01"
-    postgres_pvc: "postgres-vol01"
-    kapacitor_pvc: "streams-kapacitor-vol01"
-    mysql_pvc: "streams-mysql-vol01"
-  systems:
-    postgres_pvc: "systems-postgres-vol01"
-  tenants:
-    postgres_pvc: "tenants-postgres-vol01"
-  tokens:
-    use_sk: true
-  vault:
-    pvc: "vault-vol01"
-    raft_storage: "true"
-  # should volume names be a default, should they be a service level or local level parameter

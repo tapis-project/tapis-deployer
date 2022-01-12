@@ -46,7 +46,7 @@ spec:
       volumes:
       - name: prometheus-data
         persistentVolumeClaim:
-          claimName: {{service_param["prometheus_pvc"]|default(defaults["prometheus_pvc"])}}
+          claimName: {{service_param["prometheus_pvc"]}}
       - name: prometheus-config
         configMap:
           name: monitoring-config

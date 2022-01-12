@@ -44,7 +44,7 @@ http {
     
         # Edit the server_name to reflect the site domain.
         #server_name *.develop.tapis.io;
-        server_name  {{service_param["nginx_server_name"]}}
+        server_name  {{service_param["nginx_server_name"]}};
         #server_name *.*.tapis.io;
         #server_name  _;
     
@@ -289,6 +289,15 @@ http {
             proxy_pass http://pgrest-api:5000;
             proxy_redirect off;
             proxy_set_header Host $host;
+        }
+        {% endif %}
+        {% if "notifications" in service_list %}
+        location /v3/notifications
+        {
+    #        auth_request /_auth;
+            proxy_pass http://notifications-api:8080;
+            proxy_redirect off;
+            proxy_set_header Host localhost:5000;
         }
         {% endif %}
     }

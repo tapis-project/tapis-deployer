@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["rabbitmq_pvc"]|default(defaults["rabbitmq_pvc"])}}
+  name: {{service_param["rabbitmq_pvc"]}}
 spec:
   accessModes:
     - ReadWriteOnce

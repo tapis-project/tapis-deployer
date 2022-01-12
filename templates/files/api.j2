@@ -23,7 +23,7 @@ spec:
       {% endif%}
       containers:
       - name: files-api
-        image: tapis/tapis-files:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/tapis-files:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         {% if local_param["memory"]%}
         resources:
           requests:

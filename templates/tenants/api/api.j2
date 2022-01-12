@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: tenants-api
-        image: tapis/tenants-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/tenants-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: {{local_param["image_pull"]|default(service_param["image_pull"]|default(universal_param["image_pull"]|default(defaults["image_pull"])))}}
         ports:
         - name: http

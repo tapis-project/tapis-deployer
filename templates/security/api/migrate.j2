@@ -11,7 +11,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: sk-migrate
-        image: tapis/securitymigrate:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/securitymigrate:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
         {% if local_param["memory"]%}
         resources:
