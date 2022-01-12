@@ -1,11 +1,11 @@
 import re
 import requests
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, StrictUndefined
 import argparse
 import os
 
 file_loader = FileSystemLoader('templates')
-env = Environment(loader=file_loader)
+env = Environment(loader=file_loader, undefined=StrictUndefined)
 env.trim_blocks = True
 env.lstrip_blocks = True
 env.rstrip_blocks = True

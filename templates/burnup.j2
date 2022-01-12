@@ -6,6 +6,178 @@
 
 here=`pwd`
 
+### vars
+
+VAULTURL="{{universal_param["vault_url"]}}"
+SERVICEUR=" {{universal_param["service_url"]}}"
+
+### checks
+
+checkcert(){
+  # will not work until nginx is up
+  echo "checking cert: $1"
+  echo test | openssl s_client -showcerts -connect $1:443
+}
+
+curlurl(){
+  # will not work until nginx is up
+  u="https://$1"
+  echo "curling url: $u"
+  curl -k $u
+}
+
+pingsite(){
+  echo "pinging url: $1"
+  ping -c 1 -W 5 $1
+}
+
+checkvault_kube(){
+  # TODO: fix to work if vault is remote
+  # will not work until vault is up
+  if [ "`kubectl exec -it deploy/vault vault status | grep Sealed | awk '{print $2}'`" != "false" ]
+  then
+    echo "Vault check failed. Exiting."
+    exit 1
+  fi
+}
+
+checkvault_remote(){
+  # TODO: fix to work if vault is remote
+  # will not work until vault is up
+  # something like
+  # curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" http://c002.rodeo.tacc.utexas.edu:32444/v1/sys/health | jq^C
+  #if [ "`kubectl exec -it deploy/vault vault status | grep Sealed | awk '{print $2}'`" != "false" ]
+  #then
+  #  echo "Vault check failed. Exiting."
+  #  exit 1
+  #fi
+  # TODO rcardone
+  echo
+
+}
+
+
+
+
+preflight_check(){
+  getconfig
+  echo "site: $SERVICEURL"
+  pingsite $SERVICEURL
+}
+
+postnginx_check(){
+  curlurl $SERVICEURL
+  checkcert $SERVICEURL
+}
+
+
+
+
+### services
+
+actors(){
+  echo
+}
+
+apps(){
+  echo
+}
+
+authenticator(){
+  echo
+}
+
+files(){
+  echo
+}
+
+jobs(){
+  echo
+}
+
+meta(){
+  echo
+}
+
+monitoring(){
+  echo
+}
+
+notifications(){
+  echo
+}
+
+pgrest(){
+  echo
+}
+
+pgrest-a2cps-dev(){
+  echo
+}
+
+pgrest-a2cps-prod(){
+  echo
+}
+
+proxy(){
+  echo "nginx:"
+  cd $here/proxy/nginx
+  ./burnup
+
+  echo "site-router:"
+  cd $here/proxy/site-router
+  ./burnup
+
+}
+
+security(){
+  echo
+}
+
+skadmin(){
+  echo "skadmin:"
+  cd $here/skadmin/renew-sk-secret
+  ./burnup
+  cd $here/skadmin
+  ./burnup
+
+}
+
+streams(){
+  echo
+}
+
+systems(){
+  echo
+}
+
+tenants(){
+  echo
+}
+
+tokens(){
+  echo
+}
+
+vault(){
+  echo "vault:"
+  cd $here/vault
+  ./burnup
+  kubectl wait --for=condition=available deploy/vault
+  ./unseal
+}
+
+
+primary_site(){
+  echo
+}
+
+associate_site(){
+  echo
+}
+
+
+
 create_kservice(){
     echo "creating kubernetes servies:"
     find -name '*service*.yml' -exec kubectl apply -f {} \;
@@ -15,6 +187,30 @@ get_public_keys(){
     cd $here/admin
     ./get-tenant-publickeys
 }
+
+
+
+### functions
+
+
+get_vault_token(){
+  echo
+}
+
+check_vault_unsealed(){
+  echo
+}
+
+create_kservice(){
+    echo "creating kubernetes servies:"
+    find -name '*service*.yml' -exec kubectl apply -f {} \;
+}
+
+get_public_keys(){
+    cd $here/admin
+    ./get-tenant-publickeys
+}
+
 
 init(){
     {% if "proxy" in service_list %}
@@ -182,10 +378,54 @@ secondary_services() {
 
 }
 
+### run
+
+getconfig
+
 case $1 in
-    init) "$@"; exit;;
-    primary_services) "$@"; exit;;
-    secondary_services) "$@"; exit;;
-    create_kservice) "$@"; exit;;
-    get_public_keys) "$@"; exit;;
+  checkvault)
+    "$@"
+    exit 0
+    ;;
+  init)
+    "$@"
+    exit 0
+    ;;
+  initnew)
+    preflight_check
+    proxy
+    postnginx_check
+    vault
+    #checkvault
+    skadmin
+    exit 0
+    ;;
+  preflight_check)
+    "$@"
+    exit 0
+    ;;
+  postnginx_check)
+    "$@"
+    exit 0
+    ;;
+  primary_services)
+    "$@"
+    exit 0
+    ;;
+  secondary_services)
+    "$@"
+    exit 0
+    ;;
+  create_kservice)
+    "$@"
+    exit 0
+    ;;
+  get_public_keys)
+    "$@"
+    exit 0
+    ;;
+  *)
+    usage
+    exit 0
+    ;;
 esac

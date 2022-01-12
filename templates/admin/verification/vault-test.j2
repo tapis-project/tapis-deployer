@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#kubectl exec -it deploy/vault -- vault status
+
+
+
+. functions
+
+
+VAULT_TOKEN=`vault_token_from_secret`
+
+
+kubectl run centos -i --tty --image=mrghort/centosutil --restart=Never --rm -- '/usr/bin/curl -H "X-Vault-Token: '$VAULT_TOKEN'" {{universal_param["vault_url"]}}/v1/sys/health | /usr/bin/jq'
+
+#
+#
+#VAULTURL="http://vault:8200"
+
+

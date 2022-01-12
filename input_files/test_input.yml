@@ -150,6 +150,10 @@ admin:
       file_ext: ""
       template: "authenticator-test.j2"
       data:
+    functions:
+      file_ext: ""
+      template: "functions.j2"
+      data:
     streams-test:
       file_ext: ""
       template: "streams-test.j2"
@@ -161,6 +165,10 @@ admin:
     tokens-test:
       file_ext: ""
       template: "tokens-test.j2"
+      data:
+    vault-test:
+      file_ext: ""
+      template: "vault-test.j2"
       data:
 
 apps:

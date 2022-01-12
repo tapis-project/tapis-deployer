@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: restheart
-          image: tapis/tapis-meta-rh-server:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["imave_version"])))}}
+          image: tapis/tapis-meta-rh-server:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
           imagePullPolicy: Always
           command: [ "java", "-Dfile.encoding=UTF-8", "-server", "-jar", "restheart.jar", "etc/restheart.yml", "--envFile", "etc/config.properties"]
           ports:
