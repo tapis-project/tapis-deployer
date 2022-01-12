@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: tenants-migrations
-        image: tapis/tenants-api-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/tenants-api-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: {{local_param["image_pull"]|default(service_param["image_pull"]|default(universal_param["image_pull"]|default(defaults["image_pull"])))}}
         args: ["upgrade"]
         env:

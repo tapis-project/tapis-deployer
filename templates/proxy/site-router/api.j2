@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: site-router-api
-        image: tapis/site-router-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/site-router-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
         ports:
         - name: http
@@ -34,7 +34,7 @@ spec:
       volumes:
       - name: site-router-redis-data
         persistentVolumeClaim:
-          claimName: {{service_param["site_router_pvc"]|default(defaults["site_router_pvc"])}}
+          claimName: {{service_param["site_router_pvc"]}}
       - name: site-router-config
         configMap: 
           name: site-router-config

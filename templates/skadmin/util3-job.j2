@@ -17,7 +17,7 @@ spec:
   - name: skadmin-util
     command: ["sleep","36000"]
     #command: ["/tmp/run-sk-admin"]
-    image: tapis/securityadmin:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+    image: tapis/securityadmin:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
     imagePullPolicy: Always
     env:
     - name: VAULT_TOKEN

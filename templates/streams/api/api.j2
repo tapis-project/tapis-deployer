@@ -16,7 +16,7 @@ spec:
       {% endif%}
       containers:
       - name: streams-api
-        image: tapis/streams-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/streams-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
         ports:
         - name: http

@@ -48,7 +48,7 @@ spec:
       volumes:
       - name: actors-mongo-data
         persistentVolumeClaim:
-          claimName: {{service_param["mongo_pvc"]|default(defaults["mongo_pvc"])}}
+          claimName: {{service_param["mongo_pvc"]}}
       - name: actors-mongo-keyfile-secret
         secret:
           secretName: tapis-abaco-secrets

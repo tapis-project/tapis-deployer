@@ -38,5 +38,5 @@ spec:
       volumes:
       - name: actors-rabbitmq-data
         persistentVolumeClaim:
-          claimName: {{service_param["rabbit_pvc"]|default(defaults["rabbit_pvc"])}}
+          claimName: {{service_param["rabbit_pvc"]}}
 

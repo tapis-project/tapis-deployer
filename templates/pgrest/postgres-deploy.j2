@@ -35,4 +35,4 @@ spec:
       volumes:
       - name: pgrest-data
         persistentVolumeClaim:
-          claimName: {{service_param["postgres_pvc"]|default(defaults["postgres_pvc"])}}
+          claimName: {{service_param["postgres_pvc"]}}
