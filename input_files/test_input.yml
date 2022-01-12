@@ -137,6 +137,8 @@ admin:
   service-parameters:
     data:
       service_name: "admin"
+      slack_channel: 
+      slack_username: 
   admin-config:
     file_ext: ".yml"
     template: admin-config.j2
