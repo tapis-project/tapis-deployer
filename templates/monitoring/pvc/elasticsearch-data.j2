@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["elastic_pvc"]|default(defaults["elastic_pvc"])}}
+  name: {{service_param["elastic_pvc"]}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: elasticsearch-data
         persistentVolumeClaim:
-          claimName: {{service_param["elastic_pvc"]|default(defaults["elastic_pvc"])}}
+          claimName: {{service_param["elastic_pvc"]}}
 

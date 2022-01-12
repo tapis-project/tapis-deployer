@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["grafana_pvc"]|default(defaults["grafana_pvc"])}}
+  name: {{service_param["grafana_pvc"]}}
 spec:
   accessModes:
     - ReadWriteOnce

@@ -18,7 +18,7 @@ spec:
       {% endif%}
       containers:
       - name: notifications-api
-        image: tapis/notifications:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/notifications:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
         {% if local_param["memory"]%}
         resources:

@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["influx2_pvc"]|default(defaults["influx2_pvc"])}}
+  name: {{service_param["influx2_pvc"]}}
 spec:
   accessModes:
     - ReadWriteOnce
