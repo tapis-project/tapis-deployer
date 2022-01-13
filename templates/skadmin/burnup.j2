@@ -32,5 +32,5 @@ kubectl wait --for=condition=complete job/sk-admin-init
 #kubectl apply -f util.yml
 #
 #echo "Now shell into pod util and run this:"
-#echo 'curl -X LIST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/policies/acl | jq'
+#echo 'curl -X LIST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/policies/acl | jq'
 

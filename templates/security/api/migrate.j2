@@ -11,12 +11,12 @@ spec:
       restartPolicy: Never
       containers:
       - name: sk-migrate
-        image: tapis/securitymigrate:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
+        image: tapis/securitymigrate:{{security_image_version}}
         imagePullPolicy: Always
-        {% if local_param["memory"]%}
+        {% if security_memory %}
         resources:
           requests:
-            memory: "{{local_param["memory"]}}"
+            memory: "{{security_memory}}"
         {% endif%}
         env:
         - name: HOST

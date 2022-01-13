@@ -13,23 +13,23 @@ spec:
     spec:
       initContainers:
       automountServiceAccountToken: false
-      {% if local_param["node_selector"] is defined %}
-        {% if local_param["node_selector"] == true %}
+      {% if jobs_node_selector is defined %}
+        {% if jobs_node_selector == true %}
       nodeSelector:
         exempt: "yes"
         {% endif %}
       {% endif %}
       containers:
       - name: jobs-rdr-recovery
-        image: tapis/jobsworker:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
+        image: tapis/jobsworker:{{jobs_image_version}}
         imagePullPolicy: Always
-        {% if local_param["memory"]%}
+        {% if jobs_memory %}
         resources:
           requests:
-            memory: "{{local_param["memory"]}}"
+            memory: "{{jobs_memory}}"
         {% endif%}
         env:
-        {% if local_param["node_name"] == true%}
+        {% if jobs_node_name == true%}
         - name: tapis.local.node.name
           valueFrom:
             fieldRef:

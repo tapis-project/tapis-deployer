@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: files-api
-        image: tapis/tapis-files-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
+        image: tapis/tapis-files-migrations:{{files_image_version}}
         imagePullPolicy: Always
         args: [ "-locations=filesystem:migrations", "migrate"]
         envFrom:

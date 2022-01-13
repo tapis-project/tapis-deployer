@@ -12,18 +12,18 @@ spec:
       labels:
         app: systems-api
     spec:
-      {% if local_param["nodeSelector"] | default(None) %}
+      {% if systems_nodeSelector | default(None) %}
       nodeSelector:
-        exempt: "{{local_param["nodeSelector"]}}"
+        exempt: "{{systems_nodeSelector}}"
       {% endif%}
       containers:
       - name: systems-api
-        image: tapis/systems:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
+        image: tapis/systems:{{systems_image_version}}
         imagePullPolicy: Always
-        {% if local_param["memory"]%}
+        {% if systems_memory %}
         resources:
           requests:
-            memory: "{{local_param["memory"]}}"
+            memory: "{{systems_memory}}"
         {% endif%}
         ports:
           - containerPort: 8080

@@ -11,12 +11,12 @@ spec:
       restartPolicy: Never
       containers:
       - name: jobs-migrate
-        image: tapis/jobsmigrate:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
+        image: tapis/jobsmigrate:{{jobs_image_version}}
         imagePullPolicy: Always
-        {% if local_param["memory"]%}
+        {% if jobs_memory %}
         resources:
           requests:
-            memory: "{{local_param["memory"]}}"
+            memory: "{{jobs_memory}}"
         {% endif%}
         env:
         - name: HOST

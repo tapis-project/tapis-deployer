@@ -15,7 +15,7 @@ spec:
         #command: ["sleep","3600"]
         env:
         - name: VAULT_ADDR
-          value: {{universal_param["vault_url"]}}
+          value: {{skadmin_vault_url}}
         - name: VAULT_TOKEN
           valueFrom:
             secretKeyRef:

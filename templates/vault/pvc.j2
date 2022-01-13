@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["pvc"]}}
+  name: {{vault_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]}}
+  storageClassName: {{vault_storage_class}}
   resources:
     requests:
       storage: 10Gi
@@ -30,6 +30,6 @@ spec:
 #      volumes:
 #      - name: vault-data
 #        persistentVolumeClaim:
-#          claimName: {{service_param["pvc"]}}
+#          claimName: {{vault_pvc}}
 
 

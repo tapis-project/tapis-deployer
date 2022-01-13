@@ -32,4 +32,4 @@ spec:
       volumes:
         - name: restheart-mongo-data
           persistentVolumeClaim:
-            claimName: {{service_param["restheart_mongo_pvc"]}}
+            claimName: {{meta_restheart_mongo_pvc}}

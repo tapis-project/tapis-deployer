@@ -6,7 +6,7 @@ metadata:
     app: files-api
   name:  files-api
 spec:
-  replicas: {{local_param["replicas"]}}
+  replicas: {{files_replicas}}
   selector:
     matchLabels:
       app: files-api
@@ -17,25 +17,25 @@ spec:
       labels:
         app: files-api
     spec:
-      {% if local_param["nodeSelector"]%}
+      {% if files_nodeSelector %}
       nodeSelector:
-        exempt: "{{local_param["nodeSelector"]}}"
+        exempt: "{{files_nodeSelector}}"
       {% endif%}
       containers:
       - name: files-api
-        image: tapis/tapis-files:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
-        {% if local_param["memory"]%}
+        image: tapis/tapis-files:{{files_image_version}}
+        {% if files_memory %}
         resources:
           requests:
-            memory: "{{local_param["memory"]}}"
+            memory: "{{files_memory}}"
         {% endif%}
         command: ["java"]
-        args: {{local_param["args"]|replace("'", "\"")}}
+        args: {{files_args|replace("'", "\"")}}
         imagePullPolicy: Always
         ports:
         - name: "files-api"
           containerPort: 8080
-        {% if local_param["files-debug"]==true%}
+        {% if files_files-debug" == true %}
         - name: "files-debug"
           containerPort: 8000
         {% endif %}
@@ -43,19 +43,19 @@ spec:
         - configMapRef:
             name: files-environment-vars
         env:
-        {% if local_param["node_name"] == true%}
+        {% if files_node_name == true %}
         - name: TAPIS_LOCAL_NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
-        {% endif%}
-        {% if local_param["site_id"] == true%}
+        {% endif %}
+        {% if files_site_id == true %}
         - name: TAPIS_SITE_ID
           valueFrom:
             configMapKeyRef:
               name: files-config
               key: site_id
-        {% endif%}
+        {% endif %}
         - name: TOKENS_SERVICE_URL
           valueFrom:
             configMapKeyRef:

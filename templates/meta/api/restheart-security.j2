@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: restheart-security
-        image: tapis/metaapi:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
+        image: tapis/metaapi:{{meta_image_version"}}
         imagePullPolicy: Always
         env:
         - name: tapis.site.id
@@ -22,11 +22,11 @@ spec:
               name: meta-config
               key: site_id
         - name: tapis.meta.service.tenantBaseUrl
-          value: {{universal_param["service_url"]}}/
+          value: {{meta_service_url}}/
         - name: tapis.meta.service.skSvcURL
-          value: {{universal_param["service_url"]}}/v3
+          value: {{meta_service_url}}/v3
         - name: tapis.meta.service.tokenBaseUrl
-          value: {{universal_param["service_url"]}}/
+          value: {{meta_service_url}}/
         - name: TAPIS_SERVICE_PASSWORD
           valueFrom:
             secretKeyRef:

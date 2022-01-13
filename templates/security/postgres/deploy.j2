@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: sk-pg-data
         persistentVolumeClaim:
-          claimName: {{service_param["postgres_pvc"]}}
+          claimName: {{security_postgres_pvc}}

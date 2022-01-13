@@ -40,4 +40,4 @@ spec:
       volumes:
       - name: jobs-rabbitmq-data
         persistentVolumeClaim:
-          claimName: {{service_param["rabbitmq_pvc"]}}
+          claimName: {{jobs_rabbitmq_pvc}}

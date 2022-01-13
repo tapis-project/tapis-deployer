@@ -7,28 +7,28 @@
 echo "debug100"
 
 #Enable V2 Key/Value Secrets
-#curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/mounts/secret -d '{"type": "kv-v2"}' | /usr/bin/jq
-curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/mounts/secret -d '{"type": "kv-v2"}'
+#curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/mounts/secret -d '{"type": "kv-v2"}' | /usr/bin/jq
+curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/mounts/secret -d '{"type": "kv-v2"}'
 
 echo "debug110"
 #Check the mounts:
-#curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/mounts | /usr/bin/jq
-curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/mounts
+#curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/mounts | /usr/bin/jq
+curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/mounts
 
 echo "debug120"
 #Enable Approle Authentication
-#curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/auth/approle -d '{"type": "approle"}' | /usr/bin/jq
-curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/auth/approle -d '{"type": "approle"}'
+#curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth/approle -d '{"type": "approle"}' | /usr/bin/jq
+curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth/approle -d '{"type": "approle"}'
 
 echo "debug130"
 #Check authenticators:
-#curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/auth | /usr/bin/jq
-curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/auth
+#curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth | /usr/bin/jq
+curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth
 
 echo "debug140"
 #Enable userpass authentication
-#curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/auth/userpass -d '{"type": "userpass"}' | /usr/bin/jq
-curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/sys/auth/userpass -d '{"type": "userpass"}'
+#curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth/userpass -d '{"type": "userpass"}' | /usr/bin/jq
+curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth/userpass -d '{"type": "userpass"}'
 
 #This engine is not currently used by Tapis but we still enable it.
 
@@ -40,23 +40,23 @@ echo "debug000"
 
 
 echo "debug100"
-curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" --data @/tmp/sk-roles/sk-role.json {{universal_param["vault_url"]}}/v1/auth/approle/role/sk
+curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" --data @/tmp/sk-roles/sk-role.json {{skadmin_vault_url}}/v1/auth/approle/role/sk
 
 echo "debug101"
-curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" --data @/tmp/sk-roles/sk-admin-role.json {{universal_param["vault_url"]}}/v1/auth/approle/role/sk-admin
+curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" --data @/tmp/sk-roles/sk-admin-role.json {{skadmin_vault_url}}/v1/auth/approle/role/sk-admin
 
 echo "debug130"
 #echo "vault-token:"
 #echo $VAULT_TOKEN
 echo "sk secret-id:" 
-curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id
+curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id
 echo "sk role-id:" 
-curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/auth/approle/role/sk/role-id | jq -r .data.role_id
+curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/auth/approle/role/sk/role-id | jq -r .data.role_id
 
 echo "sk-admin secret-id:" 
-curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/auth/approle/role/sk-admin/secret-id | jq -r .data.secret_id
+curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/auth/approle/role/sk-admin/secret-id | jq -r .data.secret_id
 echo "sk-admin role-id:" 
-curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/auth/approle/role/sk-admin/role-id | jq -r .data.role_id
+curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/auth/approle/role/sk-admin/role-id | jq -r .data.role_id
 
 ### qqq
 
@@ -70,8 +70,8 @@ do
   echo $i
   data=$( cat ${i}-policy.hcl )
   payload="$( jq -nc --arg str "$data" '{"policy": $str}' )"
-  #curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" {{universal_param["vault_url"]}}/v1/sys/policies/acl/tapis/${i}  | jq
-  curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" {{universal_param["vault_url"]}}/v1/sys/policies/acl/tapis/${i} 
+  #curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" {{skadmin_vault_url}}/v1/sys/policies/acl/tapis/${i}  | jq
+  curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" {{skadmin_vault_url}}/v1/sys/policies/acl/tapis/${i} 
 done
 
 echo "debug160"
@@ -82,8 +82,8 @@ do
   echo $i
   data=$( cat ${i}-policy.hcl )
   payload="$( jq -nc --arg str "$data" '{"policy": $str}' )"
-  #curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" {{universal_param["vault_url"]}}/v1/sys/policies/acl/tapis/${i}  | jq
-  curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" {{universal_param["vault_url"]}}/v1/sys/policies/acl/tapis/${i}  
+  #curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" {{skadmin_vault_url}}/v1/sys/policies/acl/tapis/${i}  | jq
+  curl -X PUT -H "X-Vault-Token: $VAULT_TOKEN" -d "$payload" {{skadmin_vault_url}}/v1/sys/policies/acl/tapis/${i}  
 done
 
 
@@ -99,7 +99,7 @@ cat /var/run/secrets/kubernetes.io/serviceaccount/namespace
 # each time this script runs.  There's little reason to keep the static role-id 
 # in SK since its always be retrieved from Vault before SK is started. 
 kubectl delete secret tapis-sk-vault-secrets
-kubectl create secret generic tapis-sk-vault-secrets --from-literal=vault-secretid=`curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id` --from-literal=vault-roleid=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" {{universal_param["vault_url"]}}/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+kubectl create secret generic tapis-sk-vault-secrets --from-literal=vault-secretid=`curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id` --from-literal=vault-roleid=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
 
 
 

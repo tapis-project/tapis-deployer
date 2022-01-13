@@ -15,12 +15,12 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: jobs-rdr-deadletter
-        image: tapis/jobsworker:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
+        image: tapis/jobsworker:{{jobs_image_version}}
         imagePullPolicy: Always
-        {% if local_param["memory"]%}
+        {% if jobs_memory %}
         resources:
           requests:
-            memory: "{{local_param["memory"]}}"
+            memory: "{{jobs_memory}}"
         {% endif%}
         env:
         - name: tapis.site.id

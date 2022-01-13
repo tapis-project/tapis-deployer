@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: systems-pg-data
         persistentVolumeClaim:
-          claimName: {{service_param["postgres_pvc"]}}
+          claimName: {{systems_postgres_pvc}}

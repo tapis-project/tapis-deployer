@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: notifications-pg-data
         persistentVolumeClaim:
-          claimName: {{service_param["postgres_pvc"]}}
+          claimName: {{notifications_postgres_pvc}}

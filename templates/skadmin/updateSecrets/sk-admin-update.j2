@@ -12,7 +12,7 @@ spec:
       - name: sk-admin-update
         #command: ["sleep","3600"]
         command: ["/tmp/run-sk-update"]
-        image: tapis/securityadmin:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default("dev")))}}
+        image: tapis/securityadmin:{{skadmin_image_version}}
         imagePullPolicy: Always
         env:
         - name: VAULT_ROLEID
@@ -26,7 +26,7 @@ spec:
               name: tapis-sk-vault-secrets
               key: vault-secretid
         #- name: SKADMIN_PARMS
-        #  value: "-c -i /tmp/updateLoad -vr VAULT_ROLEID -vs VAULT_SECRETID -b {{universal_param["vault_url"]}} -kt KUBE_TOKEN -kn KUBE_NAMEPSACE -ku https://kubernetes.default.svc.cluster.local"
+        #  value: "-c -i /tmp/updateLoad -vr VAULT_ROLEID -vs VAULT_SECRETID -b {{skadmin_vault_url}} -kt KUBE_TOKEN -kn KUBE_NAMEPSACE -ku https://kubernetes.default.svc.cluster.local"
         volumeMounts:
         - name: updateload
           mountPath: /tmp/updateLoad
