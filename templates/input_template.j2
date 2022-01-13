@@ -151,6 +151,10 @@ admin:
       file_ext: ""
       template: "authenticator-test.j2"
       data:
+    functions:
+      file_ext: ""
+      template: "functions.j2"
+      data:
     streams-test:
       file_ext: ""
       template: "streams-test.j2"
@@ -162,6 +166,10 @@ admin:
     tokens-test:
       file_ext: ""
       template: "tokens-test.j2"
+      data:
+    vault-test:
+      file_ext: ""
+      template: "vault-test.j2"
       data:
 
 apps:
@@ -499,6 +507,7 @@ notifications:
   service-parameters:
     data:
       service_name: "notifications"
+      postgres_pvc: "notifications-postgres-vol01"
   notifications-config:
     file_ext: ".yml"
     template: "notifications-config.j2"
@@ -932,7 +941,7 @@ tokens:
     file_ext: ".yml"
     template: tokens-config.j2
     data:
-      "use_sk": false
+      "use_sk": true
       "tenants": ["dev", "admin"]
       "log_level": "DEBUG"
       "show_traceback": false

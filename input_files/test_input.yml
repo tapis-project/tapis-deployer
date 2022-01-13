@@ -22,6 +22,7 @@ services:
   - tokens
   - vault
 
+
 universal-parameters:
   data:
     wildcard_url: changeme
@@ -137,6 +138,8 @@ admin:
   service-parameters:
     data:
       service_name: "admin"
+      slack_channel: 
+      slack_username: 
   admin-config:
     file_ext: ".yml"
     template: admin-config.j2
@@ -150,6 +153,10 @@ admin:
       file_ext: ""
       template: "authenticator-test.j2"
       data:
+    functions:
+      file_ext: ""
+      template: "functions.j2"
+      data:
     streams-test:
       file_ext: ""
       template: "streams-test.j2"
@@ -161,6 +168,10 @@ admin:
     tokens-test:
       file_ext: ""
       template: "tokens-test.j2"
+      data:
+    vault-test:
+      file_ext: ""
+      template: "vault-test.j2"
       data:
 
 apps:
@@ -486,6 +497,7 @@ notifications:
   service-parameters:
     data:
       service_name: "notifications"
+      postgres_pvc: "notifications-postgres-vol01"
   notifications-config:
     file_ext: ".yml"
     template: "notifications-config.j2"
@@ -794,6 +806,8 @@ streams:
       postgres_pvc: "postgres-vol01"
       kapacitor_pvc: "streams-kapacitor-vol01"
       mysql_pvc: "streams-mysql-vol01"
+      influxdb_token: 
+      influx2_pvc: "influx2-vol01 "
   streams-config:
     file_ext: ".yml"
     template: streams-config.j2

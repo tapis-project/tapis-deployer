@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: authenticator-migrations
-        image: tapis/authenticator-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/authenticator-migrations:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         args: ["upgrade"]
         #command: ["sleep","3600"]
         imagePullPolicy: Always

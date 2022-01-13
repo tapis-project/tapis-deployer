@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["pvc"]|default(defaults["pvc"])}}
+  name: {{service_param["pvc"]}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -30,6 +30,6 @@ spec:
 #      volumes:
 #      - name: vault-data
 #        persistentVolumeClaim:
-#          claimName: {{service_param["pvc"]|default(defaults["pvc"])}}
+#          claimName: {{service_param["pvc"]}}
 
 

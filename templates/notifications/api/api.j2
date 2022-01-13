@@ -12,15 +12,15 @@ spec:
       labels:
         app: notifications-api
     spec:
-      {% if local_param["nodeSelector"]%}
+      {% if local_param["nodeSelector"] | default(None) %}
       nodeSelector:
         exempt: "{{local_param["nodeSelector"]}}"
       {% endif%}
       containers:
       - name: notifications-api
-        image: tapis/notifications:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/notifications:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
-        {% if local_param["memory"]%}
+        {% if local_param["memory"] | default(None) %}
         resources:
           requests:
             memory: "{{local_param["memory"]}}"

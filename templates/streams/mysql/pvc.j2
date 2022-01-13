@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["mysql_pvc"]|default(defaults["mysql_pvc"])}}
+  name: {{service_param["mysql_pvc"]}}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -34,5 +34,5 @@ spec:
       volumes:
       - name: streams-mysql-data
         persistentVolumeClaim:
-          claimName: {{service_param["mysql_pvc"]|default(defaults["mysql_pvc"])}}
+          claimName: {{service_param["mysql_pvc"]}}
 

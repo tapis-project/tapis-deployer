@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: apps-api
-        image: tapis/apps:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/apps:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
         {% if local_param["memory"]%}
         resources:

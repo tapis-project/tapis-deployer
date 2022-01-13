@@ -13,13 +13,15 @@ spec:
     spec:
       initContainers:
       automountServiceAccountToken: false
-      {% if local_param["node_selector"] == true%}
+      {% if local_param["node_selector"] is defined %}
+        {% if local_param["node_selector"] == true %}
       nodeSelector:
         exempt: "yes"
+        {% endif %}
       {% endif %}
       containers:
       - name: jobs-rdr-recovery
-        image: tapis/jobsworker:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]|default(defaults["image_version"])))}}
+        image: tapis/jobsworker:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
         imagePullPolicy: Always
         {% if local_param["memory"]%}
         resources:

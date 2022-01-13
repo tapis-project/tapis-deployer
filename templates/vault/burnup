@@ -33,6 +33,7 @@ u2=`grep '^Unseal Key 2:' ~/vault | awk '{print $4}'`
 u3=`grep '^Unseal Key 3:' ~/vault | awk '{print $4}'`
 
 kubectl delete secret vault-keys
+kubectl create secret generic vault-token --from-file ~/vault-token
 kubectl create secret generic vault-keys --from-literal=UNSEAL1=$u1 --from-literal=UNSEAL2=$u2 --from-literal=UNSEAL3=$u3
 
 kubectl apply -f vault-auto-unseal.yml

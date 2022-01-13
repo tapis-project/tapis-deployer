@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["site_router_pvc"]|default(defaults["site_router_pvc"])}}
+  name: {{service_param["site_router_pvc"]}}
 spec:
   accessModes:
     - ReadWriteOnce

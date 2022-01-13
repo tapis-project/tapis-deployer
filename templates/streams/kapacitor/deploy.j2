@@ -48,4 +48,4 @@ spec:
           name: kapacitor-config
       - name: streams-kapacitor-data
         persistentVolumeClaim:
-          claimName: {{service_param["kapacitor_pvc"]|default(defaults["kapacitor_pvc"])}}
+          claimName: {{service_param["kapacitor_pvc"]}}

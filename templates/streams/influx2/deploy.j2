@@ -41,5 +41,5 @@ spec:
       volumes:
       - name: influx-data
         persistentVolumeClaim:
-          claimName: {{service_param["influx2_pvc"]|default(defaults["influx2_pvc"])}}
+          claimName: {{service_param["influx2_pvc"]}}
 

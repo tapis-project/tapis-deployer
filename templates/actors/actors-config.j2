@@ -13,7 +13,7 @@ data:
       "tenants": [
         {% for tenant in service_param["tenants"]|default(universal_param["tenants"]) %}
         {{"\"" + tenant + "\""}}
-        {{-("," if not loop.last)}}
+        {{-("," if not loop.last else "")}}
         {% endfor%}
       ],
       "version": ":dev",
