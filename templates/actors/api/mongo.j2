@@ -23,9 +23,9 @@ spec:
         - name: actors-mongo-keyfile-secret
           mountPath: "/keyfiles"
         env:
-        {% if local_param["init_database"]%}
+        {% if actors_mongo_init_database %}
         - name: MONGO_INITDB_DATABASE
-          value: {{local_param["init_database"]}}
+          value: {{actors_mongo_init_database}}
         {%endif%}
         - name: MONGO_REPLICA_SET_NAME
           value: rs0
@@ -48,7 +48,7 @@ spec:
       volumes:
       - name: actors-mongo-data
         persistentVolumeClaim:
-          claimName: {{service_param["mongo_pvc"]}}
+          claimName: {{actors_mongo_pvc}}
       - name: actors-mongo-keyfile-secret
         secret:
           secretName: tapis-abaco-secrets

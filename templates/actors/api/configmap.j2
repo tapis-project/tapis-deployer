@@ -2,12 +2,10 @@ apiVersion: v1
 metadata:
   name: actors-environment-vars
 data:
-  abaco_host_path: "/home/apim/{{local_param["path"]}}"
+  abaco_host_path: "/home/apim/{{abaco_host_path}}"
   _abaco_secret: "123"
   TAS_ROLE_ACCT: ""
   TAS_ROLE_PASS: ""
-  {% if local_param["timeout"]%}
-  timeout: "{{local_param["timeout"]}}"
-  {% endif %}
-
+  timeout: {{actors_timeout}}
+  
 kind: ConfigMap

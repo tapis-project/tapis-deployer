@@ -14,10 +14,8 @@ spec:
     spec:
       containers:
       - name: actors-events
-        image: abaco/core-v3:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
-        {% if local_param["image_pull"]%}
-        imagePullPolicy: Always
-        {% endif %}
+        image: abaco/core-v3:{{actors_image_version}}
+        imagePullPolicy: {{actors_image_pull_policy}} 
         command: ["python3","-u","/home/tapis/actors/events.py"]
         ports:
         - name: flask
