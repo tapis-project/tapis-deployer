@@ -11,7 +11,7 @@ spec:
       labels:
         app: streams-api
     spec:
-      {% if local_param["node_name"]%}
+      {% if local_param["node_name"] | default(None) %}
       nodeName: {{local_param["node_name"]}}
       {% endif%}
       containers:

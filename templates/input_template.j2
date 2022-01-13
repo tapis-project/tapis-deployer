@@ -507,6 +507,7 @@ notifications:
   service-parameters:
     data:
       service_name: "notifications"
+      postgres_pvc: "notifications-postgres-vol01"
   notifications-config:
     file_ext: ".yml"
     template: "notifications-config.j2"

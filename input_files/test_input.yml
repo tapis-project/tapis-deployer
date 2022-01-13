@@ -22,6 +22,7 @@ services:
   - tokens
   - vault
 
+
 universal-parameters:
   data:
     wildcard_url: changeme
@@ -496,6 +497,7 @@ notifications:
   service-parameters:
     data:
       service_name: "notifications"
+      postgres_pvc: "notifications-postgres-vol01"
   notifications-config:
     file_ext: ".yml"
     template: "notifications-config.j2"
@@ -804,6 +806,8 @@ streams:
       postgres_pvc: "postgres-vol01"
       kapacitor_pvc: "streams-kapacitor-vol01"
       mysql_pvc: "streams-mysql-vol01"
+      influxdb_token: 
+      influx2_pvc: "influx2-vol01 "
   streams-config:
     file_ext: ".yml"
     template: streams-config.j2

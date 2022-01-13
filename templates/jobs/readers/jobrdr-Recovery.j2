@@ -13,9 +13,11 @@ spec:
     spec:
       initContainers:
       automountServiceAccountToken: false
-      {% if local_param["node_selector"] == true%}
+      {% if local_param["node_selector"] is defined %}
+        {% if local_param["node_selector"] == true %}
       nodeSelector:
         exempt: "yes"
+        {% endif %}
       {% endif %}
       containers:
       - name: jobs-rdr-recovery

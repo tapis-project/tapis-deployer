@@ -12,7 +12,7 @@ spec:
       labels:
         app: systems-api
     spec:
-      {% if local_param["nodeSelector"]%}
+      {% if local_param["nodeSelector"] | default(None) %}
       nodeSelector:
         exempt: "{{local_param["nodeSelector"]}}"
       {% endif%}
