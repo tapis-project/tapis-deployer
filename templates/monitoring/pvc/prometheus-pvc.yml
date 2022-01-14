@@ -2,11 +2,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["prometheus_pvc"]}}
+  name: {{monitoring_service_grafana_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]}}
+  storageClassName: {{monitoring_service_storage_class}}
   resources:
     requests:
       storage: 20Gi

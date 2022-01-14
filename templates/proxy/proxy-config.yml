@@ -5,11 +5,11 @@ metadata:
 data:
   proxy-config.json: |-
     {
-      "service_site_url": "{{universal_param["service_url"]}}",
-      "service_tenant_id": "{{universal_param["service_tenant_id"]}}",
-      "site_id": "{{universal_param["service_site_id"]}}",
-      "service_name": "{{service_param["service_name"]}}",
-      "service_tenant_base_url": "{{universal_param["service_url"]}}",
-      "tenants": {{universal_param["tenants"]|default(["dev", "admin"])|tojson}}
+      "service_site_url": "{{proxy_service_url}}",
+      "service_tenant_id": "{{proxy_service_tenant_id}}",
+      "site_id": "{{proxy_site_id}}",
+      "service_name": "{{proxy_service_name}}",
+      "service_tenant_base_url": "{{proxy_service_tenant_base_url}}",
+      "tenants": {{proxy_service_tenants|tojson}}
     }
 

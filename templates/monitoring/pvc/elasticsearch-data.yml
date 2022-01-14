@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["elastic_pvc"]}}
+  name: {{monitoring_service_elasticsearch_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]}}
+  storageClassName: {{monitoring_service_storage_class}}
   resources:
     requests:
       storage: 20Gi
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: elasticsearch-data
         persistentVolumeClaim:
-          claimName: {{service_param["elastic_pvc"]}}
+          claimName: {{monitoring_service_elasticsearch_pvc}}
 

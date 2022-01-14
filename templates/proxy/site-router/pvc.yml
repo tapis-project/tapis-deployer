@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["site_router_pvc"]}}
+  name: {{proxy_site_router_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rbd-new
+  storageClassName: {{proxy_storage_class}}
   resources:
     requests:
       storage: 20Gi

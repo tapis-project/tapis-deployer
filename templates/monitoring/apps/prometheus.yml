@@ -28,12 +28,10 @@ spec:
           mountPath: /prometheus
       containers:
       - name: monitoring-prometheus
-        image: prom/prometheus
-        {% if local_param["args"] == true%}
+        image: {{monitoring_service_prometheus_image}}
         args:
           - "--config.file=/etc/prometheus/prometheus.yml"
           - "--web.enable-admin-api"
-        {%endif%}
         ports:
         - name: prometheus
           containerPort: 9090
@@ -46,7 +44,7 @@ spec:
       volumes:
       - name: prometheus-data
         persistentVolumeClaim:
-          claimName: {{service_param["prometheus_pvc"]}}
+          claimName: {{monitoring_service_prometheus_pvc}}
       - name: prometheus-config
         configMap:
           name: monitoring-config

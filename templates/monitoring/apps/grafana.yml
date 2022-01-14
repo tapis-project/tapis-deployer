@@ -29,7 +29,7 @@ spec:
           mountPath: /var/lib/grafana
       containers:
       - name: monitoring-grafana
-        image: grafana/grafana
+        image: {{monitoring_service_grafana_image}}
         env:
         - name: GF_SECURITY_ADMIN_PASSWORD
           valueFrom:
@@ -74,7 +74,7 @@ spec:
       volumes:
       - name: grafana-data
         persistentVolumeClaim:
-          claimName: {{service_param["grafana_pvc"]}}
+          claimName: {{monitoring_service_grafana_pvc}}
       - name: grafana-datasources
         configMap:
           name: monitoring-config

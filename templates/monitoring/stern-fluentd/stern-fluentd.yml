@@ -17,7 +17,7 @@ spec:
       containers:
       - name: stern-fluentd
         imagePullPolicy: Always
-        image: mrghort/stern-fluentd:2
+        image: {{monitoring_service_stern_image}}
         volumeMounts:
         - name: kubeconfig
           mountPath: /home/fluent/.kube/config
