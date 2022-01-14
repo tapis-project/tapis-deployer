@@ -5,19 +5,18 @@ metadata:
 data:
   tokens-config.json: |-
     {
-      "primary_site_admin_tenant_base_url": "{{universal_param["service_url"]}}",
-      "service_site_id": "{{universal_param["service_site_id"]}}",
-      "service_tenant_id": "{{universal_param["service_tenant_id"]}}",
-      "use_sk": {{ local_param["use_sk"]|tojson }},
-      "log_level": "{{local_param["log_level"]|default("DEBUG")}}",
-      "tenants": {{universal_param["tenants"]|default(["dev", "admin"])|tojson}},
-      "show_traceback": {{local_param["show_traceback"]|default("false")|tojson}},
-      "use_allservices_password": {{local_param["use_allservices_password"]|default(false)|tojson}},
-      {% if local_param["allservices_password"]%}
-      "allservices_password": {{local_param["allservices_password"]}},
+      "primary_site_admin_tenant_base_url": "{{tokens_service_url}}",
+      "service_site_id": "{{tokens_service_site_id}}",
+      "service_tenant_id": "{{tokens_service_tenant_id}}",
+      "log_level": "{{tokens_log_level}}",
+      "tenants": {{tokens_tenants|tojson}},
+      "show_traceback": {{tokens_show_traceback|tojson}},
+      "use_allservices_password": {{tokens_use_allservices_password|tojson}},
+      {% if tokens_use_allservices_password == true %}
+      "allservices_password": {{tokens_allservices_password}},
       {% endif %}
-      {% if local_param["dev_jwt_private_key"]%}
-      "dev_jwt_private_key": "{{local_param["dev_jwt_private_key"]}}",
+      {% if tokens_use_dev_jwt_private_key == true %}
+      "dev_jwt_private_key": "{{tokens_dev_jwt_private_key}}",
       {% endif %}
-      "service_name": "{{service_param["service_name"]}}"
+      "service_name": "{{tokens_service_name}}"
     }

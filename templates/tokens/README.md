@@ -10,7 +10,7 @@ Token roles must be added before service can start first time
 
 so, for ex:
 
-    docker run -it -e tenants_service_password='changeme989aa1ae4c12f92f41910a450a5b6c3f' -e service_tenant_base_url='https://admin.develop.tapis.io' tapis/add_token_roles
+    docker run -it -e tenants_service_password='changeme0123456789' -e service_tenant_base_url='{{tokens_service_tenant_id}}' tapis/add_token_roles
 
 
 
