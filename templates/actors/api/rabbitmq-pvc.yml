@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["rabbit_pvc"]}}
+  name: {{actors_rabbit_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]}}
+  storageClassName: {{actors_storage_class}}
   resources:
     requests:
       storage: 20Gi
@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: actors-rabbitmq-data
         persistentVolumeClaim:
-          claimName: {{service_param["rabbit_pvc"]}}
+          claimName: {{actors_rabbit_pvc}}
 

@@ -4,8 +4,8 @@
 
 ### vars
 
-VAULTURL="{{universal_param["vault_url"]}}"
-SERVICEUR=" {{universal_param["service_url"]}}"
+VAULTURL="{{admin_vault_url}}"
+SERVICEUR="{{admin_service_url}}"
 
 ### util
 

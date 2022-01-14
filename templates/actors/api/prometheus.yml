@@ -18,13 +18,10 @@ spec:
         ports:
         - name: prometheus
           containerPort: 9090
-        {% if local_param["volume_mount"]%}
         volumeMounts:
           - name: actors-prometheus-config
             mountPath: /etc/prometheus/prometheus.yml
             subPath: prometheus
-        {% endif %}
-      {% if local_param["volumes"]%}
       volumes:
       - name: actors-prometheus-config
         configMap:
@@ -32,4 +29,3 @@ spec:
           items:
           - key: prometheus
             path: prometheus
-      {% endif %}
