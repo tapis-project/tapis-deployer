@@ -2,22 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: actors-mes
+  name: actors-metrics
 spec:
   selector:
     matchLabels:
-      app: actors-mes
+      app: actors-metrics
   template:
     metadata:
       labels:
-        app: actors-mes
+        app: actors-metrics
     spec:
       containers:
-      - name: actors-mes
-        image: abaco/core-v3:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
-        {% if local_param["image_pull"]%}
-        imagePullPolicy: Always
-        {% endif %}
+      - name: actors-metrics
+        image: abaco/core-v3:{{actors_image_version}}
+        imagePullPolicy: {{actors_image_pull_policy}}
         ports:
         - name: flask
           containerPort: 5000
@@ -26,11 +24,9 @@ spec:
             name: actors-environment-vars
         env:
         - name: api
-          value: "mes"
+          value: "metrics"
         - name: server
-          value: "gunicorn"
-        - name: threads
-          value: "12"
+          value: "dev"
         - name: abaco_host_path
           valueFrom:
             configMapKeyRef:
