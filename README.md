@@ -50,3 +50,6 @@ i. public key gets printed to the screen (or maybe a file).
 b. send an email to the primary site admins with the public key so they can update tenants API (running at primary site) with the public key.
 5. deployer at associate site: start up tokens and authenticator at associate site.
 a. inject the private key generated at step 4a) as a k8s secret into the tokens pod
+
+
+
