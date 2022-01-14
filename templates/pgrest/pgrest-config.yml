@@ -5,12 +5,12 @@ metadata:
 data:
   pgrest-config.json: |-
     {
-      "service_site_url": "{{universal_param["service_url"]}}",
-      "service_tenant_id": "{{universal_param["service_tenant_id"]}}",
-      "site_id": "{{universal_param["service_site_id"]}}",
-      "service_name": "{{service_param["service_name"]}}",
-      "service_tenant_base_url": "{{universal_param["service_url"]}}",
-      "tenants": {{local_param["tenants"]|default(service_param["tenants"]|default(universal_param["tenants"]|default(["dev", "admin"])))|tojson}},
+      "service_site_url": "{{pgrest_service_url}}",
+      "service_tenant_id": "{{pgrest_service_tenant_id}}",
+      "site_id": "{{pgrest_service_site_id}}",
+      "service_name": "{{pgrest_service_name}}",
+      "service_tenant_base_url": "{{upgrest_service_url}}",
+      "tenants": {{pgrest_tenants|default(["dev", "admin"])|tojson}},
       "log_level": "DEBUG",
       "show_traceback": false,
       "databases": {

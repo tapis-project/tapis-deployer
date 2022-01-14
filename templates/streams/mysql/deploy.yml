@@ -36,4 +36,4 @@ spec:
       volumes:
       - name: streams-mysql-data
         persistentVolumeClaim:
-          claimName: {{service_param["mysql_pvc"]}}
+          claimName: {{streams_mysql_pvc}}

@@ -11,12 +11,12 @@ spec:
       labels:
         app: streams-api
     spec:
-      {% if local_param["node_name"] | default(None) %}
-      nodeName: {{local_param["node_name"]}}
+      {% if streams_node_name | default(None) %}
+      nodeName: {{streams_node_name}}
       {% endif%}
       containers:
       - name: streams-api
-        image: tapis/streams-api:{{local_param["image_version"]|default(service_param["image_version"]|default(universal_param["image_version"]))}}
+        image: tapis/streams-api:{{streams_image_version}}
         imagePullPolicy: Always
         ports:
         - name: http
@@ -56,14 +56,14 @@ spec:
               key: service-password
         - name: workerCls
           value: "gthread"
-        {% if local_param["process"]%}
+        {% if local_streams_process %}
         - name: processes
-          value: "{{local_param["process"]}}"
-        {% endif%}
-        {% if local_param["threads"]%}
+          value: "{{streams_process}}"
+        {% endif %}
+        {% if streams_threads%}
         - name: threads
-          value: "{{local_param["threads"]}}"
-        {% endif%}
+          value: "{{streams_threads}}"
+        {% endif %}
         volumeMounts:
         - name: streams-config
           mountPath: /home/tapis/config.json

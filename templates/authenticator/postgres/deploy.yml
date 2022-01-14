@@ -35,5 +35,5 @@ spec:
       volumes:
       - name: authenticator-pg-data
         persistentVolumeClaim:
-          claimName: {{service_param["postgres_pvc"]}}
+          claimName: {{authenticator_postgres_pvc}}
 

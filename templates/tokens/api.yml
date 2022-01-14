@@ -23,7 +23,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: tapis-tokens-secrets
-              key: {{tokens_service_tenant_id]}}-privatekey
+              key: {{tokens_service_tenant_id}}-privatekey
         volumeMounts:
         - name: tokens-config
           mountPath: /home/tapis/config.json

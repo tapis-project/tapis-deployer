@@ -1,11 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["postgres_pvc"]}}
+  name: {{tenants_postgres_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]}}
+  storageClassName: {{tenants_storage_class}}
   resources:
     requests:
       storage: 20Gi

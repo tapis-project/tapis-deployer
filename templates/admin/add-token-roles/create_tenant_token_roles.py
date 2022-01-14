@@ -21,7 +21,7 @@ if not password:
 url = os.environ.get('service_tenant_base_url', '{{admin_service_url}}')
 print(f"targetting {url}")
 
-t = DynaTapy(base_url='{{admin_service_url}}', username='tenants', account_type='service', service_password=os.environ.get('tenants_service_password'))
+t = DynaTapy(base_url='{{admin_service_url}}', username='tenants', account_type='service', service_password=os.environ.get('admin_service_password'))
 t.get_tokens()
 print("client created..")
 

@@ -55,7 +55,7 @@ checkvault_remote(){
   # TODO: fix to work if vault is remote
   # will not work until vault is up
   # something like
-  # curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" http://c002.rodeo.tacc.utexas.edu:32444/v1/sys/health | jq^C
+  # curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" {{admin_vault_url}}/v1/sys/health | jq^C
   #if [ "`kubectl exec -it deploy/vault vault status | grep Sealed | awk '{print $2}'`" != "false" ]
   #then
   #  echo "Vault check failed. Exiting."

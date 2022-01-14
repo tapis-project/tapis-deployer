@@ -7,11 +7,11 @@ data:
   LDAP_ORGANISATION: Tapis
   authenticator-config.json: |-
     {
-      "primary_site_admin_tenant_base_url": "{{universal_param["service_url"]}}",
-      "service_site_id": "{{universal_param["service_site_id"]}}",
-      "service_tenant_id": "{{universal_param["service_tenant_id"]}}",
-      "service_name": "{{service_param["service_name"]}}",
-      "tenants": {{universal_param["tenants"]|default(["dev", "admin"])|tojson}},
+      "primary_site_admin_tenant_base_url": "{{authenticator_service_url}}",
+      "service_site_id": "{{authenticator_service_site_id}}",
+      "service_tenant_id": "{{authenticator_service_tenant_id}}",
+      "service_name": "{{service_param["service_name}}",
+      "tenants": {{authenticator_"tenants|default(["dev", "admin"])|tojson}},
       "sql_db_url": "authenticator-postgres:5432/authenticator",
-      "log_level": "{{service_param["log_level"]|default(defaults["log_level"])}}"
+      "log_level": "{{authenticator_log_level|default(defaults["log_level"])}}"
     }
