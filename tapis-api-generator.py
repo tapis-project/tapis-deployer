@@ -30,8 +30,8 @@ def main():
     input_data = yaml.safe_load(args.input)
 
     # debug
-    print(input_data)
-    print(type(input_data))
+    # print(input_data)
+    # print(type(input_data))
 
 # todo: create python testing env
 # todo: test for duplicate vars
