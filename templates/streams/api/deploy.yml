@@ -38,4 +38,4 @@ spec:
       volumes:
       - name: influx-data
         persistentVolumeClaim:
-          claimName: {{service_param["influx_pvc"]}}
+          claimName: {{streams_influx_pvc}}
