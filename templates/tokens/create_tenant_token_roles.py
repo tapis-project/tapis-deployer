@@ -1,7 +1,7 @@
 import os
 from tapy.dyna import DynaTapy
 
-t = DynaTapy(base_url='{{universal_param["service_url"]}}', username='tenants', account_type='service', service_password=os.environ.get('tenants_service_password'))
+t = DynaTapy(base_url='{{tokens_service_url}}', username='tenants', account_type='service', service_password=os.environ.get('tenants_service_password'))
 
 # tenant_create role ----
 t.sk.createRole(tenant='admin', user='tenants', roleName='tenant_creator', description='Role for creating tenants.')

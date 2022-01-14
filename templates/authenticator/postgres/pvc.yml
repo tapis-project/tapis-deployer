@@ -1,16 +1,16 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{service_param["postgres_pvc"]}}
+  name: {{authenticator_postgres_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: {{universal_param["storage_class"]}}
+  storageClassName: {{authenticator_storage_class}}
   resources:
     requests:
       storage: 20Gi
 
-{% if local_param["uncomment"] == true%}
+{% if authenticator_uncomment == true%}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -33,7 +33,7 @@ spec:
      volumes:
      - name: authenticator-pg-data
        persistentVolumeClaim:
-         claimName: {{service_param["postgres_pvc"]}}
+         claimName: {{authenticator_postgres_pvc}}
 
 ---
 apiVersion: batch/v1
@@ -59,5 +59,5 @@ spec:
      volumes:
      - name: authenticator-pg-data
        persistentVolumeClaim:
-         claimName: {{service_param["postgres_pvc"]}}
+         claimName: {{authenticator_postgres_pvc}}
 {%endif%}
