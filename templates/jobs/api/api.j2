@@ -21,11 +21,6 @@ spec:
       - name: jobs-api
         image: tapis/jobsapi:{{jobs_image_version}}
         imagePullPolicy: Always
-        {% if jobs_memory %}
-        resources:
-          requests:
-            memory: "{{jobs_memory}}"
-        {% endif%}
         ports:
         - name: tomcat1
           containerPort: 8000

@@ -20,11 +20,6 @@ spec:
       - name: notifications-api
         image: tapis/notifications:{{notifications_image_version}}
         imagePullPolicy: Always
-        {% if notifications_memory | default(None) %}
-        resources:
-          requests:
-            memory: "{{notifications_memory}}"
-        {% endif%}
         ports:
           - containerPort: 8080
           - containerPort: 8000

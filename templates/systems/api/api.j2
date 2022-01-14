@@ -20,11 +20,6 @@ spec:
       - name: systems-api
         image: tapis/systems:{{systems_image_version}}
         imagePullPolicy: Always
-        {% if systems_memory %}
-        resources:
-          requests:
-            memory: "{{systems_memory}}"
-        {% endif%}
         ports:
           - containerPort: 8080
           - containerPort: 8000

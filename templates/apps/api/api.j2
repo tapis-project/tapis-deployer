@@ -16,11 +16,6 @@ spec:
       - name: apps-api
         image: tapis/apps:{{apps_image_version}}
         imagePullPolicy: Always
-        {% if apps_memory %}
-        resources:
-          requests:
-            memory: "{{apps_memory}}"
-        {% endif %}
         ports:
           - containerPort: 8080
           - containerPort: 8000

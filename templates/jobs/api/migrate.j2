@@ -13,11 +13,6 @@ spec:
       - name: jobs-migrate
         image: tapis/jobsmigrate:{{jobs_image_version}}
         imagePullPolicy: Always
-        {% if jobs_memory %}
-        resources:
-          requests:
-            memory: "{{jobs_memory}}"
-        {% endif%}
         env:
         - name: HOST
           value: "jobs-postgres"

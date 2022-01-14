@@ -36,11 +36,6 @@ spec:
       - name: sk-api
         image: tapis/securityapi:{{security_image_version}}
         imagePullPolicy: Always
-        {% if security_memory %}
-        resources:
-          requests:
-            memory: "{{security_memory}}"
-        {% endif%}
         ports:
         - name: tomcat1
           containerPort: 8000

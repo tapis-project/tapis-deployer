@@ -24,11 +24,6 @@ spec:
       containers:
       - name: files-api
         image: tapis/tapis-files:{{files_image_version}}
-        {% if files_memory %}
-        resources:
-          requests:
-            memory: "{{files_memory}}"
-        {% endif%}
         command: ["java"]
         args: {{files_args|replace("'", "\"")}}
         imagePullPolicy: Always

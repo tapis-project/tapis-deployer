@@ -23,11 +23,6 @@ spec:
       - name: jobs-rdr-recovery
         image: tapis/jobsworker:{{jobs_image_version}}
         imagePullPolicy: Always
-        {% if jobs_memory %}
-        resources:
-          requests:
-            memory: "{{jobs_memory}}"
-        {% endif%}
         env:
         {% if jobs_node_name == true%}
         - name: tapis.local.node.name

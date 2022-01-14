@@ -61,11 +61,6 @@ spec:
                   name: tapis-files-secrets
                   key: service-password
           image: tapis/tapis-files-workers:{{files_image_version}}
-          {% if files_memory %}
-          resources:
-            requests:
-              memory: "{{files_memory}}"
-          {% endif%}
           imagePullPolicy: Always
           name: files-workers
           command: {{files_commands|replace("'", "\"")}} 

@@ -13,11 +13,6 @@ spec:
       - name: sk-migrate
         image: tapis/securitymigrate:{{security_image_version}}
         imagePullPolicy: Always
-        {% if security_memory %}
-        resources:
-          requests:
-            memory: "{{security_memory}}"
-        {% endif%}
         env:
         - name: HOST
           value: "sk-postgres"
