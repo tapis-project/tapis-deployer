@@ -1,0 +1,11 @@
+apiVersion: v1
+metadata:
+  name: actors-environment-vars
+data:
+  abaco_host_path: "/home/apim/{{actors_host_path}}"
+  _abaco_secret: "123"
+  TAS_ROLE_ACCT: ""
+  TAS_ROLE_PASS: ""
+  timeout: {{actors_timeout}}
+  
+kind: ConfigMap

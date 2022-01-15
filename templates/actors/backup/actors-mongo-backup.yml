@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: actors-mongo-backup
+spec:
+  selector:
+    matchLabels:
+      app: actors-mongo-backup
+  template:
+    metadata:
+      labels:
+        app: actors-mongo-backup
+    spec:
+      containers:
+        - name: actors-mongo-backup
+          image: {{actors_mongo_image}}
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["-c", "/scripts/script.sh && cron && tail -f /var/log/cron.log"]
+          env:
+            - name: LOG_DIR
+              value: /backup/logs
+            - name: LOG_FILE
+              value: backup.log
+            - name: MONGODB_AUTH
+              value: admin
+            - name: MONGODB_HOST
+              value: actors-mongo
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: admin
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-abaco-secrets
+                  key: mongo-password
+          volumeMounts:
+            - name: {{actors_mongo_backup_pvc}}
+              mountPath: /backup/
+      volumes:
+        - name: {{actors_mongo_backup_pvc}}
+          persistentVolumeClaim:
+            claimName: {{actors_mongo_backup_pvc}}
+

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tokens-api
+spec:
+  selector:
+    matchLabels:
+      app: tokens-api
+  template:
+    metadata:
+      labels:
+        app: tokens-api
+    spec:
+      containers:
+      - name: tokens-api
+        image: tapis/tokens-api:{{tokens_image_version}}
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 5000
+        env:
+        - name: site_admin_privatekey
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tokens-secrets
+              key: {{tokens_service_tenant_id}}-privatekey
+        volumeMounts:
+        - name: tokens-config
+          mountPath: /home/tapis/config.json
+          subPath: tokens-config.json
+      volumes:
+      - name: tokens-config
+        configMap:
+          name: tokens-config
+

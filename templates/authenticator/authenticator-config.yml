@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authenticator-config
+data:
+  LDAP_DOMAIN: tapis
+  LDAP_ORGANISATION: Tapis
+  authenticator-config.json: |-
+    {
+      "primary_site_admin_tenant_base_url": "{{authenticator_service_url}}",
+      "service_site_id": "{{authenticator_service_site_id}}",
+      "service_tenant_id": "{{authenticator_service_tenant_id}}",
+      "service_name": "{{authenticator_service_name}}",
+      "tenants": {{authenticator_tenants|default(["dev", "admin"])|tojson}},
+      "sql_db_url": "authenticator-postgres:5432/authenticator",
+      "log_level": "{{authenticator_log_level|default(defaults["log_level"])}}"
+    }

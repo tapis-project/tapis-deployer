@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: apps-init-db
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: apps-init-db
+        image: bitnami/postgresql:latest
+        imagePullPolicy: Always
+        command: ["/tmp/apps-init-db-sh"]
+        volumeMounts:
+        - name: apps-init-db-vol
+          mountPath: /tmp
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-apps-secrets
+              key: postgres-password
+        {% if apps_monitor_password %}
+        - name: MONITOR_PASSWORD
+          value: {{apps_monitor_password}}
+        {% endif %}
+      volumes:
+      - name: apps-init-db-vol
+        configMap:
+          name: apps-init-db-configmap
+          defaultMode: 0777
+  backoffLimit: 4

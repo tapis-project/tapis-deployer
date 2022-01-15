@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tenants-api
+spec:
+  selector:
+    matchLabels:
+      app: tenants-api
+  template:
+    metadata:
+      labels:
+        app: tenants-api
+    spec:
+      containers:
+      - name: tenants-api
+        image: tapis/tenants-api:{{ tenants_image_version }}
+        imagePullPolicy: {{ tenants_image_pull_policy }}
+        ports:
+        - name: http
+          containerPort: 5000
+        env:
+        - name: sql_db_url
+          value: tenants-postgres:5432/tenants
+        - name: postgres_user
+          value: tenants
+        - name: postgres_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-secrets
+              key: postgres-password
+        - name: service_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-secrets
+              key: service-password
+        - name: admin_tenant_public_key
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-publickeys
+              key: admin-publickey
+        - name: dev_tenant_public_key
+          valueFrom:
+            secretKeyRef:
+              name: tapis-tenants-publickeys
+              key: dev-publickey
+        volumeMounts:
+        - name: tenants-config
+          mountPath: /home/tapis/config.json
+          subPath: tenants-config.json
+      volumes:
+      - name: tenants-config
+        configMap: 
+          name: tenants-config
+

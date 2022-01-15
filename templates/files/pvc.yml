@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: pgdata
+  name: files-pgdata
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{files_storage_class}}
+  resources:
+    requests:
+      storage: 10G

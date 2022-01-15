@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{jobs_rabbitmq_pvc}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{jobs_storage_class}}
+  resources:
+    requests:
+      storage: 10Gi
+
+

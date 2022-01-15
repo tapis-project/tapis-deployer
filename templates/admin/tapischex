@@ -1,0 +1,36 @@
+#!/bin/bash
+
+slackurl () {
+  kubectl get configmap admin-config -o json | jq -r '.data.slack_url'
+}
+
+alertcmd () {
+  s="$(slackurl)"
+  p='payload={"channel": "{{admin_slack_channel}}", "username": "{{admin_slack_username}}", "text": "'$1'"}'
+  echo $p | curl -X POST --data-binary @- $s
+}
+
+checkvault () {
+  kubectl exec -it deploy/vault -- sh -c "wget -q -O - {{admin_vault_url}}" | jq -r ".sealed"
+}
+
+tenantdomain () {
+  kubectl get configmap admin-config -o json | jq -r '.data.tenant_domain'
+}
+
+# vault seal check
+
+
+t="$(tenantdomain)"
+
+if v="$(checkvault)"
+then
+  if [ $v -eq "true" ]
+  then
+    alertcmd "ERROR: vault sealed in domain $t"
+  fi
+else
+    alertcmd "ERROR: vault down for domain $t"
+fi
+
+

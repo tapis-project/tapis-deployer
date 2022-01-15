@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: monitoring-kibana
-        image: docker.elastic.co/kibana/kibana:7.6.2
+        image: {{monitoring_service_kibana_image}}
         ports:
         - containerPort: 5601
         env:

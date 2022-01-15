@@ -18,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: monitoring-tapis-exporter
-        image: tapis/tapis-prometheus-exporter
+        image: {{monitoring_service_tapis_prometheus_exporter_image}}
         imagePullPolicy: Always
         env:
         - name: TAPIS_URL

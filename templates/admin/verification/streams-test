@@ -1,0 +1,9 @@
+#!/bin/bash
+
+curl https://dev.{{admin_deployment}}.tapis.io/v3/streams/hello 
+
+
+curl https://admin.{{admin_deployment}}.tapis.io/v3/streams/hello
+
+
+

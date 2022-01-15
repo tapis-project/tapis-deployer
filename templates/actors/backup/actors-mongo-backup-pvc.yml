@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{actors_mongo_backup_pvc}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{actors_storage_class}}
+  resources:
+    requests:
+      storage: 10Gi
+

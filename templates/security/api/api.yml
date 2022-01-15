@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sk-api
+spec:
+  selector:
+    matchLabels:
+      app: sk-api
+  template:
+    metadata:
+      labels:
+        app: sk-api
+    spec:
+      {% if security_auto_service %}
+      automountServiceAccountToken: {{security_auto_service}}
+      {% endif %}
+      initContainers:
+      {% if security_renew_sk %}
+      - name: renew-sk-secret
+        command: ["/tmp/renew-sk-secret-script"]
+        #command: ["sleep","3600"]
+        image: mrghort/skadminutil:latest
+        imagePullPolicy: Always
+        env:
+        - name: VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: vault-token
+              key: vault-token
+        volumeMounts:
+        - name: renew-sk-secret
+          mountPath: /tmp/renew-sk-secret-script
+          subPath: renew-sk-secret-script
+      {% endif %}
+      containers:
+      - name: sk-api
+        image: tapis/securityapi:{{security_image_version}}
+        imagePullPolicy: Always
+        ports:
+        - name: tomcat1
+          containerPort: 8000
+        - name: tomcat2
+          containerPort: 8080
+        - name: tomcat3
+          containerPort: 8443
+        - name: debug
+          containerPort: 6157
+        env:
+        - name: tapis.site.id
+          valueFrom:
+            configMapKeyRef:
+              name: security-kernel-config
+              key: site_id
+        - name: tapis.tenant.svc.baseurl
+          valueFrom:
+            configMapKeyRef:
+              name: security-kernel-config
+              key: service_site_url
+        - name: tapis.sk.vault.disable
+          value: "false"
+        - name: tapis.sk.vault.address
+          value: "{{security_vault_url}}"
+        - name: tapis.sk.vault.secretid
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-vault-secrets
+              key: vault-secretid
+        - name: tapis.sk.vault.roleid
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-vault-secrets
+              key: vault-roleid
+        - name: tapis.db.connection.pool.size
+          value: "10"
+        - name: tapis.db.user
+          value: "tapis"
+        - name: tapis.db.password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-secrets
+              key: tapis-postgres-password
+        - name: tapis.db.jdbc.url
+          value: "jdbc:postgresql://sk-postgres:5432/tapissecdb"
+        - name: tapis.request.logging.filter.prefixes
+          value: "/v3/security"
+        - name: tapis.request.logging.ignore.suffixes
+          value: "/healthcheck;/ready;/hello"
+#        - name: tapis.log.directory
+#          value: "/opt/tomcat/logs"
+        - name: CATALINA_OPTS 
+          value: "-Xms{{security_heap_min}}g -Xmx{{security_heap_max}}g -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=6157 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.ssl.need.client.auth=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.rmi.port=6157 -Djava.rmi.server.hostname=sk-api-debug -Dcom.sun.management.jmxremote.local.only=false"
+      {% if security_volumes %}
+      volumes:
+      - name: renew-sk-secret
+        configMap:
+          name: renew-sk-secret
+          defaultMode: 0777
+      {% endif%}

@@ -1,6 +1,6 @@
 # image: tapis/add_token_roles
 # run with: docker run -it -e tenants_service_password='<password>' -e service_tenant_base_url='<url>' tapis/add_token_roles
-# ex: docker run -it -e tenants_service_password='pass' -e service_tenant_base_url='https://admin.staging.tapis.io' tapis/add_token_roles
+# ex: docker run -it -e tenants_service_password='pass' -e service_tenant_base_url='{{admin_service_url}}' tapis/add_token_roles
 
 
 from tapis/dynatapy

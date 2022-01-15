@@ -1,0 +1,42 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: authenticator-migrations
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: authenticator-migrations
+        image: tapis/authenticator-migrations:{{authenticator_image_version}}
+        args: ["upgrade"]
+        #command: ["sleep","3600"]
+        imagePullPolicy: Always
+        env:
+        - name: MIGRATIONS_RUNNING
+          value: "True"
+        - name: dev_ldap_bind_credential
+          valueFrom:
+            secretKeyRef:
+              name: tapis-authenticator-secrets
+              key: dev-ldap-bind-credential
+        - name: postgres_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-authenticator-secrets
+              key: postgres-password
+        - name: service_password
+          valueFrom:
+            secretKeyRef:
+              name: tapis-authenticator-secrets
+              key: service-password
+        volumeMounts:
+        - name: authenticator-config
+          mountPath: /home/tapis/config.json
+          subPath: authenticator-config.json
+      volumes:
+      - name: authenticator-config
+        configMap:
+          name: authenticator-config

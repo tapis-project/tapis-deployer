@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-postgres
+spec:
+  selector:
+    matchLabels:
+      app: jobs-postgres
+  template:
+    metadata:
+      labels:
+        app: jobs-postgres
+    spec:
+      containers:
+      - name: jobs-postgres
+        image: postgres:12.4
+        ports:
+        - name: postgres
+          containerPort: 5432
+        env:
+        - name: PGDATA
+          value: "/pgdata/data"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets 
+              key: postgres-password
+        volumeMounts:
+        - name: jobs-pg-data
+          mountPath: "/pgdata"
+      volumes:
+      - name: jobs-pg-data
+        persistentVolumeClaim:
+          claimName: {{jobs_postgres_pvc}}

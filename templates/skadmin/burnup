@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ ! -f ~/vault-token ]
+then
+  echo "boo. need to create ~/vault-token"
+  exit 1
+fi
+
+kubectl apply -f skadmin-config.yml
+kubectl create secret generic vault-token --from-file ~/vault-token
+
+if [ ! -d ~/tapis-vault ]
+then
+  echo "boo. need to checkout ~/tapis-vault. i.e. 'git clone git@gitlab.tacc.utexas.edu:cic/tapis-vault.git'"
+  exit 1
+fi
+
+kubectl create configmap sk-roles --from-file ~/tapis-vault/roles
+kubectl create configmap sk-policies --from-file ~/tapis-vault/policies/sk
+kubectl create configmap sk-admin-policies --from-file ~/tapis-vault/policies/sk-admin 
+kubectl create configmap sk-admin-initialload --from-file initialLoad
+
+kubectl create configmap create-sk-roles --from-file create-sk-roles
+kubectl create configmap run-sk-admin --from-file run-sk-admin
+
+kubectl apply -f sk-presetup.yml
+kubectl wait --for=condition=complete job/sk-presetup
+
+kubectl apply -f sk-admin-init.yml
+kubectl wait --for=condition=complete job/sk-admin-init
+
+#kubectl apply -f util.yml
+#
+#echo "Now shell into pod util and run this:"
+#echo 'curl -X LIST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/policies/acl | jq'
+

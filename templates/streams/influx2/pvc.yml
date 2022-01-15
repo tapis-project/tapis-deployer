@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{streams_influx2_pvc}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{streams_storage_class}}
+  resources:
+    requests:
+      storage: 200Gi
+

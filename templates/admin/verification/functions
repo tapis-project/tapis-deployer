@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# tapis verification functions
+
+### vars
+
+VAULTURL="{{admin_vault_url}}"
+SERVICEUR="{{admin_service_url}}"
+
+### util
+
+vault_token_from_secret(){
+  kubectl get secret vault-token -o jsonpath='{.data.vault-token}' | base64 -d
+}
+
+### checks
+
+checkcert(){
+  # will not work until nginx is up
+  echo "checking cert: $1"
+  echo test | openssl s_client -showcerts -connect $1:443
+}
+
+curlurl(){
+  # will not work until nginx is up
+  u="https://$1"
+  echo "curling url: $u"
+  curl -k $u
+}
+
+pingsite(){
+  echo "pinging url: $1"
+  ping -c 1 -W 5 $1
+}
+
+vault_token_exists(){
+  if ! kubectl get secret vault-token
+  then
+    echo "Secret vault-token does not exist. Exiting."
+    exit 1
+  fi
+
+
+checkvault_kube(){
+  # TODO: fix to work if vault is remote
+  # will not work until vault is up
+  if [ "`kubectl exec -it deploy/vault vault status | grep Sealed | awk '{print $2}'`" != "false" ]
+  then
+    echo "Vault check failed. Exiting."
+    exit 1
+  fi
+}
+
+checkvault_remote(){
+  # TODO: fix to work if vault is remote
+  # will not work until vault is up
+  # something like
+  # curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" {{admin_vault_url}}/v1/sys/health | jq^C
+  #if [ "`kubectl exec -it deploy/vault vault status | grep Sealed | awk '{print $2}'`" != "false" ]
+  #then
+  #  echo "Vault check failed. Exiting."
+  #  exit 1
+  #fi
+  # TODO rcardone
+  echo
+
+}
+
+preflight_check(){
+  getconfig
+  echo "site: $SERVICEURL"
+  pingsite $SERVICEURL
+}
+
+postnginx_check(){
+  curlurl $SERVICEURL
+  checkcert $SERVICEURL
+}
+
+
