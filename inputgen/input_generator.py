@@ -3,6 +3,7 @@ import requests
 from jinja2 import Environment, FileSystemLoader
 import argparse
 import os
+import sys
 import yaml
 
 file_loader = FileSystemLoader('templates')
@@ -74,7 +75,7 @@ prompts = {
     {
         "template": "input_template.j2",
         "number": 1,
-        "prompts": 
+        "first_prompts": 
         {
             "primary_site_admin_tenant_base_url" : 
             {
@@ -82,6 +83,14 @@ prompts = {
                 "description": "Please enter the base URL for the primary site",
                 "example": "https://admin.test.tapis.io",
             },
+            "vault_external":
+            {
+                "regex": r"\w",
+                "description": "Please indicate whether you will be using an external Vault, already installed and configured.",
+                "example": "True"
+            }
+        },
+        "second_prompts":{
             "site_id" :
             {
                 "regex": r"\w",
@@ -91,16 +100,22 @@ prompts = {
             "tenants": 
             {
                 "regex": r'\[("\w*"\,\s?)+("\w*")\]',
-                "description": "Please enter an array of tenants",
+                "description": "Please enter an array of tenants to initialize the primary site with.",
                 "example": '["dev", "admin"]'
+            },
+            "tapis_image_version":
+            {
+                "regex": r"\w",
+                "description": "Please enter the image version to deploy for all Tapis service containers.",
+                "example": '["latest", "1.0.0", "dev"]'
             }
-        }
+        }        
     },
     "associate_site":
     {
         "template": "associate_template.j2",
         "number": 2,
-        "prompts": 
+        "first_prompts": 
         {
             "primary_site_admin_tenant_base_url" :
             {
@@ -116,19 +131,21 @@ prompts = {
                 "example": "assoc",
                 "function": associate_site_services
             },
-            "tenants": 
+            "vault_external":
             {
-                "regex": r'\[("\w*"\,\s?)+("\w*")\]',
-                "description": "Please enter an array of tenants",
-                "example": '["assocadm", "assocdev"]'
-            },
+                "regex": r"\w",
+                "description": "Please indicate whether you will be using an external Vault, already installed and configured.",
+                "example": "True"
+            }
+        },
+        "second_prompts":{
             "tapis_image_version":
             {
                 "regex": r"\w",
                 "description": "Please enter the image version to deploy for all Tapis service containers.",
                 "example": '["latest", "1.0.0", "dev"]'
             }
-        }
+        }        
     }
 }
 
@@ -157,10 +174,16 @@ def parse_agrs():
     return outDir, start_dict
 
 
-def load_descs():
+def load_descs(components):
     INP_DESCS_DIR = '/inputgen/inputdescs'
     all_input_descs = {}
     for f_name in os.listdir(INP_DESCS_DIR):
+        # the file names are of the form { component }_desc.yml, so we can skip files that do not correspond to compoenents we are
+        # generating
+        comp = f_name.split('_')[0]
+        if comp not in components:
+            print(f'DEBUG: skipping component {comp} as it is not in the list of components to generate.')
+            continue
         # each file should be a yaml file
         with open(os.path.join(INP_DESCS_DIR, f_name), 'r') as f:
             d = f.read()
@@ -201,12 +224,12 @@ def determine_primary_or_assoc(start_dict, current_start_dict):
         print("Input did not match any valid option; please enter 1 or 2.\n")
 
 
-def collect_user_dict(preset, prev_start_dict, current_start_dict):
-    user_dict = {}
-    for key, value in preset["prompts"].items():
+def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
+    for key, value in prompts.items():
         user_input = ""
         match = False
         validate = False
+        quit_early = False
         ct = 0
         while True:
             ct = ct + 1
@@ -218,9 +241,10 @@ def collect_user_dict(preset, prev_start_dict, current_start_dict):
             else:
                 user_input = input(f"{main_prompt} (Example: {example}): ")
             # look for special quit command
-            if user_input == 'TAPIS_QUIT':
+            if user_input == '_QUIT':
                 print("quiting...")
-                return user_dict, current_start_dict
+                quit_early = True
+                return user_dict, current_start_dict, quit_early
 
             regex = value["regex"]
             if (re.match(regex, user_input)):
@@ -244,7 +268,23 @@ def collect_user_dict(preset, prev_start_dict, current_start_dict):
                 current_start_dict[key] = user_input
                 print("\n")
                 break
-    return user_dict, current_start_dict
+    return user_dict, current_start_dict, quit_early
+
+
+def compute_components_to_deploy(user_dict):
+    # all sites get the following components
+    components = ['admin', 'authenticator', 'container-registry', 'monitoring', 'proxy', 'security', 'skadmin', 'tokens',]
+    # vault could be in k8s or external -
+    if not user_dict['vault_external'].lower == 'true':
+        components.append('vault')
+    # primary sites get all remaining components:
+    if user_dict['site_type'] == 1:
+        components.extend(['actors',  'apps', 'files', 'jobs', 'notifications', 
+        'pgrest',  'streams', 'systems', 'tenants'])
+    # associate sites get components corresponding to the services they are deploying:
+    else:
+        components.extend(user_dict['services'])    
+    return components
 
 
 def compute_inputs(all_input_descs, user_dict, defaults):
@@ -256,7 +296,7 @@ def compute_inputs(all_input_descs, user_dict, defaults):
             source_vars = desc['source_vars']
         except:
             print(f"\n***** ERROR: Invalid input description for input {inp}. No source_vars defined. ***** \n")
-            raise Exception()
+            sys.exit(1)
         for s in source_vars:
             # look for the source var in the user_dict
             if s in user_dict.keys():
@@ -283,7 +323,7 @@ def compute_inputs(all_input_descs, user_dict, defaults):
         print(f"Supplied keys: {user_dict.keys()}")
         print(f"Description: {description}")
         print(f"Example: {example}\n\n")
-        raise Exception()
+        sys.exit(1)
 
     return inputs
 
@@ -331,20 +371,36 @@ def write_output(preset, outDir, user_dict):
 
 def main():
     outDir, prev_start_dict = parse_agrs()
-    # we start the current start dict with the previous one..
+    # we start  the current start dict with the previous one..
     current_start_dict = prev_start_dict
-    # load the descriptions of all input fields we need to get values for 
-    all_input_descs = load_descs()
+    
+    # determine whether we are deploying a primary or an associate site
+    site_type, site_prompts, current_start_dict = determine_primary_or_assoc(prev_start_dict, current_start_dict)
+    user_dict = {'site_type': site_type}
+
+    # prompt the user for inputs for the first set of prmopts; these prompts actually determine which components will be generated.
+    user_dict, current_start_dict, quit_early = collect_user_dict(site_prompts["first_prompts"], prev_start_dict, current_start_dict, user_dict)
+
+    if quit_early:
+        # always write a start file that can be used for a subsequent run
+        write_start_file(current_start_dict, outDir)
+        sys.exit("start file written.")
+      
+    # get all components needed for the site type
+    components = compute_components_to_deploy(user_dict)
+    print(f'DEBUG: need to generate the following components: {components}')
+    # load the descriptions of all input fields we need to get values for; we only need values for the components we are generating
+    all_input_descs = load_descs(components)
     # load the provided defaults
     defaults = load_defaults()
 
-    # determine whether we are deploying a primary or an associate site
-    site_type, site_prompts, current_start_dict = determine_primary_or_assoc(prev_start_dict, current_start_dict)
-    # prompt the user for inputs
-    user_dict, current_start_dict = collect_user_dict(site_prompts, prev_start_dict, current_start_dict)
+    # prompt the user for inputs for the second set of prmopts; these prompts should complete the 
+    user_dict, current_start_dict, quit_early = collect_user_dict(site_prompts["second_prompts"], prev_start_dict, current_start_dict, user_dict)
     
     # always write a start file that can be used for a subsequent run
     write_start_file(current_start_dict, outDir)
+    if quit_early:
+        sys.exit("start file written.")
 
     inputs = compute_inputs(all_input_descs, user_dict, defaults)
 
