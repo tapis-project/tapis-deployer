@@ -1,0 +1,23 @@
+tenants_image_version:
+  description: The version of the tenants API that you wish to deploy.
+  example: latesst, dev, stage, 1.0.0
+  source_vars: 
+    - tenants_image_version # Please provide the version to use for the Tenants API?
+    - tapis_image_version # Do you want to use the same image version for all services? (e.g., "latest", "dev", ..) 
+
+tenants_image_pull_policy:
+  description: The Kubernete pull policy to apply to the Tenants API deployment.
+  source_vars: 
+    - image_pull_policy
+  default_var: image_pull_policy
+
+tenants_primary_site_admin_tenant_base_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
+tenants_service_site_id:
+  description:
+  source_vars:
+    - site_admin_tenant_id

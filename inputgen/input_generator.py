@@ -3,6 +3,7 @@ import requests
 from jinja2 import Environment, FileSystemLoader
 import argparse
 import os
+import yaml
 
 file_loader = FileSystemLoader('templates')
 env = Environment(loader=file_loader)
@@ -26,7 +27,7 @@ def validate_url(url):
 
 def associate_site_services(site_id, user_dict):
     # the URL specified does not includes the site id.
-    base_url = user_dict['primary_site_url']
+    base_url = user_dict['primary_site_admin_tenant_base_url']
     url = f"{base_url}/v3/sites/{site_id}"
     print(f"looking up site {site_id} at {url}...")
     if validate_url(url):
@@ -45,11 +46,23 @@ def associate_site_services(site_id, user_dict):
         except Exception as e:
             print(f"Unable to parse output from {url}; \nDebug data: {e}. \nResponse content: {r.content}\nExiting...")
             return False
-        
-        return True, output
     else:
         print("Exiting...")
         return False
+    # look up tenants associated with the site
+    url = f"{base_url}/v3/tenants"
+    user_dict['site_tenants'] = []
+    r = requests.get(url)
+    try:
+        output = r.json()["result"]
+        for tenant in output:
+            if tenant['site_id'] == site_id:
+                user_dict['site_tenants'].append(tenant['tenant_id'])
+    except Exception as e:
+        print(f"Unable to parse output from {url}; \nDebug data: {e}. \nResponse content: {r.content}\nExiting...")
+        return False
+    print(f"Found the following tenants: {user_dict['site_tenants']}")
+    return True, output
 
 
 # ----------------------------
@@ -63,7 +76,7 @@ prompts = {
         "number": 1,
         "prompts": 
         {
-            "site_url" : 
+            "primary_site_admin_tenant_base_url" : 
             {
                 "regex": r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))""",
                 "description": "Please enter the base URL for the primary site",
@@ -89,7 +102,7 @@ prompts = {
         "number": 2,
         "prompts": 
         {
-            "primary_site_url" :
+            "primary_site_admin_tenant_base_url" :
             {
                 "regex": r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))""",
                 "description": "Please enter the base URL of the admin tenant for the primary site",
@@ -108,6 +121,12 @@ prompts = {
                 "regex": r'\[("\w*"\,\s?)+("\w*")\]',
                 "description": "Please enter an array of tenants",
                 "example": '["assocadm", "assocdev"]'
+            },
+            "tapis_image_version":
+            {
+                "regex": r"\w",
+                "description": "Please enter the image version to deploy for all Tapis service containers.",
+                "example": '["latest", "1.0.0", "dev"]'
             }
         }
     }
@@ -116,56 +135,103 @@ prompts = {
 
 def parse_agrs():
     parser = argparse.ArgumentParser(description="Generate yaml config file")
-    parser.add_argument('-o', dest='outDir', metavar='outDir', nargs='?',
+    parser.add_argument('--out', type=str, dest='outDir', metavar='outDir', nargs='?',
                         help="File location of program output, if not specified defaults current location")
+    parser.add_argument('--start', type=str, dest='start_file', metavar='start_file', nargs='?',
+                        help="Location to a start file to seed this program with inputs. If provided, this program will use any values provided in the start file instead of prompting you for an input.")
     args = parser.parse_args()
+    print(f"DEBUG: {args}")
     outDir = args.outDir
     if outDir:
         print(f"output will be written to: {outDir}")
     else:
         print("no output directoty provided; output will be written to the cwd.")
-    return outDir
+    start_file = args.start_file
+    start_dict = {}
+    if start_file:
+        # check that file exists and is in yaml format
+        with open(start_file, 'r') as f:
+            start_dict = yaml.safe_load(f.read()) 
+    else:
+        print("no start file; starting from the beginning.")   
+    return outDir, start_dict
 
 
-def determine_primary_or_assoc():
+def load_descs():
+    INP_DESCS_DIR = '/inputgen/inputdescs'
+    all_input_descs = {}
+    for f_name in os.listdir(INP_DESCS_DIR):
+        # each file should be a yaml file
+        with open(os.path.join(INP_DESCS_DIR, f_name), 'r') as f:
+            d = f.read()
+            if d:
+                all_input_descs.update(yaml.safe_load(d))
+    return all_input_descs
+
+
+def load_defaults():
+    DEFAULTS_FILE = '/inputgen/defaults.yml'
+    with open(DEFAULTS_FILE, 'r') as f:
+        return yaml.safe_load(f.read()) 
+
+
+def determine_primary_or_assoc(start_dict, current_start_dict):
+    ct = 0
     while True:
-        inp = input("Will you be deploying a primary site or an associate site?\nEnter 1 for primary, 2 for associate: ")
+        ct += 1
+        # first time through, check it site_type was provided in the start file.
+        if "site_type" in start_dict.keys() and ct == 1:
+            inp = start_dict['site_type']
+        else:
+            inp = input("Will you be deploying a primary site or an associate site?\nEnter 1 for primary, 2 for associate: ")
         try:
-            preset_num = int(inp)
+            site_type = int(inp)
         except:
             print("Invalid input; please enter 1 or 2.\n")
             continue
         for key in prompts:
-            if preset_num == prompts[key]["number"]:
-                preset = prompts[key]
-                if preset_num == 1:
+            if site_type == prompts[key]["number"]:
+                site_prompts = prompts[key]
+                if site_type == 1:
                     print("\nPlease enter the following additional information for generating a primary site config.")
                 else:
                     print("\nPlease enter the following additional information for generating an associate site config.")
-                return preset
+                current_start_dict["site_type"] = site_type
+                return site_type, site_prompts, current_start_dict
         print("Input did not match any valid option; please enter 1 or 2.\n")
 
 
-def collect_user_dict(preset):
+def collect_user_dict(preset, prev_start_dict, current_start_dict):
     user_dict = {}
     for key, value in preset["prompts"].items():
         user_input = ""
         match = False
         validate = False
+        ct = 0
         while True:
+            ct = ct + 1
             main_prompt = value["description"]
             example = value["example"]
-            user_input = input(f"{main_prompt} (Example: {example}): ")
+            if ct == 1 and key in prev_start_dict:
+                user_input = prev_start_dict[key]
+                print(f"DEBUG: using start file for input {key}; attempting to use value {user_input}.")
+            else:
+                user_input = input(f"{main_prompt} (Example: {example}): ")
+            # look for special quit command
+            if user_input == 'TAPIS_QUIT':
+                print("quiting...")
+                return user_dict, current_start_dict
+
             regex = value["regex"]
             if (re.match(regex, user_input)):
                 match = True
             else:
-                print("Input did not match expected format.\n")
+                print(f"Input ({user_input}) did not match expected format.\n")
             if ("function" in value):
                 try:
                     validate = value["function"](user_input, user_dict)
                 except Exception as e:
-                    print("Validate Function failed.\n")
+                    print(f"Validate Function failed. Additional info: {type(e)}: {e}\n")
                     print(e)
             else:
                 validate = True
@@ -174,13 +240,55 @@ def collect_user_dict(preset):
                     user_dict[key] = validate[1]
                 else:
                     user_dict[key] = user_input
+                # add the key to the current start file either way
+                current_start_dict[key] = user_input
                 print("\n")
                 break
-    return user_dict
+    return user_dict, current_start_dict
 
 
-def write_output(preset, outDir, user_dict):
-    template = env.get_template(preset["template"])
+def compute_inputs(all_input_descs, user_dict, defaults):
+    inputs = {}
+    for inp, desc in all_input_descs.items():
+        print(f"DEBUG: processing input: {inp}")
+        found = False
+        try:
+            source_vars = desc['source_vars']
+        except:
+            print(f"\n***** ERROR: Invalid input description for input {inp}. No source_vars defined. ***** \n")
+            raise Exception()
+        for s in source_vars:
+            # look for the source var in the user_dict
+            if s in user_dict.keys():
+                # use the first source var that appears in the user_dict
+                inputs[inp] = user_dict[s]
+                found = True
+                break
+        # if we got through all the source_cars without finding a value, look to see if a default is allowed for this input
+        else:
+            # if an allowable default was specified, look for it in the defaults dict
+            if 'default_var' in desc.keys():
+                try:
+                    inputs[inp] = defaults[desc['default_var']]
+                    continue
+                except:
+                    pass
+        if found:
+            continue
+        # we never found the value, raise an error and get out...
+        description = desc.get('description')
+        example = desc.get('example')
+        print(f"\n***** Could not determine a value for the input {inp}. Please specify a value. *****")
+        print(f"Source vars: {source_vars}")
+        print(f"Supplied keys: {user_dict.keys()}")
+        print(f"Description: {description}")
+        print(f"Example: {example}\n\n")
+        raise Exception()
+
+    return inputs
+
+
+def ensure_outdir(outDir):
     if outDir:
         outDir = outDir.strip()
         try:
@@ -188,24 +296,63 @@ def write_output(preset, outDir, user_dict):
             test = outDir
             test2 = os.path.expanduser(test)
             os.makedirs(test2)
+            return test2
         except:
             print(f"DEBUG: {outDir} already existed.")
-        
-        file_path = os.path.join(os.path.abspath(outDir), "input.yml")
-        with open(file_path, "w") as f:
-            f.write(template.render(user_params=user_dict))
-            print(f"output file generated to: {file_path}")
+            return outDir
     else:
-        with open("input.yml", "w") as file:
-            file.write(template.render(user_params=user_dict))
-            print("output file generated to input.yml in current working directory.")
+        outdir = os.getcwd()
+        print(f"using current working directory ({outdir})")
+        return outdir
+
+
+def write_start_file(current_start_dict, outDir):
+    out_dir = ensure_outdir(outDir)
+    file_path = os.path.join(os.path.abspath(out_dir), "start_file.yml")
+    with open(file_path, 'w') as f:
+        f.write(yaml.dump(current_start_dict))
+
+
+def write_raw_input_file(inputs, outDir):
+    out_dir = ensure_outdir(outDir)
+    file_path = os.path.join(os.path.abspath(out_dir), "raw_inputs_file.yml")
+    with open(file_path, 'w') as f:
+        f.write(yaml.dump(inputs))
+
+
+def write_output(preset, outDir, user_dict):
+    template = env.get_template(preset["template"])
+    out_dir = ensure_outdir(outDir)
+    file_path = os.path.join(os.path.abspath(out_dir), "input.yml")
+    with open(file_path, "w") as f:
+        f.write(template.render(user_params=user_dict))
+        print(f"output file generated to: {file_path}")
 
 
 def main():
-    outDir = parse_agrs()
-    preset = determine_primary_or_assoc()
-    user_dict = collect_user_dict(preset)
-    write_output(preset, outDir, user_dict)
+    outDir, prev_start_dict = parse_agrs()
+    # we start the current start dict with the previous one..
+    current_start_dict = prev_start_dict
+    # load the descriptions of all input fields we need to get values for 
+    all_input_descs = load_descs()
+    # load the provided defaults
+    defaults = load_defaults()
+
+    # determine whether we are deploying a primary or an associate site
+    site_type, site_prompts, current_start_dict = determine_primary_or_assoc(prev_start_dict, current_start_dict)
+    # prompt the user for inputs
+    user_dict, current_start_dict = collect_user_dict(site_prompts, prev_start_dict, current_start_dict)
+    
+    # always write a start file that can be used for a subsequent run
+    write_start_file(current_start_dict, outDir)
+
+    inputs = compute_inputs(all_input_descs, user_dict, defaults)
+
+    # write the raw_input.yml file --
+    write_raw_input_file(inputs, outDir)
+
+    # write the input.yml file --
+    write_output(site_prompts, outDir, user_dict)
         
 
 if __name__ == "__main__":

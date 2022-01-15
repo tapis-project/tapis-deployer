@@ -1,16 +1,15 @@
 # image: tapis/deployer-input-gen
 # run with: 
-#    docker run it --rm -v $(pwd):/data tapis/deployer-input-gen -o /data
+#    docker run -v $(pwd)/output:/data -it tapis/deployer-input-gen --out=/data --start=/data/start_file.yml
 FROM python:3.9
 
 # dependencies
 ADD requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
-# deployer code
-ADD templates /templates
-ADD input_files /input_files
-ADD input_generator.py /input_generator.py
+# deployer inputgen code
+ADD inputgen /inputgen
 
-# entrypoint and command
-ENTRYPOINT [ "python3", "/input_generator.py" ]
+# workdir, entrypoint and command
+WORKDIR /inputgen
+ENTRYPOINT [ "python3", "input_generator.py" ]

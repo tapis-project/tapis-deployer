@@ -1,0 +1,4 @@
+skadmin_initLoad_jwtsigning_tenants:
+  description: The list of tenants owned by the site; i.e., that the Tokens API will be signing JWTs on behalf of
+  source_vars:
+    - site_tenants

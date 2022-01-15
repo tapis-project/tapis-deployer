@@ -1,0 +1,14 @@
+actors_primary_site_admin_tenant_base_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
+actors_service_tenant_id:
+  source_vars: 
+    - site_admin_tenant_id
+
+actors_image_pull_policy:
+  source_vars: 
+    - image_pull_policy
+  default_var: image_pull_policy
