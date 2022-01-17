@@ -1,3 +1,40 @@
+actors_host_path:
+  description: Path on the machine (host) where actor workers are deployed that contains Abaco's runtime files, such as mounts, sockets, etc.
+  example: /home/abaco
+  source_vars:
+    - actors_host_path
+
+actors_mongo_image:
+  description: The docker image to use for the Actors' MongoDB container.
+  example: mongo:4.2.6
+  source_vars:
+    - actors_mongo_image
+  default: actors_mongo_image
+
+actors_mongo_init_database:
+  description: When using the official mongo image, this variable will be used to populate MONGO_INITDB_DATABASE, used for creation scripts. See the mongo docker image documentation (https://hub.docker.com/_/mongo) for more details.
+  optional: true
+  example: No example provided.
+  source_vars:
+    - actors_mongo_init_database
+
+actors_mongo_tls:
+  description: Whether to configure the Actors' MongoDB with TLS. Used when Abaco is deployed across a wide-area network.
+  example: false
+  source_vars:
+    - actors_mongo_tls
+  default: actors_mongo_tls
+
+actors_service_tenants:
+  description: The list of tenants owned by the site that the Actors service will honor.
+  source_vars:
+    - site_tenants
+
+actors_spawner_docker_network:
+  description: TODO
+  source_vars:
+    - actors_spawner_docker_network
+
 actors_primary_site_admin_tenant_base_url:
   description: The base URL of the admin tenant in the primary site.
   example: https://admin.develop.tapis.io
@@ -7,6 +44,7 @@ actors_primary_site_admin_tenant_base_url:
 actors_service_tenant_id:
   source_vars: 
     - site_admin_tenant_id
+  description: The id of the admin tenant where this service is running.
 
 actors_image_pull_policy:
   source_vars: 

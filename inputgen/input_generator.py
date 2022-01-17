@@ -12,6 +12,21 @@ env.trim_blocks = True
 env.lstrip_blocks = True
 env.rstrip_blocks = True
 
+# whether to print verbose output
+vb = False
+
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 
 # ---------------
 # Validators
@@ -91,6 +106,7 @@ prompts = {
             }
         },
         "second_prompts":{
+            # TODO -- i think this has to always be admin... no choice.
             "site_id" :
             {
                 "regex": r"\w",
@@ -108,7 +124,7 @@ prompts = {
                 "regex": r"\w",
                 "description": "Please enter the image version to deploy for all Tapis service containers.",
                 "example": '["latest", "1.0.0", "dev"]'
-            }
+            },
         }        
     },
     "associate_site":
@@ -139,25 +155,38 @@ prompts = {
             }
         },
         "second_prompts":{
+        }        
+    },
+    "common_second_prompts":
+    {
             "tapis_image_version":
             {
                 "regex": r"\w",
                 "description": "Please enter the image version to deploy for all Tapis service containers.",
                 "example": '["latest", "1.0.0", "dev"]'
+            },
+            "tapis_storage_class":
+            {
+                "regex": f"\w",
+                "description": "Please enter the Kubernetes storage class to use for persistent volume claims (PVCs).",
+                "example": "rbd-new"
             }
-        }        
+
     }
 }
 
 
 def parse_agrs():
-    parser = argparse.ArgumentParser(description="Generate yaml config file")
-    parser.add_argument('--out', type=str, dest='outDir', metavar='outDir', nargs='?',
-                        help="File location of program output, if not specified defaults current location")
-    parser.add_argument('--start', type=str, dest='start_file', metavar='start_file', nargs='?',
+    parser = argparse.ArgumentParser(description="Generate an input.yml file for deployer to use to generate deployments scripts.")
+    parser.add_argument('-o', '--out', type=str, dest='outDir', metavar='outDir', nargs='?',
+                        help="Directory to write program output; if not specified, this program will default to writing output to the current working directory.")
+    parser.add_argument('-s', '--start', type=str, dest='start_file', metavar='start_file', nargs='?',
                         help="Location to a start file to seed this program with inputs. If provided, this program will use any values provided in the start file instead of prompting you for an input.")
+    parser.add_argument('-l', '--lprompt', action="store_true", help="Prompt for all missing configs.")
+    parser.add_argument('-v', '--verbose', action="store_true", help="Print verbose output.")
     args = parser.parse_args()
-    print(f"DEBUG: {args}")
+    global vb
+    if vb: print(f"DEBUG: {args}")
     outDir = args.outDir
     if outDir:
         print(f"output will be written to: {outDir}")
@@ -171,7 +200,12 @@ def parse_agrs():
             start_dict = yaml.safe_load(f.read()) 
     else:
         print("no start file; starting from the beginning.")   
-    return outDir, start_dict
+    long_prompt = False
+    if args.lprompt:
+        long_prompt = True
+    if args.verbose:
+        vb = True
+    return outDir, start_dict, long_prompt
 
 
 def load_descs(components):
@@ -182,9 +216,10 @@ def load_descs(components):
         # generating
         comp = f_name.split('_')[0]
         if comp not in components:
-            print(f'DEBUG: skipping component {comp} as it is not in the list of components to generate.')
+            if vb: print(f'DEBUG: skipping component {comp} as it is not in the list of components to generate.')
             continue
         # each file should be a yaml file
+        if vb: print(f'DEBUG: including {comp}')
         with open(os.path.join(INP_DESCS_DIR, f_name), 'r') as f:
             d = f.read()
             if d:
@@ -224,6 +259,17 @@ def determine_primary_or_assoc(start_dict, current_start_dict):
         print("Input did not match any valid option; please enter 1 or 2.\n")
 
 
+def extend_prompts_with_inputs(second_prompts, all_input_descs):
+    for var, desc in all_input_descs.items():
+        # make sure the description has a source_vars
+        if 'source_vars' not in desc:
+            continue
+        # if there is exactly one source var and it has the same name as the var itself, add it to the prompts
+        if len(desc['source_vars']) == 1 and desc['source_vars'][0] == var:
+            second_prompts[var] = desc
+    return second_prompts
+
+
 def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
     for key, value in prompts.items():
         user_input = ""
@@ -234,10 +280,10 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
         while True:
             ct = ct + 1
             main_prompt = value["description"]
-            example = value["example"]
+            example = value.get("example", "No example provided.")
             if ct == 1 and key in prev_start_dict:
                 user_input = prev_start_dict[key]
-                print(f"DEBUG: using start file for input {key}; attempting to use value {user_input}.")
+                if vb: print(f"DEBUG: using start file for input {key}; attempting to use value {user_input}.")
             else:
                 user_input = input(f"{main_prompt} (Example: {example}): ")
             # look for special quit command
@@ -290,13 +336,24 @@ def compute_components_to_deploy(user_dict):
 def compute_inputs(all_input_descs, user_dict, defaults):
     inputs = {}
     for inp, desc in all_input_descs.items():
-        print(f"DEBUG: processing input: {inp}")
+        if vb: print(f"DEBUG: processing input: {inp}")
         found = False
+        # some variables CANNOT be changed via deployer; they have a value specified in the description that must be used.
+        # examples include fields like the service name (e.g., apps_service_name)
+        value = desc.get('value')
+        if value:
+            inputs[inp] = value
+            found = True
+            continue
         try:
             source_vars = desc['source_vars']
         except:
-            print(f"\n***** ERROR: Invalid input description for input {inp}. No source_vars defined. ***** \n")
+            print(f"{bcolors.FAIL}\n***** ERROR: Invalid input description for input {inp}. No source_vars defined. ***** \n{bcolors.ENDC}")
             sys.exit(1)
+        # variables can be set to "optional", meaning there existence does not impact the ability to compile the templates.
+        # TODO -- need to implement optional below...
+        optional = desc.get('optional', False)
+
         for s in source_vars:
             # look for the source var in the user_dict
             if s in user_dict.keys():
@@ -304,7 +361,7 @@ def compute_inputs(all_input_descs, user_dict, defaults):
                 inputs[inp] = user_dict[s]
                 found = True
                 break
-        # if we got through all the source_cars without finding a value, look to see if a default is allowed for this input
+        # if we got through all the source_vars without finding a value, look to see if a default is allowed for this input
         else:
             # if an allowable default was specified, look for it in the defaults dict
             if 'default_var' in desc.keys():
@@ -318,7 +375,7 @@ def compute_inputs(all_input_descs, user_dict, defaults):
         # we never found the value, raise an error and get out...
         description = desc.get('description')
         example = desc.get('example')
-        print(f"\n***** Could not determine a value for the input {inp}. Please specify a value. *****")
+        print(f"{bcolors.WARNING}\n***** Could not determine a value for the input {inp}. Please specify a value. ***** {bcolors.ENDC}")
         print(f"Source vars: {source_vars}")
         print(f"Supplied keys: {user_dict.keys()}")
         print(f"Description: {description}")
@@ -332,13 +389,13 @@ def ensure_outdir(outDir):
     if outDir:
         outDir = outDir.strip()
         try:
-            print(f"DEBUG: creating {outDir} if it does not exist.")
+            if vb: print(f"DEBUG: creating {outDir} if it does not exist.")
             test = outDir
             test2 = os.path.expanduser(test)
             os.makedirs(test2)
             return test2
         except:
-            print(f"DEBUG: {outDir} already existed.")
+            if vb: print(f"DEBUG: {outDir} already existed.")
             return outDir
     else:
         outdir = os.getcwd()
@@ -370,7 +427,7 @@ def write_output(preset, outDir, user_dict):
 
 
 def main():
-    outDir, prev_start_dict = parse_agrs()
+    outDir, prev_start_dict, long_prompt = parse_agrs()
     # we start  the current start dict with the previous one..
     current_start_dict = prev_start_dict
     
@@ -388,14 +445,19 @@ def main():
       
     # get all components needed for the site type
     components = compute_components_to_deploy(user_dict)
-    print(f'DEBUG: need to generate the following components: {components}')
+    if vb: print(f'DEBUG: need to generate the following components: {components}')
     # load the descriptions of all input fields we need to get values for; we only need values for the components we are generating
     all_input_descs = load_descs(components)
     # load the provided defaults
     defaults = load_defaults()
 
-    # prompt the user for inputs for the second set of prmopts; these prompts should complete the 
-    user_dict, current_start_dict, quit_early = collect_user_dict(site_prompts["second_prompts"], prev_start_dict, current_start_dict, user_dict)
+    # prompt the user for inputs for the second set of prmopts; at a minimum, draw prompts from both the site_type and common sets.
+    second_prompts = {**prompts['common_second_prompts'], **site_prompts["second_prompts"]}
+    # additionally, if long_prompt was specified, add prompts for every input that only specifies itself as a source_var
+    if long_prompt:
+        second_prompts = extend_prompts_with_inputs(second_prompts, all_input_descs)
+
+    user_dict, current_start_dict, quit_early = collect_user_dict(second_prompts, prev_start_dict, current_start_dict, user_dict)
     
     # always write a start file that can be used for a subsequent run
     write_start_file(current_start_dict, outDir)
@@ -404,11 +466,12 @@ def main():
 
     inputs = compute_inputs(all_input_descs, user_dict, defaults)
 
-    # write the raw_input.yml file --
+    inputs['components_to_deploy'] = components
+    # write the input.yml file as a "raw" yaml dump --
     write_raw_input_file(inputs, outDir)
 
-    # write the input.yml file --
-    write_output(site_prompts, outDir, user_dict)
+    # write the input.yml file using a template --
+    # write_output(site_prompts, outDir, user_dict)
         
 
 if __name__ == "__main__":

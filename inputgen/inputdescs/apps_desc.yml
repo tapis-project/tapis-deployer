@@ -1,0 +1,10 @@
+apps_image_version:
+  description: The version of the Apps API that you wish to deploy.
+  example: latesst, dev, stage, 1.0.0
+  source_vars: 
+    - apps_image_version # Please provide the version to use for the Apps API?
+    - tapis_image_version # Do you want to use the same image version for all services? (e.g., "latest", "dev", ..) 
+
+apps_service_name:
+  description: The name of this service; should always be set to apps.
+  value: apps

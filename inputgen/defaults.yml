@@ -1,2 +1,4 @@
 log_level: DEBUG
 image_pull_policy: Always
+actors_mongo_image: mongo:4.2.6
+actors_mongo_tls: false

@@ -1,0 +1,54 @@
+authenticator_image_version:
+  description: The version of the Authenticator that you wish to deploy.
+  example: latesst, dev, stage, 1.0.0
+  source_vars: 
+    - authenticator_image_version 
+    - tapis_image_version
+
+authenticator_image_pull_policy:
+  description: The Kubernete pull policy to apply to the authenticator deployment.
+  source_vars: 
+    - image_pull_policy
+  default_var: image_pull_policy
+
+authenticator_log_level:
+  description: Log level
+  source_vars: 
+    - authenticator_log_level 
+    - tapis_log_level
+
+authenticator_show_traceback:
+  description: Whether to show the full (Python) traceback in logs.
+  source_vars: 
+    - authenticator_show_traceback
+    - tapis_show_traceback
+
+authenticator_service_name:
+  description: The name of this service; should always be set to authenticator.
+  value: authenticator
+
+authenticator_service_site_id:
+  description: The site_id where this authenticator service is running.
+  source_vars:
+    - site_id
+
+authenticator_service_tenant_id:
+  source_vars: 
+    - site_admin_tenant_id
+  description: The id of the admin tenant where this service is running.
+
+authenticator_primary_site_admin_tenant_base_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
+authenticator_storage_class:
+  description: Kubernetes storage class to use for peristent volume claim used to persist data written by the Postgres database.
+  source_vars:
+    - authenticator_storage_class
+    - tapis_storage_class
+
+authenticator_use_sk:
+  description: Whether this service should use the SK for checking authorization (NOTE - should always set to True in production).
+  value: true

@@ -1,0 +1,19 @@
+admin_service_site_id:
+  description: The site_id of this deployment.
+  source_vars:
+    - site_id
+
+admin_service_tenant_id:
+  description: The tenant_id of the admin tenant for this deployment.
+  source_vars:
+    - site_admin_tenant_id
+  
+admin_slack_channel:
+  description: The slack channel where the admin scripts report notifications.
+  source_vars:
+    - admin_slack_channel
+
+admin_slack_username:
+  description: The slack username for the slack channel where the admin scripts report notifications.
+  source_vars:
+    - admin_slack_username
