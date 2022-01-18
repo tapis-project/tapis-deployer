@@ -292,11 +292,14 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
                 quit_early = True
                 return user_dict, current_start_dict, quit_early
 
-            regex = value["regex"]
-            if (re.match(regex, user_input)):
-                match = True
+            regex = value.get("regex")
+            if regex:
+                if (re.match(regex, user_input)):
+                    match = True
+                else:
+                    print(f"Input ({user_input}) did not match expected format.\n")
             else:
-                print(f"Input ({user_input}) did not match expected format.\n")
+                match = True
             if ("function" in value):
                 try:
                     validate = value["function"](user_input, user_dict)
