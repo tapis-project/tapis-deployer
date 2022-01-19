@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: meta-pbm
-          image: tapis/mongodb-backup:{{meta_image_version|default("latest")))}}
+          image: tapis/mongodb-backup:{{meta_image_version}}
           imagePullPolicy: Always
           env:
             - name: PBM_MONGODB_URI

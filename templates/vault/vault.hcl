@@ -5,7 +5,7 @@ storage "file" {
   path = "/vault/data"
 }
 
-{% if local_param["raft_storage"]%}
+{% if vault_raft_storage == true %}
 storage_destination "raft" {
     path = "/opt/vault/data"
     node_id = "raft_node_1"

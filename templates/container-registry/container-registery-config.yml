@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata: 
   name: container-registry-config
 data:
-  "service_site_url": "{{container-registry_service_url}}"
-  "service_tenant_id": "{{container-registry_service_tenant_id}}"
-  "site_id": "{{container-registry_service_site_id}}"
-  "service_name": "{{container-registry_service_name}}"
+  "service_site_url": "{{container_registry_service_url}}"
+  "service_tenant_id": "{{container_registry_service_tenant_id}}"
+  "site_id": "{{container_registry_service_site_id}}"
+  "service_name": "{{container_registry_service_name}}"

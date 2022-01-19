@@ -17,9 +17,9 @@ spec:
       labels:
         app: files-api
     spec:
-      {% if files_nodeSelector %}
+      {% if files_node_selector %}
       nodeSelector:
-        exempt: "{{files_nodeSelector}}"
+        exempt: "{{files_node_selector}}"
       {% endif%}
       containers:
       - name: files-api
@@ -30,7 +30,7 @@ spec:
         ports:
         - name: "files-api"
           containerPort: 8080
-        {% if files_files-debug" == true %}
+        {% if files_files_debug == true %}
         - name: "files-debug"
           containerPort: 8000
         {% endif %}

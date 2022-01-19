@@ -8,8 +8,8 @@ here=`pwd`
 
 ### vars
 
-VAULTURL="{{universal_param["vault_url"]}}"
-SERVICEUR=" {{universal_param["service_url"]}}"
+VAULTURL="{{vault_service_vault_url}}"
+SERVICEUR=" {{admin_service_url}}"
 
 ### checks
 
