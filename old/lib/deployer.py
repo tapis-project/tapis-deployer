@@ -1,6 +1,5 @@
 import os
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
-import pathlib
 
 def create_tapis(template_path, out_dir, input_data):
     '''

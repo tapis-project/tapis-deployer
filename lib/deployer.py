@@ -1,6 +1,5 @@
 import os
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
-import pathlib
 
 def mkdir_if_missing(dir):
     '''
