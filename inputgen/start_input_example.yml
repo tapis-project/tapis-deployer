@@ -1,0 +1,196 @@
+# global
+components_to_deploy: 
+  - admin
+  - vault
+  - sk-admin
+  - proxy
+
+
+
+
+# actors
+actors_service_url:
+actors_service_tenant_id:
+actors_service_name: 
+actors_storage_class:
+actors_rabbit_pvc: 
+actors_mongo_pvc: 
+actors_mongo_backup_pvc: 
+actors_mongo_image:
+actors_mongo_tls: 
+actors_image_version: 
+actors_image_pull_policy: 
+actors_host_path: 
+actors_timeout: 
+actors_mongo_init_database:
+actors_log_level: 
+actors_spawner_docker_network: 
+actors_web_encryption_key: 
+actors_web_tenant_name: 
+actors_web_apim_public_key: 
+actors_service_tenants: 
+  - dev
+  - admin
+
+# admin
+admin_service_url: 
+admin_service_tenant_id: 
+admin_service_name: 
+admin_service_site_id:
+admin_storage_class: 
+admin_vault_url: 
+
+
+# apps 
+apps_image_version:
+apps_monitor_password:
+apps_service_name:
+apps_service_site_id:
+apps_service_tenant_id:
+apps_service_url:
+apps_storage_class:
+apps_enable_external: false
+
+# authenticator
+authenticator_log_level:
+authenticator_service_url: 
+authenticator_service_site_id:
+authenticator_service_tenant_id:
+authenticaor_service_name: 
+authenticator_service_tenants:
+  - dev
+  - admin
+
+
+# files
+files_args:
+files_commands:
+files_nodeSelector:
+files_rabbitmq_hostname:
+files_service_name:
+files_service_site_id:
+files_service_tenant_id:
+files_service_url:
+
+# jobs
+jobs_service_name:
+jobs_service_site_id:
+jobs_service_tenant_id:
+jobs_service_url:
+
+# meta
+meta_image_version: 
+meta_service_name: 
+meta_service_site_id: 
+meta_service_tenant_id: 
+
+
+# monitoring
+monitoring_service_url: 
+monitoring_service_tenant_id: 
+monitoring_service_site_id: 
+monitoring_service_name: 
+monitoring_service_tenant_base_url: 
+monitoring_service_grafana_username:
+monitoring_service_grafana_password:
+monitoring_service_storage_class: 
+monitoring_service_prometheus_pvc:
+monitoring_service_prometheus_image: 
+monitoring_service_grafana_pvc: 
+monitoring_service_grafana_image: 
+monitoring_service_elasticsearch_pvc: 
+monitoring_service_elasticsearch_image: 
+monitoring_service_kibana_image: 
+monitoring_service_tapis_prometheus_exporter_image: 
+monitoring_service_stern_image: 
+
+
+
+# notifications
+notifications_image_version:
+notifications_nodeSelector:
+notifications_service_name:
+notifications_service_site_id:
+notifications_service_tenant_id:
+notifications_service_url:
+notifications_storage_class:
+
+# proxy
+proxy_service_url: 
+proxy_service_tenant_id: 
+proxy_service_site_id:
+proxy_service_name: 
+proxy_service_tenant_base_url:
+proxy_site_router_pvc: 
+proxy_storage_class: 
+proxy_nginx_cert_file:
+proxy_nginx_cert_key: 
+proxy_nginx_server_name: 
+proxy_service_tenants: 
+  - dev
+  - admin
+proxy_nginx_service_list:
+  - actors
+  - apps
+  - authenticator
+  - files
+  - meta
+  - monitoring
+  - notifications
+  - pgrest
+  - security
+  - systems
+  - tenants
+  - tokens
+  
+
+# security
+security_auto_service:
+security_heap_max:
+security_heap_min:
+security_service_name:
+security_service_site_id:
+security_service_tenant_id:
+security_service_url:
+security_storage_class:
+
+# skadmin
+skadmin_service_name:
+skadmin_service_site_id:
+skadmin_service_url:
+skadmin_vault_url:
+
+# systems
+systems_image_version:
+systems_nodeSelector:
+systems_service_name:
+systems_service_site_id:
+systems_service_tenant_id:
+systems_service_url:
+systems_storage_class:
+
+# tenants
+tenants_service_name: 
+tenants_postgres_pvc: 
+
+# tokens
+tokens_service_name: 
+tokens_service_url: 
+tokens_image_version:
+tokens_service_tenant_id: 
+tokens_service_site_id: 
+tokens_use_sk: 
+tokens_log_level: 
+tokens_show_traceback: 
+tokens_use_allservices_password: 
+tokens_allservices_password:
+tokens_use_dev_jwt_private_key: 
+tokens_dev_jwt_private_key: 
+
+# vault
+vault_service_name:
+vault_service_site_id:
+vault_service_tenant_id:
+vault_service_url: 
+vault_storage_class:
+vault_service_vault_url: 
