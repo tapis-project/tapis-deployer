@@ -12,9 +12,9 @@ spec:
       labels:
         app: notifications-api
     spec:
-      {% if notifications_nodeSelector | default(None) %}
+      {% if notifications_node_selector | default(None) %}
       nodeSelector:
-        exempt: "{{notifications_nodeSelector}}"
+        exempt: "{{notifications_node_selector}}"
       {% endif%}
       containers:
       - name: notifications-api

@@ -12,9 +12,9 @@ spec:
       labels:
         app: systems-api
     spec:
-      {% if systems_nodeSelector | default(None) %}
+      {% if systems_node_selector | default(None) %}
       nodeSelector:
-        exempt: "{{systems_nodeSelector}}"
+        exempt: "{{systems_node_selector}}"
       {% endif%}
       containers:
       - name: systems-api
