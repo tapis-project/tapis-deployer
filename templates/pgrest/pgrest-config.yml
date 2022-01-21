@@ -9,7 +9,7 @@ data:
       "service_tenant_id": "{{pgrest_service_tenant_id}}",
       "site_id": "{{pgrest_service_site_id}}",
       "service_name": "{{pgrest_service_name}}",
-      "service_tenant_base_url": "{{pgrest_service_url}}",
+      "primary_site_admin_tenant_base_url": "{{pgrest_service_url}}",
       "tenants": {{pgrest_tenants|tojson}},
       "log_level": "DEBUG",
       "show_traceback": false,

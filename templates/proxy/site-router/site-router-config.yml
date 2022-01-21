@@ -5,7 +5,7 @@ metadata:
 data:
   site-router-config.json: |-
     {
-      "primary_site_admin_tenant_base_url": "{{proxy_service_tenant_base_url}}",
+      "primary_site_admin_tenant_base_url": "{{proxy_primary_site_admin_tenant_base_url}}",
       "service_site_id": "{{proxy_service_site_id}}",
       "service_tenant_id": "{{proxy_service_tenant_id}}",
       "service_name": "{{proxy_service_name}}",

@@ -8,12 +8,6 @@ spec:
   - name: util2
     command: ["sleep","3600"]
     image: mrghort/skadminutil:latest
-    env:
-    - name: service_tenant_base_url
-      valueFrom:
-        configMapKeyRef:
-          name: admin-config
-          key: service_tenant_base_url
     volumeMounts:
     - name: tenants-config
       mountPath: /home/tapis/config.json

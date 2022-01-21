@@ -18,8 +18,8 @@ spec:
             secretKeyRef:
               name: tapis-tenants-secrets
               key: service-password
-        - name: service_tenant_base_url
+        - name: primary_site_admin_tenant_base_url
           valueFrom:
             configMapKeyRef:
               name: tokens-config
-              key: service_tenant_base_url
+              key: primary_site_admin_tenant_base_url
