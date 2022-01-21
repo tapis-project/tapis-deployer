@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: files-rabbitmq
-  name: files-rabbitmq-data
+  name: {{files_rabbitmq_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce

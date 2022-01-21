@@ -52,4 +52,4 @@ spec:
       volumes:
       - name: pgdata
         persistentVolumeClaim:
-          claimName: files-pgdata
+          claimName: {{files_postgres_pvc}}

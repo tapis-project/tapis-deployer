@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: restheart-mongo
-          image: tapis/mongo-singlenode:4.4.6-bionic
+          image: {{meta_mongo_restheart_image}}
           imagePullPolicy: Always
           env:
             - name: MONGO_INITDB_ROOT_USERNAME

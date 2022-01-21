@@ -36,5 +36,5 @@ spec:
       volumes:
         - name: files-rabbitmq-data
           persistentVolumeClaim:
-            claimName: files-rabbitmq-data
+            claimName: {{files_rabbitmq_pvc}}
       restartPolicy: Always

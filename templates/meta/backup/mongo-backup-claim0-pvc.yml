@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mongo-backup-claim0
+  name: {{meta_mongo_backup_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce

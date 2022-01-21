@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: pgdata
-  name: files-pgdata
+  name: {{files_postgres_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
