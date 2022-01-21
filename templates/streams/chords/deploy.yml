@@ -117,7 +117,7 @@ spec:
         - name: CHORDS_INFLUXDB_PORT
           value: "tcp://chords-influxdb:8086"
         - name: CHORDS_INFLUXDB_SERVICE_HOST
-          value: "chords-influxdb"
+          value: "chords-influxdb2"
         #command: ["./chords_start.sh"]
         command: ["./tapis_chords_start.sh"]
         #command: ["sleep","3600"]

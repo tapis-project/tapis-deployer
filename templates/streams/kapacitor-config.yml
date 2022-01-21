@@ -179,7 +179,7 @@ data:
     {% for tenant in streams_tenants %}
     [[httppost]]
       endpoint = "api-alert-{{tenant}}"
-      url = "{{streams_tapis_base_url}}/v3/streams/alerts?tenant=dev"
+      url = "{{streams_service_url}}/v3/streams/alerts?tenant=dev"
       headers = {"Content-Type" = "application/json","alert-secret" = "testalert"}
       alert-template = ""
       alert-template-file = ""

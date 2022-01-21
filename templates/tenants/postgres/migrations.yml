@@ -11,7 +11,7 @@ spec:
       containers:
       - name: tenants-migrations
         image: tapis/tenants-api-migrations:{{tenants_image_version}}
-        imagePullPolicy: {{tenants_image_pull}}
+        imagePullPolicy: {{tenants_image_pull_policy}}
         args: ["upgrade"]
         env:
         - name: sql_db_url

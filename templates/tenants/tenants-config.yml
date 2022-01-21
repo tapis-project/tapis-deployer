@@ -5,16 +5,16 @@ metadata:
 data:
   tenants-config.json: |-
     {
-      "primary_site_admin_tenant_base_url": "{{tenants_primary_site_admin_tenant_base_url}}",
+      "primary_site_admin_tenant_base_url": "{{tenants_service_url}}",
       "service_site_id": "{{tenants_service_site_id}}",
       "service_tenant_id": "{{tenants_service_tenant_id}}",
       "service_name": "{{tenants_service_name}}",
       "postgres_user": "{{tenants_postgres_user}}",
       "tenants": ["*"],
-      "use_sk": {{tenants_use_sk|default(true)|tojson}},
-      "show_traceback": {{tenants_show_traceback|default(false)|tojson}},
-      {% if tenants_test_jwt %}
+      "use_sk": {{tenants_use_sk|tojson}},
+      "show_traceback": {{tenants_show_traceback|tojson}},
+      {%- if tenants_test_jwt %}
       "test_jwt": "{{tenants_test_jwt}},"
-      {% endif %}
-      "log_level": "{{tenants_log_level|default("DEBUG")}}"
+      {%- endif %}
+      "log_level": "{{tenants_log_level}}"
     }

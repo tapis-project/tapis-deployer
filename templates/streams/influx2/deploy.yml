@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: chords-influxdb2
-        image: influxdb:2.0
+        image: {{streams_influx2_image}}
         ports:
         - name: influx1
           containerPort: 8086

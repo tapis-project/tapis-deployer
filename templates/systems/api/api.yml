@@ -12,10 +12,10 @@ spec:
       labels:
         app: systems-api
     spec:
-      {% if systems_node_selector | default(None) %}
+      {%- if systems_node_selector | default(None) %}
       nodeSelector:
         exempt: "{{systems_node_selector}}"
-      {% endif%}
+      {%- endif%}
       containers:
       - name: systems-api
         image: tapis/systems:{{systems_image_version}}

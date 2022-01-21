@@ -6,17 +6,19 @@ data:
   tokens-config.json: |-
     {
       "primary_site_admin_tenant_base_url": "{{tokens_service_url}}",
+      "service_tenant_base_url": "{{tokens_service_url}}",
       "service_site_id": "{{tokens_service_site_id}}",
       "service_tenant_id": "{{tokens_service_tenant_id}}",
+      "service_name": "{{tokens_service_name}}",
       "log_level": "{{tokens_log_level}}",
       "tenants": {{tokens_tenants|tojson}},
       "show_traceback": {{tokens_show_traceback|tojson}},
       "use_allservices_password": {{tokens_use_allservices_password|tojson}},
-      {% if tokens_use_allservices_password == true %}
-      "allservices_password": {{tokens_allservices_password}},
-      {% endif %}
-      {% if tokens_use_dev_jwt_private_key == true %}
+      {%- if tokens_use_allservices_password == true %}
+      "allservices_password": "{{tokens_allservices_password}}",
+      {%- endif %}
+      {%- if tokens_use_dev_jwt_private_key == true %}
       "dev_jwt_private_key": "{{tokens_dev_jwt_private_key}}",
-      {% endif %}
-      "service_name": "{{tokens_service_name}}"
+      {%- endif %}
+      "use_sk": true
     }

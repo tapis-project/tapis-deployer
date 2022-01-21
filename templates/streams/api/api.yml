@@ -11,9 +11,9 @@ spec:
       labels:
         app: streams-api
     spec:
-      {% if streams_node_name | default(None) %}
+      {%- if streams_node_name | default(None) %}
       nodeName: {{streams_node_name}}
-      {% endif%}
+      {%- endif%}
       containers:
       - name: streams-api
         image: tapis/streams-api:{{streams_image_version}}
@@ -56,14 +56,14 @@ spec:
               key: service-password
         - name: workerCls
           value: "gthread"
-        {% if local_streams_process %}
+        {%- if streams_processes %}
         - name: processes
-          value: "{{streams_process}}"
-        {% endif %}
-        {% if streams_threads%}
+          value: "{{streams_processes}}"
+        {%- endif %}
+        {%- if streams_threads %}
         - name: threads
           value: "{{streams_threads}}"
-        {% endif %}
+        {%- endif %}
         volumeMounts:
         - name: streams-config
           mountPath: /home/tapis/config.json

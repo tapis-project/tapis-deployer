@@ -15,10 +15,12 @@ then
   exit 1
 fi
 
+here=`dirname "$0"`
+
 kubectl create configmap sk-roles --from-file ~/tapis-vault/roles
 kubectl create configmap sk-policies --from-file ~/tapis-vault/policies/sk
 kubectl create configmap sk-admin-policies --from-file ~/tapis-vault/policies/sk-admin 
-kubectl create configmap sk-admin-initialload --from-file initialLoad
+kubectl create configmap sk-admin-initialload --from-file ${here}/initialLoad
 
 kubectl create configmap create-sk-roles --from-file create-sk-roles
 kubectl create configmap run-sk-admin --from-file run-sk-admin
