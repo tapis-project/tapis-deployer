@@ -48,6 +48,8 @@ def copy_files_tree(template_dir, dest_dir_base, input_data, exclude_subdirs):
             template_files.append(os.path.join(dirpath,f))
 
     for i in template_files:
+        # save permissions from template file
+        permissions = os.stat(i)[0]
         # replace template path with dest_dir_base
         dest_file = str(i).replace(template_dir, dest_dir_base)
         # remove template_dir path prefix from i
@@ -56,8 +58,8 @@ def copy_files_tree(template_dir, dest_dir_base, input_data, exclude_subdirs):
         # uncomment to debug
         #print('{} -> {}'.format(i,dest_file))
         apply_template(template_dir, relative_i, dest_file, input_data)
-
-
+        # apply same permissions from template file
+        os.chmod(dest_file, permissions)
 
 def apply_template(template_dir, src_file, dest_file, input_data):
     '''

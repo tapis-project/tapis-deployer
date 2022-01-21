@@ -2,3 +2,4 @@
 
 kubectl delete `kubectl get pod --selector=app=stern -o name`
 
+

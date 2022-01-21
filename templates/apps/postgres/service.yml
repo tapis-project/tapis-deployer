@@ -26,7 +26,7 @@ spec:
     port: 80
     targetPort: 80
 
-{% if apps_enable_external == true %}
+{%- if apps_enable_external == true %}
 ---
 apiVersion: v1
 kind: Service
@@ -40,5 +40,4 @@ spec:
   - name: postgresql
     port: 5432
     targetPort: 5432
-
-{%endif%}
+{%- endif %}

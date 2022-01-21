@@ -6,6 +6,6 @@ data:
   _abaco_secret: "123"
   TAS_ROLE_ACCT: ""
   TAS_ROLE_PASS: ""
-  timeout: {{actors_timeout}}
+  timeout: "{{actors_timeout}}"
   
 kind: ConfigMap

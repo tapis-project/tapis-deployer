@@ -55,3 +55,4 @@ k logs -f mongo-backup-869b6b69c4-gkv9x
 
 # describe for backup container
 k describe pod  mongo-backup-cff69b988-cmfdp
+

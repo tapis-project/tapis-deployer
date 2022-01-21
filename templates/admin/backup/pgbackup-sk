@@ -42,3 +42,4 @@ fi
 }
 
 echo "$name backup succeeded."
+
