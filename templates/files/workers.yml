@@ -24,12 +24,12 @@ spec:
             - configMapRef:
                 name: files-environment-vars
           env:
-            {% if files_node_name == true %}
+            {%- if files_node_name == true %}
             - name: TAPIS_LOCAL_NODE_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
-            {% endif%}
+            {%- endif%}
             - name: TOKENS_SERVICE_URL
               valueFrom:
                 configMapKeyRef:
@@ -64,7 +64,6 @@ spec:
           imagePullPolicy: Always
           name: files-workers
           command: {{files_commands|replace("'", "\"")}} 
-          {#resources: { }#}
           stdin: true
           tty: true
       restartPolicy: Always
