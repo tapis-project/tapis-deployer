@@ -22,9 +22,9 @@ spec:
         imagePullPolicy: Always
         env:
         - name: TAPIS_URL
-          value: service_tenant_base_url
+          value: {{monitoring_service_url}}
         - name: TAPIS_SERVICES
-          value: '["security", "streams","meta"]'
+          value: '{{monitoring_services_list|replace("'", "\"")}}'
         - name: STREAMS_DB
           value: 'StreamsDevDB'
         - name: META_USER

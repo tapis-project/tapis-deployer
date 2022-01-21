@@ -12,10 +12,10 @@ spec:
       labels:
         app: notifications-api
     spec:
-      {% if notifications_node_selector | default(None) %}
+      {%- if notifications_node_selector | default(None) %}
       nodeSelector:
         exempt: "{{notifications_node_selector}}"
-      {% endif%}
+      {%- endif%}
       containers:
       - name: notifications-api
         image: tapis/notifications:{{notifications_image_version}}

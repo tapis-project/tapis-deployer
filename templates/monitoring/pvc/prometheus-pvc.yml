@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{monitoring_service_grafana_pvc}}
+  name: {{monitoring_service_prometheus_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
