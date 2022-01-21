@@ -12,13 +12,7 @@
                 "user":       "bozo",
                 "secretName": "keys",
                 "kubeSecretName": "tapis-tenants-publickeys"
-            },            
-            {
-                "tenant":     "tacc",
-                "user":       "bozo",
-                "secretName": "keys",
-                "kubeSecretName": "tapis-tenants-publickeys"
-            }            
+            }
         ]
     }
 }

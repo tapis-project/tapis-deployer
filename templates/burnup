@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e 
+
 # global Tapis burnup script
 
 # Helps run all the components in the correct order
@@ -9,7 +11,7 @@ here=`pwd`
 ### vars
 
 VAULTURL="{{vault_service_vault_url}}"
-SERVICEUR=" {{admin_service_url}}"
+SERVICEURL=" {{admin_service_url}}"
 
 ### checks
 
@@ -171,6 +173,7 @@ vault(){
 primary_site(){
   echo
 }
+
 
 associate_site(){
   echo
@@ -380,7 +383,7 @@ secondary_services() {
 
 ### run
 
-getconfig
+#getconfig
 
 case $1 in
   checkvault)

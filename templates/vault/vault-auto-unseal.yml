@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: vault
-        image: vault:{{vault_image_version}}
+        image: {{vault_image}}
         command: ['vault','server','-config=/vault/config']
         ports:
         - name: vault

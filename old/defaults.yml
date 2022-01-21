@@ -1,8 +1,0 @@
---- # Default values for tapis
-defaults: 
-  universal:
-    image_pull: "Always"
-    replicas: 1
-    log_level: "DEBUG"
-    # Python tracing
-    show_traceback: "false"
