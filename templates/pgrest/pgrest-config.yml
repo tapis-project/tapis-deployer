@@ -10,14 +10,14 @@ data:
       "site_id": "{{pgrest_service_site_id}}",
       "service_name": "{{pgrest_service_name}}",
       "service_tenant_base_url": "{{pgrest_service_url}}",
-      "tenants": {{pgrest_tenants|default(["dev", "admin"])|tojson}},
+      "tenants": {{pgrest_tenants|tojson}},
       "log_level": "DEBUG",
       "show_traceback": false,
       "databases": {
         "default": {
           "NAME": "pgrestdb",
           "USER": "pgrest",
-          "PASSWORD": "$env{K8-POSTGRES-PASSWORD}",
+          "PASSWORD": "$env{POSTGRES_PASSWORD}",
           "HOST": "pgrest-postgres",
           "PORT": 5432,
           "ENGINE": "django_tenants.postgresql_backend"
