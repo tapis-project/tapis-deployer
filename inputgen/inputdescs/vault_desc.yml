@@ -48,7 +48,7 @@ vault_pvc:
   example: vault-vol01
 
 vault_raft_storage:
-  description: Whether or not to use RAFT storage with this Vault instance (TODO -- check)
+  description: Whether or not to use Raft storage with this Vault instance.
   source_vars:
     - vault_raft_storage
-  example: false
+  example: true
