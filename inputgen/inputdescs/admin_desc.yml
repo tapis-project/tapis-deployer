@@ -1,19 +1,37 @@
+admin_service_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
 admin_service_site_id:
   description: The site_id of this deployment.
+  example: tacc
   source_vars:
     - site_id
 
+admin_service_name:
+  description: TODO
+  example: admin
+  source_vars:
+    - admin_service_name
+
 admin_service_tenant_id:
   description: The tenant_id of the admin tenant for this deployment.
+  example: admin
   source_vars:
     - site_admin_tenant_id
   
-admin_slack_channel:
-  description: The slack channel where the admin scripts report notifications.
+admin_vault_url:
+  description: The URL to the Vault instance; used in scripts that interact with Vault over the network.
+  example: http://vault:8200
   source_vars:
-    - admin_slack_channel
+    - admin_vault_url
+    - vault_url
 
-admin_slack_username:
-  description: The slack username for the slack channel where the admin scripts report notifications.
+admin_storage_class:
+  description: TODO
   source_vars:
-    - admin_slack_username
+    - admin_storage_class
+  example: rbd-new
+  optional: true

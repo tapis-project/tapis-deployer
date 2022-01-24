@@ -28,6 +28,10 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
+PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta", "monitoring", 
+"notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens"]
+
+
 # ---------------
 # Validators
 # ---------------
@@ -103,21 +107,34 @@ prompts = {
                 "regex": r"\w",
                 "description": "Please indicate whether you will be using an external Vault, already installed and configured.",
                 "example": "True"
-            }
+            }            
         },
         "second_prompts":{
-            # TODO -- i think this has to always be admin... no choice.
+            # TODO -- is there a choice on admite site id or is it hard-coded to "tacc" in the tenants table?
             "site_id" :
             {
                 "regex": r"\w",
                 "description": "Please enter the site_id",
+                "example": "tacc"
+            },
+            # TODO -- i think this has to always be admin... no choice?
+            "site_admin_tenant_id": 
+            {
+                "regex": r"\w",
+                "description": "Please enter the tenat id for the admin tenant of this site (should be admin)",
                 "example": "admin"
             },
-            "tenants": 
+            "site_tenants": 
             {
                 "regex": r'\[("\w*"\,\s?)+("\w*")\]',
                 "description": "Please enter an array of tenants to initialize the primary site with.",
                 "example": '["dev", "admin"]'
+            },
+            "vault_url": 
+            {
+                "regex": r"\w",
+                "description": "Enter a URL for the vault server",
+                "example": "http://vault:8200"
             },
             "tapis_image_version":
             {
@@ -125,6 +142,37 @@ prompts = {
                 "description": "Please enter the image version to deploy for all Tapis service containers.",
                 "example": '["latest", "1.0.0", "dev"]'
             },
+            "tapis_storage_class":
+            {
+                "regex": r"\w",
+                "description": "Please enter the Kubernete storage class to use for all Tapis PVCs.",
+                "example": "rbd",
+            },
+            "tapis_log_level":
+            {
+                "regex": r"\w",
+                "description": "Please enter a log level to use for all Tapis services.",
+                "example": "DEBUG"
+            },
+            "tapis_show_traceback":
+            {
+                "regex": r"\w",
+                "description": "Whether to show the full (Python) traceback in logs.",
+                "example": "true",
+            },
+            "tapis_python_api_processes":
+            {
+                "regex": r"\w",
+                "description": "The number of Python processes to use for all Tapis Python API servers.",
+                "example": 3
+            },
+            "tapis_python_api_threads":
+            {
+                "regex": r"\w",
+                "description": "The number of Python threads (per process) to use for all Tapis Python API servers.",
+                "example": 4
+            },
+
         }        
     },
     "associate_site":
@@ -279,7 +327,7 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
         ct = 0
         while True:
             ct = ct + 1
-            main_prompt = value["description"]
+            main_prompt = f"({key}) " + value["description"]
             example = value.get("example", "No example provided.")
             if ct == 1 and key in prev_start_dict:
                 user_input = prev_start_dict[key]
@@ -343,8 +391,8 @@ def compute_inputs(all_input_descs, user_dict, defaults):
         found = False
         # some variables CANNOT be changed via deployer; they have a value specified in the description that must be used.
         # examples include fields like the service name (e.g., apps_service_name)
-        value = desc.get('value')
-        if value:
+        if 'value' in desc.keys():
+            value = desc.get('value')
             inputs[inp] = value
             found = True
             continue
@@ -353,7 +401,7 @@ def compute_inputs(all_input_descs, user_dict, defaults):
         except:
             print(f"{bcolors.FAIL}\n***** ERROR: Invalid input description for input {inp}. No source_vars defined. ***** \n{bcolors.ENDC}")
             sys.exit(1)
-        # variables can be set to "optional", meaning there existence does not impact the ability to compile the templates.
+        # variables can be set to "optional", meaning their existence does not impact the ability to compile the templates.
         # TODO -- need to implement optional below...
         optional = desc.get('optional', False)
 
@@ -437,6 +485,8 @@ def main():
     # determine whether we are deploying a primary or an associate site
     site_type, site_prompts, current_start_dict = determine_primary_or_assoc(prev_start_dict, current_start_dict)
     user_dict = {'site_type': site_type}
+    if site_type == 1:
+        user_dict['services'] = PRIMARY_SITE_SERVICES
 
     # prompt the user for inputs for the first set of prmopts; these prompts actually determine which components will be generated.
     user_dict, current_start_dict, quit_early = collect_user_dict(site_prompts["first_prompts"], prev_start_dict, current_start_dict, user_dict)
@@ -473,9 +523,6 @@ def main():
     # write the input.yml file as a "raw" yaml dump --
     write_raw_input_file(inputs, outDir)
 
-    # write the input.yml file using a template --
-    # write_output(site_prompts, outDir, user_dict)
-        
 
 if __name__ == "__main__":
     main()

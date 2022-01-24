@@ -1,20 +1,62 @@
 actors_host_path:
-  description: Path on the machine (host) where actor workers are deployed that contains Abaco's runtime files, such as mounts, sockets, etc.
-  example: /home/abaco
+  description: Path on the machine (host) where actor workers are deployed that contains Abaco's runtime files, such as mounts, sockets, etc. (Note that "/home/apim/" is currently prepended to whatever string is entered for this config.)
+  example: develop
   source_vars:
     - actors_host_path
 
+actors_timeout:
+  description: The Gunicorn HTTP timeout set in each of the Abaco API servers.
+  source_vars:
+    - actors_timeout
+  example: 60, 90, 120
+
+actors_service_name:
+  description: The name of this service; should always be set to actors.
+  value: actors
+
+actors_storage_class:
+  description: Kubernetes storage class to use for peristent volume claim used to persist data written by the Mongo database.
+  source_vars:
+    - actors_storage_class
+    - tapis_storage_class
+  example: rbd-new
+
+actors_mongo_pvc: 
+  description: The name of the PVC to use for the Abaco MongoDB instance. 
+  source_vars:
+    - actors_mongo_pvc
+  example: actors-mongo-vol01
+
+actors_mongo_backup_pvc:
+  description: The name of the PVC to use for the Abaco backup MongoDB instance. 
+  source_vars:
+    - actors_mongo_backup_pvc
+  example: actors-mongo-backup-vol01
+
+actors_rabbit_pvc:
+  description: The name of the PVC to use for the Abaco RabbitMQ instance. 
+  example: actors-rabbitmq-vol01
+  source_vars: 
+    - actors_rabbit_pvc
+
+actors_image_version:
+  description: The version of the actors API that you wish to deploy.
+  example: latesst, dev, stage, 1.0.0
+  source_vars: 
+    - actors_image_version 
+    - tapis_image_version 
+
 actors_mongo_image:
-  description: The docker image to use for the Actors' MongoDB container.
-  example: mongo:4.2.6
+  description: The docker image to use when backing up the Actors' MongoDB data.
+  example: tapis/mongobackup:0.1
   source_vars:
     - actors_mongo_image
-  default: actors_mongo_image
+  default_var: actors_mongo_image
 
 actors_mongo_init_database:
   description: When using the official mongo image, this variable will be used to populate MONGO_INITDB_DATABASE, used for creation scripts. See the mongo docker image documentation (https://hub.docker.com/_/mongo) for more details.
   optional: true
-  example: No example provided.
+  example: No example provided. Value is null in the Tapis deployment.
   source_vars:
     - actors_mongo_init_database
 
@@ -23,17 +65,19 @@ actors_mongo_tls:
   example: false
   source_vars:
     - actors_mongo_tls
-  default: actors_mongo_tls
+  default_var: actors_mongo_tls
 
 actors_service_tenants:
   description: The list of tenants owned by the site that the Actors service will honor.
   source_vars:
+    - abaco_service_tenants
     - site_tenants
 
 actors_spawner_docker_network:
-  description: TODO
+  description: (TODO -- need a description...)
   source_vars:
     - actors_spawner_docker_network
+  example: develop_abaco
 
 actors_primary_site_admin_tenant_base_url:
   description: The base URL of the admin tenant in the primary site.
@@ -50,3 +94,21 @@ actors_image_pull_policy:
   source_vars: 
     - image_pull_policy
   default_var: image_pull_policy
+
+actors_log_level:
+  description: Log level
+  source_vars: 
+    - actors_log_level 
+    - tapis_log_level
+
+actors_web_encryption_key:
+  description: The encryption key used when encrypting actor config secrets. This key must be generated using the Python fernet package; key = Fernet.generate_key(). See the Abaco developer docs for more details.
+  source_vars:
+    - actors_web_encryption_key
+  example: 5WXGUKgcN-r0-s5bO81ZZL2Mr1v6hFgkocjEydJQ-TM=
+  
+actors_web_apim_public_key:
+  description: The public key of the APIM instance (v2) signing JWTs sent to this actors API.
+  source_vars:
+    - actors_web_apim_public_key
+  example: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCUp/oV1vWc8/TkQSiAvTousMzOM4asB2iltr2QKozni5aVFu818MpOLZIr8LMnTzWllJvvaA5RAAdpbECb+48FjbBe0hseUdN5HpwvnH/DW8ZccGvk53I6Orq7hLCv1ZHtuOCokghz/ATrhyPq+QktMfXnRS4HrKGJTzxaCcU7OQIDAQAB

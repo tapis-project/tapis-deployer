@@ -37,7 +37,7 @@ tokens_service_tenant_id:
     - site_admin_tenant_id
   description: The id of the admin tenant where this service is running.
 
-tokens_primary_site_admin_tenant_base_url:
+tokens_service_url:
   description: The base URL of the admin tenant in the primary site.
   example: https://admin.develop.tapis.io
   source_vars:

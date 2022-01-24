@@ -1,0 +1,48 @@
+pgrest_service_name:
+  description: The name of this service; should always be set to pgrest.
+  value: pgrest
+
+pgrest_service_site_id:
+  description: The site_id where this pgrest service is running.
+  source_vars:
+    - site_id
+  example: tacc
+
+pgrest_service_tenant_id:
+  source_vars: 
+    - site_admin_tenant_id
+  description: The id of the admin tenant where this service is running.
+  example: admin
+
+pgrest_service_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
+pgrest_image_version:
+  description: The version of the pgrest API that you wish to deploy.
+  example: latesst, dev, stage, 1.0.0
+  source_vars: 
+    - pgrest_image_version 
+    - tapis_image_version
+
+pgrest_postgres_pvc:
+  description: The name of the PVC to use for the PgREST Postgres instance. 
+  source_vars:
+    - pgrest_postgres_pvc
+  example: pgrest-postgres-vol01
+
+pgrest_storage_class:
+  description: Kubernetes storage class to use for peristent volume claim used to persist data written by the database.
+  source_vars:
+    - pgrest_storage_class
+    - tapis_storage_class
+  example: rbd-new
+
+pgrest_service_tenants:
+  description: The list of tenants owned by the site that the pgrest service will honor.
+  source_vars:
+    - pgrest_service_tenants
+    - site_tenants
+
