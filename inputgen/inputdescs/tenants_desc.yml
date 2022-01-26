@@ -2,26 +2,29 @@ tenants_image_version:
   description: The version of the tenants API that you wish to deploy.
   example: latesst, dev, stage, 1.0.0
   source_vars: 
-    - tenants_image_version # Please provide the version to use for the Tenants API?
-    - tapis_image_version # Do you want to use the same image version for all services? (e.g., "latest", "dev", ..) 
+    - tenants_image_version 
+    - tapis_image_version 
 
 tenants_image_pull_policy:
   description: The Kubernete pull policy to apply to the Tenants API deployment.
   source_vars: 
     - image_pull_policy
   default_var: image_pull_policy
+  example: Always
 
 tenants_log_level:
   description: Log level
   source_vars: 
     - tenants_log_level 
     - tapis_log_level
+  example: DEBUG
 
 tenants_show_traceback:
   description: Whether to show the full (Python) traceback in logs.
   source_vars: 
     - tenants_show_traceback
     - tapis_show_traceback
+  example: true
 
 tenants_service_name:
   description: The name of this service; should always be set to tenants.
@@ -31,13 +34,15 @@ tenants_service_site_id:
   description: The site_id where this tenants service is running.
   source_vars:
     - site_id
+  example: tacc
 
 tenants_service_tenant_id:
   source_vars: 
     - site_admin_tenant_id
   description: The id of the admin tenant where this service is running.
+  example: admin
 
-tenants_primary_site_admin_tenant_base_url:
+tenants_service_url:
   description: The base URL of the admin tenant in the primary site.
   example: https://admin.develop.tapis.io
   source_vars:
@@ -48,7 +53,23 @@ tenants_storage_class:
   source_vars:
     - tenants_storage_class
     - tapis_storage_class
+  example: rbd-new
+
+tenants_postgres_pvc:
+  description: The name of the PVC to use for the tenants Postgres instance. 
+  source_vars:
+    - tenants_postgres_pvc
+  example: tenants-postgres-vol01
+
+tenants_postgres_user:
+  description: The user id to use when connecting to the Tenants Postgres DB.
+  value: tenants
 
 tenants_use_sk:
   description: Whether this service should use the SK for checking authorization (NOTE - should always set to True in production).
   value: true
+
+tenants_test_jwt:
+  description: No longer used -- TODO
+  value: false
+

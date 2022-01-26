@@ -1,0 +1,65 @@
+proxy_service_name:
+  description: The name of this service; should always be set to proxy.
+  value: proxy
+
+proxy_service_site_id:
+  description: The site_id where this proxy service is running.
+  source_vars:
+    - site_id
+  example: tacc
+
+proxy_service_tenant_id:
+  source_vars: 
+    - site_admin_tenant_id
+  description: The id of the admin tenant where this service is running.
+  example: admin
+
+proxy_primary_site_admin_tenant_base_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
+proxy_image_version:
+  description: The version of the proxy API that you wish to deploy.
+  example: latesst, dev, stage, 1.0.0
+  source_vars: 
+    - proxy_image_version 
+    - tapis_image_version
+
+proxy_storage_class:
+  description: Kubernetes storage class to use for peristent volume claim used to persist data written by the database.
+  source_vars:
+    - proxy_storage_class
+    - tapis_storage_class
+  example: rbd-new
+
+proxy_nginx_cert_file:
+  description: Path to the nginx cert file (TODO relative to what? k8s host? container?)
+  source_vars:
+    - proxy_nginx_cert_file
+  example: $HOME/cert.pem
+
+proxy_nginx_cert_key:
+  description: Path to the nginx cert key file (TODO relative to what? k8s host? container?)
+  source_vars:
+    - proxy_nginx_cert_key
+  example: $HOME/cert.key
+
+proxy_nginx_server_name:
+  description: The string pattern to use for the proxy's server_name directive.
+  source_vars:
+    - proxy_nginx_server_name
+  example: ~^(?<tenant>.+)\.develop\.tapis\.io$
+
+proxy_service_tenants:
+  description: The list of tenants owned by the site that the proxy service will honor.
+  source_vars:
+    - proxy_service_tenants
+    - site_tenants
+
+proxy_nginx_service_list:
+  description: List of services this proxy should be configured to route (TODO -- check, all?)
+  source_vars:
+    - proxy_nginx_service_list
+    - services

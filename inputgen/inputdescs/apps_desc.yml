@@ -2,9 +2,46 @@ apps_image_version:
   description: The version of the Apps API that you wish to deploy.
   example: latesst, dev, stage, 1.0.0
   source_vars: 
-    - apps_image_version # Please provide the version to use for the Apps API?
-    - tapis_image_version # Do you want to use the same image version for all services? (e.g., "latest", "dev", ..) 
+    - apps_image_version 
+    - tapis_image_version
 
 apps_service_name:
   description: The name of this service; should always be set to apps.
   value: apps
+
+apps_service_site_id:
+  description: The site_id where this apps service is running.
+  source_vars:
+    - site_id
+  example: tacc
+  
+apps_service_tenant_id:
+  source_vars: 
+    - site_admin_tenant_id
+  description: The id of the admin tenant where this service is running.
+  example: admin
+
+apps_service_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
+apps_storage_class:
+  description: Kubernetes storage class to use for peristent volume claim used to persist data written by the database.
+  source_vars:
+    - apps_storage_class
+    - tapis_storage_class
+  example: rbd-new
+
+apps_enable_external:
+  description: TODO
+  source_vars:
+    - apps_enable_external
+  example: false
+  
+apps_monitor_password:
+  description: Password to Apps DB used by Monitoring system; (TODO -- sh9uld be moved to SK)
+  source_vars:
+    - apps_monitor_password
+  example: 60f0c5bf8ed23120fc60

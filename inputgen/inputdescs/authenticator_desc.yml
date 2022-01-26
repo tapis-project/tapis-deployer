@@ -31,13 +31,15 @@ authenticator_service_site_id:
   description: The site_id where this authenticator service is running.
   source_vars:
     - site_id
+  example: tacc
 
 authenticator_service_tenant_id:
   source_vars: 
     - site_admin_tenant_id
   description: The id of the admin tenant where this service is running.
+  example: admin
 
-authenticator_primary_site_admin_tenant_base_url:
+authenticator_service_url:
   description: The base URL of the admin tenant in the primary site.
   example: https://admin.develop.tapis.io
   source_vars:
@@ -48,6 +50,18 @@ authenticator_storage_class:
   source_vars:
     - authenticator_storage_class
     - tapis_storage_class
+
+authenticator_postgres_pvc:
+  description: The name of the PVC to use for the Authenticator Postgres DB instance. 
+  source_vars:
+    - authenticator_postgres_pvc
+  example: authenticator-postgres-vol01
+  
+authenticator_service_tenants:
+  description: The list of tenants owned by the site that the Authenticator service will honor.
+  source_vars:
+    - authenticator_service_tenants
+    - site_tenants
 
 authenticator_use_sk:
   description: Whether this service should use the SK for checking authorization (NOTE - should always set to True in production).

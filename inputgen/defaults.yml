@@ -1,4 +1,6 @@
 log_level: DEBUG
 image_pull_policy: Always
-actors_mongo_image: mongo:4.2.6
+actors_mongo_image: tapis/mongobackup:0.1
 actors_mongo_tls: false
+streams_processes: 10
+streams_threads: 4

@@ -1,0 +1,75 @@
+security_auto_service:
+  description: (TODO -- what is this?)
+  value: null
+
+security_heap_max:
+  descirption: Max heap for the security API (TODO)
+  value: 3g
+
+security_heap_min:
+  descirption: Min heap for the security API (TODO)
+  value: 3g
+
+security_service_name:
+  description: The name of this service; should always be set to security.
+  value: security
+
+security_service_site_id:
+  description: The site_id where this security service is running.
+  source_vars:
+    - site_id
+  example: tacc
+
+security_service_tenant_id:
+  source_vars: 
+    - site_admin_tenant_id
+  description: The id of the admin tenant where this service is running.
+  example: admin
+
+security_service_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
+security_image_version:
+  description: The version of the security API that you wish to deploy.
+  example: latesst, dev, stage, 1.0.0
+  source_vars: 
+    - security_image_version 
+    - tapis_image_version 
+
+security_storage_class:
+  description: Kubernetes storage class to use for peristent volume claim used to persist data written by the database.
+  source_vars:
+    - security_storage_class
+    - tapis_storage_class
+  example: rbd-new
+
+security_vault_url:
+  description: The URL to the Vault instance
+  example: http://vault:8200
+  source_vars:
+    - security_vault_url
+    - vault_url
+    
+security_postgres_pvc:
+  description: The name of the PVC to use for the security Postgres instance. 
+  source_vars:
+    - security_postgres_pvc
+  example: sk-postgres-vol01
+
+security_volumes:
+  description: (TODO -- no idea..)
+  value: true
+
+security_image_pull_policy:
+  source_vars: 
+    - image_pull_policy
+  default_var: image_pull_policy
+
+security_renew_sk_script:
+  description: (TODO -- no idea..)
+  value: true
+
+
