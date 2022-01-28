@@ -357,7 +357,7 @@ secondary_services() {
 
     {% if  "actors" in service_list %}
     echo "actors:"
-    cd $here/actors
+    cd $here/actors/api
     ./burnup
     {% endif %}
 

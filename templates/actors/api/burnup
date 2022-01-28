@@ -1,19 +1,16 @@
 #!/bin/bash
 
-# Set up configmap for actors
-kubectl apply -f actors-config.yml
-
-# pvc
-kubectl apply -f mongo-pvc.yml
-kubectl wait --for=condition=complete job/chown-actors-mongo-pvc
-kubectl apply -f rabbitmq-pvc.yml
-kubectl wait --for=condition=complete job/chown-actors-rabbitmq-pvc
-
-# config files
+# configs
 kubectl apply -f actors-config.yml
 kubectl apply -f nginx-config.yml
 kubectl apply -f prometheus-config.yml
 kubectl apply -f configmap.yml
+
+# pvcs
+kubectl apply -f mongo-pvc.yml
+kubectl wait --for=condition=complete job/chown-actors-mongo-pvc
+kubectl apply -f rabbitmq-pvc.yml
+kubectl wait --for=condition=complete job/chown-actors-rabbitmq-pvc
 
 # services files
 kubectl apply -f services.yml 
@@ -29,12 +26,3 @@ kubectl apply -f events.yml
 kubectl apply -f prometheus.yml
 kubectl apply -f grafana.yml
 kubectl apply -f metrics.yml
-
-
-# spawner & health & events should be on compute node?
-# kubectl apply -f spawner.yml
-# kubectl apply -f health.yml
-# kubectl apply -f events.yml
-
-# deprecated?
-#kubectl apply -f clientg.yml

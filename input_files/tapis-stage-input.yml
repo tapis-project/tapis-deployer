@@ -34,24 +34,24 @@ actors:
         rabbit_pvc: "actors-rabbitmq-vol02"
         mongo_pvc: "actors-mongo-vol02"
         mongo_backup_pvc: "actors-mongo-backup-vol02"
-  actors-config:
-    file_ext: ".yml"
-    template: actors-config.j2
-    data:
-      tenants:
-        - "dev"
-        - "admin"
-        - "a2cps"
-        - "tacc"
-        - "cii"
-        - "github-demo"
-      docker_network: "develop"
-      log_file: true
-      web_tenat_name: null
-      mongo_tls: false
-      log_ex: true
-      object: "tenant"
   api:
+    actors-config:
+      file_ext: ".yml"
+      template: actors-config.j2
+      data:
+        tenants:
+          - "dev"
+          - "admin"
+          - "a2cps"
+          - "tacc"
+          - "cii"
+          - "github-demo"
+        docker_network: "develop"
+        log_file: true
+        web_tenat_name: null
+        mongo_tls: false
+        log_ex: true
+        object: "tenant"
     admin:
       file_ext: ".yml"
       template: admin.j2
