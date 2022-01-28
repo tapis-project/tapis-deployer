@@ -14,7 +14,7 @@ data:
       evaluation_interval: 60s # Evaluate rules every 15 seconds. The default is every 1 minute.
       # scrape_timeout is set to the global default (10s).
       external_labels:
-        monitor: "dev.develop.tapis.io"
+        monitor: "{{monitoring_prometheus_external_label}}"
 
     # Alertmanager configuration
     alerting:
