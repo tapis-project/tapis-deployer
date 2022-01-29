@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Show pods
+echo "###--- Showing actor pods and their statuses ---###"
+kubectl get pods -o custom-columns=NAME:.metadata.name,STATUS:status.phase | grep actors
+echo ""
+
+# Print secrets
+service_pwd=`kubectl get secret tapis-abaco-secrets  -o json | jq -r '.data["service-password"]' | base64 -d`
+mongo_pwd=`kubectl get secret tapis-abaco-secrets  -o json | jq -r '.data["mongo-password"]' | base64 -d`
+rabbit_pwd=`kubectl get secret tapis-abaco-secrets  -o json | jq -r '.data["rabbitmq-password"]' | base64 -d`
+echo ""
+echo "###--- Show important environment secrets ---###"
+echo "Service pwd:  $service_pwd"
+echo "MongoDB pwd:  $mongo_pwd"
+echo "RabbitMQ pwd: $rabbit_pwd"
+
+# Print IP/Port info
+rabbit=`kubectl get service -o json actors-rabbit | jq -r '.spec.ports[0]["nodePort"]'`
+mongo=`kubectl get service -o json actors-mongo | jq -r '.spec.ports[0]["nodePort"]'`
+nginx=`kubectl get service -o json actors-nginx | jq -r '.spec.ports[0]["nodePort"]'`
+host='172.16.120.9'
+echo ""
+echo ""
+echo "###--- Show network for environment ---###"
+echo "Nginx net:    $host:$nginx"
+echo "MongoDB net:  $host:$mongo"
+echo "RabbitMQ net: $host:$rabbit"
+
+
+# Print token for service
+echo ""
+echo ""
+echo "###--- Getting token for the service ---###"
+echo "TODO"
