@@ -26,7 +26,7 @@ Script help:
 
 Example of how to run:
 
-    python3 ~/tapis-deployer/tapis-api-generator.py --destdir ~/tmp/tapis3 --input ~/tmp/test-primary.tapis.io.yml 
+    python3 ~/tapis-deployer/tapis-api-generator.py --destdir ~/tmp/tapis-kube --input ~/tmp/test-primary.tapis.io.yml 
 
 # Tapis Site Types
 

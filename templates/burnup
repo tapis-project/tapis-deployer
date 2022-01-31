@@ -73,52 +73,97 @@ postnginx_check(){
 }
 
 
-
-
 ### services
 
 actors(){
-  echo
+  echo "actors:"
+  cd $here/actors/api
+  ./burnup
 }
 
 apps(){
-  echo
+  echo "apps:"
+  cd $here/apps/postgres
+  ./burnup
+
+  cd $here/apps/api
+  ./burnup
 }
 
 authenticator(){
-  echo
+  echo "authenticator:"
+  cd $here/authenticator/ldap
+  ./burnup
+
+  cd $here/authenticator/postgres
+  ./burnup
+
+  cd $here/authenticator/api
+  ./burnup
 }
 
 files(){
-  echo
+  echo "files:"
+  cd $here/files/api
+  ./burnup
 }
 
 jobs(){
-  echo
+  echo "jobs:"
+  cd $here/jobs/postgres
+  ./burnup
+
+  cd $here/jobs/rabbitmq
+  ./burnup
+
+  cd $here/jobs/api
+  ./burnup
+
+  cd $here/jobs/workers
+  ./burnup
+
+  cd $here/jobs/readers
+  ./burnup
+
 }
 
 meta(){
-  echo
+  echo "meta:"
+  cd $here/meta/mongo
+  ./burnup
+
+  cd $here/meta/api
+  ./burnup
 }
 
 monitoring(){
-  echo
+  echo "monitoring:"
+  cd $here/monitoring
+  ./burnup
 }
 
 notifications(){
-  echo
+  echo "notifications:"
+  cd $here/notifications
+  ./burnup
 }
 
 pgrest(){
-  echo
+  echo "pgrest:"
+  cd $here/pgrest
+  ./burnup
 }
 
 pgrest-a2cps-dev(){
-  echo
+  echo "pgrest-a2cps-dev:"
+  cd $here/pgrest-a2cps-dev
+  ./burnup
 }
 
 pgrest-a2cps-prod(){
-  echo
+  echo "pgrest-a2cps-prod:"
+  cd $here/pgrest-a2cps-prod
+  ./burnup
 }
 
 proxy(){
@@ -129,11 +174,16 @@ proxy(){
   echo "site-router:"
   cd $here/proxy/site-router
   ./burnup
-
 }
 
 security(){
-  echo
+  echo "security-kernel:"
+  cd $here/security/postgres
+  ./burnup
+
+  # vault secret renewed in here
+  cd $here/security/api
+  ./burnup
 }
 
 skadmin(){
@@ -142,23 +192,48 @@ skadmin(){
   ./burnup
   cd $here/skadmin
   ./burnup
-
 }
 
 streams(){
-  echo
+  echo "streams:"
+  cd $here/streams/mysql
+  ./burnup
+
+  cd $here/streams/influx
+  ./burnup
+
+  cd $here/streams/kapacitor
+  ./burnup
+
+  cd $here/streams/chords
+  ./burnup
+
+  cd $here/streams/api
+  ./burnup
 }
 
 systems(){
-  echo
+  echo "systems:"
+  cd $here/systems/postgres
+  ./burnup
+
+  cd $here/systems/api
+  ./burnup
 }
 
 tenants(){
-  echo
+  echo "tenants:"
+  cd $here/tenants/postgres
+  ./burnup
+
+  cd $here/tenants/api
+  ./burnup
 }
 
 tokens(){
-  echo
+  echo "tokens:"
+  cd $here/tokens
+  ./burnup
 }
 
 vault(){
@@ -216,168 +291,83 @@ get_public_keys(){
 
 
 init(){
-    {% if "proxy" in service_list %}
-    echo "nginx:"
-    cd $here/proxy/nginx 
-    ./burnup
+  {%- if "proxy" in service_list %}
+  proxy
+  {% endif%}
 
-    echo "site-router:"
-    cd $here/proxy/site-router 
-    ./burnup
-    {% endif%}
+  {%- if "vault" in service_list %}
+  vault
+  {% endif%}
 
-    {% if "vault" in service_list %}
-    echo "vault:"
-    cd $here/vault 
-    ./burnup
-    kubectl wait --for=condition=available deploy/vault
-    ./unseal
-    {% endif%}
-
-    {% if "skadmin" in service_list %}
-    echo "skadmin:"
-    cd $here/skadmin/renew-sk-secret 
-    ./burnup
-
-    cd $here/skadmin
-    ./burnup
-    {% endif%}
+  {%- if "skadmin" in service_list %}
+  skadmin
+  {% endif%}
 }
 
 primary_services(){
-    {% if  "tenants" in service_list %}
-    echo "tenants:"
-    cd $here/tenants/postgres
-    ./burnup
+  {%- if  "tenants" in service_list %}
+  tenants
+  {% endif %}
 
-    cd $here/tenants/api
-    ./burnup
-    {% endif %}
+  {%- if  "security" in service_list %}
+  security
+  {% endif %}
 
-    {% if  "security" in service_list %}
-    echo "security-kernel:"
-    cd $here/security/postgres
-    ./burnup
+  {%- if  "tokens" in service_list %}
+  tokens
+  {% endif %}
 
-    # vault secret renewed in here
-    cd $here/security/api
-    ./burnup
-    {% endif %}
-
-    {% if  "tokens" in service_list %}
-    echo "tokens:"
-    cd $here/tokens
-    ./burnup
-    {% endif %}
-
-    {% if  "authenticator" in service_list %}
-    echo "authenticator:"
-    cd $here/authenticator/ldap
-    ./burnup
-
-    cd $here/authenticator/postgres
-    ./burnup
-
-    cd $here/authenticator/api
-    ./burnup
-    {% endif %}
+  {%- if  "authenticator" in service_list %}
+  authenticator
+  {% endif %}
 }
 
 secondary_services() {
 
+  {%- if  "systems" in service_list %}
+  systems
+  {% endif %}
 
-    {% if  "systems" in service_list %}
-    echo "systems:"
-    cd $here/systems/postgres
-    ./burnup
+  {%- if  "files" in service_list %}
+  files
+  {% endif %}
 
-    cd $here/systems/api
-    ./burnup
-    {% endif %}
+  {%- if  "apps" in service_list %}
+  apps
+  {% endif %}
 
-    {% if  "files" in service_list %}
-    echo "files:"
-    cd $here/files/api
-    ./burnup
-    {% endif %}
+  {%- if  "jobs" in service_list %}
+  jobs
+  {% endif %}
 
-    {% if  "apps" in service_list %}
-    echo "apps:"
-    cd $here/apps/postgres
-    ./burnup
+  {%- if  "meta" in service_list %}
+  meta
+  {% endif %}
 
-    cd $here/apps/api
-    ./burnup
-    {% endif %}
+  {%- if  "streams" in service_list %}
+  streams
+  {% endif %}
 
-    {% if  "jobs" in service_list %}
-    echo "jobs:"
-    cd $here/jobs/postgres
-    ./burnup
+  {%- if  "actors" in service_list %}
+  actors
+  {% endif %}
 
-    cd $here/jobs/rabbitmq
-    ./burnup
+  {%- if  "monitoring" in service_list %}
+  monitoring
+  {% endif %}
 
-    cd $here/jobs/api
-    ./burnup
+  {%- if  "pgrest" in service_list %}
+  pgrest
+  {% endif %}
 
-    cd $here/jobs/workers
-    ./burnup
+  {%- if  "pgrest-a2cps-dev" in service_list %}
+  pgrest-a2cps-dev
+  {% endif %}
 
-    cd $here/jobs/readers
-    ./burnup
-    {% endif %}
+  {%- if  "pgrest-a2cps-prod" in service_list %}
+  pgrest-a2cps-prod
+  {% endif %}
 
-    {% if  "meta" in service_list %}
-    echo "meta:"
-    cd $here/meta/mongo
-    ./burnup
-
-    cd $here/meta/api
-    ./burnup
-    {% endif %}
-
-    {% if  "streams" in service_list %}
-    echo "streams:"
-    cd $here/streams/mysql
-    ./burnup
-
-    cd $here/streams/influx
-    ./burnup
-
-    cd $here/streams/kapacitor
-    ./burnup
-
-    cd $here/streams/chords
-    ./burnup
-
-    cd $here/streams/api
-    ./burnup
-    {% endif %}
-
-    {% if  "actors" in service_list %}
-    echo "actors:"
-    cd $here/actors/api
-    ./burnup
-    {% endif %}
-
-    {% if  "monitoring" in service_list %}
-    echo "monitoring:"
-    cd $here/monitoring
-    ./burnup
-    {% endif %}
-
-    {% if  "pgrest" in service_list %}
-    echo "pgrest:"
-    cd $here/pgrest
-    ./burnup
-    {% endif %}
-
-    {% if  "elastic" in service_list %}
-    # echo "elastic:"
-    # cd $here/elastic
-    # ./burnup
-    {% endif %}
 
 }
 
