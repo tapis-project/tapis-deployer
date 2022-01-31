@@ -102,6 +102,12 @@ authenticator(){
   ./burnup
 }
 
+container-registry(){
+  echo "container-registry:"
+  cd $here/container-registry
+  ./burnup
+}
+
 files(){
   echo "files:"
   cd $here/files/api
@@ -352,8 +358,16 @@ secondary_services() {
   actors
   {% endif %}
 
+  {%- if  "container-registry" in service_list %}
+  container-registry
+  {% endif %}
+
   {%- if  "monitoring" in service_list %}
   monitoring
+  {% endif %}
+
+  {%- if  "notifications" in service_list %}
+  notifications 
   {% endif %}
 
   {%- if  "pgrest" in service_list %}
