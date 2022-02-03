@@ -261,19 +261,6 @@ associate_site(){
 }
 
 
-
-create_kservice(){
-    echo "creating kubernetes servies:"
-    find -name '*service*.yml' -exec kubectl apply -f {} \;
-}
-
-get_public_keys(){
-    cd $here/admin
-    ./get-tenant-publickeys
-}
-
-
-
 ### functions
 
 
@@ -291,24 +278,31 @@ create_kservice(){
 }
 
 get_public_keys(){
-    cd $here/admin
-    ./get-tenant-publickeys
+  echo "Collecting public keys for associate site tenants. Please send these to your tenants admin before next steps in deployment."
+  cd $here/admin
+  ./get-assocsite-publickeys
 }
 
 
 init(){
   {%- if "proxy" in service_list %}
   proxy
-  {% endif%}
+  {% endif %}
 
   {%- if "vault" in service_list %}
   vault
-  {% endif%}
+  {% endif %}
 
   {%- if "skadmin" in service_list %}
   skadmin
-  {% endif%}
+  {% endif %}
+
+  {%- if site_type == "associate" %}
+  get_public_keys
+  {%- endif %}
+
 }
+
 
 primary_services(){
   {%- if  "tenants" in service_list %}
