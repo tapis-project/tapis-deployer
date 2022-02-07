@@ -1,0 +1,80 @@
+monitoring_service_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.test.tapis.io
+
+monitoring_service_tenant_id:
+  description: Unused? TODO
+  example: admin
+
+monitoring_service_site_id:
+  description: Unused? TODO
+  example: tacc
+
+monitoring_service_name:
+  description: Unused? TODO
+  example: monitoring
+  
+monitoring_prometheus_external_label:
+  description: The label applied to Prometheus metrics. Used to disambiguate in case of Prometheus federation.
+  example: admin.test.tapis.io
+  
+monitoring_primary_site_admin_tenant_base_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.test.tapis.io
+
+monitoring_vault_url:
+  description: URL of TAPIS Vault. Used to collect metrics.
+  example: http://vault:8200
+
+monitoring_service_grafana_username:
+  description: Username for Grafana default user.
+  example: admin
+
+monitoring_service_grafana_password:
+  description: Password for Grafana default user.
+  example: TODO
+
+monitoring_service_storage_class:
+  description: Kubernetes storage class to use for peristent volume claim used to persist data and configuration.
+  example: rbd-new
+
+monitoring_service_prometheus_pvc:
+  description: Volume used to store collected Prometheus metrics.
+  example: prometheus-vol01
+
+monitoring_service_prometheus_image:
+  description: The image for the version of the Prometheus that you wish to deploy.
+  example: prom/prometheus
+
+monitoring_service_grafana_pvc:
+  description: Volume used to store Grafana database and configuration.
+  example: grafana-vol01
+
+monitoring_service_grafana_image:
+  description: The image for the version of the Grafana that you wish to deploy.
+  example: grafana/grafana
+
+monitoring_service_elasticsearch_pvc:
+  description: Volume used to store Elasticsearch data.
+  example: elasticsearch-data-vol01
+
+monitoring_service_elasticsearch_image:
+  description: The image for the version of the Elasticsearch that you wish to deploy.
+  example: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+
+monitoring_service_kibana_image:
+  description: The image for the version of Kiabana that you wish to deploy.
+  example: docker.elastic.co/kibana/kibana:7.6.2
+
+monitoring_service_tapis_prometheus_exporter_image:
+  description: The image for the version of the TAPIS Exporter that you wish to deploy.
+  example: tapis/exporter
+
+monitoring_service_stern_image:
+  description: The image for the version of Stern-Fluentd that you wish to deploy.
+  example: mrghort/stern-fluentd:2
+
+monitoring_services_list
+  - security
+  - streams
+  - meta
