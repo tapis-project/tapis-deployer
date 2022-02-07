@@ -28,9 +28,17 @@ spec:
           value: "false"
         - name: INFLUXDB_REPORTING_DISABLED
           value: "true"
-        - name: INFLUXDB_USERNAME
+        - name: DOCKER_INFLUXDB_INIT_MODE
+          value: "setup"
+        - name: DOCKER_INFLUXDB_INIT_BUCKET
+          value: "streams"
+        - name: DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+          value: "myawesometapistoken"
+        - name: DOCKER_INFLUXDB_INIT_ORG
+          value: "tapis"
+        - name: DOCKER_INFLUXDB_INIT_USERNAME
           value: "admin"
-        - name: INFLUXDB_PASSWORD
+        - name: DOCKER_INFLUXDB_INIT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-streams-secrets
