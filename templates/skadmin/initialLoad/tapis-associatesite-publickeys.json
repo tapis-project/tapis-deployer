@@ -1,0 +1,14 @@
+{
+    "secrets": {
+        "jwtpublic":[
+            {% for tenant in skadmin_initLoad_jwtsigning_tenants %}
+            {
+                "tenant":     "{{tenant}}",
+                "user":       "bozo",
+                "secretName": "keys",
+                "kubeSecretName": "tapis-associatesite-publickeys"
+            }{%-if not loop.last-%},{% endif %}
+            {% endfor%}
+        ]
+    }
+}

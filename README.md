@@ -26,7 +26,7 @@ Script help:
 
 Example of how to run:
 
-    python3 ~/tapis-deployer/tapis-api-generator.py --destdir ~/tmp/tapis3 --input ~/tmp/test-primary.tapis.io.yml 
+    python3 ~/tapis-deployer/tapis-api-generator.py --destdir ~/tmp/tapis-kube --input ~/tmp/test-primary.tapis.io.yml 
 
 # Tapis Site Types
 
@@ -52,4 +52,4 @@ b. send an email to the primary site admins with the public key so they can upda
 a. inject the private key generated at step 4a) as a k8s secret into the tokens pod
 
 
-
+#

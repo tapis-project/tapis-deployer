@@ -5,44 +5,26 @@ metadata:
   name: fl-stern-config
 data:
   fluent.conf: |- 
-     <source>
+    <source>
       @type exec
-      tag tapis.base
       command 'cd /usr/bin; /usr/bin/stern --container .* --color never --tail 0 --exclude-pod "(tapis-nginx-*|stern-fluentd-*|monitoring-kibana-*)"'
-    <parse>
-      @type regexp
-       expression /^(?<pod_name>[^ ]*) (?<container_name>[^ ]*) (?<message>.*)$/
-    </parse>
-    </source>
-
-   <source>
-      @type exec
-      tag tapis.nginx
-      command 'cd /usr/bin; /usr/bin/stern tapis-nginx-* --color never --tail 0'
-    <parse>
-       @type regexp
-       expression /^(?<pod_name>[^ ]*) (?<container_name>[^ ]*) (?<remote_addr>[^ ]*) - (?<remote_user>[^ ]*) \[(?<time_local>[^\]]*)\] (?<host>[^ ]*) "(?<method>\S+) (?<path>[^\"]*?) (?<version>[^ ]*?)" (?<status>[^ ]*) (?<body_bytes_sent>[^ ]*) "(?<http_referer>[^\"]*)" "(?<http_user_agent>[^\"]*)" "(?<http_x_forwarded_for>[^ ]*)"/
-       time_format %d/%b/%Y:%H:%M:%S %z
-    </parse>
-    </source>
-
-    <filter tapis.nginx> 
-      @type parser
-      key_name path
-      reserve_data true
-      reserve_time true
       <parse>
         @type regexp
-        expression /^(:?\/+)(v3\/(?<tapis_service>[^\/\s]*)(?:\/?)(?<tapis_path>[^ ]*?))?$/
+        expression /^(?<remote>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<host>[^ ]*)" "(?<method>\S+) (?<path>[^\"]*?) (?:[^ ]*?)" (?<code>[^ ]*) (?<size>[^ ]*) "(?<referer>[^\"]*)" "(?<agent>[^\"]*)"/                            
+        time_format %d/%b/%Y:%H:%M:%S %z
       </parse>
-    </filter> 
+      path /var/log/nginx/access.log
+      pos_file /var/log/td-agent/nginx-access.log.pos
+      tag nginx.access
+    </source>
 
-    <match tapis.**>
+    <match kubelogs.**>
       @type elasticsearch
       host monitoring-elasticsearch
       port 9200
+      index_name fluentd
+      type_name fluentd
       logstash_format true 
-      suppress_type_name true    
     </match>
 
     <label @FLUENT_LOG>
