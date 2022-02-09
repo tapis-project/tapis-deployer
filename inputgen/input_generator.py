@@ -230,7 +230,7 @@ def parse_agrs():
                         help="Directory to write program output; if not specified, this program will default to writing output to the current working directory.")
     parser.add_argument('-s', '--start', type=str, dest='start_file', metavar='start_file', nargs='?',
                         help="Location to a start file to seed this program with inputs. If provided, this program will use any values provided in the start file instead of prompting you for an input.")
-    parser.add_argument('-l', '--lprompt', action="store_true", help="Prompt for all missing configs.")
+    parser.add_argument('-m', '--min', action="store_true", help="Only prompt for a minimal number of prompts. This option generally will not result in a working input file.")
     parser.add_argument('-v', '--verbose', action="store_true", help="Print verbose output.")
     args = parser.parse_args()
     global vb
@@ -248,9 +248,9 @@ def parse_agrs():
             start_dict = yaml.safe_load(f.read()) 
     else:
         print("no start file; starting from the beginning.")   
-    long_prompt = False
-    if args.lprompt:
-        long_prompt = True
+    long_prompt = True
+    if args.min:
+        long_prompt = False
     if args.verbose:
         vb = True
     return outDir, start_dict, long_prompt
