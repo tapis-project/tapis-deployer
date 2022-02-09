@@ -61,7 +61,7 @@ data:
       "web_show_traceback": false,
       "web_log_ex": 43200,
       "web_max_log_length": 1000000,
-      "web_case": "camel",
+      "web_case": "snake",
       "web_max_content_length": 500000000,
       "web_all_queues": [
         "default",

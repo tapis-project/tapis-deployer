@@ -51,4 +51,4 @@ vault_raft_storage:
   description: Whether or not to use RAFT storage with this Vault instance. Setting to true should be the preference, as it allows for doing backups without stopping Vault.
   source_vars:
     - vault_raft_storage
-  example: false
+  example: true

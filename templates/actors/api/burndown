@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# config
+# configs
 kubectl delete -f actors-config.yml 
 kubectl delete -f nginx-config.yml
 kubectl delete -f prometheus-config.yml

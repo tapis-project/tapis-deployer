@@ -42,7 +42,7 @@ cd $here/monitoring
 ./burndown
 
 echo "actors:"
-cd $here/actors
+cd $here/actors/api
 ./burndown
 
 echo "streams:"

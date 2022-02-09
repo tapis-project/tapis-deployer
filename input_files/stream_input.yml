@@ -636,7 +636,7 @@ streams:
     data:
       "tenant": {
         "admin":{"stream_db":"streams_admin","tapis_base_url":"https://admin.test.tapis.io"},
-        "dev":{"stream_db":"streams_dev","tapis_base_url":"https://dev.test.tapis.io"}
+        "dev":{"stream_db":"StreamsDevDB","tapis_base_url":"https://dev.test.tapis.io"}
       }
       "log_level": "DEBUG"
       "show_traceback": false

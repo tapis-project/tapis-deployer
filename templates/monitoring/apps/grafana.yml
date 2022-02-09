@@ -38,8 +38,6 @@ spec:
               key:  grafana-password
         - name: GF_AUTH_ANONYMOUS_ENABLED
           value: "true"
-#        - name: GF_SERVER_DOMAIN
-#          value: "dev.develop.tapis.io"
         - name: GF_SERVER_DOMAIN
           valueFrom:
             configMapKeyRef:

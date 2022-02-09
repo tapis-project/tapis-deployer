@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for i in `kubectl get secret tapis-associatesite-publickeys -o jsonpath="{.data}" | jq -r 'keys[]'`
+do
+  echo "$i :"
+  kubectl get secret tapis-associatesite-publickeys -o jsonpath="{.data.$i}" | base64 -d
+  echo
+done
+

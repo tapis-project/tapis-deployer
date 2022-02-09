@@ -59,10 +59,15 @@ tokens_use_allservices_password:
   source_vars:
     - tokens_use_allservices_password
 
-
 tokens_tenants:
   description: The set of tenants that this Tokens API should generate tokens for.
-  exaple: ["dev", "tacc", "a2cps", "admin"]
+  example: ["dev", "tacc", "a2cps", "admin"]
   source_vars:
     - tokens_tenants
+
+tokens_associate_site:
+  description: Is this a Tapis Associate Site deployment? This is important to know for a few parts of the deployment process.
+  example: yes
+  source_vars:
+    - tokens_associate_site
 

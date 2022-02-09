@@ -10,7 +10,7 @@ echo "streams:"
 cd $here/mysql
 ./burnup
 
-cd $here/influx
+cd $here/influx2
 ./burnup
 
 cd $here/chords
