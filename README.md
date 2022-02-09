@@ -13,26 +13,32 @@ File Generation:
 
 Deployment:
 
-    * Deploy the Tapis software to Kubernetes using the directory of Kubernetes files generates in Step 2 of File Generation.
+    3. Deploy the Tapis software to Kubernetes using the directory of Kubernetes files generates in Step 2 of File Generation.
 
 ## Run input-generator
 
 The input generate accomplishes step 1 of file generation. The program source code is contained within the `inputgen` directory. The program
 is also packaged as a Docker image, `tapis/deployer-input-gen`. 
 
-To run with the Docker image, run a command like the following:
+To run with the Docker image, run a command in the following format:
 
 ```
-   $ docker run --rm -v $(pwd)/output:/data -it tapis/deployer-input-gen --out=/data --start=/data/start_file.yml
+   $ docker run --rm -v /path/on/host:/data -it tapis/deployer-input-gen <options>
+```
+
+For example,
+
+```
+  $  docker run --rm -v $(pwd)/output:/data -it tapis/deployer-input-gen --out=/data --start=/data/start_file.yml
 ```
 
 The above command will mount a directory called "output" in the current workding directory into the deployer-input-gen container so that
-the outputs can be retained after the container is removed. Additionally, the command above specifes some flags to the input generator program, specifically, the `--out=/data --start=/data/start_file.yml`. 
+the outputs written to `/data` in the container can be retained after the container is removed. Additionally, the command above specifes some flags to the input generator program, specifically, the `--out=/data --start=/data/start_file.yml`. 
 
 You can see full documentation on how to run input generator via the help flag:
 
 ```
-   $ docker run --rm -v $(pwd)/output:/data -it tapis/deployer-input-gen -h
+  $ docker run --rm -v $(pwd)/output:/data -it tapis/deployer-input-gen -h
 ```
 
 The input generator program will prompt you for the values for different inputs. You can use a start file (the `--start` flag) to have input
