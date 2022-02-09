@@ -74,7 +74,7 @@ monitoring_service_stern_image:
   description: The image for the version of Stern-Fluentd that you wish to deploy.
   example: mrghort/stern-fluentd:2
 
-monitoring_services_list
+monitoring_services_list:
   - security
   - streams
   - meta
