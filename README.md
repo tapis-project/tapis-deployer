@@ -48,3 +48,11 @@ You can quit the program at any time by entering `_QUIT` at a prompt. Input gene
 which can then be used to resume from where you left off.
 
 
+## Run Deployer Diagnostics
+If you want to look for internal inconsistencies within deployer itself, you can run the diagnostics mode. For example:
+
+```
+ $ docker run --rm -it tapis/deployer-input-gen -d
+ ```
+
+This will print a report to the screen of various errors and warnings associated with the templates (both `inputgen` and `deploygen` templates).
