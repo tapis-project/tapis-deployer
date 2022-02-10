@@ -55,4 +55,10 @@ If you want to look for internal inconsistencies within deployer itself, you can
  $ docker run --rm -it tapis/deployer-input-gen -d
  ```
 
-This will print a report to the screen of various errors and warnings associated with the templates (both `inputgen` and `deploygen` templates).
+This will print a report to the screen of various errors and warnings associated with the templates (both `inputgen` and `deploygen` templates). The following checks are performed:
+
+  * Can all inputgen yaml files be loaded (as yaml)?
+  * Are all required/recommended properties supplied in the yamls?
+  * Are there any "todo"s in the text of the properties?
+  * Can all the templates used by tapis-api-generator.py (i.e., `deployergen`) be loaded as jinja2 templates?
+  * Are all variables needed by `deployergen` templates listes as inputs in the `inputgen` variables?
