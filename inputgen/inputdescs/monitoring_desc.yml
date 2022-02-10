@@ -75,6 +75,7 @@ monitoring_service_stern_image:
   example: mrghort/stern-fluentd:2
 
 monitoring_services_list:
-  - security
-  - streams
-  - meta
+  value:
+    - security
+    - streams
+    - meta
