@@ -1,0 +1,10 @@
+#!/bin/bash
+
+here=`pwd`
+
+cd $here/backup
+./burndown
+
+cd $here/api
+./burndown
+

@@ -3,6 +3,9 @@
 # Do a full burndown for the Notifications service
 #
 
+echo "notifications:"
+
+
 PrgName=`basename $0`
 
 # Determine absolute path to location from which we are running.

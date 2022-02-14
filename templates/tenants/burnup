@@ -1,9 +1,13 @@
 #!/bin/bash
 
+echo "tenants:"
+
+here=`pwd`
+
 kubectl apply -f tenants-config.yml
 
-cd postgres
+cd $here/postgres
 ./burnup
 
-cd ../api
+cd $here/api
 ./burnup

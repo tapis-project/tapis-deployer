@@ -4,27 +4,56 @@ kind: ConfigMap
 metadata:
   name: fl-stern-config
 data:
-  fluent.conf: |- 
+  fluent.conf: |-
     <source>
       @type exec
-      command 'cd /usr/bin; /usr/bin/stern --container .* --color never --tail 0 --exclude-pod "(tapis-nginx-*|stern-fluentd-*|monitoring-kibana-*)"'
-      <parse>
-        @type regexp
-        expression /^(?<remote>[^ ]*) - (?<user>[^ ]*) \[(?<time>[^\]]*)\] "(?<host>[^ ]*)" "(?<method>\S+) (?<path>[^\"]*?) (?:[^ ]*?)" (?<code>[^ ]*) (?<size>[^ ]*) "(?<referer>[^\"]*)" "(?<agent>[^\"]*)"/                            
-        time_format %d/%b/%Y:%H:%M:%S %z
-      </parse>
-      path /var/log/nginx/access.log
-      pos_file /var/log/td-agent/nginx-access.log.pos
-      tag nginx.access
+      tag tapis.nginx
+      command 'cd /usr/bin; /usr/bin/stern tapis-nginx-* --color never --tail 0'
+    <parse>
+       @type regexp
+       expression /^(?<pod_name>[^ ]*) (?<container_name>[^ ]*) (?<remote_addr>[^ ]*) - (?<remote_user>[^ ]*) \[(?<time_local>[^\]]*)\] (?<host>[^ ]*) "(?<method>\S+) (?<path>[^\"]*?) (?<version>[^ ]*?)" (?<status>[^ ]*) (?<body_bytes_sent>[^ ]*) "(?<http_referer>[^\"]*)" "(?<http_user_agent>[^\"]*)" "(?<http_x_forwarded_for>[^ ]*)"/
+       time_format %d/%b/%Y:%H:%M:%S %z
+    </parse>
     </source>
 
-    <match kubelogs.**>
+    <source>
+      @type exec
+      tag tapis.base
+      command 'cd /usr/bin; /usr/bin/stern --container .* --color never --tail 0 --exclude-pod "(tapis-nginx-*|stern-fluentd-*|monitoring-kibana-*)"'
+    <parse>
+      @type regexp
+       expression /^(?<pod_name>[^ ]*) (?<container_name>[^ ]*) (?<message>.*)$/
+    </parse>
+    </source>
+
+    <filter tapis.nginx>
+      @type parser
+      key_name path
+      reserve_data true
+      reserve_time true
+      <parse>
+        @type regexp
+        expression /^(:?\/+)(v3\/(?<tapis_service>[^\/\s]*)(?:\/?)(?<tapis_path>[^ ]*?))?$/
+      </parse>
+    </filter>
+
+    <match **>
       @type elasticsearch
       host monitoring-elasticsearch
       port 9200
-      index_name fluentd
-      type_name fluentd
-      logstash_format true 
+      logstash_format true
+      suppress_type_name true
+      <buffer>
+        @type file
+        path /fluentd/log/elastic-buffer
+        #flush_thread_count 8
+        #flush_interval 1s
+        #chunk_limit_size 32M
+        #queue_limit_length 4
+        #flush_mode interval
+        #retry_max_interval 30
+        #retry_forever true
+      </buffer>
     </match>
 
     <label @FLUENT_LOG>
@@ -32,3 +61,4 @@ data:
         @type stdout
       </match>
     </label>
+

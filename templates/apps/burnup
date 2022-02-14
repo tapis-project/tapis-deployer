@@ -21,3 +21,4 @@ cd $PRG_PATH/postgres
 ./burnup
 cd $PRG_PATH/api
 ./burnup
+

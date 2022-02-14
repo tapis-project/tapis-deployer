@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "files:"
+
+kubectl delete -f migrations.yml
+kubectl delete -f api.yml 
+kubectl delete -f configmap.yml
+kubectl delete -f workers.yml
+

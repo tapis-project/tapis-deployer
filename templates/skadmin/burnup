@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "skadmin:"
+
 here=`dirname "$0"`
 
 if [ ! -f ~/vault-token ]
@@ -8,6 +10,10 @@ then
   exit 1
 fi
 
+cd $here/renew-sk-secret
+./burnup
+
+cd $here 
 kubectl apply -f skadmin-config.yml
 kubectl create secret generic vault-token --from-file ~/vault-token
 

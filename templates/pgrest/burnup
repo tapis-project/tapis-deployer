@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "pgrest:"
+
 # Config
 kubectl apply -f pgrest-config.yml
 

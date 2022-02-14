@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "skadmin:"
+
 kubectl delete -f sk-presetup.yml 
 kubectl delete -f sk-admin-init.yml
 

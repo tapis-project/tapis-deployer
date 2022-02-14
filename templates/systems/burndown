@@ -3,6 +3,8 @@
 # Do a full burndown for the Systems service
 #
 
+echo "systems:"
+
 PrgName=`basename $0`
 
 # Determine absolute path to location from which we are running.
@@ -19,3 +21,5 @@ cd $PRG_PATH/api
 ./burndown
 cd $PRG_PATH/postgres
 ./burndown
+
+kubectl delete -f systems-config.yml

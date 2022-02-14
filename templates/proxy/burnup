@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "proxy:"
+
+here=`pwd`
+
+echo "proxy nginx:"
+cd $here/nginx
+./burnup
+
+echo "proxy site-router:"
+cd $here/site-router
+./burnup
+

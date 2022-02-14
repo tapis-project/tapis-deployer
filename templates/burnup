@@ -76,80 +76,46 @@ postnginx_check(){
 ### services
 
 actors(){
-  echo "actors:"
-  cd $here/actors/api
+  cd $here/actors
   ./burnup
 }
 
 apps(){
-  echo "apps:"
-  cd $here/apps/postgres
-  ./burnup
-
-  cd $here/apps/api
+  cd $here/apps
   ./burnup
 }
 
 authenticator(){
-  echo "authenticator:"
-  cd $here/authenticator/ldap
-  ./burnup
-
-  cd $here/authenticator/postgres
-  ./burnup
-
-  cd $here/authenticator/api
+  cd $here/authenticator
   ./burnup
 }
 
 container-registry(){
-  echo "container-registry:"
   cd $here/container-registry
   ./burnup
 }
 
 files(){
-  echo "files:"
-  cd $here/files/api
+  cd $here/files
   ./burnup
 }
 
 jobs(){
-  echo "jobs:"
-  cd $here/jobs/postgres
+  cd $here/jobs
   ./burnup
-
-  cd $here/jobs/rabbitmq
-  ./burnup
-
-  cd $here/jobs/api
-  ./burnup
-
-  cd $here/jobs/workers
-  ./burnup
-
-  cd $here/jobs/readers
-  ./burnup
-
 }
 
 meta(){
-  echo "meta:"
-  cd $here/meta/mongo
-  ./burnup
-
-  cd $here/meta/api
+  cd $here/meta
   ./burnup
 }
 
 monitoring(){
-  echo "monitoring:"
   cd $here/monitoring
   ./burnup
 }
 
 notifications(){
-  echo "notifications:"
   cd $here/notifications
   ./burnup
 }
@@ -173,81 +139,43 @@ pgrest-a2cps-prod(){
 }
 
 proxy(){
-  echo "nginx:"
-  cd $here/proxy/nginx
-  ./burnup
-
-  echo "site-router:"
-  cd $here/proxy/site-router
+  cd $here/proxy
   ./burnup
 }
 
 security(){
-  echo "security-kernel:"
-  cd $here/security/postgres
-  ./burnup
-
-  # vault secret renewed in here
-  cd $here/security/api
-  ./burnup
+  cd $here/security
+  burnup
 }
 
 skadmin(){
-  echo "skadmin:"
-  cd $here/skadmin/renew-sk-secret
-  ./burnup
   cd $here/skadmin
   ./burnup
 }
 
 streams(){
-  echo "streams:"
-  cd $here/streams/mysql
-  ./burnup
-
-  cd $here/streams/influx
-  ./burnup
-
-  cd $here/streams/kapacitor
-  ./burnup
-
-  cd $here/streams/chords
-  ./burnup
-
-  cd $here/streams/api
+  cd $here/streams
   ./burnup
 }
 
 systems(){
-  echo "systems:"
-  cd $here/systems/postgres
-  ./burnup
-
-  cd $here/systems/api
+  cd $here/systems
   ./burnup
 }
 
 tenants(){
-  echo "tenants:"
-  cd $here/tenants/postgres
-  ./burnup
-
-  cd $here/tenants/api
+  cd $here/tenants
   ./burnup
 }
 
 tokens(){
-  echo "tokens:"
   cd $here/tokens
   ./burnup
 }
 
 vault(){
-  echo "vault:"
   cd $here/vault
   ./burnup
-  kubectl wait --for=condition=available deploy/vault
-  ./unseal
 }
 
 

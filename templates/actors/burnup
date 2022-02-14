@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "actors:"
+
+here=`pwd`
+
+cd $here/api
+./burnup
+
+cd $here/backup
+./burnup
+
