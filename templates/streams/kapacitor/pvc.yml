@@ -11,29 +11,29 @@ spec:
     requests:
       storage: 20Gi
 
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: chown-streams-kapacitor-pvc
-spec:
-  ttlSecondsAfterFinished: 60
-  template:
-    spec:
-      restartPolicy: Never
-      containers:
-      - name: chown-kapacitor-volume
-        image: alpine:latest
-        command:
-        - chown
-        - -R
-        - 999:999
-        - /var/lib/kapacitor
-        volumeMounts:
-        - name: streams-kapacitor-data
-          mountPath: /var/lib/kapacitor
-      volumes:
-      - name: streams-kapacitor-data
-        persistentVolumeClaim:
-          claimName: {{streams_kapacitor_pvc}}
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: chown-streams-kapacitor-pvc
+#spec:
+#  ttlSecondsAfterFinished: 60
+#  template:
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: chown-kapacitor-volume
+#        image: alpine:latest
+#        command:
+#        - chown
+#        - -R
+#        - 999:999
+#        - /var/lib/kapacitor
+#        volumeMounts:
+#        - name: streams-kapacitor-data
+#          mountPath: /var/lib/kapacitor
+#      volumes:
+#      - name: streams-kapacitor-data
+#        persistentVolumeClaim:
+#          claimName: {{streams_kapacitor_pvc}}
 

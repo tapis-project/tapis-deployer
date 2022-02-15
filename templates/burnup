@@ -213,15 +213,15 @@ get_public_keys(){
 
 
 init(){
-  {%- if "proxy" in service_list %}
+  {%- if "proxy" in components_to_deploy%}
   proxy
   {% endif %}
 
-  {%- if "vault" in service_list %}
+  {%- if "vault" in components_to_deploy%}
   vault
   {% endif %}
 
-  {%- if "skadmin" in service_list %}
+  {%- if "skadmin" in components_to_deploy%}
   skadmin
   {% endif %}
 
@@ -233,74 +233,74 @@ init(){
 
 
 primary_services(){
-  {%- if  "tenants" in service_list %}
+  {%- if  "tenants" in components_to_deploy %}
   tenants
   {% endif %}
 
-  {%- if  "security" in service_list %}
+  {%- if  "security" in components_to_deploy %}
   security
   {% endif %}
 
-  {%- if  "tokens" in service_list %}
+  {%- if  "tokens" in components_to_deploy %}
   tokens
   {% endif %}
 
-  {%- if  "authenticator" in service_list %}
+  {%- if  "authenticator" in components_to_deploy %}
   authenticator
   {% endif %}
 }
 
 secondary_services() {
 
-  {%- if  "systems" in service_list %}
+  {%- if  "systems" in components_to_deploy %}
   systems
   {% endif %}
 
-  {%- if  "files" in service_list %}
+  {%- if  "files" in components_to_deploy %}
   files
   {% endif %}
 
-  {%- if  "apps" in service_list %}
+  {%- if  "apps" in components_to_deploy %}
   apps
   {% endif %}
 
-  {%- if  "jobs" in service_list %}
+  {%- if  "jobs" in components_to_deploy %}
   jobs
   {% endif %}
 
-  {%- if  "meta" in service_list %}
+  {%- if  "meta" in components_to_deploy %}
   meta
   {% endif %}
 
-  {%- if  "streams" in service_list %}
+  {%- if  "streams" in components_to_deploy %}
   streams
   {% endif %}
 
-  {%- if  "actors" in service_list %}
+  {%- if  "actors" in components_to_deploy %}
   actors
   {% endif %}
 
-  {%- if  "container-registry" in service_list %}
+  {%- if  "container-registry" in components_to_deploy %}
   container-registry
   {% endif %}
 
-  {%- if  "monitoring" in service_list %}
+  {%- if  "monitoring" in components_to_deploy %}
   monitoring
   {% endif %}
 
-  {%- if  "notifications" in service_list %}
+  {%- if  "notifications" in components_to_deploy %}
   notifications 
   {% endif %}
 
-  {%- if  "pgrest" in service_list %}
+  {%- if  "pgrest" in components_to_deploy %}
   pgrest
   {% endif %}
 
-  {%- if  "pgrest-a2cps-dev" in service_list %}
+  {%- if  "pgrest-a2cps-dev" in components_to_deploy %}
   pgrest-a2cps-dev
   {% endif %}
 
-  {%- if  "pgrest-a2cps-prod" in service_list %}
+  {%- if  "pgrest-a2cps-prod" in components_to_deploy %}
   pgrest-a2cps-prod
   {% endif %}
 

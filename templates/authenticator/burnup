@@ -7,12 +7,12 @@ here=`pwd`
 # first ensure that the ./postgres/burnup script has been run because we need configmap "authenticator-config-local" to exist.
 kubectl apply -f authenticator-config.yml
 
-cd $here/authenticator/ldap
+cd $here/ldap
 ./burnup
 
-cd $here/authenticator/postgres
+cd $here/postgres
 ./burnup
 
-cd $here/authenticator/api
+cd $here/api
 ./burnup
 

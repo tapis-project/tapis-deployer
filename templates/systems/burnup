@@ -5,21 +5,15 @@
 
 echo "systems:"
 
-PrgName=`basename $0`
+here=`pwd`
 
-
-# Determine absolute path to location from which we are running.
-export RUN_DIR=`pwd`
-export PRG_RELPATH=`dirname $0`
-cd $PRG_RELPATH/.
-export PRG_PATH=`pwd`
-cd $RUN_DIR
-
-#
 # Deploy postgres and api
-#
+
+cd $here
 kubectl apply -f systems-config.yml
-cd $PRG_PATH/postgres
+
+cd $here/postgres
 ./burnup
-cd $PRG_PATH/api
+
+cd $here/api
 ./burnup

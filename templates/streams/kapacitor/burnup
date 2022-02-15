@@ -8,7 +8,7 @@ kubectl wait --for=condition=available deploy/chords-influxdb
 
 kubectl apply -f pvc.yml 
 
-kubectl wait --for=condition=complete job/chown-streams-kapacitor-pvc
+#kubectl wait --for=condition=complete job/chown-streams-kapacitor-pvc
 
 kubectl apply -f deploy.yml
 kubectl apply -f service.yml 

@@ -2,7 +2,7 @@
 
 echo "skadmin:"
 
-here=`dirname "$0"`
+here=`pwd`
 
 if [ ! -f ~/vault-token ]
 then

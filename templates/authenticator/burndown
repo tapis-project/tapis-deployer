@@ -4,13 +4,13 @@ echo "burndown authenticator:"
 
 here=`pwd`
 
-cd $here/authenticator/api
+cd $here/api
 ./burndown
 
-cd $here/authenticator/postgres
+cd $here/postgres
 ./burndown
 
-cd $here/authenticator/ldap
+cd $here/ldap
 ./burndown
 
 kubectl delete -f authenticator-config.yml

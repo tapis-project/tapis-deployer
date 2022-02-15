@@ -7,7 +7,9 @@ echo "monitoring:"
 
 # Configs
 kubectl apply -f secrets.yml 
+kubectl delete -f monitoring-config.yml
 
 # Apps
 kubectl delete -f apps
+
 

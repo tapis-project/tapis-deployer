@@ -5,6 +5,6 @@ kubectl apply -f ../streams-config.yml
 kubectl apply -f ../kapacitor-config.yml
 
 kubectl apply -f pvc.yml
-kubectl wait --for=condition=complete job/chown-streams-mysql-pvc
+#kubectl wait --for=condition=complete job/chown-streams-mysql-pvc
 kubectl apply -f deploy.yml
 kubectl apply -f service.yml 

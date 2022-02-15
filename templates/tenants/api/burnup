@@ -2,11 +2,8 @@
 
 # first ensure that the ./postgres/burnup script has been run.
 
-#kubectl create configmap tenants-config-local --from-file ~/tenants-config-local.json
-
 #kubectl create configmap tenantsnewdb --from-file=new_db.sql
 
-kubectl apply -f ../tenants-config.yml
 kubectl apply -f service.yml
 kubectl apply -f api.yml 
 #kubectl apply -f util.yml 

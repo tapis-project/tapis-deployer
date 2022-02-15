@@ -2,10 +2,5 @@
 
 
 kubectl delete -f deploy.yml
-kubectl delete job/chown-streams-mysql-pvc
-
-if [ "$1" == "allofit" ]
-then
-  kubectl delete -f pvc.yml 
-fi
+#kubectl delete job/chown-streams-mysql-pvc
 
