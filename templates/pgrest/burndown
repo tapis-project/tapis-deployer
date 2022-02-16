@@ -3,5 +3,5 @@
 echo "pgrest:"
 
 # don't delete the postgres pod unless we have to...
-#kubectl delete -f postgres-deploy.yml
+kubectl delete -f postgres-deploy.yml
 kubectl delete -f api-deploy.yml 

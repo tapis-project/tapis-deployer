@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Set up configmap for service
-kubectl apply -f ../notifications-config.yml
-
 # Setup the PVC for postgres
 kubectl apply -f pvc.yml
 

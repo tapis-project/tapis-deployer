@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Set up configmap for service
-kubectl apply -f ../notifications-config.yml
-
+kubectl apply -f rabbitmq-service.yml 
+kubectl apply -f rabbitmq.yml 
 kubectl apply -f service.yml 
 kubectl apply -f api.yml 
