@@ -76,12 +76,6 @@ streams_influx2_pvc:
     - streams_influx2_pvc
   example: influx2-vol01
 
-streams_kapacitor_pvc:
-  description: The name of the PVC to use for the Streams Kapacitor instance. 
-  source_vars:
-    - streams_kapacitor_pvc
-  example: streams-kapacitor-vol01
-
 streams_mysql_pvc:
   description: The name of the PVC to use for the Streams MySQL instance. 
   source_vars:

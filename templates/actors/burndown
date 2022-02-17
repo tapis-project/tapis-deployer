@@ -8,3 +8,5 @@ cd $here/backup
 cd $here/api
 ./burndown
 
+cd $here
+kubectl delete -f actors-config.yml

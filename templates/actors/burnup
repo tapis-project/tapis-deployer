@@ -4,6 +4,8 @@ echo "actors:"
 
 here=`pwd`
 
+kubectl apply -f actors-config.yml
+
 cd $here/api
 ./burnup
 

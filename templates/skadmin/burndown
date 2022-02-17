@@ -8,4 +8,5 @@ kubectl delete -f sk-admin-init.yml
 kubectl delete configmap sk-admin-policies sk-policies sk-roles sk-admin-initialload create-sk-roles run-sk-admin
 kubectl delete secret vault-token tapis-sk-vault-secrets tapis-sk-secrets
 
+kubectl delete -f skadmin-config.yml
 

@@ -6,9 +6,8 @@
 
 #kubectl create configmap streams-config-local --from-file streams-config-local.json
 
-# Set up configmap for streams and kapacitor
+# Set up configmap for streams 
 kubectl apply -f ../streams-config.yml
-kubectl apply -f ../kapacitor-config.yml
 
 kubectl apply -f service.yml
 kubectl apply -f api.yml 

@@ -12,3 +12,6 @@ echo "proxy nginx:"
 cd $here/nginx
 ./burndown
 
+cd $here
+kubectl delete -f proxy-config.yml
+

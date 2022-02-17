@@ -658,7 +658,6 @@ streams:
       service_name: "streams"
       influx_pvc: "influx-vol01"
       postgres_pvc: "postgres-vol01"
-      kapacitor_pvc: "streams-kapacitor-vol01"
       mysql_pvc: "streams-mysql-vol01"
   streams-config:
     file_ext: ".yml"
@@ -670,14 +669,6 @@ streams:
       }
       "log_level": "DEBUG"
       "show_traceback": false
-  kapacitor-config:
-    file_ext: ".yml"
-    template: kapacitor-config.j2
-    data:
-      "tenant": {
-        "admin":{"stream_db":"streams_admin","tapis_base_url":"https://admin.test.tapis.io"},
-        "dev":{"stream_db":"streams_dev","tapis_base_url":"https://dev.test.tapis.io"}
-      }
   api: 
     api:
       file_ext: ".yml"

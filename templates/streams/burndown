@@ -6,10 +6,12 @@ echo "streams:"
 cd $here/mysql
 ./burndown
 
+# migrated to influx2
+# this takes down older version (non-destructive)
 cd $here/influx
 ./burndown
 
-cd $here/kapacitor
+cd $here/influx2
 ./burndown
 
 cd $here/chords
@@ -19,3 +21,5 @@ cd $here/api
 ./burndown
 
 
+cd $here
+kubectl delete -f streams-config.yml

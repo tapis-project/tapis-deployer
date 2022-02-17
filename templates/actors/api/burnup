@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # configs
-kubectl apply -f actors-config.yml
 kubectl apply -f nginx-config.yml
 kubectl apply -f prometheus-config.yml
 kubectl apply -f configmap.yml

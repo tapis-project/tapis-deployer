@@ -4,6 +4,8 @@ echo "proxy:"
 
 here=`pwd`
 
+kubectl apply -f proxy-config.yml
+
 echo "proxy nginx:"
 cd $here/nginx
 ./burnup
