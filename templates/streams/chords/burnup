@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "streams-chords:"
+
 kubectl create configmap chords-start-script --from-file=tapis_chords_start.sh
 kubectl create configmap chords-influxdb-yml --from-file=influxdb.yml
 kubectl create configmap chords-database-yml --from-file=database.yml

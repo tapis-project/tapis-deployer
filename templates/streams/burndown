@@ -6,11 +6,6 @@ echo "streams:"
 cd $here/mysql
 ./burndown
 
-# migrated to influx2
-# this takes down older version (non-destructive)
-cd $here/influx
-./burndown
-
 cd $here/influx2
 ./burndown
 

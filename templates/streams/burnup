@@ -1,11 +1,12 @@
 #!/bin/bash
 
+echo "streams:"
+
 here=`pwd`
 
 # config
 kubectl apply -f streams-config.yml
 
-echo "streams:"
 cd $here/mysql
 ./burnup
 
