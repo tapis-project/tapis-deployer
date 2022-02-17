@@ -13,4 +13,3 @@ kubectl apply -f rabbitmq.yml
 kubectl wait --for=condition=available deploy/files-rabbitmq
 kubectl apply -f api.yml
 kubectl apply -f workers.yml
-kubectl apply -f migrations.yml
