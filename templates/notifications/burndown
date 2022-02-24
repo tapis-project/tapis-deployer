@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Do a full burndown for the Notifications service
+# Do a full non-destructive burndown for the Notifications service
 #
 
 echo "notifications:"
@@ -11,6 +11,12 @@ here=`pwd`
 # UnDeploy api and postgres
  
 cd $here/api
+./burndown
+
+cd $here/dispatcher
+./burndown
+
+cd $here/rabbitmq
 ./burndown
 
 cd $here/postgres
