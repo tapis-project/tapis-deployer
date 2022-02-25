@@ -14,6 +14,10 @@ actors_service_name:
   description: The name of this service; should always be set to actors.
   value: actors
 
+actors_service_site_id:
+  description: The Site ID of this service.
+  example: tacc
+
 actors_storage_class:
   description: Kubernetes storage class to use for peristent volume claim used to persist data written by the Mongo database.
   source_vars:
@@ -112,3 +116,6 @@ actors_web_apim_public_key:
   source_vars:
     - actors_web_apim_public_key
   example: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCUp/oV1vWc8/TkQSiAvTousMzOM4asB2iltr2QKozni5aVFu818MpOLZIr8LMnTzWllJvvaA5RAAdpbECb+48FjbBe0hseUdN5HpwvnH/DW8ZccGvk53I6Orq7hLCv1ZHtuOCokghz/ATrhyPq+QktMfXnRS4HrKGJTzxaCcU7OQIDAQAB
+
+
+

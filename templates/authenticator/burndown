@@ -13,4 +13,4 @@ cd $here/postgres
 cd $here/ldap
 ./burndown
 
-kubectl delete -f authenticator-config.yml
+kubectl delete -f $here/authenticator-config.yml

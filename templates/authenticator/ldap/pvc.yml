@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{authenticator_ldap_pvc}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{authenticator_storage_class}}
+  resources:
+    requests:
+      storage: 10Gi
