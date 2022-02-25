@@ -1,8 +1,11 @@
 #!/bin/bash
 
-echo "skadmin:"
-
 here=`pwd`
+
+{% if '{{skadmin_vault_url}}' == 'http://vault:8200' %}
+
+echo "skadmin:"
+echo "using internal vault:" 
 
 if [ ! -f ~/vault-token ]
 then
@@ -35,4 +38,14 @@ kubectl wait --for=condition=complete job/sk-admin-init
 #
 #echo "Now shell into pod util and run this:"
 #echo 'curl -X LIST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/policies/acl | jq'
+
+{% else %}
+
+echo "skadmin:"
+echo "using external vault:" 
+cd $here/external-vault
+./burnup
+
+{% endif %}
+
 
