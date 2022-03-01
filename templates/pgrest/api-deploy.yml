@@ -26,7 +26,7 @@ spec:
             secretKeyRef:
               name: tapis-pgrest-secrets
               key: service-password
-        - name: K8-POSTGRES-PASSWORD
+        - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-pgrest-secrets
@@ -54,7 +54,7 @@ spec:
             secretKeyRef:
               name: tapis-pgrest-secrets
               key: service-password
-        - name: K8-POSTGRES-PASSWORD
+        - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-pgrest-secrets
