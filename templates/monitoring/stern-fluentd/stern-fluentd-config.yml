@@ -37,6 +37,7 @@ data:
       </parse>
     </filter>
 
+
     <match **>
       @type elasticsearch
       host monitoring-elasticsearch
