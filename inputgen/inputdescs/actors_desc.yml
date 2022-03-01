@@ -117,5 +117,18 @@ actors_web_apim_public_key:
     - actors_web_apim_public_key
   example: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCUp/oV1vWc8/TkQSiAvTousMzOM4asB2iltr2QKozni5aVFu818MpOLZIr8LMnTzWllJvvaA5RAAdpbECb+48FjbBe0hseUdN5HpwvnH/DW8ZccGvk53I6Orq7hLCv1ZHtuOCokghz/ATrhyPq+QktMfXnRS4HrKGJTzxaCcU7OQIDAQAB
 
+actors_kube_domain:
+  description: Internal Kubernetes domain to be appended to actors nginx config routes.
+  example:
+    - tapis.svc.cluster.local
 
+actors_tas_role_acct:
+  description: TACC-specific accounting info
+  example:
+    - testacct
+
+actors_tas_role_pass:
+  description: TACC-specific accounting info
+  example:
+    - testpass
 
