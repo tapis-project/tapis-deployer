@@ -12,7 +12,7 @@ data:
       "service_name": "abaco",
       "service_password": "$env{SERVICE_PASSWORD}",
       "tenants": {{actors_service_tenants | tojson}},
-      "version": ":dev",
+      "version": "{{actors_image_version}}",
       "log_file": "",
       "log_level": "DEBUG",
       "log_filing_strategy": "combined",
