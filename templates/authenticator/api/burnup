@@ -1,6 +1,4 @@
 #!/bin/bash
 
-# first ensure that the ./postgres/burnup script has been run because we need configmap "authenticator-config-local" to exist.
-
 kubectl apply -f service.yml
 kubectl apply -f api.yml 
