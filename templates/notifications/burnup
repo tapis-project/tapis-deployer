@@ -10,10 +10,15 @@ here=`pwd`
 cd $here
 kubectl apply -f notifications-config.yml
 
-
 # Deploy postgres and api
 
 cd $here/postgres
+./burnup
+
+cd $here/rabbitmq
+./burnup
+
+cd $here/dispatcher
 ./burnup
 
 cd $here/api

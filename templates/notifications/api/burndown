@@ -1,5 +1,3 @@
 #!/bin/bash
 
-kubectl delete -f api.yml
-kubectl delete -f rabbitmq.yml 
-
+kubectl delete -f deploy.yml
