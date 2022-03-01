@@ -66,3 +66,9 @@ authenticator_service_tenants:
 authenticator_use_sk:
   description: Whether this service should use the SK for checking authorization (NOTE - should always set to True in production).
   value: true
+
+authenticator_dev_ldap_tenant_id:
+  descrption: When using the "dev" LDAP this config specifies which tenant to assoicate with it. 
+  source_vars:
+    - authenticator_dev_ldap_tenant_id
+  example: dev for primary, assocdev for the assoc associte site, etc.

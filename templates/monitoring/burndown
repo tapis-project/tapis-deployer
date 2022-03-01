@@ -1,14 +1,15 @@
 #!/bin/bash
 
-# Persistent storage
-# don't burn this
+echo "monitoring:"
+
+# DO NOT burn Persistent storage
+# DO NOT burn Services 
 
 # Configs
 kubectl apply -f secrets.yml 
-
-# Services
-# we don't burn service so ports stay same
+kubectl delete -f monitoring-config.yml
 
 # Apps
 kubectl delete -f apps
+
 

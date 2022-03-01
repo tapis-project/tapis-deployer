@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Set up configmap for meta
-kubectl apply -f ../meta-config.yml
-
-#. ~/meta-mongo-secrets
-
 kubectl apply -f pvc.yml
 kubectl wait --for=condition=complete job/chown-restheart-mongo-pvc
 kubectl apply -f service.yml 

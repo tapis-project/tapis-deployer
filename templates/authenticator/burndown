@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "burndown authenticator:"
+
+here=`pwd`
+
+cd $here/api
+./burndown
+
+cd $here/postgres
+./burndown
+
+cd $here/ldap
+./burndown
+
+kubectl delete -f $here/authenticator-config.yml

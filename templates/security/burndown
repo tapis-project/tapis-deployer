@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "security:"
+
+here=`pwd`
+
+kubectl delete -f security-kernel-config.yml
+
+echo "security security-kernel:"
+cd $here/api
+./burndown
+
+cd $here/postgres
+./burndown
+

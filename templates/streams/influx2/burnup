@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Set up configmap for streams and kapacitor
-kubectl apply -f ../streams-config.yml
-kubectl apply -f ../kapacitor-config.yml
+echo "streams-influx2:"
 
 kubectl apply -f pvc.yml
 kubectl apply -f deploy.yml

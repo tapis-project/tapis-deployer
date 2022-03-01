@@ -1,7 +1,3 @@
-security_auto_service:
-  description: (TODO -- what is this?)
-  value: null
-
 security_heap_max:
   descirption: Max heap for the security API (TODO)
   value: 3g
@@ -60,7 +56,7 @@ security_postgres_pvc:
   example: sk-postgres-vol01
 
 security_volumes:
-  description: (TODO -- no idea..)
+  description: A boolean that controls whether the renew-sk-secret configmap is loaded. Does not apply to remote Vault installations.
   value: true
 
 security_image_pull_policy:
@@ -69,7 +65,7 @@ security_image_pull_policy:
   default_var: image_pull_policy
 
 security_renew_sk_script:
-  description: (TODO -- no idea..)
+  description: A booleam that controls whether the 
   value: true
 
 

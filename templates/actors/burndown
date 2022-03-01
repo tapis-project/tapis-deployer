@@ -1,0 +1,12 @@
+#!/bin/bash
+
+here=`pwd`
+
+cd $here/backup
+./burndown
+
+cd $here/api
+./burndown
+
+cd $here
+kubectl delete -f actors-config.yml

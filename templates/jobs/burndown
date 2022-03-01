@@ -1,0 +1,23 @@
+#!/bin/bash
+
+echo "jobs:"
+
+here=`pwd`
+
+# Set up configmap for jobs
+kubectl delete -f jobs-config.yml
+
+cd $here/readers
+./burndown
+
+cd $here/workers
+./burndown
+
+cd $here/api
+./burndown
+
+cd $here/rabbitmq
+./burndown
+
+cd $here/postgres
+./burndown

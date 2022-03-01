@@ -1,6 +1,10 @@
 #!/bin/bash
 
+echo "tokens:"
+
 kubectl delete -f add-token-roles.yml
 kubectl delete -f api.yml 
+
+kubectl delete -f tokens-config.yml
 
 

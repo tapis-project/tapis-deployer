@@ -1,10 +1,12 @@
 #!/bin/bash
 
+echo "pgrest:"
+
 # Config
 kubectl apply -f pgrest-config.yml
 
 # Services
-kubectl apply -f postgres-service.yml
+kubectl apply -f pgrest-service.yml
 kubectl apply -f api-service.yml
 
 # PVC

@@ -7,6 +7,12 @@ FROM python:3.9
 ADD requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 
+# add api generator code
+RUN mkdir /deploygen
+ADD templates /deploygen/templates
+ADD tapis-api-generator.py /deploygen/tapis-api-generator.py
+ADD lib /deploygen/lib
+
 # deployer inputgen code
 ADD inputgen /inputgen
 

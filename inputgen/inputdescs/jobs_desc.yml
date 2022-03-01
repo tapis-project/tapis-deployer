@@ -53,7 +53,10 @@ jobs_node_selector:
   example: yes
 
 jobs_node_name:
-  # TODO -- ??
-  value: true
+  description: The name of the node name in Kubernetes where the Jobs pod should be scheduled.
+  source_vars:
+    - jobs_node_name
+  example: c05
+  
 
 

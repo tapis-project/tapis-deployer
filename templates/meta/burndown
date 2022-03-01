@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "meta:"
+
+here=`pwd`
+
+# Set up configmap
+kubectl delete -f meta-config.yml
+
+cd $here/api
+./burndown
+
+cd $here/mongo
+./burndown
+
+

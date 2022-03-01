@@ -1,24 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: notifications-api
+  name: notifications-dispatcher
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: notifications-api
+      app: notifications-dispatcher
   template:
     metadata:
       labels:
-        app: notifications-api
+        app: notifications-dispatcher
     spec:
-      {%- if notifications_node_selector | default(None) %}
-      nodeSelector:
-        exempt: "{{notifications_node_selector}}"
-      {%- endif%}
       containers:
-      - name: notifications-api
-        image: tapis/notifications:{{notifications_image_version}}
+      - name: notifications-dispatcher
+        image: tapis/notifications-dispatcher:{{notifications_image_version}}
         imagePullPolicy: Always
         ports:
           - containerPort: 8080

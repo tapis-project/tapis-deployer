@@ -1,16 +1,16 @@
 #!/bin/bash
 
+echo "streams:"
+
 here=`pwd`
 
-# Set up configmap for streams and kapacitor
+# config
 kubectl apply -f streams-config.yml
-kubectl apply -f kapacitor-config.yml
 
-echo "streams:"
 cd $here/mysql
 ./burnup
 
-cd $here/influx
+cd $here/influx2
 ./burnup
 
 cd $here/chords
@@ -19,6 +19,5 @@ cd $here/chords
 cd $here/api
 ./burnup
 
-cd $here/kapacitor
-./burnup
+
 

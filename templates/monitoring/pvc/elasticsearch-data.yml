@@ -8,32 +8,32 @@ spec:
   storageClassName: {{monitoring_service_storage_class}}
   resources:
     requests:
-      storage: 20Gi
+      storage: 50Gi
 
 
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  name: chown-elasticsearch-data-pvc
-spec:
-  ttlSecondsAfterFinished: 60
-  template:
-    spec:
-      restartPolicy: Never
-      containers:
-      - name: chown-elasticsearch-data-volume
-        image: alpine:latest
-        command:
-        - chown
-        - -R
-        - 1000:1000
-        - /data/
-        volumeMounts:
-        - name: elasticsearch-data
-          mountPath: /data/
-      volumes:
-      - name: elasticsearch-data
-        persistentVolumeClaim:
-          claimName: {{monitoring_service_elasticsearch_pvc}}
+#---
+#apiVersion: batch/v1
+#kind: Job
+#metadata:
+#  name: chown-elasticsearch-data-pvc
+#spec:
+#  ttlSecondsAfterFinished: 60
+#  template:
+#    spec:
+#      restartPolicy: Never
+#      containers:
+#      - name: chown-elasticsearch-data-volume
+#        image: alpine:latest
+#        command:
+#        - chown
+#        - -R
+#        - 1000:1000
+#        - /data/
+#        volumeMounts:
+#        - name: elasticsearch-data
+#          mountPath: /data/
+#      volumes:
+#      - name: elasticsearch-data
+#        persistentVolumeClaim:
+#          claimName: {{monitoring_service_elasticsearch_pvc}}
 

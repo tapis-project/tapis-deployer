@@ -1,14 +1,6 @@
+#!/bin/bash
 
-#kubectl create configmap tenants-config-local --from-file ~/tenants-config-local.json
-
-#kubectl create configmap tenantsnewdb --from-file=new_db.sql
-#
-
-#kubectl create configmap streams-config-local --from-file streams-config-local.json
-
-# Set up configmap for streams and kapacitor
-kubectl apply -f ../streams-config.yml
-kubectl apply -f ../kapacitor-config.yml
+echo "streams-api:"
 
 kubectl apply -f service.yml
 kubectl apply -f api.yml 

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Set up configmap for service
-kubectl apply -f ../notifications-config.yml
-
 # Setup the PVC for postgres
 kubectl apply -f pvc.yml
 
@@ -15,7 +12,7 @@ kubectl apply -f service.yml
 kubectl apply -f deploy.yml
 
 # Start pgadmin pod
-kubectl apply -f pgadmin.yml
+#kubectl apply -f pgadmin.yml
 
 # Wait for postgres to finish coming up
 kubectl wait --timeout=120s --for=condition=available deploy/notifications-postgres

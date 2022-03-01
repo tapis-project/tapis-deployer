@@ -1,5 +1,7 @@
 #!/bin/bash
-#
-##tenants:
-curl https://admin.{{admin_deployment}}.tapis.io/v3/tenants | jq
+
+# tenants
 # should return 200 and JSON with tenants list.
+
+curl {{admin_service_url}}/v3/tenants | jq
+

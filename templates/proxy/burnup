@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "proxy:"
+
+here=`pwd`
+
+kubectl apply -f proxy-config.yml
+
+echo "proxy nginx:"
+cd $here/nginx
+./burnup
+
+echo "proxy site-router:"
+cd $here/site-router
+./burnup
+

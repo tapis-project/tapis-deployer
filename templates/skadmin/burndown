@@ -1,9 +1,26 @@
 #!/bin/bash
 
+here=`pwd`
+
+{% if '{{skadmin_vault_url}}' == 'http://vault:8200' %}
+
+echo "skadmin:"
+echo "using internal vault:"
+
 kubectl delete -f sk-presetup.yml 
 kubectl delete -f sk-admin-init.yml
 
 kubectl delete configmap sk-admin-policies sk-policies sk-roles sk-admin-initialload create-sk-roles run-sk-admin
 kubectl delete secret vault-token tapis-sk-vault-secrets tapis-sk-secrets
 
+kubectl delete -f skadmin-config.yml
+
+{% else %}
+
+echo "skadmin:"
+echo "using external vault:"
+cd $here/external-vault
+./burndown
+
+{% endif %}
 
