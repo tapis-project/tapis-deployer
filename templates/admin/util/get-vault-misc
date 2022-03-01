@@ -2,7 +2,7 @@
 
 
 VAULT_TOKEN=`cat ~/vault-token.vmvault`
-VAULT_URL="https://tapis-vault-prod.tacc.utexas.edu:8200"
+VAULT_URL="{{admin_vault_url}}"
 
 echo "1. STATUS"
 #curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" $VAULT_URL/v1/sys/health | jq

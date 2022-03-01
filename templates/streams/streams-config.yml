@@ -28,5 +28,6 @@ data:
       "ignore_auth": true,
       "influxdb_token": "myawesometapistoken",
       "influxdb_bucket": "streams",
-      "influxdb_org": "tapis"
+      "influxdb_org": "tapis",
+      "alert_secret" : "myAlertSecret"
     }
