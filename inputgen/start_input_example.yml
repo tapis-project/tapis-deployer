@@ -27,6 +27,7 @@ actors_log_level:
 actors_spawner_docker_network: 
 actors_web_encryption_key: 
 actors_web_tenant_name: 
+actors_kube_domain:
 actors_web_apim_public_key: 
 actors_service_tenants: 
   - dev

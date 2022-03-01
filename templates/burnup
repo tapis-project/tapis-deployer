@@ -219,6 +219,8 @@ init(){
 
   {%- if "vault" in components_to_deploy%}
   vault
+  {% else %}
+  # using external vault, so do not start one here
   {% endif %}
 
   {%- if "skadmin" in components_to_deploy%}

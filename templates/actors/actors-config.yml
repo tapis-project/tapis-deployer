@@ -8,6 +8,7 @@ data:
       "server": "dev",
       "primary_site_admin_tenant_base_url": "{{actors_service_url}}",
       "service_tenant_id": "{{actors_service_tenant_id}}",
+      "service_site_id": "{{actors_service_site_id}}",
       "service_name": "abaco",
       "service_password": "$env{SERVICE_PASSWORD}",
       "tenants": {{actors_service_tenants | tojson}},
