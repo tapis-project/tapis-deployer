@@ -59,17 +59,10 @@ spec:
           mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
           subPath: grafana-datasources.yaml
           #readOnly: false
-        - name: grafana-ldap
-          mountPath: /etc/grafana/ldap.toml
-          subPath: grafana-ldap.toml
-          # readOnly: false
       volumes:
       - name: grafana-data
         persistentVolumeClaim:
           claimName: {{monitoring_service_grafana_pvc}}
       - name: grafana-datasources
-        configMap:
-          name: monitoring-config
-      - name: grafana-ldap
         configMap:
           name: monitoring-config
