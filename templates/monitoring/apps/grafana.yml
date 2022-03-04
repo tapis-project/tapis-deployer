@@ -47,12 +47,6 @@ spec:
           value: "%(protocol)s://%(domain)s/grafana"
         - name: GF_SERVER_SERVE_FROM_SUB_PATH
           value: "true"
-        - name: GF_AUTH_LDAP_ENABLED
-          value: "true"
-        - name: GF_AUTH_LDAP_CONFIG_FILE
-          value: "/etc/grafana/ldap.toml"
-        - name: GF_AUTH_LDAP_ALLOW_SIGN_UP
-          value: "true"
         - name: GF_INSTALL_PLUGINS
           value: "grafana-piechart-panel"
         ports:
