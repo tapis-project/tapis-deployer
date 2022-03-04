@@ -1,21 +1,26 @@
 #!/bin/sh
 #
-# Do a full burndown for the Notifications service
+# Do a full non-destructive burndown for the Notifications service
 #
 
-PrgName=`basename $0`
+echo "notifications:"
 
-# Determine absolute path to location from which we are running.
-export RUN_DIR=`pwd`
-export PRG_RELPATH=`dirname $0`
-cd $PRG_RELPATH/.
-export PRG_PATH=`pwd`
-cd $RUN_DIR
+here=`pwd`
 
-#
+ 
 # UnDeploy api and postgres
-#
-cd $PRG_PATH/api
+ 
+cd $here/api
 ./burndown
-cd $PRG_PATH/postgres
+
+cd $here/dispatcher
 ./burndown
+
+cd $here/rabbitmq
+./burndown
+
+cd $here/postgres
+./burndown
+
+cd $here
+kubectl delete -f notifications-config.yml

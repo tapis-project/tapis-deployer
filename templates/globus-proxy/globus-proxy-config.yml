@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: globus-proxy-config
+data:
+  globus-proxy-config.json: |-
+    {
+      "service_site_id": "{{globus_proxy_site_id}}",
+      "service_tenant_id": "{{globus_proxy_tenant_id}}",
+      "service_name": "{{globus_proxy_name}}",
+      "log_level": "{{globus_proxy_log_level}}",
+      "tenants": {{globus_proxy_tenants|tojson}},
+      "show_traceback": {{globus_proxy_show_traceback|tojson}},
+      "use_sk": true
+    }

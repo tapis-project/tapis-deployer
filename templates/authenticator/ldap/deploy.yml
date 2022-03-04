@@ -33,4 +33,11 @@ spec:
             secretKeyRef:
               name: tapis-authenticator-secrets
               key: dev-ldap-bind-credential
+        volumeMounts:
+        - name: authenticator-ldap-data
+          mountPath: "/data/ldap"
+      volumes:
+      - name: authenticator-ldap-data
+        persistentVolumeClaim:
+          claimName: {{authenticator_ldap_pvc}}
 

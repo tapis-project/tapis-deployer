@@ -6,11 +6,19 @@ import os
 import sys
 import yaml
 
-file_loader = FileSystemLoader('templates')
-env = Environment(loader=file_loader)
-env.trim_blocks = True
-env.lstrip_blocks = True
-env.rstrip_blocks = True
+# file_loader = FileSystemLoader('templates')
+# env = Environment(loader=file_loader)
+# env.trim_blocks = True
+# env.lstrip_blocks = True
+# env.rstrip_blocks = True
+
+
+# location of yaml description files
+INP_DESCS_DIR = '/inputgen/inputdescs'
+
+# location to deploygen templates
+DEPLOYGEN_TEMPLATES_DIR = '/deploygen/templates'
+
 
 # whether to print verbose output
 vb = False
@@ -30,6 +38,144 @@ class bcolors:
 
 PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta", "monitoring", 
 "notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens"]
+
+
+# --------------
+# Diagnostics
+# --------------
+
+def check_inputgen_templates():
+    all_input_descs = {}
+    error_templates = 0
+    correct_templates = 0
+    for f_name in os.listdir(INP_DESCS_DIR):
+        with open(os.path.join(INP_DESCS_DIR, f_name), 'r') as f:
+            d = f.read()
+            if not d:
+                print(f"Error: decription file {f_name} is empyt.")
+                error_templates += 1
+            else:
+                try:
+                    all_input_descs.update(yaml.safe_load(d))
+                    correct_templates += 1
+                except Exception as e:
+                    error_templates
+                    print(f"Error: description file {f_name} could not be loaded as yaml. Additional details: {e}")
+    if error_templates == 0:
+        if vb: print("All yaml description files loaded to Python objects successfully. Now checking required fields...\n")
+    # check for required properties
+    errors = 0
+    warnings = 0
+    for k, v in all_input_descs.items():
+        # if a value is provided, nothing else is required
+        if 'value' in v.keys():
+            continue
+        if 'description' not in v.keys():
+            errors += 1
+            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and is missing description field.")
+        elif not v.get('description'):
+            errors += 1
+            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and has an empty description field.{bcolors.ENDC}")
+        elif not type(v['description']) == str:
+            warnings += 1
+            print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has a description field that is not a string.{bcolors.ENDC}")
+        else:
+            desc = v['description'].lower()
+            if 'todo' in desc:
+                print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has a todo in the description. Description: {desc}.{bcolors.ENDC}")
+        if 'source_vars' not in v.keys():
+            errors += 1
+            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and is missing description field.{bcolors.ENDC}")
+        if 'example' not in v.keys():
+            errors += 1
+            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and is missing example field.{bcolors.ENDC}")
+        elif not v.get('example'):
+            errors += 1
+            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and has an empty example field.{bcolors.ENDC}")
+        else:
+            example = v['example']
+            # some examples are of type bool or a complex type such as list..
+            if type(example) == str:
+                example = example.lower()
+            if 'todo' in desc:
+                warnings += 1
+                print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has a todo in the example. Description: {example}{bcolors.ENDC}")
+    print("\nInputgen Template Totals:")
+    print("=========================")
+    print(f"Total templates: {error_templates + correct_templates}")
+    print(f"Templates that could not be loaded: {error_templates}")
+    print(f"Total variables across all loadbale inputgen templates: {len(all_input_descs.keys())}")
+    print(f"Errors within loadable templates (see messages above): {errors}")
+    print(f"Warnings within loadable templates (see messages above): {warnings}")
+    return all_input_descs
+        
+
+def get_vars_for_template(t):
+    """
+    Parse a jinja2 template for all variables references, and return as a python list of variable names as strings.
+    """
+    if vb: print(f"parsing template: {t}")
+    result = []
+    error = None
+    from jinja2 import Environment, PackageLoader, meta
+    env = Environment(loader=FileSystemLoader('/'))
+    template_source = env.loader.get_source(env, t)
+    try:
+        parsed_content = env.parse(template_source)
+        result = meta.find_undeclared_variables(parsed_content)
+    except Exception as e:
+        error = f"{t}; error details: {e}"
+    return result, error
+
+
+def check_deploygen_templates(all_input_descs):
+    # list of all absolute paths to directories with templates in them
+    template_dirs = []
+    # list of all template files
+    templates = []
+    # templates that got errors when trying to parse them to determine the variables associated with them.
+    error_templates = {}
+    for dirpath, dirnames, filenames in os.walk(DEPLOYGEN_TEMPLATES_DIR):
+        for d in dirnames:
+            template_dirs.append(os.path.join(dirpath,d))
+    for d in template_dirs:    
+        tp_files = [os.path.join(d, f) for f in os.listdir(d) if not os.path.isdir(os.path.join(d, f))]
+        templates.extend(tp_files)
+    # set of all variables in all template files.
+    template_vars = set()
+    for t in templates:
+        # get all variables from the template t
+        vars, error = get_vars_for_template(t)
+        if error:
+            error_templates[t] = error
+        else:
+            for v in vars:
+                template_vars.add(v)
+    #
+    vars_missing_from_inputgens = []
+    # check for variables defined in templates but not in the inputgen
+    for v in template_vars:
+        if v not in all_input_descs.keys():
+            vars_missing_from_inputgens.append(v)
+
+    print("\nDeployergen Template Totals:")
+    print("============================")
+    print(f"Total templates: {len(templates)} templates.")
+    print(f"Templates that could not be loaded: {len(error_templates.keys())}")
+    print(f"Total variables across all loadable templates: {len(template_vars)}")
+    
+    print("\nTemplates that could not be loaded (details):")
+    for _, err in error_templates.items():
+        print(err)
+    print(f"\nTotal variables in deploygen templates but NOT in inputgen: {len(vars_missing_from_inputgens)}")
+    print("\nList of all missing vars:")
+    for v in vars_missing_from_inputgens:
+        print(v)
+
+
+def run_diagnostics():
+    all_input_descs = check_inputgen_templates()
+    check_deploygen_templates(all_input_descs)
 
 
 # ---------------
@@ -230,16 +376,24 @@ def parse_agrs():
                         help="Directory to write program output; if not specified, this program will default to writing output to the current working directory.")
     parser.add_argument('-s', '--start', type=str, dest='start_file', metavar='start_file', nargs='?',
                         help="Location to a start file to seed this program with inputs. If provided, this program will use any values provided in the start file instead of prompting you for an input.")
-    parser.add_argument('-l', '--lprompt', action="store_true", help="Prompt for all missing configs.")
+    parser.add_argument('-m', '--min', action="store_true", help="Only prompt for a minimal number of prompts. This option generally will not result in a working input file.")
+    parser.add_argument('-d', '--diagnostics', action="store_true", help="Run diagnostics on inputgen itself. NOTE: Input generation is not performed in this mode.")
     parser.add_argument('-v', '--verbose', action="store_true", help="Print verbose output.")
     args = parser.parse_args()
     global vb
+    diagnostics = False
+    if args.diagnostics:
+        diagnostics = True
+        print("Running inputgen diagnostics; input generation will not be performed...")
     if vb: print(f"DEBUG: {args}")
     outDir = args.outDir
     if outDir:
         print(f"output will be written to: {outDir}")
     else:
         print("no output directoty provided; output will be written to the cwd.")
+    # options related to input generation are not relevant for diagnostics mode...
+    if diagnostics:
+        return outDir, {}, False, diagnostics
     start_file = args.start_file
     start_dict = {}
     if start_file:
@@ -248,16 +402,15 @@ def parse_agrs():
             start_dict = yaml.safe_load(f.read()) 
     else:
         print("no start file; starting from the beginning.")   
-    long_prompt = False
-    if args.lprompt:
-        long_prompt = True
+    long_prompt = True
+    if args.min:
+        long_prompt = False
     if args.verbose:
         vb = True
-    return outDir, start_dict, long_prompt
+    return outDir, start_dict, long_prompt, diagnostics
 
 
 def load_descs(components):
-    INP_DESCS_DIR = '/inputgen/inputdescs'
     all_input_descs = {}
     for f_name in os.listdir(INP_DESCS_DIR):
         # the file names are of the form { component }_desc.yml, so we can skip files that do not correspond to compoenents we are
@@ -327,7 +480,11 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
         ct = 0
         while True:
             ct = ct + 1
-            main_prompt = f"({key}) " + value["description"]
+            description = value.get("description")
+            if not description:
+                print(f"ERROR: field {key} missing description field. Deployer should be updated!")
+            main_prompt = f"({key}) " + description
+            
             example = value.get("example", "No example provided.")
             if ct == 1 and key in prev_start_dict:
                 user_input = prev_start_dict[key]
@@ -478,7 +635,12 @@ def write_output(preset, outDir, user_dict):
 
 
 def main():
-    outDir, prev_start_dict, long_prompt = parse_agrs()
+    outDir, prev_start_dict, long_prompt, diagnostics = parse_agrs()
+    # diganostics mode is completely different and does not do input generation
+    if diagnostics:
+        run_diagnostics()
+        sys.exit()
+
     # we start  the current start dict with the previous one..
     current_start_dict = prev_start_dict
     

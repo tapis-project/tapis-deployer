@@ -37,7 +37,8 @@ data:
       </parse>
     </filter>
 
-    <match tapis.**>
+
+    <match **>
       @type elasticsearch
       host monitoring-elasticsearch
       port 9200
@@ -46,13 +47,13 @@ data:
       <buffer>
         @type file
         path /fluentd/log/elastic-buffer
-        flush_thread_count 8
-        flush_interval 1s
-        chunk_limit_size 32M
-        queue_limit_length 4
-        flush_mode interval
-        retry_max_interval 30
-        retry_forever true
+        #flush_thread_count 8
+        #flush_interval 1s
+        #chunk_limit_size 32M
+        #queue_limit_length 4
+        #flush_mode interval
+        #retry_max_interval 30
+        #retry_forever true
       </buffer>
     </match>
 
@@ -61,3 +62,4 @@ data:
         @type stdout
       </match>
     </label>
+

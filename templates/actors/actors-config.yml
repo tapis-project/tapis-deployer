@@ -8,6 +8,7 @@ data:
       "server": "dev",
       "primary_site_admin_tenant_base_url": "{{actors_service_url}}",
       "service_tenant_id": "{{actors_service_tenant_id}}",
+      "service_site_id": "{{actors_service_site_id}}",
       "service_name": "abaco",
       "service_password": "$env{SERVICE_PASSWORD}",
       "tenants": {{actors_service_tenants | tojson}},
@@ -61,7 +62,7 @@ data:
       "web_show_traceback": false,
       "web_log_ex": 43200,
       "web_max_log_length": 1000000,
-      "web_case": "camel",
+      "web_case": "snake",
       "web_max_content_length": 500000000,
       "web_all_queues": [
         "default",

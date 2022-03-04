@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: globus-proxy
+spec:
+  selector:
+    matchLabels:
+      app: globus-proxy
+  template:
+    metadata:
+      labels:
+        app: globus-proxy
+    spec:
+      containers:
+      - name: globus-proxy
+        image: {{globus_proxy_image}}
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 5000
+        volumeMounts:
+        - name: globus-proxy-config
+          mountPath: /home/tapis/config.json
+          subPath: globus-proxy-config.json
+      volumes:
+      - name: globus-proxy-config
+        configMap:
+          name: globus-proxy-config
+
+

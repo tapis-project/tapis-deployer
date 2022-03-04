@@ -25,11 +25,8 @@ data:
       "influxdb_username": "admin",
       "streams_user": "streams",
       "streams_account_type": "service",
-      "kapacitor_url": "http://kapacitor:9092",
-      "kapacitor_username": "admin",
-      "kapacitor_port": "9092",
       "ignore_auth": true,
-      "influxdb_token": "{{streams_influxdb_token}}",
+      "influxdb_token": "myawesometapistoken",
       "influxdb_bucket": "streams",
       "influxdb_org": "tapis"
     }

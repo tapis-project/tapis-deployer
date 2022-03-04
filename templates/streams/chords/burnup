@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Set up configmap for streams and kapacitor
-kubectl apply -f ../streams-config.yml
-kubectl apply -f ../kapacitor-config.yml
+echo "streams-chords:"
 
 kubectl create configmap chords-start-script --from-file=tapis_chords_start.sh
 kubectl create configmap chords-influxdb-yml --from-file=influxdb.yml

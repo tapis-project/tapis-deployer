@@ -11,8 +11,8 @@ spec:
       labels:
         app: sk-api
     spec:
-      initContainers:
       {%- if security_renew_sk_script == true %}
+      initContainers:
       - name: renew-sk-secret
         command: ["/tmp/renew-sk-secret-script"]
         #command: ["sleep","3600"]

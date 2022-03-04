@@ -40,9 +40,3 @@ notifications_postgres_pvc:
     - notifications_postgres_pvc
   example: notifications-pgdata
 
-notifications_node_selector:
-  description: Should the notifications container be scheduled using a special node selector (yes/no)?
-  source_vars:
-    - notifications_node_selector
-  example: exempt
-

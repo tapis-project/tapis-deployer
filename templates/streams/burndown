@@ -6,10 +6,7 @@ echo "streams:"
 cd $here/mysql
 ./burndown
 
-cd $here/influx
-./burndown
-
-cd $here/kapacitor
+cd $here/influx2
 ./burndown
 
 cd $here/chords
@@ -19,3 +16,5 @@ cd $here/api
 ./burndown
 
 
+cd $here
+kubectl delete -f streams-config.yml

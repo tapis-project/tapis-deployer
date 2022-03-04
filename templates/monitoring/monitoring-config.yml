@@ -33,7 +33,6 @@ data:
     scrape_configs:
       # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
       - job_name: 'prometheus'
-
         static_configs:
         - targets: ['localhost:9090']
 
@@ -45,13 +44,14 @@ data:
         metrics_path: '/v1/sys/metrics'
         params:
           format: ['prometheus']
-        scheme: {%-if "https" in monitoring_vault_url -%} 
-         https 
-        {% else -%} 
-         http 
-        {% endif %}
+        {%- if "https" in monitoring_vault_url -%} 
+        scheme: https 
+        {% else %} 
+        scheme: http 
+        {%- endif %}
         static_configs:
         - targets: ['{{monitoring_vault_url | replace('http://', "") | replace('https://', "")}}']
+
   # monitoring: grafana prometheus resources
   grafana-datasources.yaml: |-
     {

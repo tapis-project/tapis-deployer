@@ -76,12 +76,6 @@ streams_influx2_pvc:
     - streams_influx2_pvc
   example: influx2-vol01
 
-streams_kapacitor_pvc:
-  description: The name of the PVC to use for the Streams Kapacitor instance. 
-  source_vars:
-    - streams_kapacitor_pvc
-  example: streams-kapacitor-vol01
-
 streams_mysql_pvc:
   description: The name of the PVC to use for the Streams MySQL instance. 
   source_vars:
@@ -104,3 +98,4 @@ streams_tenant_info:
   description: A dictionary mapping streams tenants (keys) to mappings with two fields - stream_db (the db to use for that tenant) and tapis_base_url (the base URL for that tenant)
   source_vars:
     - streams_tenant_info
+  example: "dev: stream_db: StreamsDevTestDB tapis_base_url: https://dev.test.tapis.io"

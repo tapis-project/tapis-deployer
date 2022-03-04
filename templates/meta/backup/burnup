@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Set up configmap for meta
-kubectl apply -f ../meta-config.yml
 
 kubectl apply -f mongo-backup-claim0-pvc.yaml
 kubectl apply -f mongo-backup-deployment.yaml

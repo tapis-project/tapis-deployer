@@ -37,11 +37,6 @@ spec:
             secretKeyRef:
               name: tapis-streams-secrets
               key: mysql-password
-        - name: kapacitor_password
-          valueFrom:
-            secretKeyRef:
-              name: tapis-streams-secrets
-              key: mysql-password
         - name: alert_secret
           value: testalert
         - name: mysql_password

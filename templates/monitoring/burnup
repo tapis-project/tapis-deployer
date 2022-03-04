@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "monitoring:"
+
 # kube config so we can access kube api
 kubectl create configmap kubeconfig --from-file=$HOME/.kube/config
 
