@@ -2,141 +2,231 @@
 
 # global tapis burndown script
 
-# ENTER ./burndown OR ./burndown --noprompt
-
-# ... stop all components in the REVERSE order as burnup
-#     databases are shutdown, volumes are preserved
-#     services remain up
-#     secrets are left as-is
-#     configmaps are left as-is     
-
-# --------------- No Prompt Option ----------------
-noprompt=0
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        -n|--noprompt) noprompt=1; shift ;;
-        *) echo "Unknown parameter passed: $1"; exit 1 ;;
-    esac
-    shift
-done
-
-# --------------- User Confirmation ---------------
-while [ $noprompt -eq 0 ]; do
-    read -p "Start non-destructive Tapis burndown (y/n)? " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
-
-# ----------- Burndown Services & DBs -------------
 here=`pwd`
 
-# echo "elastic:"
-# cd $here/elastic
-# ./burndown
 
-echo "monitoring:"
-cd $here/monitoring
-./burndown
-
-echo "actors:"
-cd $here/actors/api
-./burndown
-
-echo "streams:"
-cd $here/streams/api
-./burndown
-
-cd $here/streams/chords
-./burndown
-
-cd $here/streams/kapacitor
-./burndown
-
-cd $here/streams/influx
-./burndown
-
-cd $here/streams/mysql
-./burndown
-
-echo "meta:"
-cd $here/meta/api
-./burndown
-
-cd $here/meta/mongo
-./burndown
-
-echo "jobs:"
-cd $here/jobs/readers
-./burndown
-
-cd $here/jobs/workers
-./burndown
-
-cd $here/jobs/api
-./burndown
-
-cd $here/jobs/rabbitmq
-./burndown
-
-cd $here/jobs/postgres
-./burndown
-
-echo "apps:"
-cd $here/apps/api
-./burndown
-
-cd $here/apps/postgres
-./burndown
-
-echo "files:"
-cd $here/files/api
-./burndown
-
-cd $here/files/postgres
-./burndown
-
-echo "systems:"
-cd $here/systems/api
-./burndown
-
-cd $here/systems/postgres
-./burndown
-
-echo "authenticator:"
-cd $here/authenticator/api
-./burndown
-
-cd $here/authenticator/postgres
-./burndown
-
-cd $here/authenticator/ldap
-./burndown
-
-echo "tokens:"
-cd $here/tokens-api
-./burndown
-
-# vault secret renewed in here
-cd $here/security-kernel/api
-./burndown
-
-echo "security-kernel:"
-cd $here/security-kernel/postgres
-./burndown
-
-echo "tenants:"
-cd $here/tenants-api/api
-./burndown
-
-cd $here/tenants-api/postgres
-./burndown
-
-echo "vault:"
-cd $here/vault 
-./burndown
+usage(){
+  echo "ERROR: This script requires 1 option to run."
+  echo "Check the case statement at the end of this script to see run options."
+  echo "Exiting."
+}
 
 
-# kubectl delete `kubectl get job -o name`
+### services
+
+actors(){
+  cd $here/actors
+  ./burndown
+}
+
+apps(){
+  cd $here/apps
+  ./burndown
+}
+
+authenticator(){
+  cd $here/authenticator
+  ./burndown
+}
+
+container-registry(){
+  cd $here/container-registry
+  ./burndown
+}
+
+files(){
+  cd $here/files
+  ./burndown
+}
+
+jobs(){
+  cd $here/jobs
+  ./burndown
+}
+
+meta(){
+  cd $here/meta
+  ./burndown
+}
+
+monitoring(){
+  cd $here/monitoring
+  ./burndown
+}
+
+
+notifications(){
+  cd $here/notifications
+  ./burndown
+}
+
+pgrest(){
+  echo "pgrest:"
+  cd $here/pgrest
+  ./burndown
+}
+
+pgrest-a2cps-dev(){
+  echo "pgrest-a2cps-dev:"
+  cd $here/pgrest-a2cps-dev
+  ./burndown
+}
+
+pgrest-a2cps-prod(){
+  echo "pgrest-a2cps-prod:"
+  cd $here/pgrest-a2cps-prod
+  ./burndown
+}
+
+proxy(){
+  cd $here/proxy
+  ./burndown
+}
+
+security(){
+  cd $here/security
+  ./burndown
+}
+
+skadmin(){
+  cd $here/skadmin
+  ./burndown
+}
+
+streams(){
+  cd $here/streams
+  ./burndown
+}
+
+systems(){
+  cd $here/systems
+  ./burndown
+}
+
+tenants(){
+  cd $here/tenants
+  ./burndown
+}
+
+tokens(){
+  cd $here/tokens
+  ./burndown
+}
+
+vault(){
+  cd $here/vault
+  ./burndown
+}
+
+
+secondary_services() {
+
+  {%- if  "systems" in components_to_deploy %}
+  systems
+  {% endif %}
+
+  {%- if  "files" in components_to_deploy %}
+  files
+  {% endif %}
+
+  {%- if  "apps" in components_to_deploy %}
+  apps
+  {% endif %}
+
+  {%- if  "jobs" in components_to_deploy %}
+  jobs
+  {% endif %}
+
+  {%- if  "meta" in components_to_deploy %}
+  meta
+  {% endif %}
+
+  {%- if  "streams" in components_to_deploy %}
+  streams
+  {% endif %}
+
+  {%- if  "actors" in components_to_deploy %}
+  actors
+  {% endif %}
+
+  {%- if  "container-registry" in components_to_deploy %}
+  container-registry
+  {% endif %}
+
+  {%- if  "monitoring" in components_to_deploy %}
+  monitoring
+  {% endif %}
+
+  {%- if  "notifications" in components_to_deploy %}
+  notifications 
+  {% endif %}
+
+  {%- if  "pgrest" in components_to_deploy %}
+  pgrest
+  {% endif %}
+
+  {%- if  "pgrest-a2cps-dev" in components_to_deploy %}
+  pgrest-a2cps-dev
+  {% endif %}
+
+  {%- if  "pgrest-a2cps-prod" in components_to_deploy %}
+  pgrest-a2cps-prod
+  {% endif %}
+
+}
+
+
+authstack(){
+
+  {%- if  "authenticator" in components_to_deploy %}
+  authenticator
+  {% endif %}
+
+  {%- if  "tokens" in components_to_deploy %}
+  tokens
+  {% endif %}
+
+  {%- if  "security" in components_to_deploy %}
+  security
+  {% endif %}
+
+  {%- if  "tenants" in components_to_deploy %}
+  tenants
+  {% endif %}
+
+  {%- if "skadmin" in components_to_deploy%}
+  skadmin
+  {% endif %}
+
+  {%- if "vault" in components_to_deploy%}
+  vault
+  {% else %}
+  # using external vault, so do not start one here
+  {% endif %}
+
+}
+
+
+case $1 in
+  vault)
+    "$@"
+    exit 0
+    ;;
+  noprompt)
+    "$@"
+    exit 0
+    ;;
+  authstack)
+    "$@"
+    exit 0
+    ;;
+  secondary_services)
+    "$@"
+    exit 0
+    ;;
+  *)
+    usage
+    exit 0
+    ;;
+esac
+

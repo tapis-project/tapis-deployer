@@ -1,7 +1,4 @@
 #!/bin/bash
 
-# Set up configmap for system
-kubectl apply -f ../systems-config.yml
-
 kubectl apply -f service.yml 
-kubectl apply -f api.yml 
+kubectl apply -f deploy.yml 

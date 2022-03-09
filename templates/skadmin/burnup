@@ -1,6 +1,11 @@
 #!/bin/bash
 
-here=`dirname "$0"`
+here=`pwd`
+
+{% if skadmin_vault_url == "http://vault:8200" %}
+
+echo "skadmin:"
+echo "using internal vault:" 
 
 if [ ! -f ~/vault-token ]
 then
@@ -8,6 +13,10 @@ then
   exit 1
 fi
 
+cd $here/renew-sk-secret
+./burnup
+
+cd $here 
 kubectl apply -f skadmin-config.yml
 kubectl create secret generic vault-token --from-file ~/vault-token
 
@@ -29,4 +38,14 @@ kubectl wait --for=condition=complete job/sk-admin-init
 #
 #echo "Now shell into pod util and run this:"
 #echo 'curl -X LIST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/policies/acl | jq'
+
+{% else %}
+
+echo "skadmin:"
+echo "using external vault:" 
+cd $here/external-vault
+./burnup
+
+{% endif %}
+
 

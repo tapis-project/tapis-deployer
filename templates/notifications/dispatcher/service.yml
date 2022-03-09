@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:  
+  name: notifications-dispatcher
+spec:
+  type: NodePort
+  selector:    
+    app: notifications-dispatcher
+  ports:  
+  - name: tomcat
+    port: 8080
+    targetPort: 8080
+

@@ -73,9 +73,3 @@ monitoring_service_tapis_prometheus_exporter_image:
 monitoring_service_stern_image:
   description: The image for the version of Stern-Fluentd that you wish to deploy.
   example: mrghort/stern-fluentd:2
-
-monitoring_services_list:
-  value:
-    - security
-    - streams
-    - meta

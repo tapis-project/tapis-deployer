@@ -2,13 +2,7 @@
 
 kubectl apply -f ../security-kernel-config.yml
 kubectl apply -f pvc.yml  
-kubectl wait --for=condition=complete job/mkdir-sk-postgres-pvc
-kubectl wait --for=condition=complete job/chown-sk-postgres-pvc
-#kubectl delete job/mkdir-sk-postgres-pvc
-#kubectl delete job/chown-sk-postgres-pvc
-
 kubectl apply -f service.yml 
-
 kubectl apply -f deploy.yml
 kubectl apply -f pgadmin.yml 
 

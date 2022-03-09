@@ -82,7 +82,7 @@ def check_inputgen_templates():
         else:
             desc = v['description'].lower()
             if 'todo' in desc:
-                print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has a todo in the description. Descirption: {desc}.{bcolors.ENDC}")
+                print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has a todo in the description. Description: {desc}.{bcolors.ENDC}")
         if 'source_vars' not in v.keys():
             errors += 1
             print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and is missing description field.{bcolors.ENDC}")
@@ -99,7 +99,7 @@ def check_inputgen_templates():
                 example = example.lower()
             if 'todo' in desc:
                 warnings += 1
-                print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has a todo in the example. Descirption: {example}{bcolors.ENDC}")
+                print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has a todo in the example. Description: {example}{bcolors.ENDC}")
     print("\nInputgen Template Totals:")
     print("=========================")
     print(f"Total templates: {error_templates + correct_templates}")

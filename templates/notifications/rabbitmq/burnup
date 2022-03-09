@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Set up configmap for notifications
+kubectl apply -f ../notifications-config.yml
+
+kubectl apply -f pvc.yml  
+
+kubectl apply -f service.yml 
+
+kubectl apply -f deploy.yml
+
+kubectl wait --for=condition=available deploy/notifications-rabbitmq
+

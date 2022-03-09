@@ -8,6 +8,14 @@ set -e
 
 here=`pwd`
 
+
+usage(){
+  echo "ERROR: This script requires 1 option to run."
+  echo "Check the case statement at the end of this script to see run options."
+  echo "Exiting."
+}
+
+
 ### vars
 
 VAULTURL="{{vault_service_vault_url}}"
@@ -76,80 +84,46 @@ postnginx_check(){
 ### services
 
 actors(){
-  echo "actors:"
-  cd $here/actors/api
+  cd $here/actors
   ./burnup
 }
 
 apps(){
-  echo "apps:"
-  cd $here/apps/postgres
-  ./burnup
-
-  cd $here/apps/api
+  cd $here/apps
   ./burnup
 }
 
 authenticator(){
-  echo "authenticator:"
-  cd $here/authenticator/ldap
-  ./burnup
-
-  cd $here/authenticator/postgres
-  ./burnup
-
-  cd $here/authenticator/api
+  cd $here/authenticator
   ./burnup
 }
 
 container-registry(){
-  echo "container-registry:"
   cd $here/container-registry
   ./burnup
 }
 
 files(){
-  echo "files:"
-  cd $here/files/api
+  cd $here/files
   ./burnup
 }
 
 jobs(){
-  echo "jobs:"
-  cd $here/jobs/postgres
+  cd $here/jobs
   ./burnup
-
-  cd $here/jobs/rabbitmq
-  ./burnup
-
-  cd $here/jobs/api
-  ./burnup
-
-  cd $here/jobs/workers
-  ./burnup
-
-  cd $here/jobs/readers
-  ./burnup
-
 }
 
 meta(){
-  echo "meta:"
-  cd $here/meta/mongo
-  ./burnup
-
-  cd $here/meta/api
+  cd $here/meta
   ./burnup
 }
 
 monitoring(){
-  echo "monitoring:"
   cd $here/monitoring
   ./burnup
 }
 
 notifications(){
-  echo "notifications:"
   cd $here/notifications
   ./burnup
 }
@@ -173,81 +147,43 @@ pgrest-a2cps-prod(){
 }
 
 proxy(){
-  echo "nginx:"
-  cd $here/proxy/nginx
-  ./burnup
-
-  echo "site-router:"
-  cd $here/proxy/site-router
+  cd $here/proxy
   ./burnup
 }
 
 security(){
-  echo "security-kernel:"
-  cd $here/security/postgres
-  ./burnup
-
-  # vault secret renewed in here
-  cd $here/security/api
+  cd $here/security
   ./burnup
 }
 
 skadmin(){
-  echo "skadmin:"
-  cd $here/skadmin/renew-sk-secret
-  ./burnup
   cd $here/skadmin
   ./burnup
 }
 
 streams(){
-  echo "streams:"
-  cd $here/streams/mysql
-  ./burnup
-
-  cd $here/streams/influx
-  ./burnup
-
-  cd $here/streams/kapacitor
-  ./burnup
-
-  cd $here/streams/chords
-  ./burnup
-
-  cd $here/streams/api
+  cd $here/streams
   ./burnup
 }
 
 systems(){
-  echo "systems:"
-  cd $here/systems/postgres
-  ./burnup
-
-  cd $here/systems/api
+  cd $here/systems
   ./burnup
 }
 
 tenants(){
-  echo "tenants:"
-  cd $here/tenants/postgres
-  ./burnup
-
-  cd $here/tenants/api
+  cd $here/tenants
   ./burnup
 }
 
 tokens(){
-  echo "tokens:"
   cd $here/tokens
   ./burnup
 }
 
 vault(){
-  echo "vault:"
   cd $here/vault
   ./burnup
-  kubectl wait --for=condition=available deploy/vault
-  ./unseal
 }
 
 
@@ -285,15 +221,17 @@ get_public_keys(){
 
 
 init(){
-  {%- if "proxy" in service_list %}
+  {%- if "proxy" in components_to_deploy%}
   proxy
   {% endif %}
 
-  {%- if "vault" in service_list %}
+  {%- if "vault" in components_to_deploy%}
   vault
+  {% else %}
+  # using external vault, so do not start one here
   {% endif %}
 
-  {%- if "skadmin" in service_list %}
+  {%- if "skadmin" in components_to_deploy%}
   skadmin
   {% endif %}
 
@@ -305,74 +243,74 @@ init(){
 
 
 primary_services(){
-  {%- if  "tenants" in service_list %}
+  {%- if  "tenants" in components_to_deploy %}
   tenants
   {% endif %}
 
-  {%- if  "security" in service_list %}
+  {%- if  "security" in components_to_deploy %}
   security
   {% endif %}
 
-  {%- if  "tokens" in service_list %}
+  {%- if  "tokens" in components_to_deploy %}
   tokens
   {% endif %}
 
-  {%- if  "authenticator" in service_list %}
+  {%- if  "authenticator" in components_to_deploy %}
   authenticator
   {% endif %}
 }
 
 secondary_services() {
 
-  {%- if  "systems" in service_list %}
+  {%- if  "systems" in components_to_deploy %}
   systems
   {% endif %}
 
-  {%- if  "files" in service_list %}
+  {%- if  "files" in components_to_deploy %}
   files
   {% endif %}
 
-  {%- if  "apps" in service_list %}
+  {%- if  "apps" in components_to_deploy %}
   apps
   {% endif %}
 
-  {%- if  "jobs" in service_list %}
+  {%- if  "jobs" in components_to_deploy %}
   jobs
   {% endif %}
 
-  {%- if  "meta" in service_list %}
+  {%- if  "meta" in components_to_deploy %}
   meta
   {% endif %}
 
-  {%- if  "streams" in service_list %}
+  {%- if  "streams" in components_to_deploy %}
   streams
   {% endif %}
 
-  {%- if  "actors" in service_list %}
+  {%- if  "actors" in components_to_deploy %}
   actors
   {% endif %}
 
-  {%- if  "container-registry" in service_list %}
+  {%- if  "container-registry" in components_to_deploy %}
   container-registry
   {% endif %}
 
-  {%- if  "monitoring" in service_list %}
+  {%- if  "monitoring" in components_to_deploy %}
   monitoring
   {% endif %}
 
-  {%- if  "notifications" in service_list %}
+  {%- if  "notifications" in components_to_deploy %}
   notifications 
   {% endif %}
 
-  {%- if  "pgrest" in service_list %}
+  {%- if  "pgrest" in components_to_deploy %}
   pgrest
   {% endif %}
 
-  {%- if  "pgrest-a2cps-dev" in service_list %}
+  {%- if  "pgrest-a2cps-dev" in components_to_deploy %}
   pgrest-a2cps-dev
   {% endif %}
 
-  {%- if  "pgrest-a2cps-prod" in service_list %}
+  {%- if  "pgrest-a2cps-prod" in components_to_deploy %}
   pgrest-a2cps-prod
   {% endif %}
 

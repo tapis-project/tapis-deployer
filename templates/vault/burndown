@@ -2,12 +2,6 @@
 
 kubectl delete configmap vaultconf
 
-if [ "$1" == "allofit" ]
-then
-  kubectl delete -f pvc.yml  
-#  kubectl delete -f service.yml 
-fi
-
-kubectl delete -f vault.yml
+kubectl delete -f vault-auto-unseal.yml
 
 

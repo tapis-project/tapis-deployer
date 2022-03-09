@@ -24,7 +24,7 @@ spec:
         - name: TAPIS_URL
           value: {{monitoring_service_url}}
         - name: TAPIS_SERVICES
-          value: '{{monitoring_services_list|replace("'", "\"")}}'
+          value: '["security", "streams","meta"]'
         - name: STREAMS_DB
           value: 'StreamsDevDB'
         - name: META_USER

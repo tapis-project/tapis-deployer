@@ -1,24 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: systems-api
+  name: notifications-dispatcher
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: systems-api
+      app: notifications-dispatcher
   template:
     metadata:
       labels:
-        app: systems-api
+        app: notifications-dispatcher
     spec:
-      {%- if systems_node_selector | default(None) %}
-      nodeSelector:
-        exempt: "{{systems_node_selector}}"
-      {%- endif%}
       containers:
-      - name: systems-api
-        image: tapis/systems:{{systems_image_version}}
+      - name: notifications-dispatcher
+        image: tapis/notifications-dispatcher:{{notifications_image_version}}
         imagePullPolicy: Always
         ports:
           - containerPort: 8080
@@ -26,26 +22,26 @@ spec:
             name: "jvm-debug"
         env:
           - name: tapis.db.jdbc.url
-            value: jdbc:postgresql://systems-postgres:5432/tapissysdb
+            value: jdbc:postgresql://notifications-postgres:5432/tapisntfdb
           - name: tapis.db.user
-            value: tapis_sys
+            value: tapis_ntf
           - name: tapis.site.id
             valueFrom:
               configMapKeyRef:
-                name: systems-config
+                name: notifications-config
                 key: site_id
           - name: tapis.tenant.svc.baseurl
             valueFrom:
               configMapKeyRef:
-                name: systems-config
+                name: notifications-config
                 key: service_site_url
           - name: tapis.db.password
             valueFrom:
               secretKeyRef:
-                name: tapis-systems-secrets
+                name: tapis-notifications-secrets
                 key: postgres-password
           - name: tapis.service.password
             valueFrom:
               secretKeyRef:
-                name: tapis-systems-secrets
+                name: tapis-notifications-secrets
                 key: service-password

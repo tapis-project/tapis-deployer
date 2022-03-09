@@ -1,8 +1,3 @@
 #!/bin/bash
 
-#if [ "$1" == "allofit" ]
-#then
-##  kubectl delete -f service.yml 
-#fi
-
 kubectl delete -f jobwkr-DefaultQueue.yml

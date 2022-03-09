@@ -4,4 +4,4 @@
 kubectl apply -f ../apps-config.yml
 
 kubectl apply -f service.yml 
-kubectl apply -f api.yml 
+kubectl apply -f deploy.yml 

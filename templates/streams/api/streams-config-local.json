@@ -18,7 +18,5 @@
   "streams_account_type": "service",
   "stream_db": "StreamsTACCDB",
   "tapis_tenant": "dev",
-  "kapacitor_url": "kapacitor",
-  "kapacitor_port": "9092",
   "ignore_auth": true
 }

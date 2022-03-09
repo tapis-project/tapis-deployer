@@ -1,3 +1,4 @@
 #!/bin/bash
 
 kubectl delete -f deploy.yml
+kubectl delete -f container-registery-config.yml

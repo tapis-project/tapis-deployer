@@ -3,20 +3,23 @@
 # Do a full burnup for the Notifications service
 #
 
-PrgName=`basename $0`
+echo "notifications:"
 
-# Determine absolute path to location from which we are running.
-export RUN_DIR=`pwd`
-export PRG_RELPATH=`dirname $0`
-cd $PRG_RELPATH/.
-export PRG_PATH=`pwd`
-cd $RUN_DIR
+here=`pwd`
 
-#
-# Deploy postgres and api
-#
+cd $here
 kubectl apply -f notifications-config.yml
-cd $PRG_PATH/postgres
+
+# Deploy postgres and api
+
+cd $here/postgres
 ./burnup
-cd $PRG_PATH/api
+
+cd $here/rabbitmq
+./burnup
+
+cd $here/dispatcher
+./burnup
+
+cd $here/api
 ./burnup

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "jobs:"
+
+here=`pwd`
+
+# Set up configmap for jobs
+cd $here
+kubectl apply -f jobs-config.yml
+
+cd $here/postgres
+./burnup
+
+cd $here/rabbitmq
+./burnup
+
+cd $here/api
+./burnup
+
+cd $here/workers
+./burnup
+
+cd $here/readers
+./burnup
+

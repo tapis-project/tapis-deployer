@@ -1,7 +1,7 @@
 
   influxdb:
     container_name: chords_influxdb2
-    image: influxdb:2.0
+    image: {{streams_influx2_image}}
     volumes:
       - influxdb-data:/var/lib/influxdb
       - influxdb-log:/var/log/influxdb
@@ -12,8 +12,12 @@
       - INFLUXDB_HTTP_AUTH_ENABLED=true
       - INFLUXDB_DATA_QUERY_LOG_ENABLED=false
       - INFLUXDB_REPORTING_DISABLED=true
-      - INFLUXDB_USERNAME=admin
-      - INFLUXDB_PASSWORD=${CHORDS_ADMIN_PW}
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${CHORDS_ADMIN_PW} # (actually uses the kube mysql password secret)
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_BUCKET=streams
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=myawesometapistoken # (actually uses the kube mysql password secret)
+      - DOCKER_INFLUXDB_INIT_ORG=tapis
     logging:
       driver: "json-file"
       options:

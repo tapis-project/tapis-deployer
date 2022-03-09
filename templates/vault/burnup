@@ -38,3 +38,11 @@ kubectl create secret generic vault-token --from-file ~/vault-token
 kubectl create secret generic vault-keys --from-literal=UNSEAL1=$u1 --from-literal=UNSEAL2=$u2 --from-literal=UNSEAL3=$u3
 kubectl apply -f vault-auto-unseal.yml
 
+# Ensure vault is unsealed
+kubectl wait --for=condition=available deploy/vault
+pod=`kubectl get pod --selector=app=vault -o name`
+sealed=`kubectl exec -it $pod -- vault status | grep Sealed | awk '{print $2}' | tr -d '^M'`
+if [ "$sealed" == "true" ]
+then
+  ./unseal
+fi

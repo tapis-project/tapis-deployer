@@ -3,20 +3,17 @@
 # Do a full burndown for the Applications service
 #
 
-PrgName=`basename $0`
 
-# Determine absolute path to location from which we are running.
-export RUN_DIR=`pwd`
-export PRG_RELPATH=`dirname $0`
-cd $PRG_RELPATH/.
-export PRG_PATH=`pwd`
-cd $RUN_DIR
+here=`pwd`
 
-#
+
 # UnDeploy api and postgres
-#
-cd $PRG_PATH/api
-./burndown
-cd $PRG_PATH/postgres
+
+cd $here/api
 ./burndown
 
+cd $here/postgres
+./burndown
+
+cd $here
+kubectl delete -f apps-config.yml

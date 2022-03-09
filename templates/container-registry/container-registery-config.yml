@@ -7,3 +7,5 @@ data:
   "service_tenant_id": "{{container_registry_service_tenant_id}}"
   "site_id": "{{container_registry_service_site_id}}"
   "service_name": "{{container_registry_service_name}}"
+
+

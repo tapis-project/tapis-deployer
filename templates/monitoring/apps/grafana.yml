@@ -47,12 +47,6 @@ spec:
           value: "%(protocol)s://%(domain)s/grafana"
         - name: GF_SERVER_SERVE_FROM_SUB_PATH
           value: "true"
-        - name: GF_AUTH_LDAP_ENABLED
-          value: "true"
-        - name: GF_AUTH_LDAP_CONFIG_FILE
-          value: "/etc/grafana/ldap.toml"
-        - name: GF_AUTH_LDAP_ALLOW_SIGN_UP
-          value: "true"
         - name: GF_INSTALL_PLUGINS
           value: "grafana-piechart-panel"
         ports:
@@ -65,17 +59,10 @@ spec:
           mountPath: /etc/grafana/provisioning/datasources/prometheus.yaml
           subPath: grafana-datasources.yaml
           #readOnly: false
-        - name: grafana-ldap
-          mountPath: /etc/grafana/ldap.toml
-          subPath: grafana-ldap.toml
-          # readOnly: false
       volumes:
       - name: grafana-data
         persistentVolumeClaim:
           claimName: {{monitoring_service_grafana_pvc}}
       - name: grafana-datasources
-        configMap:
-          name: monitoring-config
-      - name: grafana-ldap
         configMap:
           name: monitoring-config

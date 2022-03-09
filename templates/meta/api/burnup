@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Set up configmap for meta
-kubectl apply -f ../meta-config.yml
 
 rhpass=`kubectl get secret tapis-meta-secrets -o jsonpath='{.data.mongo-password}' | base64 -d`
 # need to convert / and other wily characters to url encoded
