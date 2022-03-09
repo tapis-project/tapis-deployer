@@ -30,26 +30,26 @@ spec:
           - containerPort: 8000
             name: "jvm-debug"
         env:
-          - name: tapis.db.jdbc.url
+          - name: TAPIS_DB_JDBC_URL
             value: jdbc:postgresql://systems-postgres:5432/tapissysdb
-          - name: tapis.db.user
+          - name: TAPIS_DB_USER
             value: tapis_sys
-          - name: tapis.site.id
+          - name: TAPIS_SITE_ID
             valueFrom:
               configMapKeyRef:
                 name: systems-config
                 key: site_id
-          - name: tapis.tenant.svc.baseurl
+          - name: TAPIS_TENANT_SVC_BASEURL
             valueFrom:
               configMapKeyRef:
                 name: systems-config
                 key: service_site_url
-          - name: tapis.db.password
+          - name: TAPIS_DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: tapis-systems-secrets
                 key: postgres-password
-          - name: tapis.service.password
+          - name: TAPIS_SERVICE_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: tapis-systems-secrets
