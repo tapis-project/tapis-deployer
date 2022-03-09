@@ -104,7 +104,7 @@ def check_inputgen_templates():
     print("=========================")
     print(f"Total templates: {error_templates + correct_templates}")
     print(f"Templates that could not be loaded: {error_templates}")
-    print(f"Total variables across all loadbale inputgen templates: {len(all_input_descs.keys())}")
+    print(f"Total variables across all loadable inputgen templates: {len(all_input_descs.keys())}")
     print(f"Errors within loadable templates (see messages above): {errors}")
     print(f"Warnings within loadable templates (see messages above): {warnings}")
     return all_input_descs
