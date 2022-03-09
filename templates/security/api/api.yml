@@ -57,12 +57,12 @@ spec:
           value: "false"
         - name: TAPIS_SK_VAULT_ADDRESS
           value: "{{security_vault_url}}"
-        - name: TAPIS_SK_VAULT_SECRETID
+        - name: TAPIS_SK_VAULT_SECRET_ID
           valueFrom:
             secretKeyRef:
               name: tapis-sk-vault-secrets
               key: vault-secretid
-        - name: TAPIS_SK_VAULT_ROLEID
+        - name: TAPIS_SK_VAULT_ROLE_ID
           valueFrom:
             secretKeyRef:
               name: tapis-sk-vault-secrets
