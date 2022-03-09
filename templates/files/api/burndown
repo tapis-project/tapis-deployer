@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#kubectl delete -f ../postgres.yml 
+#kubectl delete -f ../rabbitmq.yml 
+kubectl delete -f ../api.yml 
+kubectl delete -f ../configmap.yml
+kubectl delete -f ../workers.yml
+
+if [ "$1" = "allofit" ]
+then
+kubectl delete -f ../postgres.yml
+kubectl delete -f ../rabbitmq.yml 
+fi
+# to delete pvc use: kubectl delete -f ../pvc.yml  
