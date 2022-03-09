@@ -2,7 +2,7 @@
 
 here=`pwd`
 
-{% if '{{skadmin_vault_url}}' == 'http://vault:8200' %}
+{% if skadmin_vault_url == "http://vault:8200" %}
 
 echo "skadmin:"
 echo "using internal vault:"

@@ -6,7 +6,7 @@ kubectl apply -f migrate.yml
 kubectl wait --for=condition=complete job/sk-migrate
 kubectl apply -f service.yml 
 
-{% if '{{skadmin_vault_url}}' == 'http://vault:8200' %}
+{% if skadmin_vault_url == "http://vault:8200" %}
 
 # internal vault
 

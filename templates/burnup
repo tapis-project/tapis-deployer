@@ -8,6 +8,14 @@ set -e
 
 here=`pwd`
 
+
+usage(){
+  echo "ERROR: This script requires 1 option to run."
+  echo "Check the case statement at the end of this script to see run options."
+  echo "Exiting."
+}
+
+
 ### vars
 
 VAULTURL="{{vault_service_vault_url}}"
@@ -145,7 +153,7 @@ proxy(){
 
 security(){
   cd $here/security
-  burnup
+  ./burnup
 }
 
 skadmin(){
