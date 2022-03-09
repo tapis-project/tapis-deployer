@@ -18,49 +18,49 @@ spec:
         image: tapis/jobsworker:{{jobs_image_version}}
         imagePullPolicy: Always
         env:
-        - name: tapis.site.id
+        - name: TAPIS_SITE_ID
           valueFrom:
             configMapKeyRef:
               name: jobs-config
               key: site_id
-        - name: tapis.tenant.svc.baseurl
+        - name: TAPIS_TENANT_SVC_BASEURL
           valueFrom:
             configMapKeyRef:
               name: jobs-config
               key: service_site_url
-        - name: tapis.service.password
+        - name: TAPIS_SERVICE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-jobs-secrets
               key: service-password
-        - name: tapis.db.connection.pool.size
+        - name: TAPIS_DB_CONNECTION_POOS_SIZE
           value: "2"
-        - name: tapis.db.user
+        - name: TAPIS_DB_USER
           value: "tapis"
-        - name: tapis.db.password
+        - name: TAPIS_DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-jobs-secrets
               key: tapis-postgres-password
-        - name: tapis.db.jdbc.url
+        - name: TAPIS_DB_JDBC_URL
           value: "jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
-        - name: tapis.queue.host
+        - name: TAPIS_QUEUE_HOST
           value: jobs-rabbitmq
-        - name: tapis.queue.admin.user
+        - name: TAPIS_QUEUE_ADMIN_USER
           value: "tapis"
-        - name: tapis.queue.admin.password
+        - name: TAPIS_QUEUE_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-jobs-secrets
               key: rabbitmq-tapis-password
-        - name: tapis.queue.user
+        - name: TAPIS_QUEUE_USER
           value: "jobs"
-        - name: tapis.queue.password
+        - name: TAPIS_QUEUE_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-jobs-secrets
               key: rabbitmq-jobs-password
-        - name: tapis.request.logging.filter.prefixes
+        - name: TAPIS_REQUEST_LOGGING_FILTER_PREFIXES
           value: "/v3/jobs"
         - name: JAVA_OPTS 
           value: "-Xms1g -Xmx1g"
