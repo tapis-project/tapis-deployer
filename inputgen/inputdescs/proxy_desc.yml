@@ -57,6 +57,7 @@ proxy_service_tenants:
   source_vars:
     - proxy_service_tenants
     - site_tenants
+  example: ["dev", "tacc"]
 
 proxy_nginx_service_list:
   description: List of services this proxy should be configured to route (TODO -- check, all?)

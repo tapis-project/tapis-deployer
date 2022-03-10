@@ -45,4 +45,5 @@ pgrest_service_tenants:
   source_vars:
     - pgrest_service_tenants
     - site_tenants
+  example: ["dev", "tacc"]
 

@@ -62,6 +62,7 @@ authenticator_service_tenants:
   source_vars:
     - authenticator_service_tenants
     - site_tenants
+  example: ["dev", "tacc"]
 
 authenticator_use_sk:
   description: Whether this service should use the SK for checking authorization (NOTE - should always set to True in production).
