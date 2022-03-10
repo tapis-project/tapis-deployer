@@ -228,7 +228,8 @@ def associate_site_services(site_id, user_dict):
         print(f"Unable to parse output from {url}; \nDebug data: {e}. \nResponse content: {r.content}\nExiting...")
         return False
     print(f"Found the following tenants: {user_dict['site_tenants']}")
-    return True, output
+    # return True, output
+    return True
 
 
 # ----------------------------
@@ -253,7 +254,13 @@ prompts = {
                 "regex": r"\w",
                 "description": "Please indicate whether you will be using an external Vault, already installed and configured.",
                 "example": "True"
-            }            
+            },
+            "vault_url": 
+            {
+                "regex": r"\w",
+                "description": "Enter a URL for the vault server",
+                "example": "http://vault:8200"
+            },
         },
         "second_prompts":{
             # TODO -- is there a choice on admite site id or is it hard-coded to "tacc" in the tenants table?
@@ -276,12 +283,46 @@ prompts = {
                 "description": "Please enter an array of tenants to initialize the primary site with.",
                 "example": '["dev", "admin"]'
             },
+        }        
+    },
+    "associate_site":
+    {
+        "template": "associate_template.j2",
+        "number": 2,
+        "first_prompts": 
+        {
+            "primary_site_admin_tenant_base_url" :
+            {
+                "regex": r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))""",
+                "description": "Please enter the base URL of the admin tenant for the primary site",
+                "example": "https://admin.test.tapis.io"
+                
+            },
+            "site_id":
+            {
+                "regex": r"\w",
+                "description": "Please enter the site id for your associate site.",
+                "example": "assoc",
+                "function": associate_site_services
+            },
+            "vault_external":
+            {
+                "regex": r"\w",
+                "description": "Please indicate whether you will be using an external Vault, already installed and configured.",
+                "example": "True"
+            },
             "vault_url": 
             {
                 "regex": r"\w",
                 "description": "Enter a URL for the vault server",
                 "example": "http://vault:8200"
             },
+        },
+        "second_prompts":{            
+        }        
+    },
+    "common_second_prompts":
+    {
             "tapis_image_version":
             {
                 "regex": r"\w",
@@ -319,52 +360,7 @@ prompts = {
                 "example": 4
             },
 
-        }        
-    },
-    "associate_site":
-    {
-        "template": "associate_template.j2",
-        "number": 2,
-        "first_prompts": 
-        {
-            "primary_site_admin_tenant_base_url" :
-            {
-                "regex": r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))""",
-                "description": "Please enter the base URL of the admin tenant for the primary site",
-                "example": "https://admin.test.tapis.io"
-                
-            },
-            "site_id":
-            {
-                "regex": r"\w",
-                "description": "Please enter the site id for your associate site.",
-                "example": "assoc",
-                "function": associate_site_services
-            },
-            "vault_external":
-            {
-                "regex": r"\w",
-                "description": "Please indicate whether you will be using an external Vault, already installed and configured.",
-                "example": "True"
-            }
-        },
-        "second_prompts":{
-        }        
-    },
-    "common_second_prompts":
-    {
-            "tapis_image_version":
-            {
-                "regex": r"\w",
-                "description": "Please enter the image version to deploy for all Tapis service containers.",
-                "example": '["latest", "1.0.0", "dev"]'
-            },
-            "tapis_storage_class":
-            {
-                "regex": f"\w",
-                "description": "Please enter the Kubernetes storage class to use for persistent volume claims (PVCs).",
-                "example": "rbd-new"
-            }
+
 
     }
 }
@@ -483,6 +479,7 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
             description = value.get("description")
             if not description:
                 print(f"ERROR: field {key} missing description field. Deployer should be updated!")
+                description = "(not provided)"
             main_prompt = f"({key}) " + description
             
             example = value.get("example", "No example provided.")
@@ -527,18 +524,18 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
 
 def compute_components_to_deploy(user_dict):
     # all sites get the following components
-    components = ['admin', 'authenticator', 'container-registry', 'monitoring', 'proxy', 'security', 'skadmin', 'tokens',]
+    components = set(['admin', 'authenticator', 'container-registry', 'monitoring', 'proxy', 'security', 'skadmin', 'tokens',])
     # vault could be in k8s or external -
     if not user_dict['vault_external'].lower == 'true':
-        components.append('vault')
+        components.add('vault')
     # primary sites get all remaining components:
     if user_dict['site_type'] == 1:
-        components.extend(['actors',  'apps', 'files', 'jobs', 'notifications', 
+        components.union(['actors',  'apps', 'files', 'jobs', 'notifications', 
         'pgrest',  'streams', 'systems', 'tenants'])
     # associate sites get components corresponding to the services they are deploying:
     else:
-        components.extend(user_dict['services'])    
-    return components
+        components.union(user_dict['services'])    
+    return list(components)
 
 
 def compute_inputs(all_input_descs, user_dict, defaults):
@@ -557,7 +554,8 @@ def compute_inputs(all_input_descs, user_dict, defaults):
             source_vars = desc['source_vars']
         except:
             print(f"{bcolors.FAIL}\n***** ERROR: Invalid input description for input {inp}. No source_vars defined. ***** \n{bcolors.ENDC}")
-            sys.exit(1)
+            continue
+            
         # variables can be set to "optional", meaning their existence does not impact the ability to compile the templates.
         # TODO -- need to implement optional below...
         optional = desc.get('optional', False)
@@ -623,25 +621,34 @@ def write_raw_input_file(inputs, outDir):
     file_path = os.path.join(os.path.abspath(out_dir), "raw_inputs_file.yml")
     with open(file_path, 'w') as f:
         f.write(yaml.dump(inputs))
+    print(f"output file written to: {file_path}")
 
 
-def write_output(preset, outDir, user_dict):
-    template = env.get_template(preset["template"])
-    out_dir = ensure_outdir(outDir)
-    file_path = os.path.join(os.path.abspath(out_dir), "input.yml")
-    with open(file_path, "w") as f:
-        f.write(template.render(user_params=user_dict))
-        print(f"output file generated to: {file_path}")
+# def write_output(preset, outDir, user_dict):
+#     template = env.get_template(preset["template"])
+#     out_dir = ensure_outdir(outDir)
+#     file_path = os.path.join(os.path.abspath(out_dir), "input.yml")
+#     with open(file_path, "w") as f:
+#         f.write(template.render(user_params=user_dict))
+#         print(f"output file generated to: {file_path}")
+
+
+def exit():
+    
+    sys.exit(1)
+
 
 
 def main():
     outDir, prev_start_dict, long_prompt, diagnostics = parse_agrs()
+    if long_prompt:
+        print("Running with extended prompts")
     # diganostics mode is completely different and does not do input generation
     if diagnostics:
         run_diagnostics()
         sys.exit()
 
-    # we start  the current start dict with the previous one..
+    # we start the current start dict with the previous one..
     current_start_dict = prev_start_dict
     
     # determine whether we are deploying a primary or an associate site
@@ -683,6 +690,13 @@ def main():
 
     inputs['components_to_deploy'] = components
     # write the input.yml file as a "raw" yaml dump --
+    # if vb: print(f"about to write input file; inputs key: {inputs.keys()}")
+    if vb:
+        print(f"about to write input file; all keys that are lists:")
+        print(inputs['security_service_site_id'])
+        # for k in inputs.keys():
+        #     if type(inputs[k]) == list:
+        #         print(k)
     write_raw_input_file(inputs, outDir)
 
 
