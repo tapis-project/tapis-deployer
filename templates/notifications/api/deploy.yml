@@ -45,3 +45,13 @@ spec:
               secretKeyRef:
                 name: tapis-notifications-secrets
                 key: service-password
+          - name: TAPIS_QUEUE_HOST
+            value: "notifications-rabbitmq"
+          - name: TAPIS_QUEUE_ADMIN_USER
+            value: "tapis"
+          - name: TAPIS_QUEUE_ADMIN_PASSWORD
+            value: "devpasswd"
+          - name: TAPIS_QUEUE_USER
+            value: "notif"
+          - name: TAPIS_QUEUE_PASSWORD
+            value: "devpasswd"
