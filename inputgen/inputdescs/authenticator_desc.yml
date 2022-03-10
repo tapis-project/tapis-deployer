@@ -10,18 +10,21 @@ authenticator_image_pull_policy:
   source_vars: 
     - image_pull_policy
   default_var: image_pull_policy
+  example: Always
 
 authenticator_log_level:
   description: Log level
   source_vars: 
     - authenticator_log_level 
     - tapis_log_level
+  example: DEBUG
 
 authenticator_show_traceback:
   description: Whether to show the full (Python) traceback in logs.
   source_vars: 
     - authenticator_show_traceback
     - tapis_show_traceback
+  example: true
 
 authenticator_service_name:
   description: The name of this service; should always be set to authenticator.
@@ -50,6 +53,7 @@ authenticator_storage_class:
   source_vars:
     - authenticator_storage_class
     - tapis_storage_class
+  example: rbd-new
 
 authenticator_postgres_pvc:
   description: The name of the PVC to use for the Authenticator Postgres DB instance. 

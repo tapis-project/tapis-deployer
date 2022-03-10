@@ -32,12 +32,14 @@ streams_log_level:
   source_vars: 
     - streams_log_level 
     - tapis_log_level
+  example: DEBUG
 
 streams_show_traceback:
   description: Whether to show the full (Python) traceback in logs.
   source_vars: 
     - streams_show_traceback
     - tapis_show_traceback
+  example: true
 
 streams_node_name:
   description: TODO -- ??
@@ -49,6 +51,7 @@ streams_processes:
     - streams_processes
     - tapis_python_api_processes
   default_var: streams_processes
+  example: 10
     
 streams_threads:
   description: The number of (Python) processes to run in the Streams API container.
@@ -56,6 +59,7 @@ streams_threads:
     - streams_threads
     - tapis_python_api_threads
   default_var: streams_threads
+  example: 3
 
 streams_storage_class:
   description: Kubernetes storage class to use for peristent volume claim used to persist data written by the database.
@@ -93,6 +97,7 @@ streams_tenants:
   source_vars:
     - streams_tenants
     - site_tenants
+  example: ["dev", "tacc"]
 
 streams_tenant_info:
   description: A dictionary mapping streams tenants (keys) to mappings with two fields - stream_db (the db to use for that tenant) and tapis_base_url (the base URL for that tenant)
