@@ -228,7 +228,6 @@ def associate_site_services(site_id, user_dict):
         print(f"Unable to parse output from {url}; \nDebug data: {e}. \nResponse content: {r.content}\nExiting...")
         return False
     print(f"Found the following tenants: {user_dict['site_tenants']}")
-    # return True, output
     return True
 
 
@@ -479,6 +478,7 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
             description = value.get("description")
             if not description:
                 print(f"ERROR: field {key} missing description field. Deployer should be updated!")
+                if vb: print(f"keys on value: {value.keys()}")
                 description = "(not provided)"
             main_prompt = f"({key}) " + description
             
