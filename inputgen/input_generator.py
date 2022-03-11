@@ -36,7 +36,8 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta", "monitoring", 
+# TODO -- removing monitoring for now, as it is not ready for prime time.
+PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta", 
 "notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens"]
 
 
@@ -49,10 +50,13 @@ def check_inputgen_templates():
     error_templates = 0
     correct_templates = 0
     for f_name in os.listdir(INP_DESCS_DIR):
+        # todo -- removing monitoring for now as it is not ready for prime time.
+        if f_name == 'monitoring_desc.yml':
+            continue
         with open(os.path.join(INP_DESCS_DIR, f_name), 'r') as f:
             d = f.read()
             if not d:
-                print(f"Error: decription file {f_name} is empyt.")
+                print(f"Error: decription file {f_name} is empty.")
                 error_templates += 1
             else:
                 try:
@@ -466,7 +470,7 @@ def extend_prompts_with_inputs(second_prompts, all_input_descs):
     return second_prompts
 
 
-def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
+def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, defaults):
     for key, value in prompts.items():
         user_input = ""
         match = False
@@ -481,6 +485,16 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
                 if vb: print(f"keys on value: {value.keys()}")
                 description = "(not provided)"
             main_prompt = f"({key}) " + description
+            default_var_name = value.get('default')
+            if default_var_name:
+                # look up the default value
+                default_value = defaults.get(default_var_name)
+                if not default_value:
+                    print(f"ERROR: field {key} specified a default variable of {default_var_name} but no default value was provided.\
+                            Deployer needs to be updated!")
+                else:
+                    # add the default to the prompt:
+                    main_prompt = main_prompt + f" (default value: {default_value})"
             
             example = value.get("example", "No example provided.")
             if ct == 1 and key in prev_start_dict:
@@ -524,7 +538,15 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict):
 
 def compute_components_to_deploy(user_dict):
     # all sites get the following components
-    components = set(['admin', 'authenticator', 'container-registry', 'monitoring', 'proxy', 'security', 'skadmin', 'tokens',])
+    components = set(['admin', 
+                    'authenticator', 
+                    'container-registry', 
+                    # TODO -- removing monitoring for now, as it is not ready for prime time.
+                    # 'monitoring', 
+                    'proxy', 
+                    'security', 
+                    'skadmin', 
+                    'tokens',])
     # vault could be in k8s or external -
     if not user_dict['vault_external'].lower == 'true':
         components.add('vault')
@@ -650,7 +672,10 @@ def main():
 
     # we start the current start dict with the previous one..
     current_start_dict = prev_start_dict
-    
+
+    # load the provided defaults
+    defaults = load_defaults()
+
     # determine whether we are deploying a primary or an associate site
     site_type, site_prompts, current_start_dict = determine_primary_or_assoc(prev_start_dict, current_start_dict)
     user_dict = {'site_type': site_type}
@@ -658,7 +683,7 @@ def main():
         user_dict['services'] = PRIMARY_SITE_SERVICES
 
     # prompt the user for inputs for the first set of prmopts; these prompts actually determine which components will be generated.
-    user_dict, current_start_dict, quit_early = collect_user_dict(site_prompts["first_prompts"], prev_start_dict, current_start_dict, user_dict)
+    user_dict, current_start_dict, quit_early = collect_user_dict(site_prompts["first_prompts"], prev_start_dict, current_start_dict, user_dict, defaults)
 
     if quit_early:
         # always write a start file that can be used for a subsequent run
@@ -670,8 +695,6 @@ def main():
     if vb: print(f'DEBUG: need to generate the following components: {components}')
     # load the descriptions of all input fields we need to get values for; we only need values for the components we are generating
     all_input_descs = load_descs(components)
-    # load the provided defaults
-    defaults = load_defaults()
 
     # prompt the user for inputs for the second set of prmopts; at a minimum, draw prompts from both the site_type and common sets.
     second_prompts = {**prompts['common_second_prompts'], **site_prompts["second_prompts"]}
@@ -679,7 +702,7 @@ def main():
     if long_prompt:
         second_prompts = extend_prompts_with_inputs(second_prompts, all_input_descs)
 
-    user_dict, current_start_dict, quit_early = collect_user_dict(second_prompts, prev_start_dict, current_start_dict, user_dict)
+    user_dict, current_start_dict, quit_early = collect_user_dict(second_prompts, prev_start_dict, current_start_dict, user_dict, defaults)
     
     # always write a start file that can be used for a subsequent run
     write_start_file(current_start_dict, outDir)
