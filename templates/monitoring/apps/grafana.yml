@@ -42,7 +42,7 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: monitoring-config
-              key: service_site_url
+              key: monitoring_domain
         - name: GF_SERVER_ROOT_URL
           value: "%(protocol)s://%(domain)s/grafana"
         - name: GF_SERVER_SERVE_FROM_SUB_PATH
