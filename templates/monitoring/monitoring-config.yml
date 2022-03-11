@@ -59,15 +59,27 @@ data:
     datasources:
       - name: "Prometheus",
         type: "prometheus",
-        url: "http://prometheus:9090",
+        url: "http://monitoring-prometheus:9090",
         access:"proxy"
 
       - name: "Apps DB"
         type: "postgres"
+        url: "apps-postgres:5432"
         database: "tapisappdb"
         user: "monitor"
         secureJsonData:
-          password: $TAPIS_APPS_DB_PASSWORD
+          password: $TAPIS_DB_MONITOR_PASSWORD
+        jsonData:
+          sslmode: 'disable'
+          postgresVersion: 1200
+
+      - name: "Jobs DB"
+        type: "postgres"
+        url: "jobs-postgres:5432"
+        database: "tapisjobsdb"
+        user: "monitor"
+        secureJsonData:
+          password: $TAPIS_DB_MONITOR_PASSWORD
         jsonData:
           sslmode: 'disable'
           postgresVersion: 1200

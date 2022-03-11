@@ -49,7 +49,7 @@ spec:
           value: "true"
         - name: GF_INSTALL_PLUGINS
           value: "grafana-piechart-panel"
-        - name: TAPIS_APPS_DB_PASSWORD
+        - name: TAPIS_DB_MONITOR_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-monitoring-secrets
