@@ -10,18 +10,21 @@ tokens_image_pull_policy:
   source_vars: 
     - image_pull_policy
   default_var: image_pull_policy
+  example: Always
 
 tokens_log_level:
   description: Log level
   source_vars: 
     - tokens_log_level 
     - tapis_log_level
+  example: DEBUG
 
 tokens_show_traceback:
   description: Whether to show the full (Python) traceback in logs.
   source_vars: 
     - tokens_show_traceback
     - tapis_show_traceback
+  example: true
 
 tokens_service_name:
   description: The name of this service; should always be set to tokens.
@@ -31,11 +34,13 @@ tokens_service_site_id:
   description: The site_id where this Tokens service is running.
   source_vars:
     - site_id
+  example: tacc
 
 tokens_service_tenant_id:
   source_vars: 
     - site_admin_tenant_id
   description: The id of the admin tenant where this service is running.
+  example: admin
 
 tokens_service_url:
   description: The base URL of the admin tenant in the primary site.
@@ -64,10 +69,3 @@ tokens_tenants:
   example: ["dev", "tacc", "a2cps", "admin"]
   source_vars:
     - tokens_tenants
-
-tokens_associate_site:
-  description: Is this a Tapis Associate Site deployment? This is important to know for a few parts of the deployment process.
-  example: yes
-  source_vars:
-    - tokens_associate_site
-
