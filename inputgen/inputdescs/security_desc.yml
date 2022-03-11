@@ -63,6 +63,8 @@ security_image_pull_policy:
   source_vars: 
     - image_pull_policy
   default_var: image_pull_policy
+  description: The Kubernete pull policy to apply to the security API deployment.
+  example: Always
 
 security_renew_sk_script:
   description: A booleam that controls whether the 
