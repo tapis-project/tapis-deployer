@@ -60,7 +60,7 @@ data:
       - name: "Prometheus",
         type: "prometheus",
         url: "http://monitoring-prometheus:9090",
-        access:"proxy"
+        access: "proxy"
 
       - name: "Apps DB"
         type: "postgres"
@@ -83,3 +83,12 @@ data:
         jsonData:
           sslmode: 'disable'
           postgresVersion: 1200
+
+      - name: "Tapis Logs"
+        type: elasticsearch
+        url: "http://monitoring-elasticsearch:9200"
+        access: "proxy"
+        database: 'logstash-*'
+        jsonData:
+          timeField: '@timestamp'
+          esVersion: '7.0.0'
