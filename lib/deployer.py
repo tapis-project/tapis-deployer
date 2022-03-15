@@ -1,4 +1,5 @@
 import os
+from unittest import result
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 def mkdir_if_missing(dir):
@@ -6,47 +7,76 @@ def mkdir_if_missing(dir):
     Create dir if it does not exist
     '''
     if not os.path.exists(dir):
-        os.mkdir(dir)
+        os.makedirs(dir)
 
-def copy_dir_tree(template_dir, dest_dir_base, exclude_subdirs):
-    '''
-    Walk through the template directory and create Tapis deployment files from templates. 
-    Skip the dirs/components in "exclude" list.
-    '''
 
-    print('Creating Tapis directory tree from templates.')
+def get_all_components_in_path(p):
+    """
+    Return all the components in a path, p, as a python list.
+    Ex: get_all_components_in_path('/a/b/c') returns ['a', 'b', 'c']
+        get_all_components_in_path('/a/b/c/) returns ['a', 'b', 'c']
+    """
+    result = []
+    while True:        
+        if not p or p == '/':
+            return result
+        head, tail = os.path.split(p)
+        if tail:
+            result.append(tail)
+        if head == '/':
+            return result
+        p = head
 
-    # recreate template dir directory structure recursively
 
+def template_dirs_files(template_dir, dest_dir_base, components):
+    """
+    Returns all the template directories and files that need to be created and compiled for 
+    a specific tapis site. It uses the `components` parameter to check whether a directory 
+    or file needs to be includes.
+    """
     template_dirs = [dest_dir_base]
+    template_files = []
 
     for dirpath, dirnames, filenames in os.walk(os.path.expanduser(template_dir)):
         for d in dirnames:
-            #print(os.path.join(dirpath,d))
-            template_dirs.append(os.path.join(dirpath,d))
+            full_dir = os.path.join(dirpath, d)
+            # check if the full_dir is a subdirectory of the components to include
+            for c in components:
+                # if we find a component in the full_dir, we need to process it
+                if c in get_all_components_in_path(full_dir):
+                    template_dirs.append(full_dir)
+                    break
+        for f in filenames:
+            full_path = os.path.join(dirpath, f)
+            # check if the full_path is a subdirectory of the components to include
+            for c in components:
+                # if we find a component in the full_path, we need to process it
+                if c in get_all_components_in_path(full_path):
+                    template_files.append(full_path)
+                    break
+    return template_dirs, template_files
+ 
 
+def copy_dir_tree(template_dir, dest_dir_base, template_dirs):
+    '''
+    Create necessary Tapis deployment directory structure.
+    '''
+
+    print('Creating Tapis directory tree from templates.')
     for i in template_dirs:
         # replace template path with dest_dir_base
         dest_dir = str(i).replace(template_dir, dest_dir_base)
         # uncomment to debug
         #print('{} -> {}'.format(i,dest_dir))
+        print(f"creating directory: {dest_dir}")
         mkdir_if_missing(dest_dir)
 
-def copy_files_tree(template_dir, dest_dir_base, input_data, exclude_subdirs):
-    '''
-    Walk through the template directory and create Tapis deployment files from templates. 
-    Skip the dirs/components in "exclude" list.
-    '''
 
+def copy_files_tree(template_dir, dest_dir_base, input_data, template_files):
+    '''
+    Compile deployment templates to the destination directory.
+    '''
     print('Creating Tapis files from templates.')
-
-    template_files = []
-
-    for dirpath, dirnames, filenames in os.walk(os.path.expanduser(template_dir)):
-        for f in filenames:
-            #print(os.path.join(dirpath,f))
-            template_files.append(os.path.join(dirpath,f))
-
     for i in template_files:
         # save permissions from template file
         permissions = os.stat(i)[0]

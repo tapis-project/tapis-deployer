@@ -23,12 +23,18 @@ args = parser.parse_args()
 # import yaml input file. do not need "open" because type is set by argparse
 inpdata = yaml.safe_load(args.input)
 
-# not working yet
-#exclude=["files","jobs"]
-exclude=[]
+# list of directories that deployer should compile for the site
+compontents = inpdata.get('components_to_deploy')
 
 # todo: test source dir
 # todo: test dest dir
 
-deployer.copy_dir_tree(args.templatedir, args.destdir, exclude)
-deployer.copy_files_tree(args.templatedir, args.destdir, inpdata, exclude)
+print(f"Running with {args.templatedir} template directory...")
+print(f"Running with {compontents} components...")
+
+template_dirs, template_files = deployer.template_dirs_files(args.templatedir, args.destdir, compontents)
+deployer.copy_dir_tree(args.templatedir, args.destdir, template_dirs)
+deployer.copy_files_tree(args.templatedir, args.destdir, inpdata, template_files)
+
+# deployer.copy_dir_tree(args.templatedir, args.destdir, compontents)
+# deployer.copy_files_tree(args.templatedir, args.destdir, inpdata, compontents)
