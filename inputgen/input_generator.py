@@ -6,12 +6,9 @@ import os
 import sys
 import yaml
 
-# file_loader = FileSystemLoader('templates')
-# env = Environment(loader=file_loader)
-# env.trim_blocks = True
-# env.lstrip_blocks = True
-# env.rstrip_blocks = True
-
+import sys
+sys.path.append('/deploygen/lib')
+import deployer
 
 # location of yaml description files
 INP_DESCS_DIR = '/inputgen/inputdescs'
@@ -181,6 +178,44 @@ def run_diagnostics():
     all_input_descs = check_inputgen_templates()
     check_deploygen_templates(all_input_descs)
 
+
+def run_input_check(input_file):
+    """
+    Main diagnostics function for an input file.
+    """
+    # make sure the input is valid yaml
+    try:
+        input_dict = yaml.safe_load(input_file)
+    except Exception as e:
+        print(f"Could not load yaml for file {input_file}. Is it valid YAML? Details: {e}")
+        print("Cannot proceed with validation. Exiting...")
+        return
+    # make sure the input provided a components_to_deploy; if not, there isn't much we can do...
+    compontents = input_dict.get('components_to_deploy')
+    if not compontents:
+        print(f"Did not find variable components_to_deploy in the input file. This field is required.")
+        print("Cannot proceed with validation. Exiting...")
+        return
+    _, template_files = deployer.template_dirs_files('/deploygen/templates', compontents)
+    required_vars = set()
+    for t in template_files:
+        result, error = get_vars_for_template(t)
+        if not error:
+            required_vars = required_vars.union(result)
+        else:
+            print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} there were errors loading the template {t}; we are ignoring these variable in the diagnostic. Details: {error}")
+    print(f"Checking for {len(required_vars)} variables for {len(compontents)} components.")
+    print(f"Total variables provided in input file: {len(input_dict.keys())}.")
+    found_error = False
+    for v in required_vars:
+        if v not in input_dict.keys():
+            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} required variable {v} is missing from the input file.")    
+            found_error = True
+    for v in input_dict.keys():
+        if v not in required_vars:
+            print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} input file included unrecognized variable: {v}")
+    if not found_error:
+        print("Validation passed, no missing variables detected.")
 
 # ---------------
 # Validators
@@ -370,31 +405,60 @@ prompts = {
 
 
 def parse_agrs():
+    """
+    Parse the arguments to the inputget program; returns the following fields for use later in the program:
+    * out_dir (str) -- Path to a directory to write output. 
+    * start_dict (dict) -- Dictionary of fields coming from the start_file option. 
+    * long_prompt (bool) -- Whether to prompt the user for all possible prompts (default is true, overwritten with --min).
+    * diagnostics (bool) -- Whether inputgen is running diagnostics on itself.
+    * input_check (bool) -- Whether inputgen is running in a diagnostics mode to check an input file.
+    * input_file (FileType) -- Path to the input file to check. Only set when input_check is true.
+    """
     parser = argparse.ArgumentParser(description="Generate an input.yml file for deployer to use to generate deployments scripts.")
-    parser.add_argument('-o', '--out', type=str, dest='outDir', metavar='outDir', nargs='?',
+    parser.add_argument('-o', '--out', type=str, dest='out_dir', metavar='out_dir', nargs='?',
                         help="Directory to write program output; if not specified, this program will default to writing output to the current working directory.")
     parser.add_argument('-s', '--start', type=str, dest='start_file', metavar='start_file', nargs='?',
                         help="Location to a start file to seed this program with inputs. If provided, this program will use any values provided in the start file instead of prompting you for an input.")
     parser.add_argument('-m', '--min', action="store_true", help="Only prompt for a minimal number of prompts. This option generally will not result in a working input file.")
+    parser.add_argument('-i', '--inputcheck', action="store_true", help="Run diagnostics on an inpute file. NOTE: Input generation is not performed in this mode.")
+    parser.add_argument('-f', '--inputfile', type=argparse.FileType('r'), dest='input_file', help="An inpute file to run diagnostics on. This field is required when setting -i (--inputcheck) is ignored otherwise.")
     parser.add_argument('-d', '--diagnostics', action="store_true", help="Run diagnostics on inputgen itself. NOTE: Input generation is not performed in this mode.")
     parser.add_argument('-v', '--verbose', action="store_true", help="Print verbose output.")
     args = parser.parse_args()
     global vb
+    # defaults -----
+    out_dir = ""
+    start_dict = {}
+    input_check = False
+    input_file = ""
+    long_prompt = True
     diagnostics = False
+    
+    if args.inputcheck:
+        input_check = True
+        input_file = args.input_file
+        if not input_file:
+            print("No input file specifed; an input file is required for inputcheck mode. Exiting...")
+            sys.exit(1)
+        print(f"running inputcheck for input file {input_file}; input generation will not be performed...")
+        return out_dir, start_dict, long_prompt, diagnostics, input_check, input_file
     if args.diagnostics:
         diagnostics = True
         print("Running inputgen diagnostics; input generation will not be performed...")
     if vb: print(f"DEBUG: {args}")
-    outDir = args.outDir
-    if outDir:
-        print(f"output will be written to: {outDir}")
+    out_dir = args.out_dir
+    if out_dir:
+        print(f"output will be written to: {out_dir}")
     else:
         print("no output directoty provided; output will be written to the cwd.")
-    # options related to input generation are not relevant for diagnostics mode...
+    # options related to input generation are not relevant for diagnostics modes ---
     if diagnostics:
-        return outDir, {}, False, diagnostics
+        if input_check:
+            print("Please specify only one of --inputcheck and --diagnostics. Existing...")
+            sys.exit(1)
+        return out_dir, start_dict, long_prompt, diagnostics, input_check, input_file
+    
     start_file = args.start_file
-    start_dict = {}
     if start_file:
         # check that file exists and is in yaml format
         with open(start_file, 'r') as f:
@@ -406,7 +470,7 @@ def parse_agrs():
         long_prompt = False
     if args.verbose:
         vb = True
-    return outDir, start_dict, long_prompt, diagnostics
+    return out_dir, start_dict, long_prompt, diagnostics, input_check, input_file
 
 
 def load_descs(components):
@@ -662,13 +726,18 @@ def exit():
 
 
 def main():
-    outDir, prev_start_dict, long_prompt, diagnostics = parse_agrs()
-    if long_prompt:
-        print("Running with extended prompts")
+    out_dir, prev_start_dict, long_prompt, diagnostics, input_check, input_file = parse_agrs()
     # diganostics mode is completely different and does not do input generation
     if diagnostics:
         run_diagnostics()
         sys.exit()
+    # input_check mode is also completely different and does not do input generation
+    if input_check:
+        run_input_check(input_file)
+        sys.exit()
+
+    if long_prompt:
+        print("Running with extended prompts")
 
     # we start the current start dict with the previous one..
     current_start_dict = prev_start_dict
@@ -687,7 +756,7 @@ def main():
 
     if quit_early:
         # always write a start file that can be used for a subsequent run
-        write_start_file(current_start_dict, outDir)
+        write_start_file(current_start_dict, out_dir)
         sys.exit("start file written.")
       
     # get all components needed for the site type
@@ -705,7 +774,7 @@ def main():
     user_dict, current_start_dict, quit_early = collect_user_dict(second_prompts, prev_start_dict, current_start_dict, user_dict, defaults)
     
     # always write a start file that can be used for a subsequent run
-    write_start_file(current_start_dict, outDir)
+    write_start_file(current_start_dict, out_dir)
     if quit_early:
         sys.exit("start file written.")
 
@@ -720,7 +789,7 @@ def main():
         # for k in inputs.keys():
         #     if type(inputs[k]) == list:
         #         print(k)
-    write_raw_input_file(inputs, outDir)
+    write_raw_input_file(inputs, out_dir)
 
 
 if __name__ == "__main__":
