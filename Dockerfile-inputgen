@@ -9,6 +9,7 @@ RUN pip install -r /requirements.txt
 
 # add api generator code
 RUN mkdir /deploygen
+RUN touch /deploygen/__init__.py
 ADD templates /deploygen/templates
 ADD tapis-api-generator.py /deploygen/tapis-api-generator.py
 ADD lib /deploygen/lib
