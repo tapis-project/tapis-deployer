@@ -14,6 +14,12 @@ proxy_service_tenant_id:
   description: The id of the admin tenant where this service is running.
   example: admin
 
+proxy_service_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - primary_site_admin_tenant_base_url
+
 proxy_primary_site_admin_tenant_base_url:
   description: The base URL of the admin tenant in the primary site.
   example: https://admin.develop.tapis.io
@@ -64,3 +70,9 @@ proxy_nginx_service_list:
   source_vars:
     - proxy_nginx_service_list
     - services
+
+proxy_site_router_pvc:
+  description: The name of the PVC to use for the site-router Redis DB instance. 
+  source_vars:
+    - proxy_site_router_pvc
+  example: proxy-site-router-redis-vol01

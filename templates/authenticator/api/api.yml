@@ -15,7 +15,7 @@ spec:
       - name: authenticator-api
         image: tapis/authenticator:{{authenticator_image_version}}
 #        command: ["sleep", "9999999999"]
-        imagePullPolicy: Always
+        imagePullPolicy: {{ authenticator_image_pull_policy }}
         ports:
         - name: http
           containerPort: 5000

@@ -29,9 +29,23 @@ admin_vault_url:
     - admin_vault_url
     - vault_url
 
-admin_storage_class:
-  description: TODO
+alert_to_admin_slack_channel:
+  description: Whether you want to send alters to a slack channel.
   source_vars:
-    - admin_storage_class
-  example: rbd-new
-  optional: true
+    - alert_to_admin_slack_channel
+  example: False
+
+admin_slack_username:
+  description: The slack username to use when sending alters to the slack channel. (Ignored if alter_to_admin_slack_channel is false)
+  example: cicsupport
+  source_vars:
+    - admin_slack_username
+
+admin_slack_channel:
+  description: The slack channel to use when sending alters to the slack channel. (Ignored if alter_to_admin_slack_channel is false)
+  example: tapis_alerts
+  source_vars:
+    - admin_slack_channel
+
+  
+  

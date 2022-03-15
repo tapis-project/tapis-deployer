@@ -48,10 +48,6 @@ tokens_service_url:
   source_vars:
     - primary_site_admin_tenant_base_url
 
-tokens_use_sk:
-  description: Whether this service should use the SK for checking authorization (NOTE - should always set to True in production).
-  value: true
-
 tokens_allservices_password:
   description: A single password that Tokens API will honor for all services. NOTE - Tokens only honors this setting in development environments.
   example: Qfickw939fvvvvR72Hjikawicqrixnafoiv
