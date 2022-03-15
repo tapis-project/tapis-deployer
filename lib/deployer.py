@@ -28,13 +28,13 @@ def get_all_components_in_path(p):
         p = head
 
 
-def template_dirs_files(template_dir, dest_dir_base, components):
+def template_dirs_files(template_dir, components):
     """
     Returns all the template directories and files that need to be created and compiled for 
     a specific tapis site. It uses the `components` parameter to check whether a directory 
     or file needs to be includes.
     """
-    template_dirs = [dest_dir_base]
+    template_dirs = []
     template_files = []
 
     for dirpath, dirnames, filenames in os.walk(os.path.expanduser(template_dir)):

@@ -32,7 +32,8 @@ compontents = inpdata.get('components_to_deploy')
 print(f"Running with {args.templatedir} template directory...")
 print(f"Running with {compontents} components...")
 
-template_dirs, template_files = deployer.template_dirs_files(args.templatedir, args.destdir, compontents)
+template_dirs, template_files = deployer.template_dirs_files(args.templatedir, compontents)
+template_dirs.append(args.destdir)
 deployer.copy_dir_tree(args.templatedir, args.destdir, template_dirs)
 deployer.copy_files_tree(args.templatedir, args.destdir, inpdata, template_files)
 
