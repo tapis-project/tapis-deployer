@@ -191,12 +191,12 @@ def run_input_check(input_file):
         print("Cannot proceed with validation. Exiting...")
         return
     # make sure the input provided a components_to_deploy; if not, there isn't much we can do...
-    compontents = input_dict.get('components_to_deploy')
-    if not compontents:
+    components = input_dict.get('components_to_deploy')
+    if not components:
         print(f"Did not find variable components_to_deploy in the input file. This field is required.")
         print("Cannot proceed with validation. Exiting...")
         return
-    _, template_files = deployer.template_dirs_files('/deploygen/templates', compontents)
+    _, template_files = deployer.template_dirs_files('/deploygen/templates', components)
     required_vars = set()
     for t in template_files:
         result, error = get_vars_for_template(t)
@@ -204,7 +204,7 @@ def run_input_check(input_file):
             required_vars = required_vars.union(result)
         else:
             print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} there were errors loading the template {t}; we are ignoring these variable in the diagnostic. Details: {error}")
-    print(f"Checking for {len(required_vars)} variables for {len(compontents)} components.")
+    print(f"Checking for {len(required_vars)} variables for {len(components)} components.")
     print(f"Total variables provided in input file: {len(input_dict.keys())}.")
     found_error = False
     for v in required_vars:
