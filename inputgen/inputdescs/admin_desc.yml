@@ -30,7 +30,7 @@ admin_vault_url:
     - vault_url
 
 alert_to_admin_slack_channel:
-  description: Whether you want to send alters to a slack channel.
+  description: Whether you want to send alerts to a slack channel.
   source_vars:
     - alert_to_admin_slack_channel
   example: False

@@ -4,7 +4,7 @@ slackurl () {
   kubectl get configmap admin-config -o json | jq -r '.data.slack_url'
 }
 
-{% if admin_slack_channel is defined and admin_slack_username is defined %}
+{% if alert_to_admin_slack_channel %}
 alertcmd () {
   s="$(slackurl)"
   p='payload={"channel": "{{admin_slack_channel}}", "username": "{{admin_slack_username}}", "text": "'$1'"}'

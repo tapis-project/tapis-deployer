@@ -27,11 +27,10 @@ vault_storage_class:
     - tapis_storage_class
   example: rbd-new
 
-vault_service_vault_url:
+vault_url:
   description: The URL to the Vault instance
   example: http://vault:8200
   source_vars:
-    - vault_service_vault_url
     - vault_url
 
 vault_pvc:
