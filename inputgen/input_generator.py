@@ -721,8 +721,6 @@ def compute_inputs(all_input_descs, user_dict, defaults):
             # look for the source var in the user_dict
             if s in user_dict.keys():
                 # use the first source var that appears in the user_dict
-                if 'tenants' in inp:
-                    print(f"Found value for {inp} under key {s}; value is: {user_dict[s]}")
                 inputs[inp] = user_dict[s]
                 found = True
                 break
