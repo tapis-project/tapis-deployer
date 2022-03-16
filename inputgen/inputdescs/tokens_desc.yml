@@ -65,3 +65,4 @@ tokens_tenants:
   example: ["dev", "tacc", "a2cps", "admin"]
   source_vars:
     - tokens_tenants
+    - site_tenants
