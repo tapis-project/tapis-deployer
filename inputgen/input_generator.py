@@ -1,3 +1,4 @@
+import json
 import re
 import requests
 from jinja2 import Environment, FileSystemLoader
@@ -19,6 +20,13 @@ DEPLOYGEN_TEMPLATES_DIR = '/deploygen/templates'
 
 # whether to print verbose output
 vb = False
+
+
+# override the SafeDumper to disable the use of YAML aliases and anchors.
+# cf., https://github.com/yaml/pyyaml/issues/103
+class NoAliasDumper(yaml.SafeDumper):
+    def ignore_aliases(self, data):
+        return True
 
 
 class bcolors:
@@ -271,6 +279,31 @@ def associate_site_services(site_id, user_dict):
         print(f"Unable to parse output from {url}; \nDebug data: {e}. \nResponse content: {r.content}\nExiting...")
         return False
     print(f"Found the following tenants: {user_dict['site_tenants']}")
+    while True:
+        choice = input(f"Do you want to: 1) use the above list of tenants or 2) enter your own list? Enter 1 or 2: ")
+        if choice not in ['1', '2']:
+            print("Invalid option; please enter 1 or 2...")
+            continue
+        break
+
+    if choice == '2':
+        done = False
+        while not done:
+            tenants_str = input("Enter the list of tenants as a JSON list (i.e., '[\"tenant_1\", \"tenant_2\"]'): ")
+            try:
+                if tenants_str == '_QUIT':
+                    done = True
+                    break                    
+                tenants = json.loads(tenants_str)
+                tp = type(tenants)
+                if tp == list:
+                    done = True
+                    user_dict['site_tenants'] = tenants  
+                else:
+                    print(f"Invalid format; got type {tp} when deserializing the JSON; it should be a list.")
+            except Exception as e:
+                print(f"Invalid format; got exception trying to deserialize the JSON. details: {e}.")
+
     return True
 
 
@@ -478,6 +511,10 @@ def parse_agrs():
 
 
 def load_descs(components):
+    """
+    Returns the input descriptions contained within the input descriptions directory for all components in the 
+    list of `components`.
+    """
     all_input_descs = {}
     for f_name in os.listdir(INP_DESCS_DIR):
         # the file names are of the form { component }_desc.yml, so we can skip files that do not correspond to compoenents we are
@@ -496,12 +533,19 @@ def load_descs(components):
 
 
 def load_defaults():
+    """
+    Loads the inputgen default values; these are used for all input description that specify a default variable
+    attribute.
+    """
     DEFAULTS_FILE = '/inputgen/defaults.yml'
     with open(DEFAULTS_FILE, 'r') as f:
         return yaml.safe_load(f.read()) 
 
 
 def determine_primary_or_assoc(start_dict, current_start_dict):
+    """
+    Prompt the user to specify whether they are deploying a primary or associate site.
+    """
     ct = 0
     while True:
         ct += 1
@@ -528,6 +572,11 @@ def determine_primary_or_assoc(start_dict, current_start_dict):
 
 
 def extend_prompts_with_inputs(second_prompts, all_input_descs):
+    """
+    Add a prompt for each input description if the input specifies exactly one source var which is itself.
+    That is, an input will *not* be added as a prompt if it specifies a different source var which would allow
+    it to be derived from some other variable. 
+    """
     for var, desc in all_input_descs.items():
         # make sure the description has a source_vars
         if 'source_vars' not in desc:
@@ -539,6 +588,9 @@ def extend_prompts_with_inputs(second_prompts, all_input_descs):
 
 
 def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, defaults):
+    """
+    Runs a set of interactive prompts to solicit input from the user. 
+    """
     for key, value in prompts.items():
         user_input = ""
         match = False
@@ -565,17 +617,20 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, d
                     main_prompt = main_prompt + f" (default value: {default_value})"
             
             example = value.get("example", "No example provided.")
+            # look for the variable in the previous start dictionary and use that if it is present
             if ct == 1 and key in prev_start_dict:
                 user_input = prev_start_dict[key]
                 if vb: print(f"DEBUG: using start file for input {key}; attempting to use value {user_input}.")
+            # if the variable was not in the previous start dict, prompt the user to input the value
             else:
                 user_input = input(f"{main_prompt} (Example: {example}): ")
+            # parse the user's input --------
             # look for special quit command
             if user_input == '_QUIT':
                 print("quiting...")
                 quit_early = True
                 return user_dict, current_start_dict, quit_early
-
+            # check if the prompt specified a regex validator, and if it did, use that to validate the input
             regex = value.get("regex")
             if regex:
                 if (re.match(regex, user_input)):
@@ -584,6 +639,10 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, d
                     print(f"Input ({user_input}) did not match expected format.\n")
             else:
                 match = True
+            # if the prompt specifed a function, we call it to validate the input.
+            # the function should return a tuple containing a bool and a value; 
+            #   - bool should be true if the value validated and false if not.
+            #   - value should be the value to use.
             if ("function" in value):
                 try:
                     validate = value["function"](user_input, user_dict)
@@ -598,7 +657,7 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, d
                 else:
                     user_dict[key] = user_input
                 # add the key to the current start file either way
-                current_start_dict[key] = user_input
+                current_start_dict[key] = user_dict[key]
                 print("\n")
                 break
     return user_dict, current_start_dict, quit_early
@@ -629,7 +688,17 @@ def compute_components_to_deploy(user_dict):
 
 
 def compute_inputs(all_input_descs, user_dict, defaults):
+    """
+    Computes a dictionary of "inputs" using the input descriptions, defaults and the dictionary of user-provided
+    values.
+      * all_input_descs - the dict of input descriptions.
+      * user_dict - the dict of user-provided values collected via the prompts and start file.
+      * defaults - the default values provided by deployer for the inputs.
+    """
+    # actual result to return
     inputs = {}
+
+    # iterate over every input defined in the input descriptions dictionary -----
     for inp, desc in all_input_descs.items():
         if vb: print(f"DEBUG: processing input: {inp}")
         found = False
@@ -645,15 +714,15 @@ def compute_inputs(all_input_descs, user_dict, defaults):
         except:
             print(f"{bcolors.FAIL}\n***** ERROR: Invalid input description for input {inp}. No source_vars defined. ***** \n{bcolors.ENDC}")
             continue
-            
         # variables can be set to "optional", meaning their existence does not impact the ability to compile the templates.
-        # TODO -- need to implement optional below...
         optional = desc.get('optional', False)
 
         for s in source_vars:
             # look for the source var in the user_dict
             if s in user_dict.keys():
                 # use the first source var that appears in the user_dict
+                if 'tenants' in inp:
+                    print(f"Found value for {inp} under key {s}; value is: {user_dict[s]}")
                 inputs[inp] = user_dict[s]
                 found = True
                 break
@@ -666,7 +735,8 @@ def compute_inputs(all_input_descs, user_dict, defaults):
                     continue
                 except:
                     pass
-        if found:
+            # if the input declared itself to be optional or if we found a value, we can safely continue.
+        if optional or found:
             continue
         # we never found the value, raise an error and get out...
         description = desc.get('description')
@@ -703,14 +773,14 @@ def write_start_file(current_start_dict, outDir):
     out_dir = ensure_outdir(outDir)
     file_path = os.path.join(os.path.abspath(out_dir), "start_file.yml")
     with open(file_path, 'w') as f:
-        f.write(yaml.dump(current_start_dict))
+        f.write(yaml.dump(current_start_dict, Dumper=NoAliasDumper))
 
 
 def write_raw_input_file(inputs, outDir):
     out_dir = ensure_outdir(outDir)
     file_path = os.path.join(os.path.abspath(out_dir), "raw_inputs_file.yml")
     with open(file_path, 'w') as f:
-        f.write(yaml.dump(inputs))
+        f.write(yaml.dump(inputs, Dumper=NoAliasDumper))
     print(f"output file written to: {file_path}")
 
 
