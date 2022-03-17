@@ -20,13 +20,6 @@ vault_service_url:
   source_vars:
     - primary_site_admin_tenant_base_url
 
-vault_image_version:
-  description: The version of the vault API that you wish to deploy.
-  example: latesst, dev, stage, 1.0.0
-  source_vars: 
-    - vault_image_version 
-    - tapis_image_version 
-
 vault_storage_class:
   description: Kubernetes storage class to use for peristent volume claim used to persist data written by the database.
   source_vars:
@@ -34,11 +27,10 @@ vault_storage_class:
     - tapis_storage_class
   example: rbd-new
 
-vault_service_vault_url:
+vault_url:
   description: The URL to the Vault instance
   example: http://vault:8200
   source_vars:
-    - vault_service_vault_url
     - vault_url
 
 vault_pvc:
@@ -46,6 +38,10 @@ vault_pvc:
   source_vars:
     - vault_pvc
   example: vault-vol01
+
+vault_image:
+  description: The Docker image to use for the Vault server.
+  value: vault:1.8.3
 
 vault_raft_storage:
   description: Whether or not to use RAFT storage with this Vault instance. Setting to true should be the preference, as it allows for doing backups without stopping Vault.

@@ -68,12 +68,14 @@ authenticator_service_tenants:
     - site_tenants
   example: ["dev", "tacc"]
 
-authenticator_use_sk:
-  description: Whether this service should use the SK for checking authorization (NOTE - should always set to True in production).
-  value: true
-
 authenticator_dev_ldap_tenant_id:
   description: When using the "dev" LDAP this config specifies which tenant to assoicate with it. 
   source_vars:
     - authenticator_dev_ldap_tenant_id
   example: dev for primary, assocdev for the assoc associte site, etc.
+
+authenticator_ldap_pvc:
+  description: The name of the PVC to use for the authenticator Postgres DB instance. 
+  source_vars:
+    - authenticator_ldap_pvc
+  example: authenticator-postgres-vol01
