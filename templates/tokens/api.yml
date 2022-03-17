@@ -14,7 +14,7 @@ spec:
       containers:
       - name: tokens-api
         image: tapis/tokens-api:{{tokens_image_version}}
-        imagePullPolicy: Always
+        imagePullPolicy: {{ tokens_image_pull_policy }}
         ports:
         - name: http
           containerPort: 5000

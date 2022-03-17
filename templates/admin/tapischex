@@ -4,11 +4,13 @@ slackurl () {
   kubectl get configmap admin-config -o json | jq -r '.data.slack_url'
 }
 
+{% if alert_to_admin_slack_channel %}
 alertcmd () {
   s="$(slackurl)"
   p='payload={"channel": "{{admin_slack_channel}}", "username": "{{admin_slack_username}}", "text": "'$1'"}'
   echo $p | curl -X POST --data-binary @- $s
 }
+{% endif %}
 
 checkvault () {
   kubectl exec -it deploy/vault -- sh -c "wget -q -O - {{admin_vault_url}}" | jq -r ".sealed"

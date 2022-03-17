@@ -1,3 +1,4 @@
+import json
 import re
 import requests
 from jinja2 import Environment, FileSystemLoader
@@ -6,12 +7,9 @@ import os
 import sys
 import yaml
 
-# file_loader = FileSystemLoader('templates')
-# env = Environment(loader=file_loader)
-# env.trim_blocks = True
-# env.lstrip_blocks = True
-# env.rstrip_blocks = True
-
+import sys
+sys.path.append('/deploygen/lib')
+import deployer
 
 # location of yaml description files
 INP_DESCS_DIR = '/inputgen/inputdescs'
@@ -22,6 +20,13 @@ DEPLOYGEN_TEMPLATES_DIR = '/deploygen/templates'
 
 # whether to print verbose output
 vb = False
+
+
+# override the SafeDumper to disable the use of YAML aliases and anchors.
+# cf., https://github.com/yaml/pyyaml/issues/103
+class NoAliasDumper(yaml.SafeDumper):
+    def ignore_aliases(self, data):
+        return True
 
 
 class bcolors:
@@ -178,6 +183,48 @@ def run_diagnostics():
     check_deploygen_templates(all_input_descs)
 
 
+# these are fields that do not appear in any template but that should nonetheless be in the
+# input file (or start file) because they are utilized by deployer itsef. 
+VALID_INPUT_FIELDS_NOT_IN_TEMPLATES = ['components_to_deploy', 'vault_url', ]
+
+def run_input_check(input_file):
+    """
+    Main diagnostics function for an input file.
+    """
+    # make sure the input is valid yaml
+    try:
+        input_dict = yaml.safe_load(input_file)
+    except Exception as e:
+        print(f"Could not load yaml for file {input_file}. Is it valid YAML? Details: {e}")
+        print("Cannot proceed with validation. Exiting...")
+        return
+    # make sure the input provided a components_to_deploy; if not, there isn't much we can do...
+    components = input_dict.get('components_to_deploy')
+    if not components:
+        print(f"Did not find variable components_to_deploy in the input file. This field is required.")
+        print("Cannot proceed with validation. Exiting...")
+        return
+    _, template_files = deployer.template_dirs_files('/deploygen/templates', components)
+    required_vars = set()
+    for t in template_files:
+        result, error = get_vars_for_template(t)
+        if not error:
+            required_vars = required_vars.union(result)
+        else:
+            print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} there were errors loading the template {t}; we are ignoring these variable in the diagnostic. Details: {error}")
+    print(f"Checking for {len(required_vars)} variables for {len(components)} components.")
+    print(f"Total variables provided in input file: {len(input_dict.keys())}.")
+    found_error = False
+    for v in required_vars:
+        if v not in input_dict.keys():
+            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} required variable {v} is missing from the input file.")    
+            found_error = True
+    for v in input_dict.keys():
+        if v not in required_vars and v not in VALID_INPUT_FIELDS_NOT_IN_TEMPLATES:
+            print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} input file included unrecognized variable: {v}")
+    if not found_error:
+        print("Validation passed, no missing variables detected.")
+
 # ---------------
 # Validators
 # ---------------
@@ -228,6 +275,31 @@ def associate_site_services(site_id, user_dict):
         print(f"Unable to parse output from {url}; \nDebug data: {e}. \nResponse content: {r.content}\nExiting...")
         return False
     print(f"Found the following tenants: {user_dict['site_tenants']}")
+    while True:
+        choice = input(f"Do you want to: 1) use the above list of tenants or 2) enter your own list? Enter 1 or 2: ")
+        if choice not in ['1', '2']:
+            print("Invalid option; please enter 1 or 2...")
+            continue
+        break
+
+    if choice == '2':
+        done = False
+        while not done:
+            tenants_str = input("Enter the list of tenants as a JSON list (i.e., '[\"tenant_1\", \"tenant_2\"]'): ")
+            try:
+                if tenants_str == '_QUIT':
+                    done = True
+                    break                    
+                tenants = json.loads(tenants_str)
+                tp = type(tenants)
+                if tp == list:
+                    done = True
+                    user_dict['site_tenants'] = tenants  
+                else:
+                    print(f"Invalid format; got type {tp} when deserializing the JSON; it should be a list.")
+            except Exception as e:
+                print(f"Invalid format; got exception trying to deserialize the JSON. details: {e}.")
+
     return True
 
 
@@ -244,7 +316,7 @@ prompts = {
         {
             "primary_site_admin_tenant_base_url" : 
             {
-                "regex": r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))""",
+                "regex": r"\w",
                 "description": "Please enter the base URL for the primary site",
                 "example": "https://admin.test.tapis.io",
             },
@@ -292,7 +364,7 @@ prompts = {
         {
             "primary_site_admin_tenant_base_url" :
             {
-                "regex": r"""(?i)\b((?:https?:(?:/{1,3}|[a-z0-9%])|[a-z0-9.\-]+[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)/)(?:[^\s()<>{}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:com|net|org|edu|gov|mil|aero|asia|biz|cat|coop|info|int|jobs|mobi|museum|name|post|pro|tel|travel|xxx|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cs|cu|cv|cx|cy|cz|dd|de|dj|dk|dm|do|dz|ec|ee|eg|eh|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|Ja|sk|sl|sm|sn|so|sr|ss|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za|zm|zw)\b/?(?!@)))""",
+                "regex":  r"\w",
                 "description": "Please enter the base URL of the admin tenant for the primary site",
                 "example": "https://admin.test.tapis.io"
                 
@@ -366,31 +438,60 @@ prompts = {
 
 
 def parse_agrs():
+    """
+    Parse the arguments to the inputget program; returns the following fields for use later in the program:
+    * out_dir (str) -- Path to a directory to write output. 
+    * start_dict (dict) -- Dictionary of fields coming from the start_file option. 
+    * long_prompt (bool) -- Whether to prompt the user for all possible prompts (default is true, overwritten with --min).
+    * diagnostics (bool) -- Whether inputgen is running diagnostics on itself.
+    * input_check (bool) -- Whether inputgen is running in a diagnostics mode to check an input file.
+    * input_file (FileType) -- Path to the input file to check. Only set when input_check is true.
+    """
     parser = argparse.ArgumentParser(description="Generate an input.yml file for deployer to use to generate deployments scripts.")
-    parser.add_argument('-o', '--out', type=str, dest='outDir', metavar='outDir', nargs='?',
+    parser.add_argument('-o', '--out', type=str, dest='out_dir', metavar='out_dir', nargs='?',
                         help="Directory to write program output; if not specified, this program will default to writing output to the current working directory.")
     parser.add_argument('-s', '--start', type=str, dest='start_file', metavar='start_file', nargs='?',
                         help="Location to a start file to seed this program with inputs. If provided, this program will use any values provided in the start file instead of prompting you for an input.")
     parser.add_argument('-m', '--min', action="store_true", help="Only prompt for a minimal number of prompts. This option generally will not result in a working input file.")
+    parser.add_argument('-i', '--inputcheck', action="store_true", help="Run diagnostics on an inpute file. NOTE: Input generation is not performed in this mode.")
+    parser.add_argument('-f', '--inputfile', type=argparse.FileType('r'), dest='input_file', help="An inpute file to run diagnostics on. This field is required when setting -i (--inputcheck) is ignored otherwise.")
     parser.add_argument('-d', '--diagnostics', action="store_true", help="Run diagnostics on inputgen itself. NOTE: Input generation is not performed in this mode.")
     parser.add_argument('-v', '--verbose', action="store_true", help="Print verbose output.")
     args = parser.parse_args()
     global vb
+    # defaults -----
+    out_dir = ""
+    start_dict = {}
+    input_check = False
+    input_file = ""
+    long_prompt = True
     diagnostics = False
+    
+    if args.inputcheck:
+        input_check = True
+        input_file = args.input_file
+        if not input_file:
+            print("No input file specifed; an input file is required for inputcheck mode. Exiting...")
+            sys.exit(1)
+        print(f"running inputcheck for input file {input_file}; input generation will not be performed...")
+        return out_dir, start_dict, long_prompt, diagnostics, input_check, input_file
     if args.diagnostics:
         diagnostics = True
         print("Running inputgen diagnostics; input generation will not be performed...")
     if vb: print(f"DEBUG: {args}")
-    outDir = args.outDir
-    if outDir:
-        print(f"output will be written to: {outDir}")
+    out_dir = args.out_dir
+    if out_dir:
+        print(f"output will be written to: {out_dir}")
     else:
         print("no output directoty provided; output will be written to the cwd.")
-    # options related to input generation are not relevant for diagnostics mode...
+    # options related to input generation are not relevant for diagnostics modes ---
     if diagnostics:
-        return outDir, {}, False, diagnostics
+        if input_check:
+            print("Please specify only one of --inputcheck and --diagnostics. Existing...")
+            sys.exit(1)
+        return out_dir, start_dict, long_prompt, diagnostics, input_check, input_file
+    
     start_file = args.start_file
-    start_dict = {}
     if start_file:
         # check that file exists and is in yaml format
         with open(start_file, 'r') as f:
@@ -402,10 +503,14 @@ def parse_agrs():
         long_prompt = False
     if args.verbose:
         vb = True
-    return outDir, start_dict, long_prompt, diagnostics
+    return out_dir, start_dict, long_prompt, diagnostics, input_check, input_file
 
 
 def load_descs(components):
+    """
+    Returns the input descriptions contained within the input descriptions directory for all components in the 
+    list of `components`.
+    """
     all_input_descs = {}
     for f_name in os.listdir(INP_DESCS_DIR):
         # the file names are of the form { component }_desc.yml, so we can skip files that do not correspond to compoenents we are
@@ -424,12 +529,19 @@ def load_descs(components):
 
 
 def load_defaults():
+    """
+    Loads the inputgen default values; these are used for all input description that specify a default variable
+    attribute.
+    """
     DEFAULTS_FILE = '/inputgen/defaults.yml'
     with open(DEFAULTS_FILE, 'r') as f:
         return yaml.safe_load(f.read()) 
 
 
 def determine_primary_or_assoc(start_dict, current_start_dict):
+    """
+    Prompt the user to specify whether they are deploying a primary or associate site.
+    """
     ct = 0
     while True:
         ct += 1
@@ -456,6 +568,11 @@ def determine_primary_or_assoc(start_dict, current_start_dict):
 
 
 def extend_prompts_with_inputs(second_prompts, all_input_descs):
+    """
+    Add a prompt for each input description if the input specifies exactly one source var which is itself.
+    That is, an input will *not* be added as a prompt if it specifies a different source var which would allow
+    it to be derived from some other variable. 
+    """
     for var, desc in all_input_descs.items():
         # make sure the description has a source_vars
         if 'source_vars' not in desc:
@@ -467,6 +584,9 @@ def extend_prompts_with_inputs(second_prompts, all_input_descs):
 
 
 def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, defaults):
+    """
+    Runs a set of interactive prompts to solicit input from the user. 
+    """
     for key, value in prompts.items():
         user_input = ""
         match = False
@@ -493,17 +613,20 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, d
                     main_prompt = main_prompt + f" (default value: {default_value})"
             
             example = value.get("example", "No example provided.")
+            # look for the variable in the previous start dictionary and use that if it is present
             if ct == 1 and key in prev_start_dict:
                 user_input = prev_start_dict[key]
                 if vb: print(f"DEBUG: using start file for input {key}; attempting to use value {user_input}.")
+            # if the variable was not in the previous start dict, prompt the user to input the value
             else:
                 user_input = input(f"{main_prompt} (Example: {example}): ")
+            # parse the user's input --------
             # look for special quit command
             if user_input == '_QUIT':
                 print("quiting...")
                 quit_early = True
                 return user_dict, current_start_dict, quit_early
-
+            # check if the prompt specified a regex validator, and if it did, use that to validate the input
             regex = value.get("regex")
             if regex:
                 if (re.match(regex, user_input)):
@@ -512,6 +635,10 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, d
                     print(f"Input ({user_input}) did not match expected format.\n")
             else:
                 match = True
+            # if the prompt specifed a function, we call it to validate the input.
+            # the function should return a tuple containing a bool and a value; 
+            #   - bool should be true if the value validated and false if not.
+            #   - value should be the value to use.
             if ("function" in value):
                 try:
                     validate = value["function"](user_input, user_dict)
@@ -526,7 +653,7 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, d
                 else:
                     user_dict[key] = user_input
                 # add the key to the current start file either way
-                current_start_dict[key] = user_input
+                current_start_dict[key] = user_dict[key]
                 print("\n")
                 break
     return user_dict, current_start_dict, quit_early
@@ -556,7 +683,22 @@ def compute_components_to_deploy(user_dict):
 
 
 def compute_inputs(all_input_descs, user_dict, defaults):
-    inputs = {}
+    """
+    Computes a dictionary of "inputs" using the input descriptions, defaults and the dictionary of user-provided
+    values.
+      * all_input_descs - the dict of input descriptions.
+      * user_dict - the dict of user-provided values collected via the prompts and start file.
+      * defaults - the default values provided by deployer for the inputs.
+    """
+    # actual result to return; always add the site_type
+    site_type = user_dict.get("site_type")
+    if not site_type:
+        print("Error: site_type was missing from the set of all values derived from the user-supplied values. This should never happen.")
+    inputs = {"site_type": site_type}
+
+    # 
+
+    # iterate over every input defined in the input descriptions dictionary -----
     for inp, desc in all_input_descs.items():
         if vb: print(f"DEBUG: processing input: {inp}")
         found = False
@@ -572,9 +714,7 @@ def compute_inputs(all_input_descs, user_dict, defaults):
         except:
             print(f"{bcolors.FAIL}\n***** ERROR: Invalid input description for input {inp}. No source_vars defined. ***** \n{bcolors.ENDC}")
             continue
-            
         # variables can be set to "optional", meaning their existence does not impact the ability to compile the templates.
-        # TODO -- need to implement optional below...
         optional = desc.get('optional', False)
 
         for s in source_vars:
@@ -593,7 +733,8 @@ def compute_inputs(all_input_descs, user_dict, defaults):
                     continue
                 except:
                     pass
-        if found:
+            # if the input declared itself to be optional or if we found a value, we can safely continue.
+        if optional or found:
             continue
         # we never found the value, raise an error and get out...
         description = desc.get('description')
@@ -630,14 +771,14 @@ def write_start_file(current_start_dict, outDir):
     out_dir = ensure_outdir(outDir)
     file_path = os.path.join(os.path.abspath(out_dir), "start_file.yml")
     with open(file_path, 'w') as f:
-        f.write(yaml.dump(current_start_dict))
+        f.write(yaml.dump(current_start_dict, Dumper=NoAliasDumper))
 
 
 def write_raw_input_file(inputs, outDir):
     out_dir = ensure_outdir(outDir)
     file_path = os.path.join(os.path.abspath(out_dir), "raw_inputs_file.yml")
     with open(file_path, 'w') as f:
-        f.write(yaml.dump(inputs))
+        f.write(yaml.dump(inputs, Dumper=NoAliasDumper))
     print(f"output file written to: {file_path}")
 
 
@@ -657,13 +798,18 @@ def exit():
 
 
 def main():
-    outDir, prev_start_dict, long_prompt, diagnostics = parse_agrs()
-    if long_prompt:
-        print("Running with extended prompts")
+    out_dir, prev_start_dict, long_prompt, diagnostics, input_check, input_file = parse_agrs()
     # diganostics mode is completely different and does not do input generation
     if diagnostics:
         run_diagnostics()
         sys.exit()
+    # input_check mode is also completely different and does not do input generation
+    if input_check:
+        run_input_check(input_file)
+        sys.exit()
+
+    if long_prompt:
+        print("Running with extended prompts")
 
     # we start the current start dict with the previous one..
     current_start_dict = prev_start_dict
@@ -682,7 +828,7 @@ def main():
 
     if quit_early:
         # always write a start file that can be used for a subsequent run
-        write_start_file(current_start_dict, outDir)
+        write_start_file(current_start_dict, out_dir)
         sys.exit("start file written.")
       
     # get all components needed for the site type
@@ -700,7 +846,7 @@ def main():
     user_dict, current_start_dict, quit_early = collect_user_dict(second_prompts, prev_start_dict, current_start_dict, user_dict, defaults)
     
     # always write a start file that can be used for a subsequent run
-    write_start_file(current_start_dict, outDir)
+    write_start_file(current_start_dict, out_dir)
     if quit_early:
         sys.exit("start file written.")
 
@@ -715,7 +861,7 @@ def main():
         # for k in inputs.keys():
         #     if type(inputs[k]) == list:
         #         print(k)
-    write_raw_input_file(inputs, outDir)
+    write_raw_input_file(inputs, out_dir)
 
 
 if __name__ == "__main__":
