@@ -690,8 +690,13 @@ def compute_inputs(all_input_descs, user_dict, defaults):
       * user_dict - the dict of user-provided values collected via the prompts and start file.
       * defaults - the default values provided by deployer for the inputs.
     """
-    # actual result to return
-    inputs = {}
+    # actual result to return; always add the site_type
+    site_type = user_dict.get("site_type")
+    if not site_type:
+        print("Error: site_type was missing from the set of all values derived from the user-supplied values. This should never happen.")
+    inputs = {"site_type": site_type}
+
+    # 
 
     # iterate over every input defined in the input descriptions dictionary -----
     for inp, desc in all_input_descs.items():
