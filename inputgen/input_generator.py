@@ -36,9 +36,8 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-# TODO -- removing monitoring for now, as it is not ready for prime time.
-PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta", 
-"notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens"]
+PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta",
+"monitoring", "notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens"]
 
 
 # --------------
@@ -50,9 +49,6 @@ def check_inputgen_templates():
     error_templates = 0
     correct_templates = 0
     for f_name in os.listdir(INP_DESCS_DIR):
-        # todo -- removing monitoring for now as it is not ready for prime time.
-        if f_name == 'monitoring_desc.yml':
-            continue
         with open(os.path.join(INP_DESCS_DIR, f_name), 'r') as f:
             d = f.read()
             if not d:
@@ -541,8 +537,7 @@ def compute_components_to_deploy(user_dict):
     components = set(['admin', 
                     'authenticator', 
                     'container-registry', 
-                    # TODO -- removing monitoring for now, as it is not ready for prime time.
-                    # 'monitoring', 
+                    'monitoring', 
                     'proxy', 
                     'security', 
                     'skadmin', 
