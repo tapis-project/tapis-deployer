@@ -48,7 +48,12 @@ def template_dirs_files(template_dir, components):
                     break
         for f in filenames:
             full_path = os.path.join(dirpath, f)
-            # check if the full_path is a subdirectory of the components to include
+            # we always add all files in the root directory --
+            if dirpath == template_dir:
+                template_files.append(full_path)
+                continue
+            # for any file in a subdirectory, check if the full_path is a subdirectory of the 
+            # components to include
             for c in components:
                 # if we find a component in the full_path, we need to process it
                 if c in get_all_components_in_path(full_path):

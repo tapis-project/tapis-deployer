@@ -36,6 +36,3 @@ template_dirs, template_files = deployer.template_dirs_files(args.templatedir, c
 template_dirs.append(args.destdir)
 deployer.copy_dir_tree(args.templatedir, args.destdir, template_dirs)
 deployer.copy_files_tree(args.templatedir, args.destdir, inpdata, template_files)
-
-# deployer.copy_dir_tree(args.templatedir, args.destdir, compontents)
-# deployer.copy_files_tree(args.templatedir, args.destdir, inpdata, compontents)
