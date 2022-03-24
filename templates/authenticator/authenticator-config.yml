@@ -12,7 +12,7 @@ data:
       "service_tenant_id": "{{authenticator_service_tenant_id}}",
       "service_name": "{{authenticator_service_name}}",
       "tenants": {{authenticator_service_tenants|tojson}},
-      "show_traceback": {{False}},
+      "show_traceback": {{authenticator_show_traceback|tojson}},
       "sql_db_url": "authenticator-postgres:5432/authenticator",
       "dev_ldap_tenant_id": "{{authenticator_dev_ldap_tenant_id}}",
       "log_level": "{{authenticator_log_level}}"
