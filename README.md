@@ -77,7 +77,6 @@ With the above command, the resulting Kubernetes scripts will be generated in th
 `/path/on/host/deploygen`.
 
 
-
 ## Run Deployer Diagnostics
 If you want to look for internal inconsistencies within deployer itself, you can run the diagnostics mode. For example:
 
