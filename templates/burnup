@@ -18,7 +18,7 @@ usage(){
 
 ### vars
 
-VAULTURL="{{vault_url}}"
+VAULTURL="{{admin_vault_url}}"
 SERVICEURL=" {{admin_service_url}}"
 
 ### checks
