@@ -3,11 +3,11 @@ kind: ConfigMap
 metadata: 
   name: monitoring-config
 data:
-  service_site_url: "{{monitoring_service_url}}"
-  monitoring_domain: {{ monitoring_service_url.replace("https://","").replace("http://","") }}
-  service_tenant_id: "{{monitoring_service_tenant_id}}"
-  site_id: "{{monitoring_service_site_id}}"
-  service_name: "{{monitoring_service_name}}"
+  service_site_url: '{{monitoring_service_url}}'
+  monitoring_domain: {{ monitoring_service_url.replace('https://','').replace('http://','') }}
+  service_tenant_id: '{{monitoring_service_tenant_id}}'
+  site_id: '{{monitoring_service_site_id}}'
+  service_name: '{{monitoring_service_name}}'
   prometheus-config.yml: |-
     # my global config
     global:
@@ -15,7 +15,7 @@ data:
       evaluation_interval: 60s # Evaluate rules every 15 seconds. The default is every 1 minute.
       # scrape_timeout is set to the global default (10s).
       external_labels:
-        monitor: "{{monitoring_prometheus_external_label}}"
+        monitor: '{{monitoring_prometheus_external_label}}'
 
     # Alertmanager configuration
     alerting:
@@ -26,8 +26,8 @@ data:
 
     # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
     rule_files:
-      # - "first_rules.yml"
-      # - "second_rules.yml"
+      # - 'first_rules.yml'
+      # - 'second_rules.yml'
 
     # A scrape configuration containing exactly one endpoint to scrape:
     # Here it's Prometheus itself.
@@ -45,49 +45,49 @@ data:
         metrics_path: '/v1/sys/metrics'
         params:
           format: ['prometheus']
-        {%- if "https" in monitoring_vault_url -%} 
+        {%- if 'https' in monitoring_vault_url -%} 
         scheme: https 
         {% else %} 
         scheme: http 
         {%- endif %}
         static_configs:
-        - targets: ['{{monitoring_vault_url | replace('http://', "") | replace('https://', "")}}']
+        - targets: ['{{monitoring_vault_url | replace('http://', '') | replace('https://', '')}}']
 
   # monitoring: grafana prometheus resources
   grafana-datasources.yaml: |-
     apiVersion: 1,
     datasources:
-      - name: "Prometheus",
-        type: "prometheus",
-        url: "http://monitoring-prometheus:9090",
-        access: "proxy"
+      - name: 'Prometheus',
+        type: 'prometheus',
+        url: 'http://monitoring-prometheus:9090',
+        access: 'proxy'
 
-      - name: "Apps DB"
-        type: "postgres"
-        url: "apps-postgres:5432"
-        database: "tapisappdb"
-        user: "monitor"
+      - name: 'Apps DB'
+        type: 'postgres'
+        url: 'apps-postgres:5432'
+        database: 'tapisappdb'
+        user: 'monitor'
         secureJsonData:
           password: $TAPIS_DB_MONITOR_PASSWORD
         jsonData:
           sslmode: 'disable'
           postgresVersion: 1200
 
-      - name: "Jobs DB"
-        type: "postgres"
-        url: "jobs-postgres:5432"
-        database: "tapisjobsdb"
-        user: "monitor"
+      - name: 'Jobs DB'
+        type: 'postgres'
+        url: 'jobs-postgres:5432'
+        database: 'tapisjobsdb'
+        user: 'monitor'
         secureJsonData:
           password: $TAPIS_DB_MONITOR_PASSWORD
         jsonData:
           sslmode: 'disable'
           postgresVersion: 1200
 
-      - name: "Tapis Logs"
+      - name: 'Tapis Logs'
         type: elasticsearch
-        url: "http://monitoring-elasticsearch:9200"
-        access: "proxy"
+        url: 'http://monitoring-elasticsearch:9200'
+        access: 'proxy'
         database: 'logstash-*'
         jsonData:
           timeField: '@timestamp'

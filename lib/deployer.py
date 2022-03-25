@@ -102,7 +102,7 @@ def apply_template(template_dir, src_file, dest_file, input_data):
     - src_file should be relative to the template_dir
     - dest_file should be full path
     '''
-    env = Environment(loader=FileSystemLoader(template_dir))
+    env = Environment(loader=FileSystemLoader(template_dir), undefined=StrictUndefined)
     # uncomment to debug
     #print("writing {} to {}".format(src_file, dest_file))
     template = env.get_template(src_file)
