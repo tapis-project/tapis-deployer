@@ -27,6 +27,8 @@ spec:
           value: https://admin.develop.tapis.io/v3
         - name: TAPIS_META_SERVICE_TOKEN_BASE_URL
           value: https://admin.develop.tapis.io/
+        - name: TAPIS_META_CORE_SERVER
+          value: http://restheart:8080/
         - name: TAPIS_SERVICE_PASSWORD
           valueFrom:
             secretKeyRef:
