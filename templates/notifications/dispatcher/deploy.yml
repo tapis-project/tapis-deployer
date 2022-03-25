@@ -46,8 +46,14 @@ spec:
           - name: TAPIS_QUEUE_ADMIN_USER
             value: "tapis"
           - name: TAPIS_QUEUE_ADMIN_PASSWORD
-            value: "devpasswd"
+            valueFrom:
+              secretKeyRef:
+                name: tapis-notifications-secrets
+                key: rabbitmq-password
           - name: TAPIS_QUEUE_USER
             value: "notif"
           - name: TAPIS_QUEUE_PASSWORD
-            value: "devpasswd"
+            valueFrom:
+              secretKeyRef:
+                name: tapis-notifications-secrets
+                key: rabbitmq-user-password
