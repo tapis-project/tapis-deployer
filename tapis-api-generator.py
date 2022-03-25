@@ -24,15 +24,15 @@ args = parser.parse_args()
 inpdata = yaml.safe_load(args.input)
 
 # list of directories that deployer should compile for the site
-compontents = inpdata.get('components_to_deploy')
+components = inpdata.get('components_to_deploy')
 
 # todo: test source dir
 # todo: test dest dir
 
 print(f"Running with {args.templatedir} template directory...")
-print(f"Running with {compontents} components...")
+print(f"Running with {components} components...")
 
-template_dirs, template_files = deployer.template_dirs_files(args.templatedir, compontents)
+template_dirs, template_files = deployer.template_dirs_files(args.templatedir, components)
 template_dirs.append(args.destdir)
 deployer.copy_dir_tree(args.templatedir, args.destdir, template_dirs)
 deployer.copy_files_tree(args.templatedir, args.destdir, inpdata, template_files)
