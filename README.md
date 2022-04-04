@@ -60,7 +60,7 @@ $ docker run --rm -it -v /path/on/host:/data tapis/deployer-input-gen -i -f /dat
 ```
 
 
-## Run Deployer to Generate Kubernetes Depoloyment Scripts (Step 3)
+## Run Deployer to Generate Kubernetes Deployment Scripts (Step 3)
 
 In this step, we feed the `input.yml` created in the previous steps into deployer to generate
 the Kubernetes scripts needed for the site deployment. Only the directories of scripts corresponding to components being deployed at the site will be generated. Deployer uses the variable `components_to_deploy` to determine which components (i.e., directories) to generate.
