@@ -67,6 +67,10 @@ checkvault_remote(){
 }
 
 
+getconfig(){
+# TODO
+echo 
+}
 
 
 preflight_check(){
@@ -328,15 +332,6 @@ case $1 in
     ;;
   init)
     "$@"
-    exit 0
-    ;;
-  initnew)
-    preflight_check
-    proxy
-    postnginx_check
-    vault
-    #checkvault
-    skadmin
     exit 0
     ;;
   preflight_check)
