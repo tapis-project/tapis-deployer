@@ -214,7 +214,7 @@ check_vault_unsealed(){
 
 create_kservice(){
     echo "creating kubernetes servies:"
-    find -name '*service*.yml' -exec kubectl apply -f {} \;
+    find . -name '*service*.yml' -exec kubectl apply -f {} \;
 }
 
 get_public_keys(){
