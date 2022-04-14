@@ -16,17 +16,19 @@ spec:
         image: tapis/metaapi:{{meta_image_version}}
         imagePullPolicy: Always
         env:
-        - name: tapis.site.id
+        - name: TAPIS_SITE_ID
           valueFrom:
             configMapKeyRef:
               name: meta-config
               key: site_id
-        - name: tapis.meta.service.tenantBaseUrl
+        - name: TAPIS_META_SERVICE_TENANT_BASE_URL
           value: {{meta_service_url}}/
-        - name: tapis.meta.service.skSvcURL
+        - name: TAPIS_META_SERVICE_SK_SVC_URL
           value: {{meta_service_url}}/v3
-        - name: tapis.meta.service.tokenBaseUrl
+        - name: TAPIS_META_SERVICE_TOKEN_BASE_URL
           value: {{meta_service_url}}/
+        - name: TAPIS_META_CORE_SERVER
+          value: http://restheart:8080/
         - name: TAPIS_SERVICE_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -38,7 +40,7 @@ spec:
               name: restheart-security-mongo-uri
               key: restheart-security-mongo-uri
         - name: CATALINA_OPTS
-          value: "-Xms16g -Xmx16g -Dlogback.configurationFile=/usr/local/tomcat/etc/logback.xml"
+          value: "-Xms16g -Xmx16g -Dlogback.configurationFile=/usr/local/tomcat/etc/logback.xml --add-opens java.base/java.time=ALL-UNNAMED"
         ports:
         - name: tomcat
           containerPort: 8080

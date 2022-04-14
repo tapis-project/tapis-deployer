@@ -93,3 +93,11 @@ This will print a report to the screen of various errors and warnings associated
   * Are all variables needed by `deployergen` templates listes as inputs in the `inputgen` variables?
 
 
+
+## Minikube Considerations
+
+If deploying Tapis on a Minikube installation, the following extra steps should be taken.
+
+- Create a ClusterRole & ClusterRoleBinding to allow default user in default namespace to list/create/get/delete secrets.
+- 
+
