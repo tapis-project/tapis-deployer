@@ -67,6 +67,10 @@ checkvault_remote(){
 }
 
 
+getconfig(){
+# TODO
+echo 
+}
 
 
 preflight_check(){
@@ -210,7 +214,7 @@ check_vault_unsealed(){
 
 create_kservice(){
     echo "creating kubernetes servies:"
-    find -name '*service*.yml' -exec kubectl apply -f {} \;
+    find . -name '*service*.yml' -exec kubectl apply -f {} \;
 }
 
 get_public_keys(){
@@ -328,15 +332,6 @@ case $1 in
     ;;
   init)
     "$@"
-    exit 0
-    ;;
-  initnew)
-    preflight_check
-    proxy
-    postnginx_check
-    vault
-    #checkvault
-    skadmin
     exit 0
     ;;
   preflight_check)
