@@ -3,11 +3,11 @@ kind: ConfigMap
 metadata: 
   name: monitoring-config
 data:
-  service_site_url: '{{monitoring_service_url}}'
+  service_site_url: "{{monitoring_service_url}}"
   monitoring_domain: {{ monitoring_service_url.replace('https://','').replace('http://','') }}
-  service_tenant_id: '{{monitoring_service_tenant_id}}'
-  site_id: '{{monitoring_service_site_id}}'
-  service_name: '{{monitoring_service_name}}'
+  service_tenant_id: "{{monitoring_service_tenant_id}}"
+  site_id: "{{monitoring_service_site_id}}"
+  service_name: "{{monitoring_service_name}}"
   prometheus-config.yml: |-
     # my global config
     global:
