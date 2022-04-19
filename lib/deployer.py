@@ -73,7 +73,7 @@ def copy_dir_tree(template_dir, dest_dir_base, template_dirs):
         dest_dir = str(i).replace(template_dir, dest_dir_base)
         # uncomment to debug
         #print('{} -> {}'.format(i,dest_dir))
-        print(f"creating directory: {dest_dir}")
+        #print(f"creating directory: {dest_dir}")
         mkdir_if_missing(dest_dir)
 
 
