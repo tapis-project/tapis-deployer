@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.0 - 2022-04-19
+
+This release attempts to reconcile all the differences between input files and generator checks.
+
+### Breaking Changes:
+- None.
+
+### New features:
+- Created input generator.
+
+### Bug fixes:
+- None.
+
+
 ## 0.9.1 - 2022-01-13
 
 - 
