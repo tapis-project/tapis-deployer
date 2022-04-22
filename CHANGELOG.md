@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.0 - 2022-04-19 - **Release Candidate**
+
+This is the initial release of Tapis Deployer components.
+
+It attempts to reconcile differences between input files and generator checks.
+
+### Breaking Changes:
+- None.
+
+### New features:
+- Created input generator.
+
+### Bug fixes:
+- None.
+
+
 ## 0.9.1 - 2022-01-13
 
 - 
