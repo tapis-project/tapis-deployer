@@ -26,12 +26,12 @@ cd ./certs/certbot
 ```
 
 ### 2. Generate the k8s manifests for Tapis
-In this step, you should generate the setup & configuration files for the Tapis associate site. To do this, follow the steps mentioned in the [tapis-deployer](https://github.com/tapis-project/tapis-deployer) repo. Ensure that all of the generated files are placed within an `./output/` subfolder inside this current folder. 
+In this step, you should generate the setup & configuration files for the Tapis associate site. To do this, follow the steps mentioned in the [tapis-deployer](https://github.com/tapis-project/tapis-deployer) repo. All of the generated files should be placed within a `./output/` subfolder inside this current folder. 
 
 Once the **tapis-deployer** has been run, ensure that the following output files/folders exist (w.r.t this folder):
 - `./output/raw_inputs_file.yml`
 - `./output/deploygen/`
-    - Inside this folder, you should see the `burnup` & `'burndown` scripts for all necessary Tapis services, in addition to some other files.
+    - Inside this folder, you should see the `burnup` & `burndown` scripts for all necessary Tapis services, in addition to some other files.
 
 ### 3. Deploy Minikube-specific manifest files
 The following command will create a `ClusterRole` and `ClusterRoleBinding` that will allow pods in the `default` namespace to perform various actions using k8s secrets. This is necessary for the Tapis-related pods to properly function.
