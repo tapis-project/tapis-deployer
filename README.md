@@ -96,8 +96,4 @@ This will print a report to the screen of various errors and warnings associated
 
 ## Minikube Considerations
 
-If deploying Tapis on a Minikube installation, the following extra steps should be taken.
-
-- Create a ClusterRole & ClusterRoleBinding to allow default user in default namespace to list/create/get/delete secrets.
-- 
-
+If deploying Tapis on a Minikube installation, follow [our Minikube guide](./minikube/README.md).
