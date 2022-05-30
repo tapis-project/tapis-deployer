@@ -7,5 +7,5 @@ kubectl apply -f service.yml
 kubectl apply -f api.yml 
 
 # kubectl apply -f add-token-roles.yml
-# kubectl wait --for=condition=complete job/add-token-roles
+# kubectl wait --timeout=180s --for=condition=complete job/add-token-roles
 

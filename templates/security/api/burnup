@@ -3,7 +3,7 @@
 # Migrate the db and start the service.
 kubectl apply -f ../security-kernel-config.yml
 kubectl apply -f migrate.yml 
-kubectl wait --for=condition=complete job/sk-migrate
+kubectl wait --timeout=180s --for=condition=complete job/sk-migrate
 kubectl apply -f service.yml 
 
 {% if skadmin_vault_url == "http://vault:8200" %}
@@ -19,4 +19,4 @@ kubectl apply -f service.yml
 {% endif %}
 
 kubectl apply -f api.yml 
-kubectl wait --for=condition=available deploy/sk-api
+kubectl wait --timeout=180s --for=condition=available deploy/sk-api

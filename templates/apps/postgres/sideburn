@@ -5,5 +5,5 @@ kubectl delete configmap apps-init-db-configmap
 
 kubectl create configmap apps-init-db-configmap --from-file apps-init-db-sh
 kubectl create -f apps-init-db.yml
-kubectl wait --timeout=120s --for=condition=complete job/apps-init-db
+kubectl wait --timeout=180s --for=condition=complete job/apps-init-db
 

@@ -5,9 +5,9 @@ kubectl apply -f ../jobs-config.yml
 
 # Migrate the db and start the service.
 kubectl apply -f migrate.yml 
-kubectl wait --for=condition=complete job/jobs-migrate
+kubectl wait --timeout=180s --for=condition=complete job/jobs-migrate
 kubectl apply -f service.yml 
 
 # Start the jobs service.
 kubectl apply -f api.yml 
-kubectl wait --for=condition=available deploy/jobs-api
+kubectl wait --timeout=180s --for=condition=available deploy/jobs-api

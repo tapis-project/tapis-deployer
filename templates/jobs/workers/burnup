@@ -9,4 +9,4 @@ kubectl apply -f ../jobs-config.yml
 # to start 1 or more workers servicing that queue.  The naming convention for yml files
 # is jobwkr-<queuename>.   
 kubectl apply -f jobwkr-DefaultQueue.yml 
-kubectl wait --for=condition=available deploy/jobs-wkr-defaultqueue
+kubectl wait --timeout=180s --for=condition=available deploy/jobs-wkr-defaultqueue

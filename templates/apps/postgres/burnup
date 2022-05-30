@@ -18,9 +18,9 @@ kubectl apply -f deploy.yml
 kubectl apply -f pgadmin.yml
 
 # Wait for postgres to finish coming up
-kubectl wait --timeout=120s --for=condition=available deploy/apps-postgres
+kubectl wait --timeout=180s --for=condition=available deploy/apps-postgres
 
 # Initialize the DB
 kubectl create configmap apps-init-db-configmap --from-file apps-init-db-sh
 kubectl create -f apps-init-db.yml
-kubectl wait --timeout=120s --for=condition=complete job/apps-init-db
+kubectl wait --timeout=180s --for=condition=complete job/apps-init-db

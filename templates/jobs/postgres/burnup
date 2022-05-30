@@ -4,8 +4,8 @@
 kubectl apply -f ../jobs-config.yml
 
 kubectl apply -f pvc.yml  
-#kubectl wait --for=condition=complete job/mkdir-jobs-postgres-pvc
-#kubectl wait --for=condition=complete job/chown-jobs-postgres-pvc
+#kubectl wait --timeout=180s --for=condition=complete job/mkdir-jobs-postgres-pvc
+#kubectl wait --timeout=180s --for=condition=complete job/chown-jobs-postgres-pvc
 #kubectl delete job/mkdir-jobs-postgres-pvc
 #kubectl delete job/chown-jobs-postgres-pvc
 

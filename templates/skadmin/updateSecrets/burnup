@@ -17,7 +17,7 @@ kubectl create configmap run-sk-update --from-file run-sk-update
 # Run the skadmin job.
 kubectl delete job sk-admin-update
 kubectl apply -f sk-admin-update.yml
-kubectl wait --for=condition=complete job/sk-admin-update
+kubectl wait --timeout=180s --for=condition=complete job/sk-admin-update
 
 # Clean up.
 kubectl delete configmap sk-admin-updateload

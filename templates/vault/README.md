@@ -6,12 +6,12 @@ Create configmap & pvc:
 
     kubectl create configmap vaultconf --from-file vault.hcl 
     kubectl apply -f pvc.yml 
-    kubectl wait --for=condition=complete job/prep-vault-pvc
+    kubectl wait --timeout=180s --for=condition=complete job/prep-vault-pvc
 
 Start vault:
 
     kubectl apply -f vault.yml
-    kubectl wait --for=condition=available deploy/vault  
+    kubectl wait --timeout=180s --for=condition=available deploy/vault  
 
 Enter the pod and init the vault:
 
@@ -57,7 +57,7 @@ Now start following along here: [https://learn.hashicorp.com/vault/getting-start
 BTW now you can stop and start the vault deployment:
 
     kubectl delete -f vault.yml
-    kubectl wait --for=condition=available deploy/vault  
+    kubectl wait --timeout=180s --for=condition=available deploy/vault  
     kubectl apply -f vault.yml
 
 You will have to exec into the new pod and "unseal" the vault *3* time using the keys you saved:

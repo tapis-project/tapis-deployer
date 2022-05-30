@@ -29,10 +29,10 @@ kubectl create configmap create-sk-roles --from-file create-sk-roles
 kubectl create configmap run-sk-admin --from-file run-sk-admin
 
 kubectl apply -f sk-presetup.yml
-kubectl wait --for=condition=complete job/sk-presetup
+kubectl wait --timeout=180s --for=condition=complete job/sk-presetup
 
 kubectl apply -f sk-admin-init.yml
-kubectl wait --for=condition=complete job/sk-admin-init
+kubectl wait --timeout=180s --for=condition=complete job/sk-admin-init
 
 #kubectl apply -f util.yml
 #

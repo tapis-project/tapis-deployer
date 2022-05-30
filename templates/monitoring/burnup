@@ -26,4 +26,4 @@ kubectl apply -f stern-fluentd
 # Initialize the DB
 kubectl create configmap monitor-init-user-configmap --from-file monitor-init-user-sh
 kubectl apply -f monitor-init-user.yml
-kubectl wait --timeout=120s --for=condition=complete job/monitor-init-user
+kubectl wait --timeout=180s --for=condition=complete job/monitor-init-user

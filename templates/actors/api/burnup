@@ -8,9 +8,9 @@ kubectl apply -f configmap.yml
 
 # pvcs
 kubectl apply -f mongo-pvc.yml
-kubectl wait --for=condition=complete job/chown-actors-mongo-pvc
+kubectl wait --timeout=180s --for=condition=complete job/chown-actors-mongo-pvc
 kubectl apply -f rabbitmq-pvc.yml
-kubectl wait --for=condition=complete job/chown-actors-rabbitmq-pvc
+kubectl wait --timeout=180s --for=condition=complete job/chown-actors-rabbitmq-pvc
 
 # services files
 kubectl apply -f service.yml 
