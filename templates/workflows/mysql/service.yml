@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: workflows-mysql-service
+spec:
+  selector:
+    app: workflows-mysql-deployment
+  ports:
+  - port: 3306
+    targetPort: 3306
+

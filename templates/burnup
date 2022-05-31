@@ -190,6 +190,11 @@ vault(){
   ./burnup
 }
 
+workflows(){
+  cd $here/workflows
+  ./burnup
+}
+
 
 primary_site(){
   echo
@@ -318,6 +323,9 @@ secondary_services() {
   pgrest-a2cps-prod
   {% endif %}
 
+  {%- if  "workflows" in components_to_deploy %}
+  workflows
+  {% endif %}
 
 }
 

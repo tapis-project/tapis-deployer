@@ -1,0 +1,88 @@
+workflows_api_image_tag:
+  description: Image tag that correlates to the version of the api you want to deploy
+  example: test, dev, staging, prod, latest, 1.0.0
+  source_vars:
+    - workflows_api_image_tag
+
+workflows_django_superuser_email:
+  description: The email address of superuser of the Django app
+  example: nfreeman@tacc.utexas.edu
+  source_vars:
+    - workflows_django_superuser_email
+
+workflows_django_superuser_username:
+  description: The username of superuser of the Django app
+  example: natahndf
+  source_vars:
+    - workflows_django_superuser_username
+
+workflows_k8s_namespace:
+  description: The namespace in which the pipelines service is deployed. Required to make requests to the Kubernetes API
+  example: default
+  source_vars:
+    - workflows_k8s_namespace
+
+workflows_k8s_service_account:
+  description: "LOCAL ONLY: The serviceAccount that the pipelines service uses to access the Kubernetes Api"
+  example: default
+  source_vars:
+    - workflows_k8s_namespace
+
+workflows_log_level:
+  description: Log level
+  example: DEBUG
+  source_vars:
+    - workflows_log_level
+
+workflows_mysql_username:
+  description: Username of the user used by the api to access mysql databases
+  example: dev
+  source_vars:
+    - workflows_mysql_username
+
+workflows_pipelines_deployment_type:
+  description: The platform on/with which the pipelines services is deployed(Should always be 'kubernetes'). Indicates to the pipelines service which action executors to use as they a specific to the deployment. 
+  example: kubernetes, docker
+  source_vars:
+    - workflows_pipelines_deployment_type
+
+workflows_pipelines_image_tag:
+  description: Image tag that correlates to the version of the api you want to deploy
+  example: test, dev, staging, prod, latest, 1.0.0
+  source_vars:
+    - workflows_pipelines_image_tag
+
+workflows_rabbitmq_username: 
+  description: Username for publishing messages to rabbitmq
+  example: dev
+  source_vars:
+    - workflows_rabbitmq_username
+
+workflows_service_name: 
+  description: The name of the service. Should always be 'workflows'
+  example: workflows
+  source_vars:
+    - workflows_service_name
+
+workflows_service_site_id:
+  description: The Site ID of the workflows service.
+  example: tacc
+  source_vars:
+    - workflows_service_site_id
+
+workflows_service_tenant_id:
+  description: The id of the admin tenant where this service is running.
+  source_vars:
+    - workflows_service_tenant_id
+
+workflows_service_url:
+  description: URL of the workflows service
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - workflows_service_url
+  
+workflows_storage_class:
+  description: Kubernetes StorageClass for the PeristentVolumeClaim used by the pipeline service to persist action execution results, and by the mysql deployment to persist data
+  example: rbd-new
+  source_vars:
+    - workflows_storage_class
