@@ -41,12 +41,18 @@ pingsite(){
   ping -c 1 -W 5 $1
 }
 
-checkvault_kube(){
+checkvault(){
   # TODO: fix to work if vault is remote
   # will not work until vault is up
-  if [ "`kubectl exec -it deploy/vault vault status | grep Sealed | awk '{print $2}'`" != "false" ]
+  echo "Vault Sealed?" 
+  if kubectl exec -it deploy/vault vault status | grep Sealed | grep false 
   then
-    echo "Vault check failed. Exiting."
+    echo "Vault check succeeded."
+  else
+    echo "Vault check failed. Check vault status & re-run burnup."
+    echo "e.g. 'kubectl exec -it deploy/vault vault status'"
+    echo "(Vault should be Initialized = true and Sealed = false.)"
+    echo "Exiting."
     exit 1
   fi
 }
@@ -231,6 +237,7 @@ init(){
 
   {%- if "vault" in components_to_deploy%}
   vault
+  checkvault
   {% else %}
   # using external vault, so do not start one here
   {% endif %}

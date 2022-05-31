@@ -39,7 +39,7 @@ vault_token_exists(){
     echo "Secret vault-token does not exist. Exiting."
     exit 1
   fi
-
+}
 
 checkvault_kube(){
   # TODO: fix to work if vault is remote
