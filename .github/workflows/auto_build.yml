@@ -29,7 +29,7 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag mrghort/deployer-input-gen:${{ steps.extract_branch.outputs.branch }}
+      run: docker build . --file Dockerfile --tag tapis/deployer-input-gen:${{ steps.extract_branch.outputs.branch }}
 
     - name: Push the image to dockerhub
-      run: docker push mrghort/deployer-input-gen:${{ steps.extract_branch.outputs.branch }}
+      run: docker push tapis/deployer-input-gen:${{ steps.extract_branch.outputs.branch }}
