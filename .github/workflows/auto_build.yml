@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ test,dev ]
+    branches: [ test, dev, 1.2 ]
   pull_request:
-    branches: [ test,dev ]
+    branches: [ test,dev, 1.2 ]
 
 jobs:
 
@@ -33,3 +33,13 @@ jobs:
 
     - name: Push the image to dockerhub
       run: docker push tapis/deployer-input-gen:${{ steps.extract_branch.outputs.branch }}
+
+    # if tag == prod release, tag and push as latest 
+    - name: Build the Docker image with latest tag
+      if: ${{ steps.extract_branch.outputs.branch == '1.2' }}
+      run: docker build . --file Dockerfile --tag tapis/deployer-input-gen:latest
+
+    - name: Push the image to dockerhub with latest tag
+      if: ${{ steps.extract_branch.outputs.branch == '1.2' }}
+      run: docker push tapis/deployer-input-gen:latest
+
