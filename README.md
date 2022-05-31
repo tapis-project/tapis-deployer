@@ -101,3 +101,5 @@ If deploying Tapis on a Minikube installation, the following extra steps should 
 - Create a ClusterRole & ClusterRoleBinding to allow default user in default namespace to list/create/get/delete secrets.
 - 
 
+
+
