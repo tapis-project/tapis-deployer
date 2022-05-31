@@ -15,6 +15,8 @@ kubectl delete secret vault-token tapis-sk-vault-secrets tapis-sk-secrets
 
 kubectl delete -f skadmin-config.yml
 
+kubectl delete job renew-sk-secret
+
 {% else %}
 
 echo "skadmin:"

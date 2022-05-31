@@ -18,13 +18,13 @@ spec:
         ports:
         - name: registry
           containerPort: 5000
-        volumeMounts:
-        - name: container-registry-config
-          mountPath: /etc/docker/registry/config.yml
-          subPath: container-registry-config.yml
+        #volumeMounts:
+        #- name: container-registry-config
+        #  mountPath: /etc/docker/registry/config.yml
+        #  subPath: container-registry-config.yml
       restartPolicy: Always
-      volumes:
-      - name: container-registry-config
-        configMap:
-          name: container-registry-config
+      #volumes:
+      #- name: container-registry-config
+      #  configMap:
+      #    name: container-registry-config
 
