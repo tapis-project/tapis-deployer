@@ -13,7 +13,7 @@ It attempts to reconcile differences between input files and generator checks.
 
 ### New features:
 - Created input generator.
-- Add more checks to ensure the vault is running before staring other services.
+- Add more checks to ensure the vault is running before starting other services.
 
 ### Bug fixes:
 - None.

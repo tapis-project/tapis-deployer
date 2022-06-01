@@ -1,0 +1,10 @@
+#!/bin/bash
+
+here=$(dirname $0)
+
+# ClusterRoleBinding is required for local minikube development
+# kubectl apply -f "$here/crb.yml"
+
+kubectl apply -f "$here/service.yml"
+kubectl apply -f "$here/pvc.yml"
+kubectl apply -f "$here/deployment.yml"
