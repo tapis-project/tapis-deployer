@@ -16,18 +16,6 @@ workflows_django_superuser_username:
   source_vars:
     - workflows_django_superuser_username
 
-workflows_k8s_namespace:
-  description: The namespace in which the pipelines service is deployed. Required to make requests to the Kubernetes API
-  example: default
-  source_vars:
-    - workflows_k8s_namespace
-
-workflows_k8s_service_account:
-  description: "LOCAL ONLY: The serviceAccount that the pipelines service uses to access the Kubernetes Api"
-  example: default
-  source_vars:
-    - workflows_k8s_namespace
-
 workflows_log_level:
   description: Log level
   example: DEBUG

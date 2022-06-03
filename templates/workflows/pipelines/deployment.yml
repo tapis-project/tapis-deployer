@@ -16,7 +16,6 @@ spec:
       labels:
         app: workflows-pipelines-deployment
     spec:
-      serviceAccountName: {{workflows_k8s_service_account}}
       containers:
         - args:
             - python3
@@ -50,8 +49,6 @@ spec:
               value: {{workflows_mysql_username}}
             - name: DEPLOYMENT_TYPE
               value: {{workflows_pipelines_deployment_type}}
-            - name: KUBERNETES_NAMESPACE
-              value: {{workflows_k8s_namespace}}
             - name: REGISTRY_HOST
               value: registry
             - name: REGISTRY_PORT

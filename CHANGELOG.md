@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 1.2.0 - 2022-04-19 - **Release Candidate**
+## 1.2.0 - 2022-05-31
 
 This is the initial release of Tapis Deployer components.
 
@@ -13,6 +13,11 @@ It attempts to reconcile differences between input files and generator checks.
 
 ### New features:
 - Created input generator.
+- Add more checks to ensure the vault is running before starting other services.
+- Add workflows service.
+- Add container-registry service.
+- Add globus-proxy service.
+
 
 ### Bug fixes:
 - None.
