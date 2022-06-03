@@ -1,6 +1,6 @@
 #!/bin/bash
 
-here=$(dirname $0)
+here=`pwd`
 
 # ClusterRoleBinding is required for local minikube development
 # kubectl apply -f "$here/crb.yml"

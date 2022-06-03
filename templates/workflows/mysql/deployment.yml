@@ -22,12 +22,12 @@ spec:
               value: workflows
             - name: MYSQL_PASSWORD
               valueFrom:
-                secretRef:
+                secretKeyRef:
                   name: tapis-workflows-secrets
                   key: mysql-password
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
-                secretRef:
+                secretKeyRef:
                     name: tapis-workflows-secrets
                     key: mysql-root-password
             - name: MYSQL_USERNAME

@@ -26,7 +26,7 @@ spec:
           value: {{workflows_rabbitmq_username}}
         - name: RABBITMQ_DEFAULT_PASS
           valueFrom:
-            secretRef:
+            secretKeyRef:
               name: tapis-workflows-secrets
               key: rabbitmq-password
         volumeMounts:

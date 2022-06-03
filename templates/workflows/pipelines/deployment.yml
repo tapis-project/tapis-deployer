@@ -25,7 +25,7 @@ spec:
               value: workflows-api-service
             - name: BROKER_PASSWORD
               valueFrom:
-                secretRef:
+                secretKeyRef:
                   name: tapis-workflows-secrets
                   key: rabbitmq-password
             - name: BROKER_PORT
@@ -40,7 +40,7 @@ spec:
               value: tasks
             - name: DB_PASSWORD
               valueFrom:
-                secretRef:
+                secretKeyRef:
                   name: tapis-workflows-secrets
                   key: mysql-password
             - name: DB_PORT

@@ -20,7 +20,7 @@ spec:
             value: {{workflows_rabbitmq_username}}
           - name: BROKER_PASSWORD
             valueFrom:
-              secretRef:
+              secretKeyRef:
                 name: tapis-workflows-secrets
                 key: rabbitmq-password
           - name: BROKER_PORT
@@ -33,7 +33,7 @@ spec:
             value: workflows
           - name: DB_PASSWORD
             valueFrom:
-              secretRef:
+              secretKeyRef:
                 name: tapis-workflows-secrets
                 key: mysql-password
           - name: DB_USER
@@ -42,14 +42,14 @@ spec:
             value: 'true'
           - name: DJANGO_SECRET_KEY
             valueFrom:
-              secretRef:
+              secretKeyRef:
                 name: tapis-workflows-secrets
                 key: django-secret-key
           - name: DJANGO_SUPERUSER_EMAIL
             value: {{workflows_django_superuser_email}}
           - name: DJANGO_SUPERUSER_PASSWORD
             valueFrom:
-              secretRef:
+              secretKeyRef:
                 name: tapis-workflows-secrets
                 key: django-superuser-password
           - name: DJANGO_SUPERUSER_USERNAME

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-here=$(dirname $0)
+here=`pwd`
 
 # mysql
 cd $here/mysql
