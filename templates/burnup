@@ -201,11 +201,9 @@ workflows(){
   ./burnup
 }
 
-
 primary_site(){
   echo
 }
-
 
 associate_site(){
   echo
