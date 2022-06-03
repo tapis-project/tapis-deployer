@@ -57,7 +57,7 @@ spec:
           - name: WORKFLOWS_SERVICE_URL
             value: {{workflows_service_url}}
           - name: WORKFLOWS_SERVICE_ACCOUNT
-            value: {{workflows_service_account}}
+            value: workflows
           - name: WORKFLOWS_SERVICE_PASSWORD
             valueFrom:
               secretKeyRef:
