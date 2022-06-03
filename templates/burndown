@@ -118,6 +118,11 @@ vault(){
   ./burndown
 }
 
+workflows(){
+  cd $here/workflows
+  ./burndown
+}
+
 primary_services(){
   {%- if  "tenants" in components_to_deploy %}
   tenants
@@ -189,6 +194,10 @@ secondary_services() {
 
   {%- if  "pgrest-a2cps-prod" in components_to_deploy %}
   pgrest-a2cps-prod
+  {% endif %}
+
+  {%- if  "workflows" in components_to_deploy %}
+  workflows
   {% endif %}
 
 }

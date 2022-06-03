@@ -23,10 +23,10 @@ spec:
           containerPort: 15672
         env:
         - name: RABBITMQ_DEFAULT_USER
-          value: {{workflows_rabbitmq_user}}
+          value: {{workflows_rabbitmq_username}}
         - name: RABBITMQ_DEFAULT_PASS
           valueFrom:
-            secretRef:
+            secretKeyRef:
               name: tapis-workflows-secrets
               key: rabbitmq-password
         volumeMounts:

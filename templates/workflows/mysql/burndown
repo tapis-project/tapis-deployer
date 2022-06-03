@@ -1,5 +1,5 @@
 #!/bin/bash
 
-here=$(dirname $0)
+here=`pwd`
 
 kubectl delete -f "$here/deployment.yml"

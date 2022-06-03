@@ -42,7 +42,8 @@ class bcolors:
 
 
 PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta",
-"monitoring", "notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens"]
+"monitoring", "notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens",
+"workflows"]
 
 
 # --------------
