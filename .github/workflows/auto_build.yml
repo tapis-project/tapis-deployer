@@ -31,13 +31,17 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag tapis/deployer:${{ steps.extract_branch.outputs.branch }}
 
-    # if tag == prod release, tag as latest 
+    - name: Push the image to dockerhub
+      run: docker push tapis/deployer:${{ steps.extract_branch.outputs.branch }}
+
+    # if tag == prod release, tag and push as latest 
     - name: Build the Docker image with latest tag
       if: ${{ steps.extract_branch.outputs.branch == 'main' }}
-      run: docker build . --file Dockerfile --tag tapis/deployer:latest --tag tapis/deployer:1.2
+      run: docker build . --file Dockerfile --tag tapis/deployer:latest
 
     - name: Push the image to dockerhub with latest tag
-      run: docker push --all-tags tapis/deployer
+      if: ${{ steps.extract_branch.outputs.branch == 'main' }}
+      run: docker push tapis/deployer:latest
 
   build-deployer-inputgen:
 
@@ -62,11 +66,16 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile-inputgen --tag tapis/deployer-input-gen:${{ steps.extract_branch.outputs.branch }}
 
+    - name: Push the image to dockerhub
+      run: docker push tapis/deployer-input-gen:${{ steps.extract_branch.outputs.branch }}
+
     # if tag == prod release, tag and push as latest 
     - name: Build the Docker image with latest tag
       if: ${{ steps.extract_branch.outputs.branch == 'main' }}
-      run: docker build . --file Dockerfile-inputgen --tag tapis/deployer-input-gen:latest --tag tapis/deployer-input-gen:1.2
+      run: docker build . --file Dockerfile-inputgen --tag tapis/deployer-input-gen:latest
 
     - name: Push the image to dockerhub with latest tag
-      run: docker push --all-tags tapis/deployer-input-gen
+      if: ${{ steps.extract_branch.outputs.branch == 'main' }}
+      run: docker push tapis/deployer-input-gen:latest
+
 

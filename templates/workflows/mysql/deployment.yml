@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: workflows-mysql-deployment
+  name: workflows-mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflows-mysql-deployment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: workflows-mysql-deployment
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_DATABASE
+              value: workflows
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-workflows-secrets
+                  key: mysql-password
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                    name: tapis-workflows-secrets
+                    key: mysql-root-password
+            - name: MYSQL_USERNAME
+              value: {{workflows_mysql_username}}
+          image: mysql:8
+          name: workflows-mysql
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: workflows-mysql-pvc
+      restartPolicy: Always
+      volumes:
+        - name: workflows-mysql-pvc
+          persistentVolumeClaim:
+            claimName: workflows-mysql-pvc
+status: {}
