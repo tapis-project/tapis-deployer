@@ -30,7 +30,7 @@ spec:
                 secretKeyRef:
                     name: tapis-workflows-secrets
                     key: mysql-root-password
-            - name: MYSQL_USERNAME
+            - name: MYSQL_USER
               value: {{workflows_mysql_username}}
           image: mysql:8
           name: workflows-mysql
