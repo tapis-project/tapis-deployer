@@ -76,6 +76,7 @@ def check_inputgen_templates():
         if 'value' in v.keys():
             continue
         if 'description' not in v.keys():
+            print('have k, v:: ', k, ', ', v)
             errors += 1
             print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and is missing description field.")
         elif not v.get('description'):
@@ -90,11 +91,14 @@ def check_inputgen_templates():
                 print(f"{bcolors.WARNING}Warning:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has a todo in the description. Description: {desc}.{bcolors.ENDC}")
         if 'source_vars' not in v.keys():
             errors += 1
-            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and is missing description field.{bcolors.ENDC}")
+            print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and is missing source_vars field.{bcolors.ENDC}")
         if 'example' not in v.keys():
             errors += 1
             print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and is missing example field.{bcolors.ENDC}")
-        elif not v.get('example'):
+        # elif not v.get('example'): # will this always return false for value3s that are false??
+        # debug:: 
+        elif v.get('example') == None:
+            print('\thave v', v)
             errors += 1
             print(f"{bcolors.FAIL}Error:{bcolors.ENDC} field {bcolors.OKCYAN}{k}{bcolors.ENDC} has no value property and has an empty example field.{bcolors.ENDC}")
         else:

@@ -78,4 +78,4 @@ authenticator_ldap_pvc:
   description: The name of the PVC to use for the authenticator Postgres DB instance. 
   source_vars:
     - authenticator_ldap_pvc
-  example: authenticator-postgres-vol01
+  example: authenticator-ldap-vol01

@@ -62,6 +62,7 @@ files_log_level:
   source_vars: 
     - files_log_level 
     - tapis_log_level
+  example: Debug
 
 files_storage_class:
   description: Kubernetes storage class to use for peristent volume claim used to persist data written by the database.

@@ -35,9 +35,11 @@ skadmin_vault_url:
     - vault_url
 
 skadmin_image_pull_policy:
+  description: The Kubernetes pull policy to apply to the skadmin deployment.
   source_vars: 
     - image_pull_policy
   default_var: image_pull_policy
+  example: Always
 
 skadmin_passwords:
   description: (TODO -- what this like?)
@@ -47,3 +49,4 @@ skadmin_initLoad_jwtsigning_tenants:
   description: The list of tenants owned by the site; i.e., that the Tokens API will be signing JWTs on behalf of
   source_vars:
     - site_tenants
+  example: ['admin']

@@ -70,6 +70,7 @@ proxy_nginx_service_list:
   source_vars:
     - proxy_nginx_service_list
     - services
+  example: ['actors', 'apps', 'tokens']
 
 proxy_site_router_pvc:
   description: The name of the PVC to use for the site-router Redis DB instance. 
