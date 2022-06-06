@@ -1,18 +1,16 @@
 #!/bin/bash
 
-# mysql
-chmod +x ./mysql/burndown
-./mysql/burndown
+here=`pwd`
 
-# rabbitmq
-chmod +x ./rabbitmq/burndown
-./rabbitmq/burndown
+cd $here/api
+./burndown
 
-# api
-chmod +x ./api/burndown
-./api/burndown
+cd $here/pipelines
+./burndown
 
-# pipelines
-chmod +x ./pipelines/burndown
-./pipelines/burndown
+cd $here/mysql
+./burndown
+
+cd $here/rabbitmq
+./burndown
 
