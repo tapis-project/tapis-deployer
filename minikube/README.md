@@ -82,3 +82,10 @@ You can retrieve your associate site's public keys using the following commands:
 cd ./output/deploygen
 ./burnup get_public_keys
 ```
+
+Once the keys have been updated at the primary site, restart any services that are crashing by running their corresponding `burndown` and `burnup` scripts.
+
+### 9. Configure your tenant's LDAP server on the primary site
+Once your public keys are set up, tell your primary site provider (e.g., TACC) to update the authenticator LDAP configuration for your tenants on the primary site's end. If this is not done, some of your services (e.g., authenticator) may still be stuck in a crashing state.
+
+Once the LDAP configuration has been updated on the primary site's end, restart any crashing services by running their respective `burndown` and `burnup` scripts.
