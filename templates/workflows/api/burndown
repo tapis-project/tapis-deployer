@@ -1,0 +1,5 @@
+#!/bin/bash
+
+here=`pwd`
+
+kubectl delete -f "$here/deployment.yml"

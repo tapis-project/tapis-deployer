@@ -1,0 +1,24 @@
+#!/bin/bash
+
+here=`pwd`
+
+# mysql
+cd $here/mysql
+./burnup
+
+kubectl wait --timeout=60s --for=condition=available deploy/workflows-mysql-deployment
+
+# rabbitmq
+cd $here/rabbitmq
+./burnup
+
+kubectl wait --timeout=120s --for=condition=available deploy/workflows-rabbitmq-deployment
+
+# api
+cd $here/api
+./burnup
+
+# pipelines
+cd $here/pipelines
+./burnup
+

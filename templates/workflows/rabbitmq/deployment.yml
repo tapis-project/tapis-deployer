@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflows-rabbitmq-deployment
+spec:
+  selector:
+    matchLabels:
+      app: workflows-rabbitmq-deployment
+  template:
+    metadata:
+      labels:
+        app: workflows-rabbitmq-deployment
+    spec:
+      hostname: workflows-rabbitmq-deployment
+      restartPolicy: Always
+      containers:
+      - name: workflows-rabbitmq
+        image: rabbitmq:3.9.11-management
+        ports:
+        - name: rabbitmq
+          containerPort: 5672
+        - name: http
+          containerPort: 15672
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: {{workflows_rabbitmq_username}}
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: tapis-workflows-secrets
+              key: rabbitmq-password
+        volumeMounts:
+        - name: workflows-rabbitmq-storage
+          mountPath: "/var/lib/rabbitmq/mnesia"
+        resources: {}
+      volumes:
+      - name: workflows-rabbitmq-storage
+        persistentVolumeClaim:
+          claimName: workflows-rabbitmq-pvc

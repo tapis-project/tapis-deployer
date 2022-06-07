@@ -40,9 +40,22 @@ kubectl apply -f vault-auto-unseal.yml
 
 # Ensure vault is unsealed
 kubectl wait --for=condition=available deploy/vault
-pod=`kubectl get pod --selector=app=vault -o name`
-sealed=`kubectl exec -it $pod -- vault status | grep Sealed | awk '{print $2}' | tr -d '^M'`
-if [ "$sealed" == "true" ]
-then
-  ./unseal
-fi
+
+# 5 tries
+for i in 1 2 3 4 5 
+do
+  echo "unsealing (try $i) :"
+  pod=`kubectl get pod --selector=app=vault -o name`
+  #sealed=`kubectl exec -it $pod -- vault status | grep Sealed | awk '{print $2}' | tr -d '^M'`
+  sealed=`kubectl exec -it $pod -- vault status | grep Sealed | awk '{print $2}'`
+  #echo $sealed | cat -v 
+  #if [ "$sealed" == "false" ]
+  if echo $sealed | grep false 
+  then
+    exit 0
+  fi
+  sleep 5
+  ./unseal 
+done
+
+exit 1
