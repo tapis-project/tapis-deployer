@@ -102,4 +102,3 @@ If deploying Tapis on a Minikube installation, the following extra steps should 
 - 
 
 
-
