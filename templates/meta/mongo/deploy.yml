@@ -11,6 +11,7 @@ spec:
       labels:
         app: restheart-mongo
     spec:
+      hostname: restheart-mongo
       containers:
         - name: restheart-mongo
           image: {{meta_mongo_restheart_image}}

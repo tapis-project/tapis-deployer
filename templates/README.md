@@ -1,8 +1,9 @@
 # Tapis Deployment
 
 
-To deploy the base proxy and security services:
+## To Deploy Tapis (burn up)
 
+To deploy the base proxy and security services:
 
     # ./burnup init 
     ...
@@ -23,3 +24,29 @@ To deploy the higher level services:
 
     # ./burnup secondary_services
     ...
+
+
+## To Take Down Tapis (burn down) 
+
+To take down the higher level services:
+
+    # ./burndown secondary_services
+    ...
+
+To take down the basic api token services:
+
+    # ./burndown primary_services
+    ...
+
+To take down the authorization stack and required services:
+
+    # ./burndown authstack
+    ...
+    
+
+**Note that the main nginx proxy will not be taken down by the above. To take down the proxy also run:**
+
+    # ./burndown proxy
+    ...
+    
+

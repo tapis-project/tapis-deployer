@@ -118,6 +118,29 @@ vault(){
   ./burndown
 }
 
+workflows(){
+  cd $here/workflows
+  ./burndown
+}
+
+primary_services(){
+  {%- if  "tenants" in components_to_deploy %}
+  tenants
+  {% endif %}
+
+  {%- if  "security" in components_to_deploy %}
+  security
+  {% endif %}
+
+  {%- if  "tokens" in components_to_deploy %}
+  tokens
+  {% endif %}
+
+  {%- if  "authenticator" in components_to_deploy %}
+  authenticator
+  {% endif %}
+}
+
 
 secondary_services() {
 
@@ -173,6 +196,10 @@ secondary_services() {
   pgrest-a2cps-prod
   {% endif %}
 
+  {%- if  "workflows" in components_to_deploy %}
+  workflows
+  {% endif %}
+
 }
 
 
@@ -220,7 +247,15 @@ case $1 in
     "$@"
     exit 0
     ;;
+  primary_services)
+    "$@"
+    exit 0
+    ;;
   secondary_services)
+    "$@"
+    exit 0
+    ;;
+  proxy)
     "$@"
     exit 0
     ;;

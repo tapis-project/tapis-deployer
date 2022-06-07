@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workflows-pipelines-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{workflows_storage_class}}
+  resources:
+    requests:
+      storage: 10Gi

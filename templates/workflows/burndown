@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# mysql
+chmod +x ./mysql/burndown
+./mysql/burndown
+
+# rabbitmq
+chmod +x ./rabbitmq/burndown
+./rabbitmq/burndown
+
+# api
+chmod +x ./api/burndown
+./api/burndown
+
+# pipelines
+chmod +x ./pipelines/burndown
+./pipelines/burndown
+
