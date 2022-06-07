@@ -54,6 +54,8 @@ spec:
                 key: django-superuser-password
           - name: DJANGO_SUPERUSER_USERNAME
             value: {{workflows_django_superuser_username}}
+          - name: TAPIS_BASE_URL
+            value: {{workflows_tapis_base_url}}
           - name: WORKFLOWS_SERVICE_URL
             value: {{workflows_service_url}}
           - name: WORKFLOWS_SERVICE_ACCOUNT

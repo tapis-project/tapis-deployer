@@ -74,3 +74,9 @@ workflows_storage_class:
   example: rbd-new
   source_vars:
     - workflows_storage_class
+
+workflows_tapis_base_url:
+  description: Base URL for authentication
+  example: https://dev.develop.tapis.io
+  source_vars:
+    - workflows_tapis_base_url
