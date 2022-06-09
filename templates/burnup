@@ -298,6 +298,10 @@ secondary_services() {
   meta
   {% endif %}
 
+  {%- if  "metavdj" in components_to_deploy %}
+  metavdj
+  {% endif %}
+
   {%- if  "streams" in components_to_deploy %}
   streams
   {% endif %}

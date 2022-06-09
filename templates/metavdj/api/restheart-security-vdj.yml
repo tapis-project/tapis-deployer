@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restheart-security-vdj
+spec:
+  selector:
+    matchLabels:
+      app: restheart-security-vdj
+  template:
+    metadata:
+      labels:
+        app: restheart-security-vdj
+    spec:
+      containers:
+      - name: restheart-security-vdj
+        image: tapis/metaapi:{{meta_image_version}}
+        imagePullPolicy: Always
+        env:
+        - name: TAPIS_SITE_ID
+          valueFrom:
+            configMapKeyRef:
+              name: meta-config
+              key: site_id
+        - name: TAPIS_META_SERVICE_TENANT_BASE_URL
+          value: {{meta_service_url}}/
+        - name: TAPIS_META_SERVICE_SK_SVC_URL
+          value: {{meta_service_url}}/v3
+        - name: TAPIS_META_SERVICE_TOKEN_BASE_URL
+          value: {{meta_service_url}}/
+        - name: TAPIS_META_CORE_SERVER
+          value: http://restheart-vdj:8080/
+        - name: TAPIS_SERVICE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-meta-secrets
+              key: service-password
+        #- name: MONGO_URI
+        #  valueFrom:
+        #    secretKeyRef:
+        #      name: restheart-security-mongo-uri
+        #      key: restheart-security-mongo-uri
+        - name: CATALINA_OPTS
+          value: "-Xms2g -Xmx16g -Dlogback.configurationFile=/usr/local/tomcat/etc/logback.xml --add-opens java.base/java.time=ALL-UNNAMED"
+        ports:
+        - name: tomcat
+          containerPort: 8080
