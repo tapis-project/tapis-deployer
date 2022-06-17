@@ -1,0 +1,22 @@
+# Services
+#kubectl delete -f services.yml
+
+# Security/Role
+#kubectl delete -f security.yml
+
+# Configs
+kubectl delete configmap pods-config
+kubectl delete configmap pods-nginx
+
+# App
+kubectl delete -f api.yml
+kubectl delete -f spawner.yml
+kubectl delete -f health.yml
+kubectl delete -f nginx.yml
+
+# Storage
+kubectl delete -f postgres.yml
+kubectl delete -f rabbitmq.yml
+
+# PVC - Don't burn these down silly.
+#kubectl delete -f postgres-pvc.yml

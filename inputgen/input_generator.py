@@ -42,7 +42,7 @@ class bcolors:
 
 
 PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta",
-"monitoring", "notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens",
+"monitoring", "notifications", "pgrest", "pods", "security", "streams", "systems", "tenants", "tokens",
 "workflows"]
 
 
@@ -675,8 +675,8 @@ def compute_components_to_deploy(user_dict):
         components.add('vault')
     # primary sites get all remaining components:
     if user_dict['site_type'] == 1:
-        components.union(['actors',  'apps', 'files', 'jobs', 'notifications', 
-        'pgrest',  'streams', 'systems', 'tenants'])
+        components.union(['actors', 'apps', 'files', 'jobs', 'notifications', 
+        'pgrest', 'pods', 'streams', 'systems', 'tenants'])
     # associate sites get components corresponding to the services they are deploying:
     else:
         components.union(user_dict['services'])    

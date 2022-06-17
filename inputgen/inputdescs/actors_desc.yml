@@ -45,7 +45,7 @@ actors_rabbit_pvc:
 
 actors_image_version:
   description: The version of the actors API that you wish to deploy.
-  example: latesst, dev, stage, 1.0.0
+  example: latest, dev, stage, 1.0.0
   source_vars: 
     - actors_image_version 
     - tapis_image_version 

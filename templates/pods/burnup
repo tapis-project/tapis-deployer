@@ -1,0 +1,24 @@
+# Services
+kubectl apply -f services.yml
+
+# Security/Role
+#kubectl apply -f security.yml
+kubectl create secret tls pods-certs --cert=$HOME/ssl/wild.develop.tapis.io.pem --key=$HOME/ssl/wild.develop.tapis.io.key
+
+# Configs
+kubectl create configmap pods-config --from-file=config.json
+kubectl create configmap pods-nginx --from-file=nginx.conf
+
+# PVC
+kubectl apply -f postgres-pvc.yml
+kubectl wait --for=condition=complete job/chown-pods-postgres-pvc
+
+# Storage
+kubectl apply -f postgres.yml
+kubectl apply -f rabbitmq.yml
+
+# App
+kubectl apply -f api.yml
+kubectl apply -f spawner.yml
+kubectl apply -f health.yml
+kubectl apply -f nginx.yml

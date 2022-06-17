@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pods-rabbitmq
+spec:
+  selector:
+    matchLabels:
+      app: pods-rabbitmq
+  template:
+    metadata:
+      labels:
+        app: pods-rabbitmq
+    spec:
+      containers:
+      - name: pods-rabbitmq
+        image: rabbitmq:3.6.12-management
+        resources:
+          requests:
+            cpu: "1"
+            memory: "500M"
+          limits:
+            cpu: "3"
+            memory: "2G"
+        ports:
+        - name: rabbitmq
+          containerPort: 5672
+        - name: rabbitmq-dash
+          containerPort: 15672
+        env:
+        - name: RABBITMQ_NODENAME
+          value: "pods-rabbitmq"
+        - name: RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS
+          value: "+A 128"
+        - name: RABBITMQ_DEFAULT_USER
+          value: "pods-admin"
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pods-secrets
+              key: rabbitmq-password
+
