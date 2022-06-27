@@ -483,7 +483,7 @@ def parse_agrs():
     if out_dir:
         print(f"output will be written to: {out_dir}")
     else:
-        print("no output directoty provided; output will be written to the cwd.")
+        print("no output directory provided; output will be written to the cwd.")
     # options related to input generation are not relevant for diagnostics modes ---
     if diagnostics:
         if input_check:
@@ -493,6 +493,7 @@ def parse_agrs():
     
     start_file = args.start_file
     if start_file:
+        print(f"Using start file: {start_file}")
         # check that file exists and is in yaml format
         with open(start_file, 'r') as f:
             start_dict = yaml.safe_load(f.read()) 
@@ -512,6 +513,7 @@ def load_descs(components):
     list of `components`.
     """
     all_input_descs = {}
+    print(f"components to check: {components}")
     for f_name in os.listdir(INP_DESCS_DIR):
         # the file names are of the form { component }_desc.yml, so we can skip files that do not correspond to compoenents we are
         # generating
@@ -543,6 +545,7 @@ def determine_primary_or_assoc(start_dict, current_start_dict):
     Prompt the user to specify whether they are deploying a primary or associate site.
     """
     ct = 0
+    print(f"Found these keys in the start file: {start_dict.keys()}")
     while True:
         ct += 1
         # first time through, check it site_type was provided in the start file.
@@ -674,11 +677,13 @@ def compute_components_to_deploy(user_dict):
         components.add('vault')
     # primary sites get all remaining components:
     if user_dict['site_type'] == 1:
-        components.union(['actors',  'apps', 'files', 'jobs', 'notifications', 
+        components = components.union(['actors',  'apps', 'files', 'jobs', 'notifications', 
         'pgrest',  'streams', 'systems', 'tenants'])
     # associate sites get components corresponding to the services they are deploying:
     else:
-        components.union(user_dict['services'])    
+        print(f"components for associate site: {user_dict['services']}")
+        components = components.union(user_dict['services'])
+        print(F"FINAL component list: {components}")
     return list(components)
 
 
