@@ -44,13 +44,11 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
         {%- endif %}
-        {%- if files_site_id == true %}
         - name: TAPIS_SITE_ID
           valueFrom:
             configMapKeyRef:
               name: files-config
               key: site_id
-        {%- endif %}
         - name: TOKENS_SERVICE_URL
           valueFrom:
             configMapKeyRef:
