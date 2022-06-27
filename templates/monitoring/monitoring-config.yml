@@ -55,40 +55,41 @@ data:
 
   # monitoring: grafana prometheus resources
   grafana-datasources.yaml: |-
-    apiVersion: 1,
+    apiVersion: 1
     datasources:
-      - name: 'Prometheus',
-        type: 'prometheus',
-        url: 'http://monitoring-prometheus:9090',
-        access: 'proxy'
+      - name: Prometheus
+        type: prometheus
+        url: http://monitoring-prometheus:9090
+        access: proxy
 
-      - name: 'Apps DB'
-        type: 'postgres'
-        url: 'apps-postgres:5432'
-        database: 'tapisappdb'
-        user: 'monitor'
+      - name: Apps DB
+        type: postgres
+        url: apps-postgres:5432
+        database: tapisappdb
+        user: monitor
         secureJsonData:
           password: $TAPIS_DB_MONITOR_PASSWORD
         jsonData:
-          sslmode: 'disable'
+          sslmode: disable
           postgresVersion: 1200
 
-      - name: 'Jobs DB'
-        type: 'postgres'
-        url: 'jobs-postgres:5432'
-        database: 'tapisjobsdb'
-        user: 'monitor'
+      - name: Jobs DB
+        type: postgres
+        url: jobs-postgres:5432
+        database: tapisjobsdb
+        user: monitor
         secureJsonData:
           password: $TAPIS_DB_MONITOR_PASSWORD
         jsonData:
-          sslmode: 'disable'
+          sslmode: disable
           postgresVersion: 1200
 
-      - name: 'Tapis Logs'
+      - name: Tapis Logs
         type: elasticsearch
-        url: 'http://monitoring-elasticsearch:9200'
-        access: 'proxy'
-        database: 'logstash-*'
+        url: http://monitoring-elasticsearch:9200
+        access: proxy
+        database: "logstash-*"
         jsonData:
-          timeField: '@timestamp'
-          esVersion: '7.0.0'
+          timeField: "@timestamp"
+          esVersion: 7.0.0
+
