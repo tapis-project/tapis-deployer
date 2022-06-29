@@ -28,7 +28,7 @@ spec:
         volumeMounts:
         - name: pods-nginx-conf
           mountPath: /etc/nginx/
-        - name: certs
+        - name: pods-certs
           mountPath: /tmp/ssl
         # Reload config every 30 seconds.
         livenessProbe:
@@ -44,6 +44,6 @@ spec:
       - name: pods-nginx-conf
         configMap: 
           name: pods-nginx
-      - name: certs
+      - name: pods-certs
         secret:
-          secretName: tapis-tls-cert
+          secretName: pods-certs

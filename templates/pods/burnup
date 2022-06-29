@@ -1,9 +1,11 @@
 # Services
 kubectl apply -f services.yml
 
-# Security/Role
-#kubectl apply -f security.yml
-kubectl create secret tls pods-certs --cert=$HOME/ssl/wild.develop.tapis.io.pem --key=$HOME/ssl/wild.develop.tapis.io.key
+# Security/Roles
+kubectl apply -f security.yml
+
+# Certs
+kubectl create secret tls pods-certs --cert=$HOME/ssl/pods/wild.pods.icicle.develop.tapis.io.pem --key=$HOME/ssl/wild.pods.icicle.develop.tapis.io.key
 
 # Configs
 kubectl create configmap pods-config --from-file=config.json

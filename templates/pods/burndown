@@ -1,8 +1,11 @@
 # Services
 #kubectl delete -f services.yml
 
-# Security/Role
+# Security/Roles
 #kubectl delete -f security.yml
+
+# Certs
+#kubectl delete secret pods-certs
 
 # Configs
 kubectl delete configmap pods-config

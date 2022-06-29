@@ -37,11 +37,11 @@ spec:
         ports:
         - name: postgres
           containerPort: 5432
-#        volumeMounts:
-#        - name: pods-postgres-data
-#          mountPath: "/pgdata"
-#      volumes:
-#      - name: pods-postgres-data
-#        persistentVolumeClaim:
-#          claimName: {{pods_postgres_pvc}}
+        volumeMounts:
+        - name: pods-postgres-data
+          mountPath: "/pgdata"
+      volumes:
+      - name: pods-postgres-data
+        persistentVolumeClaim:
+          claimName: {{pods_postgres_pvc}}
       
