@@ -31,7 +31,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: tapis-notifications-secrets 
-              key: rabbitmq-tapis-password
+              key: rabbitmq-password
         - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
           value: "2147483648"
         volumeMounts:
