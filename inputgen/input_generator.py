@@ -42,7 +42,7 @@ class bcolors:
 
 
 PRIMARY_SITE_SERVICES = ["actors", "apps", "authenticator", "files", "jobs", "meta",
-"monitoring", "notifications", "pgrest", "security", "streams", "systems", "tenants", "tokens",
+"monitoring", "notifications", "pgrest", "pods", "security", "streams", "systems", "tenants", "tokens",
 "workflows"]
 
 
@@ -634,6 +634,436 @@ def collect_user_dict(prompts, prev_start_dict, current_start_dict, user_dict, d
             regex = value.get("regex")
             if regex:
                 if (re.match(regex, user_input)):
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+### Everything first goes through this stream stanza. Map matches subdomain to port to route to.
+### If no map found, we route to default 8443. This directs back to HTTP stanza as normal.
+stream {
+
+    log_format stream_routing '$remote_addr [$time_local] '
+                              'with SNI name "$ssl_preread_server_name" '
+                              'proxying to "$instanceport" '
+                              '$protocol $status $bytes_sent $bytes_received '
+                              '$session_time';
+
+    # 'map' maps input string to output variable. Regex works.
+    # Ports used are purely random. Feel free to change.
+    map $ssl_preread_server_name $instanceport {
+        # Route TCP with following whatever.pods.whatever.develop.tapis.ioto pods-nginx.
+        "~pods.*.develop.tapis.io"      5510;
+        # Else default to 8443 (listened to by http stanza).
+        default                         8443;
+    }
+ 
+    # pods_service. Route TCP to pods-nginx pod.
+    server {
+        listen                 5510;
+        ssl_preread            off;
+        proxy_timeout          600s;
+        access_log /dev/stdout stream_routing;
+    {%- if "pods" in proxy_nginx_service_list %}
+        proxy_pass             pods-nginx:80;
+    {%- else %}
+        # cgarcia- Unsure if this entire 'server' block should be in an if, or if we
+        # should what I'm doing here.
+        proxy_pass             {{proxy_primary_site_admin_tenant_base_url}};
+    {%- endif %}        
+
+    }
+
+    # Listen for all incoming requests. Preread server name (for mapping). Then pass. 
+    server {
+        listen                  443;
+        ssl_preread             on;
+        proxy_connect_timeout   20s;  # max time to connect to pserver
+        proxy_timeout           600s;
+        access_log /dev/stdout stream_routing;
+        proxy_pass              127.0.0.1:$instanceport;
+    }
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    # hammock 20211112
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$host" "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    include /etc/nginx/conf.d/*.conf;
+
+    # Redirect all non-encrypted traffic to the encrypted site.
+    server
+    {
+        listen 80;
+        listen [::]:80;
+    
+        server_name  {{proxy_nginx_server_name}};
+    
+        # Redirect with 307 to preserve post data. (301 does not)
+        if ($request_method = POST) {
+            return 307 https://$server_name$request_uri;
+        }
+    
+        # Permanent redirect to the secured site.
+        return 301 https://$server_name$request_uri;
+    }
+
+    # Configuration for the encrypted site.
+    server
+    {
+    
+        listen 8443 ssl http2;
+        listen [::]:8443 ssl http2;
+    
+        server_name  {{proxy_nginx_server_name}};
+    
+        ssl_certificate /tmp/ssl/tls.crt;
+        ssl_certificate_key /tmp/ssl/tls.key;
+    
+        # SSL configs. Do not change.
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:MozSSL:10m;
+        ssl_session_tickets off;
+        ssl_protocols TLSv1.2;
+        ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+        ssl_prefer_server_ciphers off;
+        add_header Strict-Transport-Security "max-age=63072000" always;
+        ssl_stapling on;
+        ssl_stapling_verify on;
+    
+        charset utf-8;
+        keepalive_timeout 5;
+    
+        #CORS support
+        add_header 'Access-Control-Allow-Origin' '*' always;
+        add_header 'Access-Control-Allow-Credentials' 'true' always;
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, PATCH, DELETE, OPTIONS' always;
+        add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With,x-tapis-token' always;
+    
+        # big upload support
+        proxy_connect_timeout 3600;
+        proxy_send_timeout    3600;
+        proxy_read_timeout    3600;
+        send_timeout          3600;
+    
+	# authenticator
+        location /v3/oauth2
+        {
+    #        auth_request /_auth;
+        {%- if "authenticator" in proxy_nginx_service_list %}
+            proxy_pass http://authenticator-api:5000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+    
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Allow-Credentials' 'true';
+                add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, PATCH, DELETE, OPTIONS';
+                add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With,x-tapis-token';
+                return 204;
+            }    
+        }
+
+	# site-router
+        location /v3/site-router
+        {
+           # this location intentionally does NOT get an auth_request directive since the site-router endpoints IS the target of auth_request.
+           proxy_pass http://site-router-api:8000;
+           proxy_redirect off;
+           proxy_set_header Host $host;
+        }
+        
+	# security 
+        location /v3/security
+        {
+    #        auth_request /_auth;
+        {%- if "security" in proxy_nginx_service_list %}
+            proxy_pass http://sk-api:8080;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        } 
+
+	# tenants 
+        location /v3/tenants
+        {
+            # auth_request /_auth;
+        {%- if "tenants" in proxy_nginx_service_list %}
+            proxy_pass http://tenants-api:5000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host localhost:5000;
+        }
+
+	# _auth
+        location /_auth {
+            internal;
+           
+            # check to see if either of the x-tapis-tenant or x-tapis-user are set then return 200
+            set $x_tenant $http_x_tapis_tenant;
+            set $x_user $http_x_tapis_user;
+            if ($x_tenant){
+              return 200;
+            }
+    
+            if ($x_user){
+              return 200;
+            }
+    
+            # if $token is not set (i.e., if x-tapis-token was sent) then return 200
+            set $token $http_x_tapis_token;
+            if ($token ~ "^$") {
+              return 200; 
+            }
+            proxy_method GET;
+            proxy_set_header X-Tapis-Token $http_x_tapis_token;
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}}/v3/site-router/check;
+        }
+    
+	# sites
+        location /v3/sites
+        {
+    #        auth_request /_auth;
+        {%- if "tenants" in proxy_nginx_service_list %}
+            proxy_pass http://tenants-api:5000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host localhost:5000;
+        }
+        
+	# meta
+        location /v3/meta
+        {
+    #        auth_request /_auth;
+        {%- if "meta" in proxy_nginx_service_list %}
+            proxy_pass http://restheart-security:8080;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+        
+	# streams
+        location /v3/streams
+        {
+    #        auth_request /_auth;
+        {%- if "streams" in proxy_nginx_service_list %}
+            proxy_pass http://streams-api:5000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-For $remote_addr;
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Allow-Credentials' 'true';
+                add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, PATCH, DELETE, OPTIONS';
+                add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Mx-ReqToken,X-Requested-With,x-tapis-token';
+                return 204;
+            }
+        }
+        
+	# files
+        location /v3/files
+        {
+    #        auth_request /_auth;
+        {%- if "files" in proxy_nginx_service_list %}
+            proxy_pass http://files-api:8080;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host $host;
+            client_max_body_size 50G;
+        }
+
+	# systems
+        location /v3/systems
+        {
+    #        auth_request /_auth;
+        {%- if "systems" in proxy_nginx_service_list %}
+            proxy_pass http://systems-api:8080;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+
+	# tokens
+        location /v3/tokens
+        {
+            # we intentionally do NOT include an auth_request for Tokens because tokens only handles service requests.
+        {%- if "tokens" in proxy_nginx_service_list %}
+            proxy_pass http://tokens-api:5000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host localhost:5000;
+        }
+
+	# jobs
+        location /v3/jobs
+        {
+    #        auth_request /_auth;
+        {%- if "jobs" in proxy_nginx_service_list %}
+            proxy_pass http://jobs-api:8080;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+
+	# actors 
+        location /v3/actors
+        {
+    #        auth_request /_auth;
+        {%- if "actors" in proxy_nginx_service_list %}
+            proxy_pass http://actors-nginx:80;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}        
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+    # pods
+        location /v3/pods
+        {
+        {%- if "pods" in proxy_nginx_service_list %}
+            proxy_pass http://pods-nginx:80;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}        
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+
+
+	# apps
+        location /v3/apps
+        {
+    #        auth_request /_auth;
+        {%- if "apps" in proxy_nginx_service_list %}
+            proxy_pass http://apps-api:8080;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}        
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+
+	# monitoring
+        location /grafana/
+        {
+        {%- if "monitoring" in proxy_nginx_service_list %}
+            proxy_pass http://monitoring-grafana:3000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}        
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+
+	# pgrest
+        location /v3/pgrest
+        {
+    #        auth_request /_auth;
+        {%- if "pgrest" in proxy_nginx_service_list %}
+            proxy_pass http://pgrest-api:5000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}        
+            proxy_redirect off;
+            proxy_set_header Host $host;
+            # This is some pgrest shenanigans to get the a2cps tenant doing it's stuff. Ask Christian Garcia.
+            if ($host = 'a2cps.tapis.io') {
+                proxy_pass http://c009.rodeo.tacc.utexas.edu:30076;
+            }
+            if ($host = 'a2cpsdev.tapis.io') {
+                proxy_pass http://c009.rodeo.tacc.utexas.edu:32379;
+            }
+        }
+
+	# notifications
+        location /v3/notifications
+        {
+    #        auth_request /_auth;
+        {%- if "notifications" in proxy_nginx_service_list %}
+            proxy_pass http://notifications-api:8080;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}        
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+
+	# globus-proxy
+        location /v3/globus-proxy
+        {
+        {%- if "globus-proxy" in proxy_nginx_service_list %}
+            proxy_pass http://globus-proxy:5000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}        
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+
+    # workflows
+        location /v3/workflows
+        {
+        {%- if "workflows" in proxy_nginx_service_list %}
+            proxy_pass http://workflows-api-service:8000;
+        {%- else %}
+            proxy_pass {{proxy_primary_site_admin_tenant_base_url}};
+        {%- endif %}        
+            proxy_redirect off;
+            proxy_set_header Host $host;
+        }
+
+    }
+}
+
                     match = True
                 else:
                     print(f"Input ({user_input}) did not match expected format.\n")
@@ -678,8 +1108,8 @@ def compute_components_to_deploy(user_dict):
         components.add('vault')
     # primary sites get all remaining components:
     if user_dict['site_type'] == 1:
-        components = components.union(['actors',  'apps', 'files', 'jobs', 'notifications', 
-        'pgrest',  'streams', 'systems', 'tenants'])
+        components = components.union(['actors', 'apps', 'files', 'jobs', 'notifications', 
+        'pgrest', 'pods', 'streams', 'systems', 'tenants'])
     # associate sites get components corresponding to the services they are deploying:
     else:
         print(f"components for associate site: {user_dict['services']}")

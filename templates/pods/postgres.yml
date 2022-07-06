@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pods-postgres
+spec:
+  selector:
+    matchLabels:
+      app: pods-postgres
+  template:
+    metadata:
+      labels:
+        app: pods-postgres
+    spec:
+      containers:
+      - name: pods-postgres
+        image: postgres:14-alpine
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "1"
+            memory: "250M"
+          limits:
+            cpu: "3"
+            memory: "2G"
+        env:
+        - name: PGDATA
+          value: "/pgdata/data"
+        - name: POSTGRES_DB
+          value: "postgres"
+        - name: POSTGRES_USER
+          value: "pods-admin"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pods-secrets
+              key: postgres-password
+        ports:
+        - name: postgres
+          containerPort: 5432
+        volumeMounts:
+        - name: pods-postgres-data
+          mountPath: "/pgdata"
+      volumes:
+      - name: pods-postgres-data
+        persistentVolumeClaim:
+          claimName: {{pods_postgres_pvc}}
+      
