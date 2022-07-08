@@ -38,11 +38,16 @@ spec:
             - containerPort: 3306
           resources: {}
           volumeMounts:
-            - mountPath: /var/lib/mysql
-              name: workflows-mysql-pvc
+            - name: workflows-mysql-pvc
+              mountPath: /var/lib/mysql
+            - name: mysql-init
+              mountPath: /docker-entrypoint-initdb.d
       restartPolicy: Always
       volumes:
         - name: workflows-mysql-pvc
           persistentVolumeClaim:
             claimName: workflows-mysql-pvc
+        - name: mysql-init
+          configMap:
+            name: mysql-init-config
 status: {}

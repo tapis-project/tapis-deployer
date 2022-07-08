@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-init-config
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS workflows;
+    CREATE USER IF NOT EXISTS {{workflows_mysql_username}} IDENTIFIED BY "dev";
+    GRANT ALL PRIVILEGES ON workflows.* TO "{{workflows_mysql_username}}"

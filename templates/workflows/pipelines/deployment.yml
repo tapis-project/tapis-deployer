@@ -21,7 +21,7 @@ spec:
             - python3
             - main.py
           env:
-            - name: API_BASE_URL
+            - name: WORKFLOWS_API_BASE_URL
               value: workflows-api-service
             - name: BROKER_PASSWORD
               valueFrom:
@@ -35,7 +35,7 @@ spec:
             - name: BROKER_USER
               value: {{workflows_rabbitmq_username}}
             - name: DB_HOST
-              value: database
+              value: workflows-mysql-service
             - name: DB_NAME
               value: tasks
             - name: DB_PASSWORD
@@ -49,10 +49,20 @@ spec:
               value: {{workflows_mysql_username}}
             - name: DEPLOYMENT_TYPE
               value: {{workflows_pipelines_deployment_type}}
-            - name: REGISTRY_HOST
-              value: registry
-            - name: REGISTRY_PORT
-              value: "5000"
+            - name: LOG_LEVEL
+              value: {{workflows_log_level}}
+            - name: KUBERNETES_NAMESPACE
+              value: default
+            - name: TAPIS_CONFIG_PATH
+              value: "/src/config.json"
+            - name: TAPIS_CONFIGSCHEMA_PATH
+              value: "/src/configschema.json"
+            - name: TAPIS_DEV_URL
+              value: {{workflows_tapis_dev_url}}
+            - name: TAPIS_SERVICE_SITE_ID
+              value: {{workflows_service_site_id}}
+            - name: TAPIS_SERVICE_TENANT_ID
+              value: {{workflows_service_tenant_id}}
             - name: WORKFLOWS_SERVICE_URL
               value: {{workflows_service_url}}
             - name: WORKFLOWS_SERVICE_ACCOUNT

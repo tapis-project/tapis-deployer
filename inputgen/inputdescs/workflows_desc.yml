@@ -75,8 +75,8 @@ workflows_storage_class:
   source_vars:
     - workflows_storage_class
 
-workflows_tapis_base_url:
-  description: Base URL for authentication
+workflows_tapis_dev_url:
+  description: Base URL for authentication for development
   example: https://dev.develop.tapis.io
   source_vars:
-    - workflows_tapis_base_url
+    - workflows_tapis_dev_url
