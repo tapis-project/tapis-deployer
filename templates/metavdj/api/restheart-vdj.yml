@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restheart-vdj
+spec:
+  selector:
+    matchLabels:
+      app: restheart-vdj
+  template:
+    metadata:
+      labels:
+        app: restheart-vdj
+    spec:
+      containers:
+        - name: restheart-vdj
+          image: tapis/tapis-meta-rh-server:{{meta_image_version}}
+          imagePullPolicy: Always
+          command: [ "java", "-Dfile.encoding=UTF-8", "-server", "-jar", "restheart.jar", "etc/restheart.yml", "--envFile", "etc/config.properties"]
+          ports:
+            - name: tomcat
+              containerPort: 8080
+          env:
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: restheart-security-alt-mongo-uri
+                  key: restheart-security-alt-mongo-uri
+          volumeMounts:
+            - name: restheart-server-alt-config-properties
+              mountPath: /opt/restheart/etc/config.properties
+              subPath: restheart-server-alt-config.properties
+      volumes:
+        - name: restheart-server-alt-config-properties
+          configMap:
+            name: meta-config
+

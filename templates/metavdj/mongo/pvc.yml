@@ -1,0 +1,39 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{meta_restheart_alt_mongo_pvc}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{meta_storage_class}}
+  resources:
+    requests:
+      storage: 10Gi
+
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: chown-restheart-alt-mongo-pvc
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: chown-alt-mongo-volume
+        image: alpine:latest
+        command:
+        - chown
+        - -R
+        - 999:999
+        - /data/db
+        volumeMounts:
+        - name: restheart-alt-mongo-data
+          mountPath: /data/db
+      volumes:
+      - name: restheart-alt-mongo-data
+        persistentVolumeClaim:
+          claimName: {{meta_restheart_alt_mongo_pvc}}
+

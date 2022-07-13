@@ -47,6 +47,12 @@ meta_mongo_pvc:
     - meta_mongo_pvc
   example: restheart-mongo-vol01
 
+meta_alt_mongo_pvc:
+  description: The name of the PVC to use for the alternate meta Mongo instance.
+  source_vars:
+    - meta_alt_mong_pvc
+  example: restheart-alt-mongo-vol01
+
 meta_mongo_backup_pvc:
   description: The name of the PVC to use when backinf up the meta Mongo instance. 
   source_vars:
@@ -59,6 +65,11 @@ meta_restheart_mongo_pvc:
     - meta_mongo_pvc
   example: restheart-mongo-vol02
   
+meta_restheart_alt_mongo_pvc:
+  description: The name of the PVC to use for the alternate meta Mongo Restheart instance.
+  source_vars:
+    - meta_alt_mongo_pvc
+  example: restheart-alt-mongo-vol02
 
 meta_mongo_restheart_image:
   description: The image to use for the Tapis Mongo Restheart container.

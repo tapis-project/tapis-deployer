@@ -1,0 +1,8 @@
+#!/bin/bash
+
+kubectl delete secret restheart-security-alt-mongo-uri
+
+kubectl delete -f restheart-vdj.yml
+kubectl delete -f restheart-security-vdj.yml
+
+

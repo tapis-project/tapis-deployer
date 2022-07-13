@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "meta:"
+
+here=`pwd`
+
+# Set up configmap 
+kubectl apply -f meta-config.yml
+
+cd $here/mongo
+./burnup
+
+cd $here/api
+./burnup
