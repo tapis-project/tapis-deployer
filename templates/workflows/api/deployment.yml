@@ -38,8 +38,8 @@ spec:
                 key: mysql-password
           - name: DB_USER
             value: {{workflows_mysql_username}}
-          - name: DEBUG
-            value: 'true'
+          - name: LOG_LEVEL
+            value: {{workflows_log_level}}
           - name: DJANGO_SECRET_KEY
             valueFrom:
               secretKeyRef:
@@ -54,6 +54,16 @@ spec:
                 key: django-superuser-password
           - name: DJANGO_SUPERUSER_USERNAME
             value: {{workflows_django_superuser_username}}
+          - name: TAPIS_SERVICE_SITE_ID
+            value: {{workflows_service_site_id}}
+          - name: TAPIS_SERVICE_TENANT_ID
+            value: {{workflows_service_tenant_id}}
+          - name: TAPIS_DEV_URL
+            value: {{workflows_tapis_dev_url}}
+          - name: TAPIS_CONFIG_PATH
+            value: "/src/config.json"
+          - name: TAPIS_CONFIGSCHEMA_PATH
+            value: "/src/configschema.json"
           - name: WORKFLOWS_SERVICE_URL
             value: {{workflows_service_url}}
           - name: WORKFLOWS_SERVICE_ACCOUNT
@@ -68,5 +78,6 @@ spec:
         name: workflows-api
         ports:
           - containerPort: 8000
+            name: gunicorn
         resources: {}
         tty: true

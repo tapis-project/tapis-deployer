@@ -8,4 +8,4 @@ spec:
   storageClassName: {{workflows_storage_class}}
   resources:
     requests:
-      storage: 10Gi
+      storage: 50Gi
