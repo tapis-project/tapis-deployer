@@ -3,3 +3,4 @@
 kubectl delete -f jobrdr-Recovery.yml
 kubectl delete -f jobrdr-AltQueue.yml
 kubectl delete -f jobrdr-DeadLetter.yml
+kubectl delete -f jobrdr-EventQueue.yml

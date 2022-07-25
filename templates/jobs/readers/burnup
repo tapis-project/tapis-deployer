@@ -7,4 +7,5 @@ kubectl apply -f ../jobs-config.yml
 kubectl apply -f jobrdr-Recovery.yml
 kubectl apply -f jobrdr-AltQueue.yml
 kubectl apply -f jobrdr-DeadLetter.yml 
+kubectl apply -f jobrdr-EventQueue.yml
 kubectl wait --for=condition=available deploy/jobs-rdr-recovery
