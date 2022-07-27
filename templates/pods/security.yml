@@ -33,7 +33,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: pods-serviceaccount
-  namespace: tapis-dev
+  namespace: {{pods_kube_domain}}
 roleRef:
   kind: Role
   name: pods-role

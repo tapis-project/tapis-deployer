@@ -4,7 +4,7 @@
     "service_tenant_id": "{{pods_service_tenant_id}}",
     "service_site_id": "{{pods_service_site_id}}",
     "tenants": [],
-    "service_name": "abaco",
+    "service_name": "pods",
     "service_password": "$env{SERVICE_PASSWORD}",
     "version": "{{pods_image_version}}",
     "log_file": "",
