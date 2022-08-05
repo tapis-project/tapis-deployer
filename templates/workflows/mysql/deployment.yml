@@ -28,11 +28,17 @@ spec:
           - name: MYSQL_DATABASE
             value: workflows
           - name: MYSQL_PASSWORD
-            value: dev
+            valueFrom:
+              secretKeyRef:
+                name: tapis-workflows-secrets
+                key: mysql-password
           - name: MYSQL_ROOT_PASSWORD
-            value: dev
+            valueFrom:
+              secretKeyRef:
+                  name: tapis-workflows-secrets
+                  key: mysql-root-password
           - name: MYSQL_USER
-            value: workflows
+            value: {{workflows_mysql_username}}
           volumeMounts:
             - name: workflows-mysql-pvc
               mountPath: /var/lib/mysql
