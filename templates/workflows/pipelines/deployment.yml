@@ -17,9 +17,9 @@ spec:
         app: workflows-pipelines-deployment
     spec:
       containers:
-        - args:
-            - python3
-            - main.py
+        - command: [ "/bin/sh", "-c" ]
+          args:
+            - "./scripts/start.sh;"
           env:
             - name: WORKFLOWS_API_BASE_URL
               value: workflows-api-service

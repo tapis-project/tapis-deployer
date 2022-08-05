@@ -16,6 +16,34 @@ spec:
       labels:
         app: workflows-mysql-deployment
     spec:
+      initContainers:
+        - name: mysql-init
+          imagePullPolicy: Always
+          image: mysql:8
+          command: [ "/bin/bash", "-c"]
+          args:
+            - "bash"
+            - "./docker-entrypoint-initdb.d/mysql-init.sh"
+          env:
+          - name: MYSQL_DATABASE
+            value: workflows
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: tapis-workflows-secrets
+                key: mysql-password
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                  name: tapis-workflows-secrets
+                  key: mysql-root-password
+          - name: MYSQL_USER
+            value: {{workflows_mysql_username}}
+          volumeMounts:
+            - name: workflows-mysql-pvc
+              mountPath: /var/lib/mysql
+            - name: mysql-init-script
+              mountPath: /docker-entrypoint-initdb.d
       containers:
         - env:
             - name: MYSQL_DATABASE
@@ -40,14 +68,14 @@ spec:
           volumeMounts:
             - name: workflows-mysql-pvc
               mountPath: /var/lib/mysql
-            - name: mysql-init
+            - name: mysql-init-script
               mountPath: /docker-entrypoint-initdb.d
       restartPolicy: Always
       volumes:
         - name: workflows-mysql-pvc
           persistentVolumeClaim:
             claimName: workflows-mysql-pvc
-        - name: mysql-init
+        - name: mysql-init-script
           configMap:
-            name: mysql-init-config
+            name: workflows-mysql-init-configmap
 status: {}

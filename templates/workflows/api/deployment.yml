@@ -61,9 +61,9 @@ spec:
           - name: TAPIS_DEV_URL
             value: {{workflows_tapis_dev_url}}
           - name: TAPIS_CONFIG_PATH
-            value: "/src/config.json"
+            value: "/src/backend/config.json"
           - name: TAPIS_CONFIGSCHEMA_PATH
-            value: "/src/configschema.json"
+            value: "/src/backend/configschema.json"
           - name: WORKFLOWS_SERVICE_URL
             value: {{workflows_service_url}}
           - name: WORKFLOWS_SERVICE_ACCOUNT
