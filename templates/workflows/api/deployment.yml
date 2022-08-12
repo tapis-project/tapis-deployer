@@ -16,6 +16,8 @@ spec:
         args:
           - "./scripts/start.sh;"
         env:
+          - name: ENV
+            value: PROD
           - name: BROKER_USER
             value: {{workflows_rabbitmq_username}}
           - name: BROKER_PASSWORD
