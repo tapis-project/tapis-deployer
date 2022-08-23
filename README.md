@@ -102,3 +102,11 @@ If deploying Tapis on a Minikube installation, the following extra steps should 
 - 
 
 
+# Deployment to Kubernetes 
+
+Once Kubernetes deployment files have been generated using the steps above, proceed as follows to 
+start the Tapis services.
+
+## Associate Site Deployment
+
+The section covers the case of deploying an associate site. 
