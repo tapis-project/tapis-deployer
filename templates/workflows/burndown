@@ -1,0 +1,16 @@
+#!/bin/bash
+
+here=`pwd`
+
+cd $here/api
+./burndown
+
+cd $here/pipelines
+./burndown
+
+cd $here/mysql
+./burndown
+
+cd $here/rabbitmq
+./burndown
+

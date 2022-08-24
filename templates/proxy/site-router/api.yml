@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: site-router-api
-        image: tapis/site-router-api:{{proxy_image_version}}
+        image: tapis/site-router-api:{{site_router_image_version}}
         imagePullPolicy: Always
         ports:
         - name: http

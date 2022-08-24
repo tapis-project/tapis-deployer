@@ -1,0 +1,72 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ test, dev, staging, main ]
+  pull_request:
+    branches: [ test, dev, staging, main ]
+
+jobs:
+
+  build-deployer:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag tapis/deployer:${{ steps.extract_branch.outputs.branch }}
+
+    # if tag == prod release, tag as latest 
+    - name: Build the Docker image with latest tag
+      if: ${{ steps.extract_branch.outputs.branch == 'main' }}
+      run: docker build . --file Dockerfile --tag tapis/deployer:latest --tag tapis/deployer:1.2
+
+    - name: Push the image to dockerhub with latest tag
+      run: docker push --all-tags tapis/deployer
+
+  build-deployer-inputgen:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile-inputgen --tag tapis/deployer-input-gen:${{ steps.extract_branch.outputs.branch }}
+
+    # if tag == prod release, tag and push as latest 
+    - name: Build the Docker image with latest tag
+      if: ${{ steps.extract_branch.outputs.branch == 'main' }}
+      run: docker build . --file Dockerfile-inputgen --tag tapis/deployer-input-gen:latest --tag tapis/deployer-input-gen:1.2
+
+    - name: Push the image to dockerhub with latest tag
+      run: docker push --all-tags tapis/deployer-input-gen
+

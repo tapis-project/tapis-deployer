@@ -1,0 +1,26 @@
+#!/bin/bash
+
+here=`pwd`
+
+# mysql
+cd $here/mysql
+./burnup
+
+# Wait a full 2 mintues, then wait for the mysql deployment to be
+# available if not already
+kubectl wait --timeout=120s
+kubectl wait --for=condition=available deploy/workflows-mysql-deployment
+
+# rabbitmq
+cd $here/rabbitmq
+./burnup
+
+kubectl wait --timeout=120s --for=condition=available deploy/workflows-rabbitmq-deployment
+
+# pipelines
+cd $here/pipelines
+./burnup
+
+# api
+cd $here/api
+./burnup

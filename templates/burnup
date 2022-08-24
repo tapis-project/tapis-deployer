@@ -41,12 +41,18 @@ pingsite(){
   ping -c 1 -W 5 $1
 }
 
-checkvault_kube(){
+checkvault(){
   # TODO: fix to work if vault is remote
   # will not work until vault is up
-  if [ "`kubectl exec -it deploy/vault vault status | grep Sealed | awk '{print $2}'`" != "false" ]
+  echo "Vault Sealed?" 
+  if kubectl exec -it deploy/vault vault status | grep Sealed | grep false 
   then
-    echo "Vault check failed. Exiting."
+    echo "Vault check succeeded."
+  else
+    echo "Vault check failed. Check vault status & re-run burnup."
+    echo "e.g. 'kubectl exec -it deploy/vault vault status'"
+    echo "(Vault should be Initialized = true and Sealed = false.)"
+    echo "Exiting."
     exit 1
   fi
 }
@@ -150,6 +156,11 @@ pgrest-a2cps-prod(){
   ./burnup
 }
 
+pods(){
+  cd $here/pods
+  ./burnup
+}
+
 proxy(){
   cd $here/proxy
   ./burnup
@@ -190,11 +201,14 @@ vault(){
   ./burnup
 }
 
+workflows(){
+  cd $here/workflows
+  ./burnup
+}
 
 primary_site(){
   echo
 }
-
 
 associate_site(){
   echo
@@ -231,6 +245,7 @@ init(){
 
   {%- if "vault" in components_to_deploy%}
   vault
+  checkvault
   {% else %}
   # using external vault, so do not start one here
   {% endif %}
@@ -239,7 +254,7 @@ init(){
   skadmin
   {% endif %}
 
-  {%- if site_type == "2" %}
+  {%- if site_type == 2 %}
   get_public_keys
   {%- endif %}
 
@@ -318,6 +333,13 @@ secondary_services() {
   pgrest-a2cps-prod
   {% endif %}
 
+  {%- if  "pods" in components_to_deploy %}
+  pods
+  {% endif %}
+
+  {%- if  "workflows" in components_to_deploy %}
+  workflows
+  {% endif %}
 
 }
 

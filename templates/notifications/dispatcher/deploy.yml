@@ -57,3 +57,9 @@ spec:
               secretKeyRef:
                 name: tapis-notifications-secrets
                 key: rabbitmq-user-password
+          - name: TAPIS_MAIL_PROVIDER
+            value: "{{notifications_mail_provider}}"
+          - name: TAPIS_SMTP_HOST
+            value: "{{notifications_mail_host}}"
+          - name: TAPIS_SMTP_PORT
+            value: "{{notifications_mail_port}}"

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+here=`pwd`
+
+kubectl apply -f "$here/service.yml"
+kubectl apply -f "$here/pvc.yml"
+kubectl apply -f "$here/mysql-init-config.yml"
+kubectl apply -f "$here/deployment.yml" 

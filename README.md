@@ -101,3 +101,12 @@ If deploying Tapis on a Minikube installation, the following extra steps should 
 - Create a ClusterRole & ClusterRoleBinding to allow default user in default namespace to list/create/get/delete secrets.
 - 
 
+
+# Deployment to Kubernetes 
+
+Once Kubernetes deployment files have been generated using the steps above, proceed as follows to 
+start the Tapis services.
+
+## Associate Site Deployment
+
+The section covers the case of deploying an associate site. 
