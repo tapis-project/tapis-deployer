@@ -1,0 +1,1 @@
+{"status": "error", "message": "Token is revoked.", "version": "{{ site_router_image_version }}", "result": null }
