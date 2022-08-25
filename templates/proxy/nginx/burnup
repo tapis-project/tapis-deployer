@@ -4,5 +4,5 @@ kubectl create secret tls tapis-tls-cert --cert={{proxy_nginx_cert_file}} --key=
 kubectl apply -f service.yml
 
 kubectl create configmap tapis-nginx-config --from-file=nginx.conf
-kubectl create configmap tapis-nginx-revoke_error --from-file=revoke_error.json
+kubectl create configmap tapis-nginx-revoke-error --from-file=token-revoked.json
 kubectl apply -f deploy.yml 
