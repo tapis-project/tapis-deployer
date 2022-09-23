@@ -227,6 +227,8 @@ check_vault_unsealed(){
 }
 
 create_kservice(){
+    # Create kubernetes services objects for each component. This is required before starting nginx because nginx will crash if it cannot connect to locations it is trying to proxy to. 
+    cd $here
     echo "creating kubernetes servies:"
     find . -name '*service*.yml' -exec kubectl apply -f {} \;
 }
@@ -240,6 +242,7 @@ get_public_keys(){
 
 init(){
   {%- if "proxy" in components_to_deploy%}
+  create_kservice
   proxy
   {% endif %}
 
