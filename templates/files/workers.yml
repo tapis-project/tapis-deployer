@@ -17,8 +17,10 @@ spec:
       labels:
         app: files-workers
     spec:
+      {%- if files_node_selector %}
       nodeSelector:
-        exempt: "yes"
+        exempt: "{{files_node_selector}}"
+      {%- endif%}
       containers:
         - envFrom:
             - configMapRef:
