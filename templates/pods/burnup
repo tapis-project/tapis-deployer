@@ -5,11 +5,11 @@ kubectl apply -f services.yml
 kubectl apply -f security.yml
 
 # Certs
-kubectl create secret tls pods-certs --cert=$HOME/ssl/pods/wild.pods.icicle.develop.tapis.io.pem --key=$HOME/ssl/wild.pods.icicle.develop.tapis.io.key
+kubectl create secret tls pods-certs --cert=$HOME/ssl/pods/wild.pods.icicle.develop.tapis.io.pem --key=$HOME/ssl/pods/wild.pods.icicle.develop.tapis.io.key
 
 # Configs
 kubectl create configmap pods-config --from-file=config.json
-kubectl create configmap pods-nginx --from-file=nginx.conf
+kubectl create configmap pods-traefik-conf --from-file=traefik.conf
 
 # PVC
 kubectl apply -f postgres-pvc.yml
@@ -23,4 +23,4 @@ kubectl apply -f rabbitmq.yml
 kubectl apply -f api.yml
 kubectl apply -f spawner.yml
 kubectl apply -f health.yml
-kubectl apply -f nginx.yml
+kubectl apply -f traefik-proxy.yml

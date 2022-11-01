@@ -19,7 +19,7 @@ spec:
         command: ["python3", "-u", "/home/tapis/service/health.py"]
         resources:
           requests:
-            cpu: "1"
+            cpu: "500m"
             memory: "5M"
           limits:
             cpu: "2"
