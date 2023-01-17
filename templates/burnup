@@ -186,6 +186,11 @@ systems(){
   ./burnup
 }
 
+tapisui(){
+  cd $here/tapisui
+  ./burnup
+}
+
 tenants(){
   cd $here/tenants
   ./burnup
@@ -338,6 +343,10 @@ secondary_services() {
 
   {%- if  "pods" in components_to_deploy %}
   pods
+  {% endif %}
+
+  {%- if  "tapisui" in components_to_deploy %}
+  tapisui
   {% endif %}
 
   {%- if  "workflows" in components_to_deploy %}
