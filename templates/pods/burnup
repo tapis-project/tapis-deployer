@@ -24,3 +24,4 @@ kubectl apply -f api.yml
 kubectl apply -f spawner.yml
 kubectl apply -f health.yml
 kubectl apply -f nginx.yml
+

@@ -4,6 +4,12 @@ admin_service_url:
   source_vars:
     - primary_site_admin_tenant_base_url
 
+admin_devtenant_url:
+  description: The base URL of the dev tenant in the primary site.
+  example: https://dev.develop.tapis.io
+  source_vars:
+    - admin_devtenant_url
+
 admin_service_site_id:
   description: The site_id of this deployment.
   example: tacc

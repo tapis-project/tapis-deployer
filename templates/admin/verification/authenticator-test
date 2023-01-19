@@ -1,6 +1,6 @@
 #!/bin/bash
 #
 ## authenticator:
-curl -d '{"username": "testuser2", "password": "testuser2", "grant_type": "password"}' -H "Content-type: application/json"  {{admin_service_url}}/v3/oauth2/tokens
+curl -d '{"username": "testuser2", "password": "testuser2", "grant_type": "password"}' -H "Content-type: application/json"  {{admin_devtenant_url}}/v3/oauth2/tokens
 
 # should return 200 and JSON with token

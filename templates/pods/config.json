@@ -16,6 +16,11 @@
     "rabbitmq_dash_host": "pods-rabbitmq-dash",
     "rabbitmq_user": "pods-admin",
     "rabbitmq_pass": "$env{RABBITMQ_PASSWORD}",
+    "image_allow_list": [
+        "jstubbs/abaco_test",
+        "tuyamei/smartfoodshed-server",
+        "ssquid/kapp"
+    ],
     "spawner_abaco_conf_host_path": "$env{abaco_host_path}/config-local.json",
     "spawner_host_id": 0,
     "spawner_host_ip": "who knows?",
