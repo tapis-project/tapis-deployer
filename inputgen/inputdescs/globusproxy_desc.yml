@@ -1,0 +1,51 @@
+image:
+  description: The version of the Globus-Proxy API that you wish to deploy.
+  example: dev, stage, 1.2.0
+  source_vars: 
+    - globus_proxy_image 
+    - tapis_image_version
+
+primary_site_admin_tenant_base_url:
+  description: The base URL of the admin tenant in the primary site.
+  example: https://admin.develop.tapis.io
+  source_vars:
+    - globus_primary_site_admin_tenant_base_url
+
+service_site_id:
+  description: The site_id of this deployment.
+  example: tacc
+  source_vars:
+    - globus_proxy_site_id
+
+service_tenant_id:
+  description: The tenant_id of the admin tenant for this deployment.
+  example: admin
+  source_vars:
+    - globus_proxy_tenant_id
+
+service_name:
+  description: TODO
+  example: admin
+  source_vars:
+    - globus_proxy_name
+
+log_level:
+  description: Log level
+  example: DEBUG
+  source_vars: 
+    - globus_proxy_log_level 
+    - tapis_log_level
+
+tenants:
+  description: The list of tenants owned by the site that the Globus-Proxy service will honor.
+  source_vars:
+    - globus_proxy_tenants
+    - site_tenants
+  example: ["dev", "tacc"]
+
+show_traceback:
+  description: Whether to show the full (Python) traceback in logs.
+  source_vars: 
+    - globus_proxy_show_traceback
+    - tapis_show_traceback
+  example: true

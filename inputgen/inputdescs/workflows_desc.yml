@@ -1,5 +1,5 @@
 workflows_api_image_tag:
-  description: Image tag that correlates to the version of the api you want to deploy
+  description: Image tag that corresponds to the version of the api you want to deploy
   example: test, dev, staging, prod, latest, 1.0.0
   source_vars:
     - workflows_api_image_tag
@@ -35,7 +35,7 @@ workflows_pipelines_deployment_type:
     - workflows_pipelines_deployment_type
 
 workflows_pipelines_image_tag:
-  description: Image tag that correlates to the version of the api you want to deploy
+  description: Image tag that corresponds to the version of the api you want to deploy
   example: test, dev, staging, prod, latest, 1.0.0
   source_vars:
     - workflows_pipelines_image_tag

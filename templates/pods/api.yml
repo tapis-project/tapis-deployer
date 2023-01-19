@@ -18,7 +18,7 @@ spec:
         imagePullPolicy: {{pods_image_pull_policy}}
         resources:
           requests:
-            cpu: "1"
+            cpu: "500m"
             memory: "5M"
           limits:
             cpu: "2"

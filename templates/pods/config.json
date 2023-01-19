@@ -19,8 +19,14 @@
     "image_allow_list": [
         "jstubbs/abaco_test",
         "tuyamei/smartfoodshed-server",
-        "ssquid/kapp"
+        "ssquid/kapp",
+        "av11/sd-webui-auto-bulk",
+        "jolibrain/deepdetect_cpu",
+        "notchristiangarcia/vaapi-v1-f",
+        "notchristiangarcia/vaapi-v1-b",
+        "arturh85/automatic1111_stable-diffusion-webui"
     ],
+    "pvc_storage_class_name": "{{pods_storage_class}}",
     "spawner_abaco_conf_host_path": "$env{abaco_host_path}/config-local.json",
     "spawner_host_id": 0,
     "spawner_host_ip": "who knows?",
