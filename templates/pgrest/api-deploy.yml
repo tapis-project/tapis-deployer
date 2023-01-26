@@ -10,37 +10,11 @@ spec:
     metadata:
       labels:
         app: pgrest-api
-    spec:
-      initContainers: 
-      - name: pgrest-api-migrate
-        image: tapis/pgrest-api:{{pgrest_image_version}}
-        imagePullPolicy: Always
-        command: ["python", "/home/tapis/manage.py", "migrate_schemas", "--shared"]
-        env:
-        - name: TAPIS_CONFIGSCHEMA_PATH
-          value: /home/tapis/configschema.json
-        - name: TAPIS_CONFIG_PATH
-          value: /home/tapis/config.json
-        - name: service_password
-          valueFrom:
-            secretKeyRef:
-              name: tapis-pgrest-secrets
-              key: service-password
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: tapis-pgrest-secrets
-              key: kubernetes-postgres
-        volumeMounts:
-        - name: pgrest-config
-          mountPath: /home/tapis/config.json
-          subPath: pgrest-config.json
-      
+    spec:      
       containers:
       - name: pgrest-api
         image: tapis/pgrest-api:{{pgrest_image_version}}
         imagePullPolicy: Always
-        command: ["/usr/local/bin/uwsgi", "--ini", "paas/uwsgi.ini"]
         ports:
         - name: http
           containerPort: 5000
@@ -70,5 +44,3 @@ spec:
       - name: tapis-pgrest-secrets
         secret:
           secretName: tapis-pgrest-secrets
-
-
