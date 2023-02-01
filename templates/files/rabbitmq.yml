@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: files-rabbitmq
-          image: rabbitmq:3.8-alpine
+          image: rabbitmq:3.11.7-management
           ports:
             - containerPort: 5672
           env:
