@@ -1,0 +1,24 @@
+---
+
+- name: check user-provided config versions against release versions
+  hosts: localhost
+  connection: local
+
+  tasks: 
+
+  - name: load release versions
+    ansible.builtin.include_vars: 
+      file: release_versions.yml
+      name: release_versions
+
+  # print config & release versions 
+#  - debug: 
+#      msg: "config: {{ lookup('vars', item.key ) }}  release_versions: {{ item.value }}"
+#    with_items: "{{ lookup('dict', release_versions) }}" 
+
+  # fail if version mismatch
+  - fail: 
+      msg: "Your config-provided version of {{ item.key }} ({{ lookup('vars', item.key) }}) does not match the release version ({{ item.value }})."
+    when: "lookup('vars', item.key ) != item.value"
+    with_items: "{{ lookup('dict', release_versions ) }}" 
+
