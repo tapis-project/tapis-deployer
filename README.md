@@ -101,6 +101,15 @@ If deploying Tapis on a Minikube installation, the following extra steps should 
 - Create a ClusterRole & ClusterRoleBinding to allow default user in default namespace to list/create/get/delete secrets.
 - 
 
+# Non-Docker Usage
+
+To generate the Tapis burnup/YAML scripts without the docker container, you can run the python directly:
+
+    DEPLOYERDIR="/path/to/deployer/checkout"
+    INPUTYML="/path/to/your/deployer_input.yml
+    DESTDIR="/path/to/deployment_dir"
+    python3 $DEPLOYERDIR/tapis-api-generator.py --input $INPUTYML --destdir $DESTDIR
+
 
 # Deployment to Kubernetes 
 
