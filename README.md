@@ -107,7 +107,7 @@ To generate the Tapis burnup/YAML scripts without the docker container, you can 
 
     DEPLOYERDIR="/path/to/deployer/checkout"
     INPUTYML="/path/to/your/deployer_input.yml
-    DESTDIR="/path/to/deployment_dir"
+    DESTDIR="/path/to/deployment_output_dir"
     python3 $DEPLOYERDIR/tapis-api-generator.py --input $INPUTYML --destdir $DESTDIR
 
 
