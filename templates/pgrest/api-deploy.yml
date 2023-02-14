@@ -28,6 +28,11 @@ spec:
             secretKeyRef:
               name: tapis-pgrest-secrets
               key: service-password
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pgrest-secrets
+              key: kubernetes-postgres
         volumeMounts:
         - name: pgrest-config
           mountPath: /home/tapis/config.json
