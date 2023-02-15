@@ -34,7 +34,7 @@
     "spawner_host_queues": [
         "tacc"
     ],
-    "show_traceback": true,
+    "show_traceback": false,
     "web_access_control": "jwt",
     "web_user_role": "Internal/everyone",
     "web_accept_nonce": true,
