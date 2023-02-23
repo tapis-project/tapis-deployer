@@ -39,6 +39,11 @@ spec:
               configMapKeyRef:
                 name: systems-config
                 key: service_site_url
+          - name: TAPIS_GLOBUS_CLIENT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: systems-config
+                key: globus_client_id
           - name: TAPIS_DB_PASSWORD
             valueFrom:
               secretKeyRef:
