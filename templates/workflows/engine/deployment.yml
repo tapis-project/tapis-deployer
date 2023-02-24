@@ -2,19 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: workflows-pipelines-deployment
-  name: workflows-pipelines-deployment
+    app: workflows-engine-deployment
+  name: workflows-engine-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: workflows-pipelines-deployment
+      app: workflows-engine-deployment
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: workflows-pipelines-deployment
+        app: workflows-engine-deployment
     spec:
       containers:
         - command: [ "/bin/sh", "-c" ]
@@ -74,7 +74,7 @@ spec:
                   key: service-password
           image: tapis/workflows-pipelines:{{workflows_pipelines_image_tag}}
           imagePullPolicy: Always
-          name: workflows-pipelines
+          name: workflows-engine
           ports:
             - containerPort: 9000
           resources: {}
@@ -84,6 +84,7 @@ spec:
               mountPath: /mnt/pipelines/
       volumes:
         - name: pipelines-mount
-          persistentVolumeClaim:
-            claimName: workflows-pipelines-pvc      
+          nfs: 
+            server: '{{ NFS_SERVER_SERVICE_IP }}'
+            path: /     
       restartPolicy: Always

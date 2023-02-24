@@ -15,10 +15,20 @@ kubectl wait --for=condition=available deploy/workflows-mysql-deployment
 cd $here/rabbitmq
 ./burnup
 
-kubectl wait --timeout=120s --for=condition=available deploy/workflows-rabbitmq-deployment
+kubectl wait --for=condition=available deploy/workflows-rabbitmq-deployment
+kubectl wait --timeout=120s
 
-# pipelines
-cd $here/pipelines
+cd $here/nfs-server
+./burnup
+
+kubectl wait --for=condition=available deploy/workflows-nsf-server-deployment
+kubectl wait --timeout=120s
+
+# workflow engine
+cd $here/engine
+./burnup
+
+cd $here/engine-streams
 ./burnup
 
 # api

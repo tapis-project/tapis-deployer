@@ -5,7 +5,13 @@ here=`pwd`
 cd $here/api
 ./burndown
 
-cd $here/pipelines
+cd $here/engine
+./burndown
+
+cd $here/engine-streams
+./burndown
+
+cd $here/nfs-server
 ./burndown
 
 cd $here/mysql

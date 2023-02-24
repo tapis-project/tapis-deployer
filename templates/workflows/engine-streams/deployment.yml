@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: workflow-sengine-streams-deployment
+  name: workflows-engine-streams-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workflows-engine-streams-deployment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: workflows-engine-streams-deployment
+    spec:
+      serviceAccountName: task-executors
+      containers:
+        - env:
+            - name: LOG_LEVEL
+              value: DEBUG
+          image: tapis/workflow-engine-streams:dev
+          imagePullPolicy: Always
+          name: workflow-engine-streams
+          ports:
+            - containerPort: 9000
+          resources: {}
+          tty: true
+          volumeMounts:
+            - name: pipelines-mount
+              mountPath: /mnt/pipelines/
+      volumes:
+        - name: pipelines-mount
+          nfs: 
+            server: '{{ NFS_SERVER_SERVICE_IP }}'
+            path: /    
+      restartPolicy: Always

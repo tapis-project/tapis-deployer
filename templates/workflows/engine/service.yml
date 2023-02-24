@@ -2,14 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: workflows-pipelines-deployment
-  name: workflows-pipelines-service
+    app: workflows-engine-deployment
+  name: workflows-engine-service
 spec:
   ports:
     - name: "9000"
       port: 9000
       targetPort: 9000
   selector:
-    app: workflows-pipelines-deployment
+    app: workflows-engine-deployment
 status:
   loadBalancer: {}
