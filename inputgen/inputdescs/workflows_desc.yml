@@ -80,3 +80,9 @@ workflows_tapis_dev_url:
   example: https://dev.develop.tapis.io
   source_vars:
     - workflows_tapis_dev_url
+
+workflows_engine_streams_image_tag:
+  description: Image tag that corresponds to the version of the engine streams image to deploy
+  example: test, dev, staging, prod, latest, 1.0.0
+  source_vars:
+    - workflows_engine_streams_image_tag
