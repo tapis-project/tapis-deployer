@@ -1,4 +1,4 @@
-notifications_postgres_image: postgresql:12.4
+notifications_postgres_image: postgres:12.4
 notifications_pgadmin_image: dpage/pgadmin4:6.20
 notifications_rabbitmq_image: rabbitmq:3.8.11-management
 notifications_api_image: tapis/notifications:1.2.0
