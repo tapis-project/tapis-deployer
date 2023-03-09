@@ -1,1 +1,1 @@
-{"status": "error", "message": "Token is revoked.", "version": "1.3.0", "result": null }
+{"status": "error", "message": "Token is revoked.", "version": "{{ proxy_site_router_api_version }}", "result": null }
