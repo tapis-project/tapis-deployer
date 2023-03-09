@@ -1,0 +1,18 @@
+---
+
+- name: create proxy dir
+  ansible.builtin.file:
+    state: directory
+    path: "{{ tapisdir }}/proxy"
+
+- name: create locations dir
+  ansible.builtin.file:
+    state: directory
+    path: "{{ tapisdir }}/proxy/locations"
+  register: proxy_locations_dir
+
+- name: nginx.conf template
+  ansible.builtin.template:
+    src: nginx.conf
+    dest: "{{ tapisdir }}/proxy/nginx.conf"
+

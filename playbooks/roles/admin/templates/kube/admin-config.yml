@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: admin-config
+data:
+  "primary_site_admin_tenant_base_url": "{{admin_service_url}}"
+  "service_site_id": "{{admin_service_site_id}}"
+  "service_tenant_id": "{{admin_service_tenant_id}}"
+  "service_name": "{{admin_service_name}}"
+  

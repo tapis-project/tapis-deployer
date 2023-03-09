@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "burnup actors:"
+
+docker compose up -d
+

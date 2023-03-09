@@ -1,0 +1,7 @@
+
+tapis_installs:
+  hosts:
+    tapisquickstart-kube1:
+      ansible_connection: local
+      tapisflavor: kube
+

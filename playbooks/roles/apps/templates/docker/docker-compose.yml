@@ -1,0 +1,33 @@
+
+networks:
+    tapis:
+        name: tapis
+
+services:
+    apps-api:
+        image: {{ apps_api_image }}
+        environment:
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://apps-postgres:5432/tapisappdb
+            - TAPIS_DB_USER=tapis_app
+            - "TAPIS_SITE_ID={{ apps_service_site_id }}"
+            - "TAPIS_TENANT_SVC_BASEURL={{ apps_service_url }}"
+            - "TAPIS_DB_PASSWORD={{ apps_postgres_password }}" # TODO
+            - "TAPIS_SERVICE_PASSWORD={{ apps_service_password }}" # TODO
+
+    apps-postgres:
+        image: {{ apps_postgres_image }}
+        # ports:
+        # - "5432"
+        environment:
+        - PGDATA="/pgdata/data"
+        - "POSTGRES_PASSWORD={{ apps_postgres_password }}"
+        volumes:
+        - "{{ tapisdatadir }}/pgdata:/pgdata"
+
+    apps-pgadmin:
+        image: {{ apps_pgadmin_image }}
+        # ports:
+        # - "80"
+        environment:
+        - PGADMIN_DEFAULT_EMAIL="wow@example.com"
+        - "PGADMIN_DEFAULT_PASSWORD={{ apps_pgadmin_password }}"

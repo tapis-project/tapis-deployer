@@ -1,0 +1,22 @@
+---
+
+monitoring_service_url: "{{ global_service_url }}"
+monitoring_service_tenant_id: admin
+monitoring_service_site_id: "{{ global_site_id }}"
+monitoring_service_name: monitoring
+monitoring_prometheus_external_label: 
+monitoring_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
+monitoring_vault_url: "{{ global_vault_url }}"
+monitoring_service_grafana_username:
+monitoring_service_grafana_password: 
+monitoring_service_storage_class: "{{ global_storage_class }}"
+monitoring_service_prometheus_pvc: prometheus-vol01
+monitoring_service_grafana_pvc: grafana-vol01
+monitoring_service_elasticsearch_pvc: elasticsearch-data-vol01
+monitoring_services_list:
+  - security
+  - streams
+  - meta
+
+# must be string
+#monitoring_services_list: '[ "security","streams","meta" ]'

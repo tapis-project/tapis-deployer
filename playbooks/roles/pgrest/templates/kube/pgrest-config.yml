@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: pgrest-config
+data:
+  pgrest-config.json: |-
+    {
+      "service_site_url": "{{pgrest_service_url}}",
+      "service_tenant_id": "{{pgrest_service_tenant_id}}",
+      "service_site_id": "{{pgrest_service_site_id}}",
+      "site_id": "{{pgrest_service_site_id}}",
+      "service_name": "{{pgrest_service_name}}",
+      "primary_site_admin_tenant_base_url": "{{pgrest_service_url}}",
+      "tenants": {{pgrest_tenants|to_json}},
+      "log_level": "DEBUG",
+      "show_traceback": false,
+      "databases": {
+        "default": {
+          "NAME": "pgrestdb",
+          "USER": "pgrest",
+          "PASSWORD": "$env{POSTGRES_PASSWORD}",
+          "HOST": "pgrest-postgres",
+          "PORT": 5432,
+          "ENGINE": "django_tenants.postgresql_backend"
+        }
+      }
+    }
+

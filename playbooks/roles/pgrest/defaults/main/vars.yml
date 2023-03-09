@@ -1,0 +1,13 @@
+---
+
+
+pgrest_service_name: pgrest
+pgrest_service_site_id: "{{ global_site_id }}"
+pgrest_service_tenant_id: admin
+pgrest_service_url: "{{ global_service_url }}"
+pgrest_storage_class: "{{ global_storage_class }}"
+pgrest_postgres_pvc: pgrest-postgres-vol01
+pgrest_tenants:
+  - dev
+  - admin
+

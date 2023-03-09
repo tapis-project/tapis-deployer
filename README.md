@@ -1,121 +1,65 @@
-# Tapis Deployer 
+# Tapisctl 
 
-This tool generates the scripts and Kubernetes YAML used to stand up an instance of Tapis.
+Based on Ansible playbooks and roles. Used for generating deployment files for tapis. 
 
-## Usage
+Includes both Docker and Kubernetes deployment flavors.
 
-Tapis Deployer works in two phases:
+## Install
 
-File Generation:
+Run as regular user (e.g. rocky).
 
-    1. Generate a complete input.yml file from either an interactive prompt, a start file (also in yml), or a combination of the two.
-    2. Validate the input.yml file generated in Step 1 and manually correct any validation errors. 
-    3. Feed the complete input.yml generated in Step 1 to the kube generator to generate a directory of Kubernetes yaml files.
+Install Ansible using your Linux distro package manager. e.g. For Rocky Linux:
 
-Deployment:
+    # sudo dnf install ansible libselinux-python3
 
-    3. Deploy the Tapis software to Kubernetes using the directory of Kubernetes files generates in Step 2 of File Generation.
+Install Ansible community module:
 
-## Run input-generator (Step 1)
+    # ansible-galaxy collection install community.general
 
-The input generate accomplishes step 1 of file generation. The program source code is contained within the `inputgen` directory. The program
-is also packaged as a Docker image, `tapis/deployer-input-gen`. 
+For testing you can use one of the inventory_example inventories. For example
 
-To run with the Docker image, run a command in the following format:
+    # ansible-playbook -i inventory_example/docker-inventory.yml playbooks/generate.yml
 
-```
-   $ docker run --rm -v /path/on/host:/data -it tapis/deployer-input-gen <options>
-```
+After running you should find ~/tmp/tapisquickstart-docker1 containing docker compose.yml files for each Tapis component.
 
-For example,
+There is a similar example playbook for Kubernetes inventory_example/kube-inventory.yml.
 
-```
-  $  docker run --rm -v $(pwd)/output:/data -it tapis/deployer-input-gen --out=/data --start=/data/start_file.yml
-```
+## Customize Your Install
 
-The above command will mount a directory called "output" in the current workding directory into the deployer-input-gen container so that
-the outputs written to `/data` in the container can be retained after the container is removed. Additionally, the command above specifes some flags to the input generator program, specifically, the `--out=/data --start=/data/start_file.yml`. 
+Copy the inventory_example dir out of the repo dir and start modifying the hosts and host_vars files to suit your needs. 
 
-You can see full documentation on how to run input generator via the help flag:
+    # cp -r inventory_example ~/inventory
+    # mv ~/inventory/docker-inventory.yml ~/inventory/hosts
 
-```
-  $ docker run --rm -v $(pwd)/output:/data -it tapis/deployer-input-gen -h
-```
+For example if you want to change the location of the generated files, add a var to the ~/inventory/hosts file:
 
-The input generator program will prompt you for the values for different inputs. You can use a start file (the `--start` flag) to have input
-generator retrieve the values from a yaml file and not prompt you.
+    tapis_installs:
+      hosts:
+        tapisquickstart-docker1:
+          ansible_connection: local
+          tapisflavor: docker
+          tapisdir: '{{ ansible_env.HOME }}/tmp/tapis-1.3'
 
-You can quit the program at any time by entering `_QUIT` at a prompt. Input generator will save your work to a file (called `start_file.yml`)
-which can then be used to resume from where you left off.
+(See Ansible docs for more setup.)
 
+Run the playbook after making changes:
 
-## Validate an input.yml File (Step 2)
+    # ansible-playbook -i ~/inventory/hosts playbooks/generate.yml
 
-After using inputgen to generate a `raw_input_file.yml` file, it is a good idea to validate the file 
-before proceeding to tne next step to generate the complete directory of Kubernetes deployment files 
-in the next step.
+## Docker vs. Kubernetes Installation
 
-```
-$ docker run --rm -it -v /path/on/host:/data tapis/deployer-input-gen -i -f /data/raw_inputs_file.yml 
-```
+You can generate either Docker- or Kubernetes-specific deployment files using the same playbooks. You specify this in your inventory (hosts file) by specifying the `tapisflavor` variable one of 2 ways.
+
+      tapisflavor: docker
+
+or:
+
+      tapisflavor: kube
 
 
-## Run Deployer to Generate Kubernetes Deployment Scripts (Step 3)
+## Other Playbooks
 
-In this step, we feed the `input.yml` created in the previous steps into deployer to generate
-the Kubernetes scripts needed for the site deployment. Only the directories of scripts corresponding to components being deployed at the site will be generated. Deployer uses the variable `components_to_deploy` to determine which components (i.e., directories) to generate.
+There are several other playbooks to help with other things, for example for printing all the config variables:
 
-Use a command similar to the following to generate the Kubernetes files from the input file:
+    # ansible-playbook -i ~/inventory/hosts playbooks/showconf.yml
 
-```
-  $ docker run --rm -it -v /path/on/host:/data tapis/deployer --input /data/input.yml --destdir /data/deploygen/
-```
-
-Note that we are mounting a directory on our host machine, `/path/to/host`, to the `/data` directory
-in the container to both pass the input.yml file and colllect the output generated by deployer.
-With the above command, the resulting Kubernetes scripts will be generated in the directoty 
-`/path/on/host/deploygen`.
-
-
-## Run Deployer Diagnostics
-If you want to look for internal inconsistencies within deployer itself, you can run the diagnostics mode. For example:
-
-```
- $ docker run --rm -it tapis/deployer-input-gen -d
- ```
-
-This will print a report to the screen of various errors and warnings associated with the templates (both `inputgen` and `deploygen` templates). The following checks are performed:
-
-  * Can all inputgen yaml files be loaded (as yaml)?
-  * Are all required/recommended properties supplied in the yamls?
-  * Are there any "todo"s in the text of the properties?
-  * Can all the templates used by tapis-api-generator.py (i.e., `deployergen`) be loaded as jinja2 templates?
-  * Are all variables needed by `deployergen` templates listes as inputs in the `inputgen` variables?
-
-
-
-## Minikube Considerations
-
-If deploying Tapis on a Minikube installation, the following extra steps should be taken.
-
-- Create a ClusterRole & ClusterRoleBinding to allow default user in default namespace to list/create/get/delete secrets.
-- 
-
-# Non-Docker Usage
-
-To generate the Tapis burnup/YAML scripts without the docker container, you can run the python directly:
-
-    DEPLOYERDIR="/path/to/deployer/checkout"
-    INPUTYML="/path/to/your/deployer_input.yml
-    DESTDIR="/path/to/deployment_output_dir"
-    python3 $DEPLOYERDIR/tapis-api-generator.py --input $INPUTYML --destdir $DESTDIR
-
-
-# Deployment to Kubernetes 
-
-Once Kubernetes deployment files have been generated using the steps above, proceed as follows to 
-start the Tapis services.
-
-## Associate Site Deployment
-
-The section covers the case of deploying an associate site. 

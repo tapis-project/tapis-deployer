@@ -1,0 +1,25 @@
+#!/bin/bash
+
+
+VAULT_TOKEN=`cat ~/vault-token.vmvault`
+VAULT_URL="{{admin_vault_url}}"
+
+echo "1. STATUS"
+#curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" $VAULT_URL/v1/sys/health | jq
+curl -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_URL/v1/sys/health | jq
+
+echo "2. LIST SECRETS (root of hierarchy)"
+#    curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" -X LIST $VAULT_URL/v1/secret/metadata/tapis | jq
+#    curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" -X LIST $VAULT_URL/v1/secret/metadata/tapis/service | jq
+#    curl -H "X-Vault-Token: $VAULT_TOKEN" -H "X-Vault-Namespace: $VAULT_NS" -X LIST $VAULT_URL/v1/secret/metadata/tenant | jq
+curl -H "X-Vault-Token: $VAULT_TOKEN" -X LIST $VAULT_URL/v1/secret/metadata/tapis | jq
+curl -H "X-Vault-Token: $VAULT_TOKEN" -X LIST $VAULT_URL/v1/secret/metadata/tapis/service | jq
+curl -H "X-Vault-Token: $VAULT_TOKEN" -X LIST $VAULT_URL/v1/secret/metadata/tenant | jq
+
+echo "3. GET SECRET"
+curl -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_URL/v1/secret/data/tapis/tenant/admin/service/tenants/kv/password | jq
+
+echo "4. GET SIGNING KEY FOR ADMIN TENANT"
+#curl -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_URL/v1/secret/data/tapis/tenant/admin/service/tenants/kv/password | jq
+curl -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_URL/v1/secret/data/tapis/tenant/admin/jwtkey/keys | jq
+

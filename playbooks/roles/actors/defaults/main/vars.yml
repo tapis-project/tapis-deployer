@@ -1,0 +1,29 @@
+---
+
+
+# actors
+actors_service_url: '{{ global_service_url }}'
+actors_service_tenant_id: admin
+actors_service_site_id: '{{ global_site_id }}'
+actors_service_name: actors
+actors_storage_class: '{{ global_storage_class }}'
+actors_rabbit_pvc: actors-rabbitmq-vol01
+actors_mongo_pvc: actors-mongo-vol01
+actors_mongo_backup_pvc: actors-mongo-backup-vol01
+actors_mongo_tls: false
+actors_image_pull_policy: Always
+actors_host_path: develop
+actors_timeout: 60
+actors_tas_role_acct: ""
+actors_tas_role_pass: ""
+actors_mongo_init_database: null
+actors_log_level: INFO
+actors_spawner_docker_network: develop_abaco
+actors_kube_domain: tapis-test.svc.cluster.local
+actors_web_encryption_key: 
+actors_web_apim_public_key: 
+actors_service_tenants:
+  - dev
+  - admin
+
+

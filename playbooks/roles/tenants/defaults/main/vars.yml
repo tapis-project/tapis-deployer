@@ -1,0 +1,19 @@
+---
+
+tenants_service_name: tenants
+tenants_image_pull_policy: Always
+tenants_postgres_pvc: tenants-postgres-vol01
+tenants_storage_class: '{{ global_storage_class }}'
+tenants_service_url: '{{ global_service_url }}'
+tenants_service_site_id: '{{ global_site_id }}'
+tenants_service_tenant_id: admin
+tenants_postgres_user: tenants
+tenants_postgres_url: tenants-postgres:5432/tenants
+tenants_postgres_port: ""
+tenants_use_sk: true 
+tenants_show_traceback: false
+tenants_test_jwt: false
+tenants_log_level: INFO
+
+
+

@@ -1,0 +1,14 @@
+---
+
+notifications_service_name: notifications
+notifications_service_site_id: "{{ global_site_id }}"
+notifications_service_tenant_id: admin
+notifications_service_url: "{{ global_service_url }}"
+notifications_storage_class: "{{ global_storage_class }}"
+notifications_postgres_pvc: notifications-postgres-vol01
+notifications_rabbitmq_pvc: notifications-rabbitmq-vol01
+notifications_mail_provider: SMTP
+notifications_mail_host: relay.example.com
+notifications_mail_port: 25
+
+

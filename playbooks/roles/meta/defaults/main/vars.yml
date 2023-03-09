@@ -1,0 +1,15 @@
+---
+
+meta_service_url: "{{ global_service_url }}"
+meta_service_name: meta
+meta_service_site_id: "{{ global_site_id }}"
+meta_service_tenant_id: admin
+meta_mongo_pvc: restheart-mongo-vol01
+meta_storage_class: "{{ global_storage_class }}"
+meta_mongo_backup_pvc: mongo-backup-claim0
+meta_restheart_mongo_pvc: restheart-mongo-vol01
+
+meta_service_password: 
+meta_mongo_password:
+
+

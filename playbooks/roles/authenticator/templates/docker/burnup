@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "burnup authenticator:"
+
+docker compose up -d
+

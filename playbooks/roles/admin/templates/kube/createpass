@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# auto-generate all the secrets and configs and passwords files we will need later
+
+#sk-secrets
+#tenants-postgres-secrets
+#tenants-config-local.json
+#files-config.yml
+#files-secrets.yml
+
+

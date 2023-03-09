@@ -1,0 +1,33 @@
+---
+
+
+# proxy
+proxy_service_url: {{ global_service_url }}
+proxy_service_tenant_id: admin
+proxy_service_site_id: {{ proxy_site_id }}
+proxy_service_name: proxy
+proxy_primary_site_admin_tenant_base_url: {{ global_service_url }}
+proxy_site_router_pvc: site-router-redis-vol01
+proxy_storage_class: rbd-new
+proxy_nginx_cert_file: $HOME/cert.pem
+proxy_nginx_cert_key: $HOME/cert.key
+proxy_service_tenants:
+  - dev
+  - admin
+proxy_nginx_service_list:
+  - actors
+  - apps
+  - authenticator
+  - files
+  - jobs
+  - meta
+  - monitoring
+  - notifications
+  - pgrest
+  - security
+  - streams
+  - systems
+  - tenants
+  - tokens
+  - workflows
+

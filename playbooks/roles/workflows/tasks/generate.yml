@@ -1,0 +1,8 @@
+---
+
+- name: workflows tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: workflows
+    tree_name: workflows

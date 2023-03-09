@@ -1,0 +1,4 @@
+skadmin_securityexport_image: tapis/securityexport:1.2.3
+skadmin_skadminutil_image: mrghort/skadminutil:1.2.0
+skadmin_securityadmin_image: tapis/securityadmin:1.2.1
+skadmin_util_image: mrghort/ubutil:1.2.0

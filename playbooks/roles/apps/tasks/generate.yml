@@ -1,0 +1,18 @@
+---
+
+- name: apps tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: apps
+    tree_name: apps
+
+# if using docker, create data dirs
+- name: create data dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ tapisdatadir }}/files'
+    - '{{ tapisdatadir }}/files/irods'
+  when: tapisflavor == "docker"

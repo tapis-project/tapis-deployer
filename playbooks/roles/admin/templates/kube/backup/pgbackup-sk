@@ -1,0 +1,45 @@
+#!/bin/bash 
+
+# Tries to do a pg_dump on "deployment name".
+
+# Probably need to be customized for each deployment with correct postgres username, password, db name
+
+# name of postgres deployment
+name=sk-postgres
+
+
+mkdir -p ~/tmp
+date=`date +%Y%m%d`
+backupfile="${name}-backup-${date}"
+
+if [ -f ~/tmp/${backupfile} ]
+then
+  echo "~/tmp/${backupfile} already exists. Exiting."
+  exit 1
+fi
+
+{
+  # may have to customize user/password
+  kubectl exec -it deploy/${name} -- bash -c 'pg_dump --dbname=postgresql://postgres:$POSTGRES_PASSWORD@localhost:5432' > ~/tmp/${backupfile} 
+} || {
+  rm -f ~/tmp/${backupfile}
+  echo "kubectl pg_dump step failed. Exiting."
+  exit 1
+}
+
+{
+  s3cmd put ~/tmp/${backupfile} s3://backups 
+} || {
+  echo "s3cmd step failed. Exiting."
+  exit 1
+}
+
+{
+  rm -f ~/tmp/${backupfile} 
+} || {
+  echo "rm step failed. Exiting."
+  exit 1
+}
+
+echo "$name backup succeeded."
+

@@ -1,0 +1,66 @@
+#!/bin/bash
+
+echo "burnup skadmin:"
+
+# TODO
+# check if skadmin is already done
+#if true 
+#then
+#  echo "skadmin done. Exiting burnup."
+#  exit 0
+#fi
+
+# one way to check if skadmin has succeeded
+if [ -s {{ tapisdatadir }}/skadmin/env ]
+then
+  echo "{{ tapisdatadir }}/skadmin/env is populated, so we assume skadmin is done. Skipping the rest of skadmin burnup."
+  exit 0
+fi
+
+
+export VAULT_TOKEN=`cat {{ tapisdatadir }}/vault/vault-token`
+export SKEXPORT_PARMS="-vtok $VAULT_TOKEN -vurl {{ skadmin_vault_url }}"
+
+# create vault roles and policies
+docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN --env SKEXPORT_PARMS \
+-v /home/rocky/tmp/tapisquickstart-docker1/skadmin/create-sk-roles:/tmp/create-sk-roles \
+-v /home/rocky/tmp/tapisquickstart-docker1/skadmin/tapis-vault/policies/sk:/tmp/sk-policies \
+-v /home/rocky/tmp/tapisquickstart-docker1/skadmin/tapis-vault/policies/sk-admin:/tmp/sk-admin-policies \
+-v /home/rocky/tmp/tapisquickstart-docker1/skadmin/tapis-vault/roles:/tmp/sk-roles \
+{{ skadmin_util_image }} /tmp/create-sk-roles
+
+export VAULT_SECRETID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
+{{ skadmin_util_image }} curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
+
+export VAULT_ROLEID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
+{{ skadmin_util_image }} curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+
+if [ -z "$VAULT_SECRETID" ]
+then
+  echo "\$VAULT_SECRETID is empty. Exiting."
+  exit 1
+fi
+
+if [ -z "$VAULT_ROLEID" ]
+then
+  echo "\$VAULT_ROLEID is empty. Exiting."
+  exit 1
+fi
+
+# create tapis passwords in vault
+docker run --name skadmin-init -it --rm --net tapis --env VAULT_ROLEID --env VAULT_SECRETID \
+-v /home/rocky/tmp/tapisquickstart-docker1/skadmin/initialLoad:/tmp/initialLoad \
+-v /home/rocky/tmp/tapisquickstart-docker1/skadmin/run-sk-admin:/tmp/run-sk-admin \
+{{ skadmin_securityadmin_image }} /tmp/run-sk-admin
+
+
+{%- if site_type == 2 %}
+echo "Collecting public keys for associate site tenants. Please send these to your tenants admin before next steps in deployment."
+cd $here/../admin
+./get-assocsite-publickeys
+{%- endif %}
+
+
+# export tapis passwords to env file 
+mkdir -p {{ tapisdatadir }}/skadmin
+docker run --name skadmin-export -it --rm --net tapis --env SKEXPORT_PARMS {{ skadmin_securityexport_image }} > {{ tapisdatadir }}/skadmin/env

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for i in apps monitoring  rabbitmq security-kernel  systems tokens-api vault authenticator files jobs meta skadmin streams tenants-api 
+do
+  echo "# $i"
+  find ../$i -name '*.yml' -exec grep -H " image: " {} \;
+done
+
+echo "# more streams" 
+echo -n "# restheart security version: "
+kubectl exec -it deploy/restheart-security -- /bin/bash -c 'cat /usr/local/tomcat/webapps/v3/WEB-INF/classes/git.info'; echo
+
+

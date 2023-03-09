@@ -1,0 +1,24 @@
+
+# TODO!!! need to run the migrations for the DB before the sk-api can run. 
+# put an intermediate migrations container to run these between postgres & sk?
+
+networks:
+    tapis:
+        name: tapis
+
+
+services:
+    systems-api:
+        image: {{ systems_api_image }}
+        ports:
+            - "127.0.0.1:5171:8080"
+            - "127.0.0.1:5172:8000"
+        networks:
+            - tapis
+
+    systems-postgres:
+        image: {{ systems_postgres_image }}
+        ports:
+            - "127.0.0.1:5173:5432"
+        networks:
+            - tapis

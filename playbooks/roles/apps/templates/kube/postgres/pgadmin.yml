@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apps-pgadmin
+spec:
+  selector:
+    matchLabels:
+      app: apps-pgadmin
+  template:
+    metadata:
+      labels:
+        app: apps-pgadmin
+    spec:
+      containers:
+      - name: apps-pgadmin
+        image: {{ apps_pgadmin_image }}
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: "wow@example.com"
+        - name: PGADMIN_DEFAULT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-apps-secrets 
+              key: pgadmin-password

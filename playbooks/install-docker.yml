@@ -1,0 +1,42 @@
+---
+
+- name: Install Docker and other prerequisites.
+  hosts: all
+  become: yes
+  handlers:
+  tasks:
+
+  - name: fail if not rocky/centos/etc
+    fail: 
+      msg: This playbook requires Rocky/CentOS/etc.
+    when: ansible_facts['distribution'] not in ['CentOS','Rocky']
+
+  - name: docker repo
+    command: dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+  
+  - name: docker packages
+    dnf:
+      name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - python3-docker
+  
+  - name: misc packages
+    dnf:
+      name:
+      - vim
+      - net-tools
+      - jq
+  
+  - name: enable & start docker
+    service:
+      name: docker
+      state: started
+      enabled: yes
+  
+  - name: "add user {{ ansible_user_id }} to docker group"
+    user:
+      name: "{{ ansible_user_id }}"
+      groups: docker
+      append: yes

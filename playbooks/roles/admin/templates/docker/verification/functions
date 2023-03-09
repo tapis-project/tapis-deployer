@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# tapis verification functions
+
+### vars
+
+VAULTURL="{{admin_vault_url}}"
+SERVICEURL="{{admin_service_url}}"
+
+### util
+
+### checks
+
+checkcert(){
+  # will not work until nginx is up
+  echo "checking cert: $1"
+  echo test | openssl s_client -showcerts -connect $1:443
+}
+
+curlurl(){
+  # will not work until nginx is up
+  u="https://$1"
+  echo "curling url: $u"
+  curl -k $u
+}
+
+pingsite(){
+  echo "pinging url: $1"
+  ping -c 1 -W 5 $1
+}
+
+
+preflight_check(){
+  getconfig
+  echo "site: $SERVICEURL"
+  pingsite $SERVICEURL
+}
+
+postnginx_check(){
+  curlurl $SERVICEURL
+  checkcert $SERVICEURL
+}
+
+

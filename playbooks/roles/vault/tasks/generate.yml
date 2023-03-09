@@ -1,0 +1,28 @@
+---
+
+- name: vault tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: vault
+    tree_name: vault
+
+# if using docker, create data dirs
+- name: create data dirs 
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ tapisdatadir }}/vault'
+  when: tapisflavor == "docker"
+
+- name: create env file 
+  copy:
+    dest: '{{ tapisdatadir }}/vault/env'
+    content: |
+      service_site_url={{ vault_service_url }}
+      service_tenant_id={{ vault_service_tenant_id }}
+      site_id={{ vault_service_site_id }}
+      service_name={{ vault_service_name }}
+  when: tapisflavor == "docker"
+

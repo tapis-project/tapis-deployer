@@ -1,0 +1,19 @@
+---
+
+jobs_service_name: jobs
+jobs_service_site_id: "{{ global_site_id }}"
+jobs_service_tenant_id: admin
+jobs_service_url: "{{ global_service_url }}"
+jobs_postgres_pvc: jobs-postgres-vol01
+jobs_storage_class: "{{ global_storage_class }}"
+jobs_rabbitmq_pvc: jobs-rabbitmq-vol01
+jobs_node_selector: true
+jobs_node_name: true
+jobs_service_password: 
+jobs_postgres_password:
+jobs_rabbitmq_tapis_password: 
+jobs_rabbitmq_password: 
+
+
+
+

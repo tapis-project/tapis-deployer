@@ -1,0 +1,13 @@
+pod='vault' 
+
+echo "starting ./unseal"
+
+k1=`grep "Unseal Key 1" {{ tapisdatadir }}/vault | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
+k2=`grep "Unseal Key 2" {{ tapisdatadir }}/vault | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
+k3=`grep "Unseal Key 3" {{ tapisdatadir }}/vault | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
+
+echo "with $1, $2, $3"
+
+docker exec -it $pod -- vault operator unseal $k1
+docker exec -it $pod -- vault operator unseal $k2
+docker exec -it $pod -- vault operator unseal $k3

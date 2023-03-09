@@ -1,0 +1,66 @@
+
+# volumes:
+#   miniodata:
+#   files-pgdata:
+
+networks:
+    tapis:
+        name: tapis
+
+services:
+
+  files-rabbitmq:
+    image: {{ files_rabbitmq_management_image }}
+    environment:
+      - RABBITMQ_DEFAULT_USER=dev
+      - RABBITMQ_DEFAULT_PASS=dev
+      - RABBITMQ_DEFAULT_VHOST=dev
+    container_name: files-rabbitmq
+    networks: 
+      - tapis
+
+  files-postgres:
+    container_name: files-postgres
+    image: {{ files_postgres_image }}
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=dev
+      - POSTGRES_DATABASE=dev
+    volumes:
+      - {{ tapisdatadir }}/files/postgres:/var/lib/postgresql/data
+    networks:
+      - tapis
+
+  files-minio:
+    image: {{ files_minio_image }}
+    environment:
+      - MINIO_ACCESS_KEY=user
+      - MINIO_SECRET_KEY=password
+    volumes:
+      - {{ tapisdatadir }}/files/minio:/data
+    command: server /data
+    container_name: files-minio
+    networks:
+      - tapis
+
+  files-irods:
+    container_name: files-irods
+    image: {{ files_irods_provider_postgres_image }}
+    networks:
+      - tapis
+
+  # files-ssh-machine:
+  #   container_name: files-ssh-machine
+  #   build:
+  #     context: ..
+  #     dockerfile: ./deploy/Dockerfile.ssh-machine
+  #   ports:
+  #     - "2222:22"
+
+  # files-ssh-machine2:
+  #   container_name: files-ssh2
+  #   build:
+  #     context: ..
+  #     dockerfile: ./deploy/Dockerfile.ssh-machine
+  #   ports:
+  #     - "2223:22"

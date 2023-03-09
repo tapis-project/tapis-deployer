@@ -1,0 +1,11 @@
+---
+
+systems_node_selector: null
+systems_service_name: systems
+systems_service_site_id: "{{ global_site_id }}"
+systems_service_tenant_id: admin
+systems_service_url: "{{ global_service_url }}"
+systems_storage_class: "{{ global_storage_class }}"
+systems_postgres_pvc: systems-postgres-vol01
+
+

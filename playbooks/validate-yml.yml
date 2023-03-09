@@ -1,0 +1,23 @@
+---
+
+- name: Check Tapis deployment YAML for validation problems
+  hosts: all
+
+  tasks: 
+
+  - name: find yaml files
+    find:
+      paths: '{{ tapisdir }}'
+      patterns: "*.yml,*.yaml"
+      recurse: yes
+    register: yaml_files
+
+  - name: check yaml files
+    shell: "python -c 'import yaml, sys; print(yaml.safe_load(sys.stdin))' < {{ item.path }}"
+    register: yaml_verify
+    #failed_when: yaml_verify.rc != 0
+    with_items: "{{ yaml_files.files }}"
+    changed_when: yaml_verify.rc != 0
+
+
+

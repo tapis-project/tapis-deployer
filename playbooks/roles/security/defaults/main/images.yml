@@ -1,0 +1,5 @@
+security_pgadmin_image: dpage/pgadmin4:6.20
+security_skadminutil_image: mrghort/skadminutil:1.2.0
+security_postgres_image: postgres:12.4
+security_api_image: tapis/securityapi:1.2.3
+security_migrations_image: tapis/securitymigrate:1.2.3

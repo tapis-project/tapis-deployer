@@ -1,0 +1,19 @@
+---
+
+files_args: ["-Xdebug", "-Xmx3g", "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.api.FilesApplication"]
+files_commands: ["java", "-Xmx3g", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.lib.transfers.TransfersApp"]
+files_node_selector: null
+files_rabbitmq_hostname: files-rabbitmq
+files_service_name: files
+files_service_site_id: "{{ global_site_id }}"
+files_service_tenant_id: admin
+files_service_url: "{{ global_service_url }}"
+files_replicas: 1
+files_files_debug: true
+files_site_id: true
+files_log_level: info
+files_storage_class: "{{ global_storage_class }}"
+files_rabbitmq_pvc: files-rabbitmq-data
+files_postgres_pvc: files-pgdata
+files_node_name: true
+

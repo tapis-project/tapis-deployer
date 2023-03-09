@@ -1,0 +1,32 @@
+---
+
+- name: Generate Tapis Deployment Code
+  hosts: all
+
+  vars: 
+    tapisctl_action: 'generate'
+  
+  tasks: 
+
+  - name: create tapisdir 
+    file: 
+      path: '{{ tapisdir }}'
+      state: directory
+
+  - name: create tapisdatadir 
+    file: 
+      path: '{{ tapisdatadir }}'
+      state: directory
+    when: tapisdatadir is defined
+
+### tapis components
+
+  - include_role:
+      name: '{{ comp }}'
+      apply:
+        tags: '{{ comp }}'
+    tags:
+    - '{{ comp }}'
+
+
+

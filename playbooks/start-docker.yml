@@ -1,0 +1,33 @@
+---
+
+- name: Start docker action for Tapis components
+  hosts: all
+
+  vars: 
+    tapisctl_action: 'start-docker'
+     
+  tasks: 
+
+    - name: 
+      fail: 
+        msg: Required var 'tapisctl_action' is not defined.
+      when: tapisctl_action is not defined
+      tags: 
+      - debug
+
+    - name: print vars
+      ansible.builtin.debug:
+        msg: "{{ vars }}"
+      when: tapisctl_action is not defined
+      tags: 
+      - debug
+
+  ### tapis components
+
+    - name: start tapis components
+      include_role:
+        name: '{{ comp }}'
+      loop: '{{ components_to_deploy }}'
+      loop_control:
+        loop_var: comp
+      

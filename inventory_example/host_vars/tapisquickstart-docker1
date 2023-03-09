@@ -1,0 +1,220 @@
+# Choose where your deployment files should be created.
+tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
+# tapisdatadir: '{{ inventory_hostname }}/data'
+tapisdatadir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}-data'
+
+
+### tapis vars
+global_tapis_domain: quick.example.com
+global_service_url: https://admin.'{{ global_tapis_domain }}'
+global_primary_site_admin_tenant_base_url: '{{ global_service_url }}'
+global_devtenant_url: https://dev.'{{ global_tapis_domain }}'
+global_site_id: tapis
+global_storage_class: default
+global_vault_url: http://vault:8200
+
+
+# global
+site_type: 1
+components_to_deploy:
+  - actors
+  - admin
+  - apps
+  - authenticator
+  - container-registry
+  - files
+  - globus-proxy
+  - jobs
+  - meta
+  - monitoring
+  - notifications
+  - pgrest
+  - pods
+  - proxy
+  - security
+  - skadmin
+  - streams
+  - systems
+  - tenants
+  - tokens
+  - vault
+  - workflows  
+
+
+# actors
+actors_mongo_tls: false
+actors_host_path: develop
+actors_timeout: 60
+actors_tas_role_acct: null
+actors_tas_role_pass: null
+actors_mongo_init_database: null
+actors_spawner_docker_network: develop_abaco
+actors_kube_domain: tapis-test.svc.cluster.local
+actors_web_encryption_key: 
+actors_web_apim_public_key: 
+actors_service_tenants:
+  - dev
+  - admin
+
+
+# admin
+
+
+# apps
+apps_enable_external: false
+apps_monitor_password: 
+
+
+# authenticator
+authenticator_show_traceback: false
+authenticator_dev_ldap_tenant_id: dev
+authenticator_service_tenants:
+  - dev
+  - admin
+
+
+# container registry
+
+
+# files
+files_args: ["-Xdebug", "-Xmx3g", "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.api.FilesApplication"]
+files_commands: ["java", "-Xmx3g", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.lib.transfers.TransfersApp"] 
+files_node_selector: "yes"
+files_rabbitmq_hostname: files-rabbitmq
+files_replicas: 1
+files_files_debug: true
+files_log_level: info
+files_node_name: true
+
+
+# globus_proxy
+globus_proxy_name: globus_proxy
+globus_proxy_tenant_id: admin
+globus_proxy_show_traceback: false
+globus_proxy_tenants:
+  - dev
+  - admin
+
+
+# jobs
+jobs_node_selector: true
+jobs_node_name: true
+
+
+# meta
+
+
+# monitoring
+monitoring_service_grafana_username: 
+monitoring_service_grafana_password: 
+
+
+# notifications
+notifications_mail_provider: SMTP
+notifications_mail_host: relay.example.com
+notifications_mail_port: 25
+
+
+
+# pgrest
+pgrest_tenants: 
+  - dev
+
+
+# pods
+pods_kube_domain: tapis-test.svc.cluster.local
+pods_log_level: INFO
+
+
+# proxy
+proxy_nginx_cert_file: $HOME/cert.pem
+proxy_nginx_cert_key: $HOME/cert.key
+proxy_nginx_server_name: "*.quick.example.com"
+proxy_service_tenants:
+  - dev
+  - admin
+proxy_nginx_service_list:
+  - actors
+  - apps
+  - authenticator
+  - files
+  - jobs
+  - meta
+  - monitoring
+  - notifications
+  - pgrest
+  - security
+  - streams
+  - systems
+  - tenants
+  - tokens
+  - workflows  
+
+  
+  
+# security
+security_auto_service:
+security_heap_max: 3g
+security_heap_min: 3g
+security_volumes: true
+# set to false if vault remote:
+security_renew_sk_script: true
+  
+
+# skadmin
+skadmin_passwords: true
+skadmin_initLoad_jwtsigning_tenants: 
+  - admin
+  - dev
+
+
+# streams
+streams_show_traceback: false
+streams_node_name: null
+streams_processes: 10
+streams_threads: 4
+streams_influxdb_token: myawesometapistoken
+streams_tenant_info: 
+  dev:
+    stream_db: StreamsDevTestDB
+    tapis_base_url: https://dev.tapis.io
+streams_tenants:
+  - dev
+  - admin
+
+
+# systems
+systems_node_selector: "yes"
+systems_image_version: 1.1.2
+
+
+# tenants
+tenants_postgres_user: tenants
+tenants_use_sk: true
+tenants_show_traceback: false
+tenants_test_jwt: false
+
+
+# tokens
+tokens_use_sk: yes
+tokens_show_traceback: false
+tokens_use_allservices_password: true
+tokens_allservices_password: 
+tokens_tenants:
+  - dev
+  - admin
+
+
+# workflows
+workflows_django_superuser_email: admin@example.com
+workflows_django_superuser_username: admin
+workflows_mysql_username: dev
+workflows_pipelines_deployment_type: kubernetes
+workflows_rabbitmq_username: dev
+workflows_tapis_dev_url: 
+
+# vault 
+vault_raft_storage: true
+
+
+

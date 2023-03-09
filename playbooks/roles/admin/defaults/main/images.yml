@@ -1,0 +1,3 @@
+admin_util_image: mrghort/ubutil2204:1
+admin_centosutil_image: tapis/centosutil:1.2.0
+admin_skadminutil_image: mrghort/skadminutil:1.2.0

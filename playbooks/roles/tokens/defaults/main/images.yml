@@ -1,0 +1,2 @@
+tokens_api_image: tapis/tokens-api:1.2.3
+tokens_api_tests_image: tapis/tokens-api-tests:1.2.3

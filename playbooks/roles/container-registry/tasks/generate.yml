@@ -1,0 +1,18 @@
+---
+
+- name: jobs tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: container-registry
+    tree_name: container-registry
+
+# if using docker, create data dirs
+- name: create data dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ tapisdatadir }}/container-registry'
+  when: tapisflavor == "docker"
+

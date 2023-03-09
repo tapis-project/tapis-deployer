@@ -1,0 +1,22 @@
+---
+
+- name: 'create {{ calling_rolename }} base dir: {{ tapisdir }}/{{ tree_name }}'
+  ansible.builtin.file:
+    state: directory
+    path: '{{ tapisdir }}/{{ tree_name }}'
+
+- name: 'ensure directory structure exists for {{ calling_rolename }} in {{ tapisdir }}/{{ tree_name }}'
+  ansible.builtin.file:
+    path: '{{ tapisdir }}/{{ tree_name }}/{{ item.path }}'
+    state: directory
+  with_community.general.filetree: '../{{ calling_rolename }}/templates/{{ tapisflavor }}/'
+  when: item.state == 'directory'
+
+- name: 'populate files from templates for {{ calling_rolename }} in {{ tapisdir }}/{{ tree_name }}'
+  ansible.builtin.template:
+    src: '{{ item.src }}'
+    dest: '{{ tapisdir }}/{{ tree_name }}/{{ item.path }}'
+    mode: preserve
+  with_community.general.filetree: '../{{ calling_rolename }}/templates/{{ tapisflavor }}/'
+  when: item.state == 'file'
+

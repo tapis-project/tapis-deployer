@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# tenants
+# should return 200 and JSON with tenants list.
+
+curl {{admin_service_url}}/v3/tenants | jq
+

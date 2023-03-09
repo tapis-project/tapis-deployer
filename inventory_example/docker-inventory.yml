@@ -1,0 +1,8 @@
+
+tapis_installs:
+  hosts:
+    tapisquickstart-docker1:
+      ansible_connection: local
+      tapisflavor: docker
+
+

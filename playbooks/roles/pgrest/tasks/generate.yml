@@ -1,0 +1,19 @@
+---
+
+
+- name: pgrest tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: pgrest
+    tree_name: pgrest
+
+# if using docker, create data dirs
+- name: create data dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ tapisdatadir }}/pgrest'
+  when: tapisflavor == "docker"
+

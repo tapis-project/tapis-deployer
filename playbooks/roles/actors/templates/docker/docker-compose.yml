@@ -1,0 +1,309 @@
+
+networks:
+    tapis:
+        name: tapis
+
+services:
+    # A note on Mongo config. You cannot declare one in this image unless you want to stop using
+    # all Docker default config settings. Default script is in /usr/local/bin/docker-entrypoint.sh.
+    # This default sets MONGO_INITDB_ROOT_USERNAME/PASS, sets net.bindIp="*", and runs init scripts
+    # located inside of /docker-entrypoint-initdb.d. None of this stuff happens if you give your
+    # own config (through entrypoint), though, you can provide "command" to give command line arguments.
+    # Also, these init scripts and variables are only set on database creation. Restarts will not set
+    #them off. Just FYI. This is all stuff the official Mongo image does.
+    actors-mongo:
+        container_name: actors-mongo
+        image: {{ actors_mongo_image }}
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_INITDB_ROOT_PASSWORD: admin
+            MONGO_REPLICA_SET_NAME: rs0
+        # ports:
+        #     - "127.0.0.1:27017:27017"
+        # volumes:
+        #     - ./runtime_files/certs:/data/ssl
+        #     - ./runtime_files/certs/mongo-replica-set-keyfile:/keyfiles/metakeyfile
+        networks:
+            - tapis
+        ulimits:
+            nproc: 65535
+            nofile:
+                soft: 65535
+                hard: 65535
+        # An explanation of this compose file. Mongo backups require replica sets. To do that, you have to
+        # create some keys, pass in the keys, and ensure key security is 600/700.
+        # This does all of that, without needing to fork the Mongo image.
+        entrypoint:
+            - bash
+            - -c
+            - |
+                cp /keyfiles/metakeyfile /keyfiles/keyfile-to-use
+                chmod 400 /keyfiles/keyfile-to-use
+                chown 999:999 /keyfiles/keyfile-to-use
+                exec docker-entrypoint.sh $$@
+        command: "mongod --bind_ip_all --replSet rs0 --keyFile /keyfiles/keyfile-to-use"
+        # To enable TLS, uncomment the `command` line below.
+        #command: "mongod --bind_ip_all --replSet rs0 --keyFile /keyfiles/keyfile-to-use --tlsMode requireTLS --tlsCertificateKeyFile "/data/ssl/server.pem" --tlsCAFile "/data/ssl/ca.pem"
+
+
+    actors-rabbit:
+        container_name: actors-rabbit
+        image: {{ actors_rabbitmq_image }}
+        # ports:
+        #     - "127.0.0.1:5672:5672"
+        #     - "127.0.0.1:15672:15672"
+        environment:
+            RABBITMQ_NODENAME: abaco-rabbit
+            RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "+A 128"
+            RABBITMQ_DEFAULT_VHOST: abaco_vhost
+            RABBITMQ_DEFAULT_USER: admin
+            RABBITMQ_DEFAULT_PASS: admin
+        ulimits:
+            nproc: 65535
+            nofile:
+                soft: 65535
+                hard: 65535
+        networks:
+            - tapis
+        depends_on:
+            - actors-mongo
+
+    actors-nginx:
+        container_name: actors-nginx
+        image: {{ actors_nginx_image }}
+        volumes:
+#             - ./config-local.json:/home/tapis/config.json
+          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+# #            - ./images/nginx/nginx.conf:/etc/nginx/nginx.conf
+# #            - ./images/nginx/sites-enabled:/etc/nginx/sites-enabled
+#         ports:
+#             - "127.0.0.1:8000:80"
+        restart: always
+        depends_on:
+            - actors-mongo
+        networks:
+            - tapis
+
+    actors-reg:
+        container_name: actors-reg
+        image: {{ actors_core_image }}
+        # ports:
+        #     - "127.0.0.1:5000:5000"
+        volumes:
+        #     - ./config-local.json:/home/tapis/config.json
+          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
+        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        environment:
+            # abaco_host_path: ${abaco_path}
+            abaco_host_path: "{{ tapisdatadir }}/actors"
+            api: reg
+            server: gunicorn
+            threads: 1
+            processes: 1
+            timeout: 120
+            TAS_ROLE_ACCT:
+            TAS_ROLE_PASS:
+        depends_on:
+            - actors-mongo
+        networks:
+            - tapis
+
+    actors-mes:
+        container_name: actors-mes
+        image: {{ actors_core_image }}
+        volumes:
+        #     - ./config-local.json:/home/tapis/config.json
+          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
+        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        # ports:
+        #     - "127.0.0.1:5001:5000"
+        environment:
+            # abaco_host_path: ${abaco_path}
+            abaco_host_path: "{{ tapisdatadir }}/actors"
+            server: gunicorn
+            api: mes
+            threads: 3
+            processes: 3
+            timeout: 120
+            TAS_ROLE_ACCT:
+            TAS_ROLE_PASS:
+        depends_on:
+            - actors-mongo
+            - actors-reg
+        networks:
+            - tapis
+
+    actors-admin:
+        container_name: actors-admin
+        image: {{ actors_core_image }}
+        volumes:
+        #     - ./config-local.json:/home/tapis/config.json
+          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
+        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        ports:
+            - "127.0.0.1:5003:5000"
+        environment:
+            # abaco_host_path: ${abaco_path}
+            abaco_host_path: "{{ tapisdatadir }}/actors"
+            server: gunicorn
+            api: admin
+            threads: 1
+            processes: 1
+            timeout: 120
+            TAS_ROLE_ACCT:
+            TAS_ROLE_PASS:
+        depends_on:
+            - actors-mongo
+            - actors-reg
+        networks:
+            - tapis
+
+    actors-spawner:
+        contianer_name: actors-spawner
+        image: {{ actors_core_image }}
+        command: "python3 -u /home/tapis/actors/spawner.py"
+        volumes:
+        #     - ./config-local.json:/home/tapis/config.json
+          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+        #     - /var/run/docker.sock:/var/run/docker.sock
+        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
+        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        environment:
+            # abaco_host_path: ${abaco_path}
+            abaco_host_path: "{{ tapisdatadir }}/actors"
+            _abaco_secret: 123
+            mongo_password:
+            TAS_ROLE_ACCT:
+            TAS_ROLE_PASS:
+            queue: default
+        depends_on:
+            - actors-mongo
+            - actors-reg
+        networks:
+            - tapis
+
+    actors-health:
+        container_name: actors-health
+        image: {{ actors_core_image }}
+        command: /home/tapis/actors/health_check.sh
+        volumes:
+            - /:/host
+        #     - ./config-local.json:/home/tapis/config.json
+            - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+            - /var/run/docker.sock:/var/run/docker.sock
+        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
+        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        environment:
+            # abaco_host_path: ${abaco_path}
+            abaco_host_path: "{{ tapisdatadir }}/actors"
+            mongo_password:
+            TAS_ROLE_ACCT:
+            TAS_ROLE_PASS:
+            # add the following pair of credentials for each tenant wanting client generation
+            _abaco_DEV-DEVELOP_username: testotheruser
+            _abaco_DEV-DEVELOP_password: testotheruser
+            _abaco_DEV-STAGING_username: testotheruser
+            _abaco_DEV-STAGING_password: testotheruser
+        depends_on:
+            - actors-mongo
+            - actors-reg
+        networks:
+            - tapis
+
+    actors-events:
+        container_name: actors-events
+        image: {{ actors_core_image }}
+        command: "python3 -u /home/tapis/actors/events.py"
+        volumes:
+        #     - ./config-local.json:/home/tapis/config.json
+          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+        #     - /var/run/docker.sock:/var/run/docker.sock
+        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
+        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        environment:
+            # abaco_host_path: ${abaco_path}
+            abaco_host_path: "{{ tapisdatadir }}/actors"
+            _abaco_secret: 123
+            mongo_password:
+            TAS_ROLE_ACCT:
+            TAS_ROLE_PASS:
+            # add the following pair of credentials for each tenant wanting client generation
+            _abaco_DEV-DEVELOP_username: testotheruser
+            _abaco_DEV-DEVELOP_password: testotheruser
+            _abaco_DEV-STAGING_username: testotheruser
+            _abaco_DEV-STAGING_password: testotheruser
+        depends_on:
+            - actors-mongo
+            - actors-reg
+        networks:
+            - tapis
+
+    actors-prometheus:
+        container_name: actors-prometheus
+        # build: ./images/prometheus
+        image: {{ actors_prometheus_image }}
+        # volumes:
+        #     - ./images/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        #     - ./images/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
+        command:
+          - '--config.file=/etc/prometheus/prometheus.yml'
+        #   - '-storage.local.path=/prometheus'
+        # ports:
+        #     - 127.0.0.1:9090:9090
+        networks:
+            - tapis
+        depends_on:
+            - actors-mongo
+            - actors-reg
+
+    actors-grafana:
+        container_name: acrots-grafana
+        image: {{ actors_grafana_image }}
+        user: "104"
+        depends_on:
+            - actors-prometheus
+            - actors-mongo
+            - actors-reg
+        # ports:
+        #     - "127.0.0.1:3000:3000"
+        # volumes:
+        #     - grafana_data:/var/lib/grafana
+        #     - ./images/prometheus/grafana/provisioning/:/etc/grafana/provisioning/
+        # env_file:
+        #     - ./images/prometheus/grafana/config.monitoring
+        networks:
+            - tapis
+        restart: always
+
+    actors-metrics:
+        container_name: actors-metrics
+        image: {{ actors_core_image }}
+        networks:
+            - tapis
+        volumes:
+        #     - ./config-local.json:/home/tapis/config.json
+          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
+        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        # ports:
+        #     - "127.0.0.1:5004:5000"
+        environment:
+            # abaco_host_path: ${abaco_path}
+            abaco_host_path: "{{ tapisdatadir }}/actors"
+            server: dev
+            api: metrics
+            threads: 1
+            processes: 1
+            timeout: 120
+            TAS_ROLE_ACCT:
+            TAS_ROLE_PASS:
+        depends_on:
+            - actors-mongo
+            - actors-reg
+            - actors-prometheus
+
+# volumes:
+#     grafana_data: {}

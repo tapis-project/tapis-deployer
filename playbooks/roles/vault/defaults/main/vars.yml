@@ -1,0 +1,18 @@
+---
+
+#vault_dir: '{{ ansible_env.HOME }}/vault'
+
+# docker vars
+vault_dir: '{{ tapisdir }}/vault'
+vault_data_dir: '{{ tapisdatadir }}/vault'
+
+
+# kube vars
+vault_service_name: vault
+vault_service_site_id: '{{ global_site_id }}'
+vault_service_tenant_id: admin
+vault_service_vault_url: '{{ global_vault_url }}'
+vault_service_url: '{{ global_service_url }}'
+vault_storage_class: '{{ global_storage_class }}'
+vault_pvc: vault-vol01
+vault_raft_storage: false

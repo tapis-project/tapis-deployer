@@ -1,0 +1,7 @@
+{
+  "secret_id_ttl": "10m",
+  "token_ttl": "12h",
+  "token_max_ttl": "12h",
+  "token_explicit_max_ttl": "12h",
+  "token_policies": "tapis/sk-admin-acl,tapis/sk-admin-approle,tapis/sk-admin-auth,tapis/sk-admin-kv2,tapis/sk-admin-userpass"
+}

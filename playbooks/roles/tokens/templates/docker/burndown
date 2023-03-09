@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "burndown skadmin:"
+
+docker compose down

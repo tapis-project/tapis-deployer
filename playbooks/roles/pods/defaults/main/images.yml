@@ -1,0 +1,5 @@
+pods_alpine_image: alpine:latest
+pods_nginx_image: nginx
+pods_postgres_image: postgres:14-alpine
+pods_rabbitmq_image: rabbitmq:3.6.12-management
+pods_api_image: tapis/pods-api:1.2.2

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "burndown tenants:"
+
+docker compose down
+
+

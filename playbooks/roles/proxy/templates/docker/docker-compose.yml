@@ -1,0 +1,40 @@
+networks:
+  tapis:
+    name: tapis
+
+services:
+  
+  proxy:
+    container_name: proxy
+    image: {{ proxy_nginx_image }}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./locations:/etc/nginx/conf.d/locations:ro
+      - {{proxy_nginx_cert_file}}:/tmp/ssl/tls.crt:ro
+      - {{proxy_nginx_cert_key}}:/tmp/ssl/tls.key:ro
+      - ./token-revoked.json:/etc/nginx/html/token-revoked.json:ro
+    networks:
+      - tapis
+  
+  site-router:
+    container_name: site-router
+    image: {{ proxy_site_router_api_image }}
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./site-router-config.json:/home/tapis/config.json:ro
+    networks:
+      - tapis
+  
+  site-router-redis:
+    container_name: site-router-redis
+    image: {{ proxy_redis_image }}
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - {{ tapisdatadir }}/proxy-site-router-redis:/data
+    networks:
+      - tapis

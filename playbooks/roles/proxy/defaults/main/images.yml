@@ -1,0 +1,3 @@
+proxy_nginx_image: nginx:1.23.3
+proxy_site_router_api_image: tapis/site-router-api:latest
+proxy_redis_image: redis:6.2

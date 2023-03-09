@@ -1,0 +1,21 @@
+---
+
+
+- name: streams tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: streams
+    tree_name: streams
+
+# if using docker, create data dirs
+- name: create data dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ tapisdatadir }}/streams'
+    - '{{ tapisdatadir }}/streams/influx'
+    - '{{ tapisdatadir }}/streams/mysql'
+  when: tapisflavor == "docker"
+

@@ -1,0 +1,86 @@
+
+networks:
+  tapis:
+    name: tapis
+
+
+services:
+
+  notifications-api:
+    container_name: notifications-api
+    image: {{ notifications_api_image }} 
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - {{ tapisdatadir }}/notifications/env
+    networks: 
+      - tapis
+
+  notifications-init-db:
+    container-name: notifications-init-db
+    image: {{ notifications_postgres_image }}
+    imagePullPolicy: Always
+    command: ["/tmp/notifications-init-db-sh"]
+    volumes:
+    - name: {{ tapisdir }}/notifications/notifications-init-db-sh:/tmp/notifications-init-db-sh
+    env_file:
+      - {{ tapisdatadir }}/notifications/env
+    networks: 
+      - tapis
+
+  notifications-postgres:
+    container-name: notifications-postgres
+    image: {{ notifications_postgres_image }}
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+    - PGDATA="/pgdata/data"
+    env_file:
+      - {{ tapisdatadir }}/notifications/env
+    networks: 
+      - tapis
+    # volumes:
+    #   - "{{ tapisdatadir }}/notifications/pgdata:/pgdata" # TODO!!
+
+  notifications-pgadmin:
+    container-name: notifications-pgadmin
+    image: {{ notifications_pgadmin_image }}
+    ports:
+    - "127.0.0.1:81:80"
+    environment:
+    - name: PGADMIN_DEFAULT_EMAIL=wow@example.com
+    env_file:
+      - {{ tapisdatadir }}/notifications/env
+    networks:
+      - tapis
+
+  notifications-dispatcher:
+    container_name: notifications-dispatcher
+    image: {{ notifications_dispatcher_image }}
+    env_file:
+      - {{ tapisdatadir }}/notifications/env
+    networks:
+      - tapis
+
+  notifcations-rabbitmq:
+    container-name: notifications-rabbitmq
+    image: {{ notifications_rabbitmq_image }}
+    ports:
+      - 127.0.0.1:15672:5672
+      - 127.0.0.1:25672:5672
+    environment:
+      - HOSTNAME="notifications-rabbitmq"
+      - RABBITMQ_HOSTNAME="notifications-rabbitmq"
+      - RABBITMQ_DEFAULT_USER="tapis"
+      - RABBITMQ_VM_MEMORY_HIGH_WATERMARK="2147483648"
+    env_file: 
+      - {{ tapisdatadir }}/notifications/env
+    networks:
+      - tapis
+
+    volumeMounts:
+    - name: notifications-rabbitmq-data="/var/lib/rabbitmq/mnesia"
+    networks:
+        - tapis
+
