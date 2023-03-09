@@ -1,0 +1,37 @@
+# Granting 'actors-serviceaccount' service account the cluster role 'actors-role' which has
+# permissions to list/create/get/watch/delete pods and pods/logs.
+# Needed for spawner, worker, and health.
+# Must create subject for each namespace you want the role to be binded to.
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: actors-serviceaccount
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: actors-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services"]
+  verbs: ["list", "create", "get", "watch", "delete"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["list", "get", "watch"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: actors-role
+subjects:
+- kind: ServiceAccount
+  name: actors-serviceaccount
+  namespace: {{pods_kube_domain}}
+roleRef:
+  kind: Role
+  name: actors-role
+  apiGroup: rbac.authorization.k8s.io

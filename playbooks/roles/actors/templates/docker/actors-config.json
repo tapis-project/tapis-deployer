@@ -6,7 +6,8 @@
   "service_name": "abaco",
   "service_password": "$env{SERVICE_PASSWORD}",
   "tenants": {{ actors_service_tenants | to_json }},
-  "version": "1.2.0",
+  "version": "1.2.1",
+  "container_backend": "docker",
   "log_file": "",
   "log_level": "DEBUG",
   "log_filing_strategy": "combined",
@@ -52,7 +53,6 @@
   "web_access_control": "jwt",
   "web_user_role": "Internal/everyone",
   "web_accept_nonce": true,
-  "web_apim_public_key": "{{actors_web_apim_public_key}}",
   "web_show_traceback": false,
   "web_log_ex": 43200,
   "web_max_log_length": 1000000,
@@ -78,7 +78,7 @@
     "use_tas_uid": false,
     "default_token": false,
     "generate_clients": true,
-    "global_mounts": [        
+    "global_mounts": [
       "$env{abaco_host_path}/runtime_files/data1:/home/tapis/runtime_files/_abaco_data1:ro",
       "$env{abaco_host_path}/runtime_files/data2/{tenant_id}/{username}:/home/tapis/runtime_files/_abaco_data2:rw"
     ]
@@ -93,13 +93,5 @@
   },
   "sd2e_tenant_object": {
     "use_tas_uid": true
-  },
-  "DEV-STAGING_tenant_object": {
-    "default_token": true
-  },
-  "DEV-DEVELOP_tenant_object": {
-    "global_mounts": [
-      "$env{abaco_host_path}runtime/files/data1:/home/tapis/runtime_files/_abaco_data1:ro"
-    ]
   }
 }
