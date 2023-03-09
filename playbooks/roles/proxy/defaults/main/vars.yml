@@ -27,3 +27,6 @@ proxy_nginx_service_list:
   - tenants
   - tokens
 
+proxy_pgrest_custom_block: null
+proxy_meta_custom_block: null
+
