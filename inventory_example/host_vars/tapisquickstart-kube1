@@ -50,7 +50,6 @@ actors_mongo_init_database: null
 actors_spawner_docker_network: develop_abaco
 actors_kube_domain: tapis-test.svc.cluster.local
 actors_web_encryption_key: 
-actors_web_apim_public_key: 
 actors_service_tenants:
   - dev
   - admin
