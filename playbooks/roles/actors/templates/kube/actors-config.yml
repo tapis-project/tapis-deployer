@@ -12,7 +12,7 @@ data:
       "service_name": "abaco",
       "service_password": "$env{SERVICE_PASSWORD}",
       "tenants": {{ actors_service_tenants | to_json }},
-      "version": "1.2.1",
+      "version": "{{ actors_service_version }}",
       "kubernetes_namespace": "{{pods_kube_domain}}",
       "container_backend": "docker",
       "log_file": "",

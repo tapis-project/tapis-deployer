@@ -1,4 +1,4 @@
-actors_core_image: abaco/core-v3:1.2.1
+actors_core_image: abaco/core-v3:{{ actors_service_version }}
 actors_grafana_image: grafana/grafana
 actors_prometheus_image: abaco/prom:dev
 actors_nginx_image: abaco/nginx:latest
