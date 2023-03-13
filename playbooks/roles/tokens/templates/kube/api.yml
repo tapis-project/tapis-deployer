@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: tokens-api
-        image: tapis/tokens-api:dev
+        image: {{ tokens_api_image }}
         imagePullPolicy: {{ tokens_image_pull_policy }}
         ports:
         - name: http

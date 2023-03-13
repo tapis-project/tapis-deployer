@@ -60,6 +60,7 @@ data:
       "web_access_control": "jwt",
       "web_user_role": "Internal/everyone",
       "web_accept_nonce": true,
+      "web_apim_public_key": "{{ actors_web_apim_public_key }}",
       "web_show_traceback": false,
       "web_log_ex": 43200,
       "web_max_log_length": 1000000,

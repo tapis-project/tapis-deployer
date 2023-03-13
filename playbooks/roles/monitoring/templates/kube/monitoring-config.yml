@@ -45,7 +45,7 @@ data:
         metrics_path: '/v1/sys/metrics'
         params:
           format: ['prometheus']
-{%- if 'https' in monitoring_vault_url %} 
+{% if 'https' in monitoring_vault_url %} 
         scheme: https 
 {% else %} 
         scheme: http 

@@ -41,10 +41,10 @@ spec:
                 key: service_site_url
 {% if systems_globus_client_id is defined %}
           - name: TAPIS_GLOBUS_CLIENT_ID
-             valueFrom:
-               configMapKeyRef:
-                 name: systems-config
-                 key: globus_client_id
+            valueFrom:
+              configMapKeyRef:
+                name: systems-config
+                key: globus_client_id
 {% endif %}
           - name: TAPIS_DB_PASSWORD
             valueFrom:
