@@ -7,5 +7,4 @@ systems_service_tenant_id: admin
 systems_service_url: "{{ global_service_url }}"
 systems_storage_class: "{{ global_storage_class }}"
 systems_postgres_pvc: systems-postgres-vol01
-
-
+systems_globus_client_id: null

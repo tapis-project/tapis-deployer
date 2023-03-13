@@ -1,7 +1,7 @@
 monitoring_stern_fluentd_image: tapis/stern-fluentd:1.2.0
 monitoring_tapis_exporter_image: tapis/exporter:latest
 monitoring_alpine_image: alpine:3.6
-monitoring_postgres_image: bitnami/postgresql:15.2.0
+monitoring_postgres_image: bitnami/postgresql:14
 monitoring_elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
 monitoring_kibana_image: docker.elastic.co/kibana/kibana:7.6.2
 monitoring_grafana_image: grafana/grafana:8.5.5
