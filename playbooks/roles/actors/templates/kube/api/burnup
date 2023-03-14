@@ -25,7 +25,6 @@ kubectl wait --for=condition=complete job/chown-actors-rabbitmq-pvc
 kubectl apply -f service.yml
 
 # deploy
-kubectl apply -f nfs.yml
 kubectl apply -f rabbit.yml
 kubectl apply -f nginx.yml
 kubectl apply -f mongo.yml
