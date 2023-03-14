@@ -1,0 +1,55 @@
+entrypoints:
+  web:
+   address: ":80"
+  dash:
+   address: ":8080"
+
+http:
+  middlewares:
+    path-strip-v3:
+      stripPrefix:
+        prefixes:
+         - "/v3"
+    dev-host-headers:
+      headers:
+        customRequestHeaders:
+          host: "localhost:5000"
+        customResponseHeaders:
+          host: "localhost:5000"
+    error-handler:
+      errors:
+        status:
+          - "501-599"
+        service: pods-service
+        query: "/error-handler/{status}"
+
+  routers:
+    dashboard:
+      rule: "PathPrefix(`/v3/pods/dashboard`))"
+      service: api@internal
+
+    pods-api:
+      rule: "PathPrefix(`/v3/pods`)"
+      middlewares:
+       - "path-strip-v3"
+       - "error-handler"
+      service: pods-api
+
+  services:
+    pods-api:
+      loadBalancer:
+        servers:
+         - url: http://pods-api:8000
+
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+  certificates:
+    - certFile: /tmp/ssl/tls.crt
+      keyFile: /tmp/ssl/tls.key
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /tmp/ssl/tls.crt
+        keyFile: /tmp/ssl/tls.key
