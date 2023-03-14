@@ -17,7 +17,7 @@ kubectl create secret generic vault-token --from-file ~/vault-token.vmvault
 # Get a fresh pair of approle ids.
 ./reset-approle-ids
 
-kubectl create configmap sk-admin-initialload --from-file ${here}/../initialLoad
+kubectl create configmap sk-admin-initialload --from-file ../initialLoad
 kubectl create configmap run-sk-admin --from-file ../run-sk-admin
 kubectl apply -f ../sk-admin-init.yml
 kubectl wait --for=condition=complete job/sk-admin-init
