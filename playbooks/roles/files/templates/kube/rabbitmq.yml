@@ -16,17 +16,23 @@ spec:
       labels:
         app: files-rabbitmq
     spec:
+      hostname: files-rabbitmq
       containers:
         - name: files-rabbitmq
           image: {{ files_rabbitmq_image }}
           ports:
             - containerPort: 5672
+            - containerPort: 15672
           env:
+            - name: HOSTNAME
+              value: "files-rabbitmq"
             - name: RABBITMQ_DEFAULT_PASS
               valueFrom:
                 secretKeyRef:
                   name: tapis-files-secrets
                   key: rabbitmq-password
+            - name: RABBITMQ_VM_MEMORY_HIGH_WATERMARK
+              value: "2147483648"
           envFrom:
             - configMapRef:
                 name: files-environment-vars

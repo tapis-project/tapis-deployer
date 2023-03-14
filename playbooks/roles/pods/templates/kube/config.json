@@ -6,7 +6,7 @@
     "tenants": [],
     "service_name": "pods",
     "service_password": "$env{SERVICE_PASSWORD}",
-    "version": "1.2.1",
+    "version": "{{ pods_image_version }}",
     "log_file": "",
     "log_level": "{{pods_log_level}}",
     "postgres_user": "pods-admin",
@@ -23,7 +23,7 @@
     "spawner_host_ip": "who knows?",
     "spawner_max_cmd_length": 10,
     "spawner_host_queues": {{ pods_spawner_host_queues | to_json }},
-    "show_traceback": true,
+    "show_traceback": false,
     "web_access_control": "jwt",
     "web_user_role": "Internal/everyone",
     "web_accept_nonce": true,
@@ -39,7 +39,7 @@
         "log_ex_limit": 86400,
         "log_ex": 43200
     },
-    "quick_tenant_object": {
+    "{{ site_id }}_tenant_object": {
     }
 }
 

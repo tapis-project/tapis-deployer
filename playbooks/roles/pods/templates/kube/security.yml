@@ -23,7 +23,10 @@ rules:
   verbs: ["list", "get", "watch"]
 - apiGroups: [""]
   resources: ["configmaps"]
-  verbs: ["list", "get", "patch"]
+  verbs: ["list", "get", "patch", "watch"]
+- apiGroups: [""]
+  resources: ["persistentvolumeclaims"]
+  verbs: ["list", "get", "create"]
 
 ---
 kind: RoleBinding

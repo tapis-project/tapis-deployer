@@ -16,7 +16,7 @@ spec:
         image: {{ pods_rabbitmq_image }}
         resources:
           requests:
-            cpu: "1"
+            cpu: "500m"
             memory: "500M"
           limits:
             cpu: "3"
