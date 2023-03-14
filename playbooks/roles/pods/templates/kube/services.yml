@@ -56,12 +56,27 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: pods-nginx
+  name: pods-traefik
 spec:
-  #type: NodePort
   selector:
-    app: pods-nginx
+    app: pods-traefik
   ports:
-  - name: nginx
+  - name: traefik
     port: 80
     targetPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pods-traefik-dash
+spec:
+  type: NodePort
+  selector:
+    app: pods-traefik
+  ports:
+  - name: traefik
+    port: 8080
+    targetPort: 8080
+
+

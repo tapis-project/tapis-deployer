@@ -19,7 +19,7 @@ spec:
     spec:
 {% if files_node_selector is defined %}
       nodeSelector:
-        exempt: "{{files_node_selector}}"
+        exempt: "yes"
 {% endif %}
       containers:
       - name: files-api

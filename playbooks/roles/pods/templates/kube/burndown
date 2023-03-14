@@ -9,13 +9,13 @@
 
 # Configs
 kubectl delete configmap pods-config
-kubectl delete configmap pods-nginx
+kubectl delete configmap pods-traefik-conf
 
 # App
 kubectl delete -f api.yml
 kubectl delete -f spawner.yml
 kubectl delete -f health.yml
-kubectl delete -f nginx.yml
+kubectl delete -f traefik-proxy.yml
 
 # Storage
 kubectl delete -f postgres.yml
