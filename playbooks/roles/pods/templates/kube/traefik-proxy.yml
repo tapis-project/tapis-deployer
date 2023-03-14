@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pods-traefik
+spec:
+  selector:
+    matchLabels:
+      app: pods-traefik
+  template:
+    metadata:
+      labels:
+        app: pods-traefik
+
+    spec:
+      containers:
+      - name: pods-traefik
+        image: {{ pods_traefik_image }}
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1G"
+          limits:
+            cpu: "3"
+            memory: "3G"
+        ports:
+          - name: web
+            containerPort: 80
+          - name: dash
+            containerPort: 8080
+        args:
+        - --tracing=false
+        - --api.dashboard=true
+        - --api.insecure=true
+        - --accesslog=true
+        - --log.level=DEBUG
+        - --tracing.instana.loglevel=DEBUG
+        - --tracing.instana=false
+        #- --providers.file.directory=/etc/traefik/
+        - --providers.http=true
+        - --providers.http.endpoint=http://pods-api:8000/traefik-config
+        volumeMounts:
+        - name: pods-traefik-conf
+          mountPath: /etc/traefik2/
+        - name: certs
+          mountPath: /tmp/ssl
+
+      volumes:
+      - name: pods-traefik-conf
+        configMap:
+          name: pods-traefik-conf
+      - name: certs
+        secret:
+          secretName: pods-certs
