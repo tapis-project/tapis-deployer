@@ -39,7 +39,7 @@
         "log_ex_limit": 86400,
         "log_ex": 43200
     },
-    "{{ site_id }}_tenant_object": {
+    "{{ pods_service_site_id }}_tenant_object": {
     }
 }
 
