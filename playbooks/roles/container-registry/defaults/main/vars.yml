@@ -1,8 +1,0 @@
----
-
-
-container_registry_service_url: "{{ global_service_url }}"
-container_registry_service_tenant_id: admin
-container_registry_service_site_id: "{{ global_site_id }}"
-container_registry_service_name: container-registry
-
