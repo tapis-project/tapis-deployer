@@ -40,13 +40,6 @@ To take down the basic api token services:
 
 To take down the authorization stack and required services:
 
-    # ./burndown authstack
+    # ./burndown init
     ...
-    
-
-**Note that the main nginx proxy will not be taken down by the above. To take down the proxy also run:**
-
-    # ./burndown proxy
-    ...
-    
 

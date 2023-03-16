@@ -36,7 +36,6 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: pods-serviceaccount
-  namespace: {{pods_kube_domain}}
 roleRef:
   kind: Role
   name: pods-role

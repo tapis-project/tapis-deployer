@@ -30,7 +30,6 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: actors-serviceaccount
-  namespace: {{pods_kube_domain}}
 roleRef:
   kind: Role
   name: actors-role
