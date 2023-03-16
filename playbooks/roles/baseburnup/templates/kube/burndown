@@ -7,7 +7,7 @@ here=`pwd`
 
 usage(){
   echo "ERROR: This script requires 1 option to run."
-  echo "Check the case statement at the end of this script to see run options."
+  echo "Check the included README.md for options (or see case statement in this script)."
   echo "Exiting."
 }
 
@@ -132,6 +132,27 @@ workflows(){
   ./burndown
 }
 
+
+init(){
+
+{% if "skadmin" in components_to_deploy%}
+  skadmin
+{% endif %}
+
+{% if "vault" in components_to_deploy%}
+  vault
+  checkvault
+{% else %}
+  # using external vault, so do not start one here
+{% endif %}
+
+{% if "proxy" in components_to_deploy%}
+  proxy
+{% endif %}
+
+}
+
+
 primary_services(){
 {% if  "tenants" in components_to_deploy %}
   tenants
@@ -220,37 +241,6 @@ secondary_services() {
 }
 
 
-authstack(){
-
-{% if  "authenticator" in components_to_deploy %}
-  authenticator
-{% endif %}
-
-{% if  "tokens" in components_to_deploy %}
-  tokens
-{% endif %}
-
-{% if  "security" in components_to_deploy %}
-  security
-{% endif %}
-
-{% if  "tenants" in components_to_deploy %}
-  tenants
-{% endif %}
-
-{% if "skadmin" in components_to_deploy%}
-  skadmin
-{% endif %}
-
-{% if "vault" in components_to_deploy%}
-  vault
-{% else %}
-  # using external vault, so do not start one here
-{% endif %}
-
-}
-
-
 case $1 in
   vault)
     "$@"
@@ -260,7 +250,7 @@ case $1 in
     "$@"
     exit 0
     ;;
-  authstack)
+  init)
     "$@"
     exit 0
     ;;

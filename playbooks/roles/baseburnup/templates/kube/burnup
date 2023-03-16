@@ -11,7 +11,7 @@ here=`pwd`
 
 usage(){
   echo "ERROR: This script requires 1 option to run."
-  echo "Check the case statement at the end of this script to see run options."
+  echo "Check the included README.md for options (or see case statement in this script)."
   echo "Exiting."
 }
 

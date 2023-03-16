@@ -35,6 +35,7 @@ components_to_deploy:
   - skadmin
   - streams
   - systems
+  - tapisui
   - tenants
   - tokens
   - vault
@@ -121,7 +122,6 @@ pgrest_tenants:
 
 
 # pods
-pods_kube_domain: tapis-test.svc.cluster.local
 pods_log_level: INFO
 
 
