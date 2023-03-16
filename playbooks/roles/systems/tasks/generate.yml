@@ -1,0 +1,19 @@
+---
+
+
+- name: systems tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: systems
+    tree_name: systems
+
+# if using docker, create data dirs
+- name: create data dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ tapisdatadir }}/systems'
+  when: tapisflavor == "docker"
+

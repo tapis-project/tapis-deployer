@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "burndown jobs:"
+
+docker compose down

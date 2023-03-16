@@ -1,0 +1,60 @@
+
+networks:
+    tapis:
+        name: tapis
+    
+
+services:
+    sk-postgres:
+        container_name: sk-postgres
+        image: {{ security_postgres_image }}
+#        ports: 
+#            - 5432
+        networks:
+            - tapis
+        volumes:
+            - {{ tapisdatadir }}/security/postgres:/pgdata/data
+        environment:
+            - PGDATA=/pgdata/data
+            - POSTGRES_PASSWORD
+
+    
+    sk-pgadmin:
+        container_name: sk-pgadmin
+        image: {{ security_pgadmin_image }}
+#        ports:
+#            - "127.0.0.1::80"
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=wow@example.com
+            - PGADMIN_DEFAULT_PASSWORD=password
+        networks:
+            - tapis
+
+    security-api:
+        container_name: security-api
+        image: {{ security_api_image }}
+#        ports:
+#            - 8000
+#            - 8080
+#            - 8443
+#            - 6157
+        environment:
+            - TAPIS_SITE_ID={{ security_service_site_id }}
+            - TAPIS_TENANT_SVC_BASEURL={{ security_service_url }}
+            - TAPIS_SK_VAULT_DISABLE=false 
+            - TAPIS_SK_VAULT_ADDRESS={{ security_vault_url }}
+            - TAPIS_SK_VAULT_SECRET_ID 
+            - TAPIS_SK_VAULT_ROLE_ID
+            - TAPIS_DB_PASSWORD 
+            - TAPIS_DB_CONNECTION_POOL_SIZE=10
+            - TAPIS_DB_USER=tapis
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://sk-postgres:5432/tapissecdb
+            - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES=/v3/security
+            - TAPIS_REQUEST_LOGGING_IGNORE_SUFFIXES=/healthcheck;/ready;/hello
+            - TAPIS_LOG_DIRECTORY=/opt/tomcat/logs
+            - CATALINA_OPTS=-Xms{{security_heap_min}} -Xmx{{security_heap_max}} --add-opens java.base/java.time=ALL-UNNAMED
+        networks:
+            - tapis
+
+
+

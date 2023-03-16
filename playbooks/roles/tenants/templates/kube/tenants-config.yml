@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tenants-config
+data:
+  tenants-config.json: |-
+    {
+      "primary_site_admin_tenant_base_url": "{{tenants_service_url}}",
+      "service_site_id": "{{tenants_service_site_id}}",
+      "service_tenant_id": "{{tenants_service_tenant_id}}",
+      "service_name": "{{tenants_service_name}}",
+      "postgres_user": "{{tenants_postgres_user}}",
+      "tenants": ["*"],
+      "use_sk": {{tenants_use_sk|to_json}},
+      "show_traceback": {{tenants_show_traceback|to_json}},
+{% if tenants_test_jwt %}
+      "test_jwt": "{{tenants_test_jwt}},"
+{% endif %}
+      "log_level": "{{tenants_log_level}}"
+    }

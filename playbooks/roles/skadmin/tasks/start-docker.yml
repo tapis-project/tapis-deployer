@@ -1,0 +1,94 @@
+#Enable V2 Key/Value Secrets
+#curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/mounts/secret -d '{"type": "kv-v2"}' | /usr/bin/jq
+# curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/mounts/secret -d '{"type": "kv-v2"}'
+- name: create mount
+  block:
+    - name: Enable V2 Key/Value Secrets
+      ansible.builtin.uri:
+        url: "{{skadmin_vault_url}}/v1/sys/mounts/secret"
+        method: POST
+        headers:  
+          X-Vault-Token: "{{ lookup('ansible.builtin.file', '{{ tapisdatadir }}/vault/vault-token') }}"
+        body: '{"type": "kv-v2"}'
+      register: skadmin_mount_result
+  rescue:
+    - name: ignore path already in use
+      ansible.builtin.debug:
+        msg: "failed mounting secret to vault due to: {{skadmin_mount_result.json.errors}}"
+      failed_when: "'path is already in use at secret' not in {{skadmin_mount_result.json.errors}}"
+
+  # echo "debug110"
+  # #Check the mounts:
+  # #curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/mounts | /usr/bin/jq
+  # curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/mounts
+
+    - name: '110'
+      ansible.builtin.uri:
+        url: "{{skadmin_vault_url}}/v1/sys/mounts"
+        headers:  
+          X-Vault-Token: "{{ lookup('ansible.builtin.file', '{{ tapisdatadir }}/vault/vault-token') }}"
+
+    # echo "debug120"
+    # #Enable Approle Authentication
+    # #curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth/approle -d '{"type": "approle"}' | /usr/bin/jq
+    # curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth/approle -d '{"type": "approle"}'
+
+    - name: '120'
+      ansible.builtin.uri:
+        url: "{{skadmin_vault_url}}/v1/sys/auth/approle"
+        method: POST
+        headers:  
+          X-Vault-Token: "{{ lookup('ansible.builtin.file', '{{ tapisdatadir }}/vault/vault-token') }}"
+        body: '{"type": "approle"}'
+
+    # echo "debug130"
+    # #Check authenticators:
+    # #curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth | /usr/bin/jq
+    # curl -s -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth
+
+    - name: '130'
+      ansible.builtin.uri:
+        url: "{{skadmin_vault_url}}/v1/sys/auth"
+        headers:  
+          X-Vault-Token: "{{ lookup('ansible.builtin.file', '{{ tapisdatadir }}/vault/vault-token') }}"
+
+    # echo "debug140"
+    # #Enable userpass authentication
+    # #curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth/userpass -d '{"type": "userpass"}' | /usr/bin/jq
+    # curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/sys/auth/userpass -d '{"type": "userpass"}'
+
+    - name: '140'
+      ansible.builtin.uri:
+        url: "{{skadmin_vault_url}}/v1/sys/auth/userpass"
+        method: POST
+        headers:  
+          X-Vault-Token: "{{ lookup('ansible.builtin.file', '{{ tapisdatadir }}/vault/vault-token') }}"
+        body: '{"type": "userpass"}'
+
+    # echo "debug100"
+    # curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" --data @/tmp/sk-roles/sk-role.json {{skadmin_vault_url}}/v1/auth/approle/role/sk
+
+    - name: 'create sk role'
+      ansible.builtin.uri:
+        url: "{{skadmin_vault_url}}/v1/auth/approle/role/sk"
+        method: POST
+        headers:  
+          X-Vault-Token: "{{ lookup('ansible.builtin.file', '{{ tapisdatadir }}/vault/vault-token') }}"
+        src: "{{ tapisdir }}/skadmin/tapis-vault/roles/sk-role.json"
+
+    # echo "debug101"
+    # curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" --data @/tmp/sk-roles/sk-admin-role.json {{skadmin_vault_url}}/v1/auth/approle/role/sk-admin
+
+    - name: 'create sk-admin role'
+      ansible.builtin.uri:
+        url: "{{skadmin_vault_url}}/v1/auth/approle/role/sk-admin"
+        method: POST
+        headers:  
+          X-Vault-Token: "{{ lookup('ansible.builtin.file', '{{ tapisdatadir }}/vault/vault-token') }}"
+        src: "{{ tapisdir }}/skadmin/tapis-vault/roles/sk-admin-role.json"
+
+    # echo "debug130"
+    # #echo "vault-token:"
+    # #echo $VAULT_TOKEN
+    # echo "sk secret-id:" 
+    # curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{skadmin_vault_url}}/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id

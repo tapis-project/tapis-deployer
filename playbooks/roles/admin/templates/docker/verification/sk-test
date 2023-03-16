@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+
+echo "hello"
+docker run --net tapis --rm -it {{ admin_util_image }} curl http://security-api:8000/v3/security/hello
+echo
+
+echo "ready"
+docker run --net tapis --rm -it {{ admin_util_image }} curl http://security-api:8000/v3/security/ready
+echo
+
+echo "healthcheck"
+docker run --net tapis --rm -it {{ admin_util_image }} curl http://security-api:8000/v3/security/healthcheck
+echo

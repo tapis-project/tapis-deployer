@@ -1,0 +1,4 @@
+---
+# defaults file for tapisui
+
+tapisui_log_level: INFO

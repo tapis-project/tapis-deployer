@@ -1,0 +1,37 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{pods_postgres_pvc}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{pods_storage_class}}
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: chown-pods-postgres-pvc
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: chown-pods-postgres-volume
+        image: {{ pods_alpine_image }}
+        command:
+        - chown
+        - -R
+        - 999:999
+        - /pgdata
+        volumeMounts:
+        - name: pods-postgres-data
+          mountPath: /pgdata
+      volumes:
+      - name: pods-postgres-data
+        persistentVolumeClaim:
+          claimName: {{pods_postgres_pvc}}

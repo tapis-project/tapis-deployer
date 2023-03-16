@@ -1,0 +1,9 @@
+---
+
+
+- name: globus-proxy tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: globus-proxy
+    tree_name: globus-proxy

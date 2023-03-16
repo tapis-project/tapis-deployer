@@ -1,0 +1,28 @@
+---
+
+
+streams_service_name: streams
+streams_service_site_id: "{{ global_site_id }}"
+streams_service_url: "{{ global_service_url }}"
+streams_service_tenant_id: admin
+streams_log_level: DEBUG
+streams_show_traceback: false
+# Optional: set the "nodeName" spec on the streams container so it lands on a specific Kubernetes node
+streams_node_name: null
+streams_processes: 10
+streams_threads: 4
+streams_influx_pvc: influx-vol01
+streams_storage_class: "{{ global_storage_class }}"
+streams_influx2_pvc: influx2-vol01
+streams_kapacitor_pvc: streams-kapacitor-vol01
+streams_mysql_pvc: streams-mysql-vol01
+streams_influxdb_token: 
+streams_tenant_info:
+  dev:
+    stream_db: 
+    tapis_base_url: 
+streams_tenants:
+  - dev
+  - admin
+
+

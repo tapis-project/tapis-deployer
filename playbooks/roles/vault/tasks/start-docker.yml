@@ -1,0 +1,218 @@
+---
+
+- name: vault dirs
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  with_items:
+    - '{{ vault_dir }}'
+    - '{{ vault_dir }}/data'
+    - '{{ vault_dir }}/logs'
+    - '{{ vault_dir }}/config'
+
+- name: vault config file
+  ansible.builtin.template:
+    dest: '{{ vault_dir }}/config/vault.hcl'
+    src: vault.hcl
+    owner: root
+    group: root
+
+- name: vault container
+  community.docker.docker_container:
+    name: vault
+    image: {{ vault_image }}
+    state: started
+    entrypoint: vault server -config /vault/config/vault.hcl
+    #entrypoint: sleep infinity
+    capabilities:
+      - IPC_LOCK
+    volumes:
+      - '{{ vault_dir }}:/vault'
+    exposed_ports:
+      - 8200
+
+- name: stat vault_init_file
+  ansible.builtin.stat:
+    path: '{{ ansible_env.HOME }}/vault_init_file'
+  register: vault_init_file_stat
+
+#- name: get vault status (init step)
+#  tags: 
+#    - init
+#    - status
+#  community.docker.docker_container_exec:
+#    container: vault
+#    command: 'vault status -format=json'
+#    env: 
+#      VAULT_ADDR: http://127.0.0.1:8200
+#  register: vault_status_out
+##
+#- name: convert vault status output to json
+#  tags: 
+#    - init
+#    - status
+#  set_fact:
+#    vault_status_json: '{{ vault_status_out.stdout | from_json }}'
+
+- name: vault init
+  tags: 
+    - init
+  community.docker.docker_container_exec:
+    container: vault
+    command: vault operator init
+    env: 
+      VAULT_ADDR: http://127.0.0.1:8200
+  register: vault_init_out
+  when: 
+    - not vault_init_file_stat.stat.exists
+#    - not vault_status_json.initialized
+
+#- name: debug vault init out
+#  tags: 
+#    - init
+#  debug:
+#    var: vault_init_out.stdout
+#  when: 
+#    - not vault_init_file_stat.stat.exists
+#    - not vault_status_json.initialized
+
+#- name: Vault Initialized?
+#  tags: 
+#     - status
+#  debug:
+#    var: vault_status_json.initialized
+
+- name: save vault init out
+  tags: 
+    - init
+  ansible.builtin.copy:
+    content: '{{ vault_init_out.stdout }}'
+    dest: '{{ ansible_env.HOME }}/vault_init_file'
+    mode: 0600
+  when: 
+    - not vault_init_file_stat.stat.exists
+#    - not vault_status_json.initialized
+
+- name: ensure vault_init_file is mode 0600
+  tags: 
+    - init
+  ansible.builtin.file:
+    dest: '{{ ansible_env.HOME }}/vault_init_file'
+    mode: 0600
+  when: 
+    - vault_init_file_stat.stat.exists
+
+- name: slurp vault init file
+  tags: 
+    - unseal 
+  slurp:
+    src: '{{ ansible_env.HOME }}/vault_init_file'
+  register: vault_init_content
+
+- name: get unseal1
+  tags: 
+    - unseal
+  set_fact:
+    unseal1: "{{ vault_init_content['content'] | b64decode | regex_search('Unseal Key 1: (.+)', '\\1') | first }}"
+
+- name: get unseal2
+  tags: 
+    - unseal
+  set_fact:
+    unseal2: "{{ vault_init_content['content'] | b64decode | regex_search('Unseal Key 2: (.+)', '\\1') | first }}"
+
+- name: get unseal3
+  tags: 
+    - unseal
+  set_fact:
+    unseal3: "{{ vault_init_content['content'] | b64decode | regex_search('Unseal Key 3: (.+)', '\\1') | first }}"
+
+- name: get initialroot
+  set_fact:
+    initroottoken: "{{ vault_init_content['content'] | b64decode | regex_search('Initial Root Token: (.+)', '\\1') | first }}"
+
+#- name: debug unseals
+#  tags: unseal
+#  debug:
+#    var: '{{ item }}'
+#  with_items:
+#    - unseal1
+#    - unseal2
+#    - unseal3
+#    - initroottoken
+
+- name: vault unseal1
+  tags: 
+    - unseal
+  community.docker.docker_container_exec:
+    container: vault
+    command: 'vault operator unseal {{ unseal1 }}'
+    env: 
+      VAULT_ADDR: http://127.0.0.1:8200
+
+- name: vault unseal2
+  tags: 
+    - unseal
+  community.docker.docker_container_exec:
+    container: vault
+    command: 'vault operator unseal {{ unseal2 }}'
+    env: 
+      VAULT_ADDR: http://127.0.0.1:8200
+
+- name: vault unseal3
+  tags: 
+    - unseal
+  community.docker.docker_container_exec:
+    container: vault
+    command: 'vault operator unseal {{ unseal3 }}'
+    env: 
+      VAULT_ADDR: http://127.0.0.1:8200
+
+- name: get vault status
+  tags: 
+    - status
+  community.docker.docker_container_exec:
+    container: vault
+    command: 'vault status -format=json'
+    env: 
+      VAULT_ADDR: http://127.0.0.1:8200
+  register: vault_status_out
+
+- name: convert vault status output to json
+  tags: 
+    - status
+  set_fact:
+    vault_status_json: '{{ vault_status_out.stdout | from_json }}'
+
+#- name: debug vault status
+#  tags: 
+#     - status
+#  debug:
+#    msg: unsealed!
+#  when: not vault_status_json.sealed 
+
+- name: Vault Sealed?
+  tags: 
+     - status
+  debug:
+    var: vault_status_json.sealed
+
+- name: Vault Fully Up?
+  tags: 
+    - status
+  debug:
+    msg: "Vault is fully up!"
+  when: 
+    - vault_status_json.initialized
+    - not vault_status_json.sealed
+
+
+- name: blah
+  tags: 
+     - status
+  debug:
+    var: ansible_user_id
+

@@ -1,0 +1,18 @@
+apiVersion: v1
+metadata:
+  name: files-environment-vars
+data:
+{% if files_log_level == true %}
+  LOG_LEVEL: info
+{% endif %}
+  DB_HOST: files-postgres
+  DB_NAME: tapisfiles
+  DB_USERNAME: tapisfiles
+  POSTGRES_DB: tapisfiles
+  POSTGRES_USER: tapisfiles
+  RABBITMQ_DEFAULT_USER: tapisfiles
+  RABBITMQ_DEFAULT_VHOST: tapisfiles
+  RABBITMQ_HOSTNAME: {{files_rabbitmq_hostname}}
+  RABBITMQ_USERNAME: tapisfiles
+  RABBITMQ_VHOST: tapisfiles
+kind: ConfigMap

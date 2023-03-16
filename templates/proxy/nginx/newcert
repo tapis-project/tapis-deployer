@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# recreate cert secret
-kubectl delete secret tapis-tls-cert 
-kubectl create secret tls tapis-tls-cert --cert={{proxy_nginx_cert_file}} --key={{proxy_nginx_cert_key}}
-
-# relaunch deploy pod
-kubectl rollout restart deployment tapis-nginx

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: systems-postgres
+spec:
+  selector:
+    matchLabels:
+      app: systems-postgres
+  template:
+    metadata:
+      labels:
+        app: systems-postgres
+    spec:
+      containers:
+      - name: systems-postgres
+        image: {{ systems_postgres_image }}
+        ports:
+        - name: postgres
+          containerPort: 5432
+        env:
+        - name: PGDATA
+          value: "/pgdata/data"
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-systems-secrets
+              key: postgres-password
+        volumeMounts:
+        - name: systems-pg-data
+          mountPath: "/pgdata"
+      volumes:
+      - name: systems-pg-data
+        persistentVolumeClaim:
+          claimName: {{systems_postgres_pvc}}

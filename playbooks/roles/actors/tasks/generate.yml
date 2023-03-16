@@ -1,0 +1,9 @@
+---
+
+- name: actors tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: actors
+    tree_name: actors
+

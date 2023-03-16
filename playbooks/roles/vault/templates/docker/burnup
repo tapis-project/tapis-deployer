@@ -1,0 +1,91 @@
+#!/bin/bash
+
+echo "burnup vault:"
+
+mkdir -p {{ tapisdatadir }}/vault/data
+docker run -it -v {{ tapisdatadir }}/vault:/vault {{ vault_image }} chown -R 100:1000 /vault/data
+
+docker compose up -d
+if [ $? -ne 0 ]
+then
+  echo "docker compose up failed. Exiting burnup."
+  exit 1
+fi
+
+if [ `docker inspect -f '{% raw %}{{.State.Status}}{% endraw %}' vault` != "running" ]
+then
+  echo "Vault is not running. Exiting burnup."
+  exit 1
+fi 
+
+# check if vault is unsealed already
+sleep 5
+if [ `docker exec -it vault vault status -format=json | jq -r .sealed` == "false" ]
+then
+  echo "Vault is up and unsealed." 
+  exit 0
+fi
+
+# TODO: should we do an initialized check? requires more logic in further checks
+# check if vault is initialized
+#if [ `docker exec -it vault vault status -format=json | jq -r .initialized` == "false" ]
+#then
+#fi
+
+
+# only do this step once if vault is not initialized
+if [ ! -f {{ tapisdatadir }}/vault/vault-init ]
+then
+  echo
+  echo "# WARNING! Important 1-time-only Vault information stored in {{ tapisdatadir }}/vault/vault-init . If you lose it, your Vault may be locked forever!"
+  echo
+  pod='vault'
+  docker exec -it $pod vault operator init | sed 's/\x1b\[[0-9;]*m//g' | tr -d "\r" >& {{ tapisdatadir}}/vault/vault-init
+  cat {{ tapisdatadir}}/vault/vault-init
+  # chmod 400 {{ tapisdatadir }}/vault/vault-init
+fi
+
+# sanity check vault-init is non-zero bytes
+if [ ! -s {{ tapisdatadir }}/vault/vault-init ]
+then
+  echo "# WARNING! {{ tapisdatadir }}/vault/vault-init exists but is zero bytes. Please fix and re-run."
+  exit 1
+fi
+
+# sanity check vault-init has initial root token 
+grep "Initial Root Token" {{ tapisdatadir }}/vault/vault-init >& /dev/null
+if [ $? -ne 0 ]
+then
+  echo "# WARNING! Could not find Initial Root Token in {{ tapisdatadir }}/vault/vault-init. Please fix and re-run."
+  exit 1
+fi
+
+# sanity check vault-init has unseal keys
+grep "Unseal Key" {{ tapisdatadir }}/vault/vault-init >& /dev/null
+if [ $? -ne 0 ]
+then   
+  echo "# WARNING! Could not find Unseal Key(s) in {{ tapisdatadir }}/vault/vault-init. Please fix and re-run."
+  exit 1
+fi
+
+if [ ! -f {{ tapisdatadir }}/vault/vault-token ]
+then
+  grep "Initial Root Token" {{ tapisdatadir }}/vault/vault-init | awk -F: '{print $2}' | tr -d " \t\n\r" > {{ tapisdatadir }}/vault/vault-token
+  chmod 400 {{ tapisdatadir }}/vault/vault-token
+fi
+
+u1=`grep '^Unseal Key 1:' {{ tapisdatadir }}/vault/vault-init | awk '{print $4}'`
+u2=`grep '^Unseal Key 2:' {{ tapisdatadir }}/vault/vault-init | awk '{print $4}'`
+u3=`grep '^Unseal Key 3:' {{ tapisdatadir }}/vault/vault-init | awk '{print $4}'`
+
+# if vault sealed, unseal it 
+if [ `docker exec -it vault vault status -format=json | jq -r .sealed` == "true" ]
+then
+  echo "unsealing:"
+  docker exec -it vault vault operator unseal $u1
+  docker exec -it vault vault operator unseal $u2
+  docker exec -it vault vault operator unseal $u3
+  echo "Vault should be up and unsealed." 
+fi
+
+exit 0

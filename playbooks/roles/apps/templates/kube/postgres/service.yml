@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:  
+  name: apps-postgres
+spec:
+  selector:    
+    app: apps-postgres
+  ports:  
+  - name: postgres
+    port: 5432
+    targetPort: 5432
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: apps-pgadmin
+spec:
+  type: NodePort
+  selector:
+    app: apps-pgadmin
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+
+{% if apps_enable_external == true %}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apps-postgres-external
+spec:
+  type: NodePort
+  selector:
+    app: apps-postgres
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: 5432
+{% endif %}

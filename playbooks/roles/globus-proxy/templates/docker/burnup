@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "burnup globus-proxy:"
+
+docker compose up -d
+

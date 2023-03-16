@@ -1,0 +1,36 @@
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sk-admin-rerun
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: sk-admin-rerun
+        command: ["/tmp/run-sk-admin2"]
+        #command: ["sleep","3600"]
+        image: {{ skadmin_skadminutil_image }}
+        imagePullPolicy: Always
+        env:
+        - name: VAULT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: vault-token
+              key: vault-token
+        volumeMounts:
+        - name: initialload
+          mountPath: /tmp/initialLoad
+        - name: run-sk-admin2
+          mountPath: /tmp/run-sk-admin2
+          subPath: run-sk-admin2
+      volumes:
+      - name: initialload
+        configMap:
+          name: sk-admin-initialload
+      - name: run-sk-admin2
+        configMap:
+          name: run-sk-admin2
+          defaultMode: 0777

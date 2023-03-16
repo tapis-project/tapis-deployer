@@ -1,0 +1,12 @@
+---
+
+globus_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
+globus_proxy_name: globus_proxy
+globus_proxy_site_id: "{{ global_site_id }}"
+globus_proxy_tenant_id: admin
+globus_proxy_log_level: INFO
+globus_proxy_show_traceback: false
+globus_proxy_tenants:
+  - dev
+  - admin
+

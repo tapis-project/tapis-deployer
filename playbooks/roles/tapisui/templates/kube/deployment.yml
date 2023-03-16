@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tapisui-deployment
+spec:
+  selector:
+    matchLabels:
+      app: tapisui-deployment
+  template:
+    metadata:
+      labels:
+        app: tapisui-deployment
+    spec:
+      containers:
+        - image: {{ tapisui_image }}
+          imagePullPolicy: Always
+          name: tapisui
+          ports:
+            - containerPort: 3000
+          resources: {}
+          tty: true
+          env:
+          - name: LOG_LEVEL
+            value: {{tapisui_log_level}}

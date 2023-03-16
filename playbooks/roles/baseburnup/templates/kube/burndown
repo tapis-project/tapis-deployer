@@ -1,0 +1,284 @@
+#!/bin/bash
+
+# global tapis burndown script
+
+here=`pwd`
+
+
+usage(){
+  echo "ERROR: This script requires 1 option to run."
+  echo "Check the case statement at the end of this script to see run options."
+  echo "Exiting."
+}
+
+
+### services
+
+actors(){
+  cd $here/actors
+  ./burndown
+}
+
+apps(){
+  cd $here/apps
+  ./burndown
+}
+
+authenticator(){
+  cd $here/authenticator
+  ./burndown
+}
+
+container-registry(){
+  cd $here/container-registry
+  ./burndown
+}
+
+files(){
+  cd $here/files
+  ./burndown
+}
+
+jobs(){
+  cd $here/jobs
+  ./burndown
+}
+
+meta(){
+  cd $here/meta
+  ./burndown
+}
+
+monitoring(){
+  cd $here/monitoring
+  ./burndown
+}
+
+notifications(){
+  cd $here/notifications
+  ./burndown
+}
+
+pgrest(){
+  echo "pgrest:"
+  cd $here/pgrest
+  ./burndown
+}
+
+pgrest-a2cps-dev(){
+  echo "pgrest-a2cps-dev:"
+  cd $here/pgrest-a2cps-dev
+  ./burndown
+}
+
+pgrest-a2cps-prod(){
+  echo "pgrest-a2cps-prod:"
+  cd $here/pgrest-a2cps-prod
+  ./burndown
+}
+
+pods(){
+  cd $here/pods
+  ./burndown
+}
+
+proxy(){
+  cd $here/proxy
+  ./burndown
+}
+
+security(){
+  cd $here/security
+  ./burndown
+}
+
+skadmin(){
+  cd $here/skadmin
+  ./burndown
+}
+
+streams(){
+  cd $here/streams
+  ./burndown
+}
+
+systems(){
+  cd $here/systems
+  ./burndown
+}
+
+tapisui(){
+  cd $here/tapisui
+  ./burndown
+}
+
+tenants(){
+  cd $here/tenants
+  ./burndown
+}
+
+tokens(){
+  cd $here/tokens
+  ./burndown
+}
+
+vault(){
+  cd $here/vault
+  ./burndown
+}
+
+workflows(){
+  cd $here/workflows
+  ./burndown
+}
+
+primary_services(){
+{% if  "tenants" in components_to_deploy %}
+  tenants
+{% endif %}
+
+{% if  "security" in components_to_deploy %}
+  security
+{% endif %}
+
+{% if  "tokens" in components_to_deploy %}
+  tokens
+{% endif %}
+
+{% if  "authenticator" in components_to_deploy %}
+  authenticator
+{% endif %}
+}
+
+
+secondary_services() {
+
+{% if  "systems" in components_to_deploy %}
+  systems
+{% endif %}
+
+{% if  "files" in components_to_deploy %}
+  files
+{% endif %}
+
+{% if  "apps" in components_to_deploy %}
+  apps
+{% endif %}
+
+{% if  "jobs" in components_to_deploy %}
+  jobs
+{% endif %}
+
+{% if  "meta" in components_to_deploy %}
+  meta
+{% endif %}
+
+{% if  "streams" in components_to_deploy %}
+  streams
+{% endif %}
+
+{% if  "actors" in components_to_deploy %}
+  actors
+{% endif %}
+
+{% if  "container-registry" in components_to_deploy %}
+  container-registry
+{% endif %}
+
+{% if  "monitoring" in components_to_deploy %}
+  monitoring
+{% endif %}
+
+{% if  "notifications" in components_to_deploy %}
+  notifications 
+{% endif %}
+
+{% if  "pgrest" in components_to_deploy %}
+  pgrest
+{% endif %}
+
+{% if  "pgrest-a2cps-dev" in components_to_deploy %}
+  pgrest-a2cps-dev
+{% endif %}
+
+{% if  "pgrest-a2cps-prod" in components_to_deploy %}
+  pgrest-a2cps-prod
+{% endif %}
+
+{% if  "pods" in components_to_deploy %}
+  pods
+{% endif %}
+
+{% if  "tapisui" in components_to_deploy %}
+  tapisui
+{% endif %}
+
+{% if  "workflows" in components_to_deploy %}
+  workflows
+{% endif %}
+
+}
+
+
+authstack(){
+
+{% if  "authenticator" in components_to_deploy %}
+  authenticator
+{% endif %}
+
+{% if  "tokens" in components_to_deploy %}
+  tokens
+{% endif %}
+
+{% if  "security" in components_to_deploy %}
+  security
+{% endif %}
+
+{% if  "tenants" in components_to_deploy %}
+  tenants
+{% endif %}
+
+{% if "skadmin" in components_to_deploy%}
+  skadmin
+{% endif %}
+
+{% if "vault" in components_to_deploy%}
+  vault
+{% else %}
+  # using external vault, so do not start one here
+{% endif %}
+
+}
+
+
+case $1 in
+  vault)
+    "$@"
+    exit 0
+    ;;
+  noprompt)
+    "$@"
+    exit 0
+    ;;
+  authstack)
+    "$@"
+    exit 0
+    ;;
+  primary_services)
+    "$@"
+    exit 0
+    ;;
+  secondary_services)
+    "$@"
+    exit 0
+    ;;
+  proxy)
+    "$@"
+    exit 0
+    ;;
+  *)
+    usage
+    exit 0
+    ;;
+esac
+

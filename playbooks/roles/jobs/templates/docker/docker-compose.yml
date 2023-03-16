@@ -1,0 +1,187 @@
+
+networks:
+    tapis:
+        name: tapis
+
+
+services:
+    jobs-api:
+        networks:
+          - tapis
+    # will probably need an extra migrations container 
+        image: {{ jobs_api_image }}
+        # ports:
+        # - name: tomcat1
+        #     containerPort: 8000
+        # - name: tomcat2
+        #     containerPort: 8080
+        # - name: tomcat3
+        #     containerPort: 8443
+        # - name: debug
+        #     containerPort: 6157
+        environment:
+      {% if jobs_node_name == true %}
+      - TAPIS_LOCAL_NODE_NAME=spec.nodeName
+      {% endif %}
+      - TAPIS_SITE_ID={{ jobs_service_site_id }}"
+            - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}"
+            - TAPIS_SERVICE_PASSWORD={{ jobs_service_password }}"
+            - TAPIS_DB_CONNECTION_POOL_SIZE="10"
+            - TAPIS_DB_USER="tapis"
+            - "TAPIS_DB_PASSWORD={{ jobs_postgres_password }}"
+            - TAPIS_DB_JDBC_URL="jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+            - TAPIS_QUEUE_HOST="jobs-rabbitmq"
+            - TAPIS_QUEUE_ADMIN_USER="tapis"
+            - "TAPIS_QUEUE_ADMIN_PASSWORD={{ jobs_rabbitmq_tapis_password }}"
+            - TAPIS_QUEUE_USER="jobs"
+            - "TAPIS_QUEUE_PASSWORD={{ jobs_rabbitmq_password }}"
+            - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES="/v3/jobs"
+            - TAPIS_REQUEST_LOGGING_INGORE_SUFFIXES="/healthcheck;/ready;/hello"
+        #        - name: TAPIS_LOG_DIRECTORY
+        #          value: "/opt/tomcat/logs"
+            - CATALINA_OPTS="-Xms1g -Xmx3g --add-opens java.base/java.time=ALL-UNNAMED"
+
+    jobs-postgres:
+        networks:
+          - tapis
+        image: {{ jobs_postgres_image }}
+        environment:
+            - PGDATA="/pgdata/data"
+            - POSTGRES_PASSWORD={{ jobs_postgres_password }}"
+        volumes:
+            - "{{ tapisdatadir }}/jobs/jobs-pg-data:/pgdata"
+
+    jobs-pgadmin:
+        image: {{ jobs_postgres_image }}
+        environment:
+            - PGDATA="/pgdata/data"
+            - "POSTGRES_PASSWORD={{ jobs_postgres_password }}"
+        volumes:
+            - "{{ tapisdatadir }}/jobs/jobs-pg-data:/pgdata"
+
+    jobs-rabbitmq:
+        image: {{ jobs_rabbitmq_management_image }} 
+        environment:
+            - HOSTNAME="jobs-rabbitmq"
+            - RABBITMQ_HOSTNAME="jobs-rabbitmq"
+            - RABBITMQ_DEFAULT_USER="tapis"
+            - "RABBITMQ_DEFAULT_PASS={{ jobs_rabbitmq_tapis_password }}"
+            - RABBITMQ_VM_MEMORY_HIGH_WATERMARK="2147483648"
+        volumes:
+            - "{{ tapisdatadir }}/jobs/jobs-rabbitmq-data"
+
+    jobs-altqueue:
+        image: {{ jobs_worker_image }}
+        environment:
+            - "TAPIS_SITE_ID={{ jobs_service_site_id }}"
+            - "TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}"
+            - "TAPIS_SERVICE_PASSWORD={{ jobs_service_password }}"
+            - TAPIS_DB_CONNECTION_POOL_SIZE="2"
+            - TAPIS_DB_USER="tapis"
+            - "TAPIS_DB_PASSWORD={{ jobs_postgres_password }}"
+            - TAPIS_DB_JDBC_URL="jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+            - TAPIS_QUEUE_HOST="jobs-rabbitmq"
+            - TAPIS_QUEUE_ADMIN_USER="tapis"
+            - "TAPIS_QUEUE_ADMIN_PASSWORD={{ jobs_rabbitmq_tapis_password }}"
+            - TAPIS_QUEUE_USER="jobs"
+            - "TAPIS_QUEUE_PASSWORD={{ jobs_rabbitmq_password }}"
+            - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES="/v3/jobs"
+            - JAVA_OPTS="-Xms1g -Xmx1g"
+            - MAIN_CLASS="edu.utexas.tacc.tapis.jobs.reader.AltQueueReader"
+            - JOBS_PARMS="-n rdr-alt"
+        networks: 
+            - tapis
+
+    jobs-recovery:
+        image: {{ jobs_worker_image }}
+        environment:
+            - "TAPIS_SITE_ID={{ jobs_service_site_id }}"
+            - "TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}"
+            - "TAPIS_SERVICE_PASSWORD={{ jobs_service_password }}"
+            - TAPIS_DB_CONNECTION_POOL_SIZE="2"
+            - TAPIS_DB_USER="tapis"
+            - "TAPIS_DB_PASSWORD={{ jobs_postgres_password }}"
+            - TAPIS_DB_JDBC_URL="jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+            - TAPIS_QUEUE_HOST="jobs-rabbitmq"
+            - TAPIS_QUEUE_ADMIN_USER="tapis"
+            - "TAPIS_QUEUE_ADMIN_PASSWORD={{ jobs_rabbitmq_tapis_password }}"
+            - TAPIS_QUEUE_USER="jobs"
+            - "TAPIS_QUEUE_PASSWORD={{ jobs_rabbitmq_password }}"
+            - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES="/v3/jobs"
+            - JAVA_OPTS="-Xms1g -Xmx1g"
+            - MAIN_CLASS="edu.utexas.tacc.tapis.jobs.reader.RecoveryReader"
+            - JOBS_PARMS="-n rdr-recovery"
+        networks: 
+            - tapis
+
+    jobs-deadletter:
+        image: {{ jobs_worker_image }}
+        environment:
+            - "TAPIS_SITE_ID={{ jobs_service_site_id }}"
+            - "TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}"
+            - "TAPIS_SERVICE_PASSWORD={{ jobs_service_password }}"
+            - TAPIS_DB_CONNECTION_POOL_SIZE="2"
+            - TAPIS_DB_USER="tapis"
+            - "TAPIS_DB_PASSWORD={{ jobs_postgres_password }}"
+            - TAPIS_DB_JDBC_URL="jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+            - TAPIS_QUEUE_HOST="jobs-rabbitmq"
+            - TAPIS_QUEUE_ADMIN_USER="tapis"
+            - "TAPIS_QUEUE_ADMIN_PASSWORD={{ jobs_rabbitmq_tapis_password }}"
+            - TAPIS_QUEUE_USER="jobs"
+            - "TAPIS_QUEUE_PASSWORD={{ jobs_rabbitmq_password }}"
+            - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES="/v3/jobs"
+            - JAVA_OPTS="-Xms1g -Xmx1g"
+            - MAIN_CLASS="edu.utexas.tacc.tapis.jobs.reader.DeadLetterReader"
+            - JOBS_PARMS="-n rdr-dead"
+        networks: 
+        - tapis
+
+    jobs-eventqueue:
+        image: {{ jobs_worker_image }}
+        environment:
+            - "TAPIS_SITE_ID={{ jobs_service_site_id }}"
+            - "TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}"
+            - "TAPIS_SERVICE_PASSWORD={{ jobs_service_password }}"
+            - TAPIS_DB_CONNECTION_POOL_SIZE="2"
+            - TAPIS_DB_USER="tapis"
+            - "TAPIS_DB_PASSWORD={{ jobs_postgres_password }}"
+            - TAPIS_DB_JDBC_URL="jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+            - TAPIS_QUEUE_HOST="jobs-rabbitmq"
+            - TAPIS_QUEUE_ADMIN_USER="tapis"
+            - "TAPIS_QUEUE_ADMIN_PASSWORD={{ jobs_rabbitmq_tapis_password }}"
+            - TAPIS_QUEUE_USER="jobs"
+            - "TAPIS_QUEUE_PASSWORD={{ jobs_rabbitmq_password }}"
+            - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES="/v3/jobs"
+            - JAVA_OPTS="-Xms1g -Xmx1g"
+            - MAIN_CLASS="edu.utexas.tacc.tapis.jobs.reader.EventReader"
+            - JOBS_PARMS="-n rdr-event"
+        networks: 
+            - tapis
+
+    jobs-workers:
+        image: {{ jobs_worker_image }}
+        environment:
+      {% if jobs_node_name == true %}
+      - TAPIS_LOCAL_NODE_NAME=spec.nodeName
+      {% endif %}
+      - "TAPIS_SITE_ID={{ jobs_service_site_id }}"
+            - "TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}"
+            - "TAPIS_SERVICE_PASSWORD={{ jobs_service_password }}"
+            - TAPIS_DB_CONNECTION_POOL_SIZE="10"
+            - TAPIS_DB_USER="tapis"
+            - "TAPIS_DB_PASSWORD={{ jobs_postgres_password }}"
+            - TAPIS_DB_JDBC_URL="jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+            - TAPIS_QUEUE_HOST="jobs-rabbitmq"
+            - TAPIS_QUEUE_ADMIN_USER="tapis"
+            - "TAPIS_QUEUE_ADMIN_PASSWORD={{ jobs_rabbitmq_tapis_password }}"
+            - TAPIS_QUEUE_USER="jobs"
+            - "TAPIS_QUEUE_PASSWORD={{ jobs_rabbitmq_password }}"
+            - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES="/v3/jobs"
+            - JAVA_OPTS="-Xms1g -Xmx1g"
+            - MAIN_CLASS="edu.utexas.tacc.tapis.jobs.worker.JobWorker"
+            - JOBS_PARMS="-n wkr-DefaultQueue -q tapis.jobq.submit.DefaultQueue -w 100"
+        networks:
+            - tapis
+
+networks:
+    tapis:

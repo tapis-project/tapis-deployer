@@ -1,0 +1,28 @@
+
+networks:
+    tapis:
+        name: tapis
+
+
+services:
+  monitoring-elisticsearch:
+    networks: 
+      - tapis
+
+  monitoring-grafana:
+    networks: 
+      - tapis
+
+  monitoring-kibana:
+    networks: 
+      - tapis
+
+  monitoring-prometheus:
+    networks: 
+      - tapis
+
+  monitoring-tapis-exporter:
+    networks: 
+      - tapis
+
+

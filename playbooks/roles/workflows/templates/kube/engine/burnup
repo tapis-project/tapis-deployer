@@ -1,0 +1,12 @@
+#!/bin/bash
+
+here=`pwd`
+
+# Replace the template variable in the deployment yaml with the nfs server service ip
+NFS_SERVER_SERVICE_IP=$(kubectl get service workflows-nfs-server-service -o jsonpath='{.spec.clusterIP}')
+# NOTE -i.bak used for MAC compatibility
+sed -i "s/__NFS_SERVER_SERVICE_IP__/$NFS_SERVER_SERVICE_IP/g" "$here/deployment.yml"
+
+kubectl apply -f "$here/service.yml"
+kubectl apply -f "$here/pvc.yml"
+kubectl apply -f "$here/deployment.yml"

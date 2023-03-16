@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pods-api
+spec:
+  selector:
+    matchLabels:
+      app: pods-api
+  template:
+    metadata:
+      labels:
+        app: pods-api
+    spec:
+      serviceAccountName: pods-serviceaccount
+      containers:
+      - name: pods-api
+        image: {{ pods_api_image }}
+        imagePullPolicy: {{pods_image_pull_policy}}
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "5M"
+          limits:
+            cpu: "2"
+            memory: "2G"
+        ports:
+        - name: fastapi
+          containerPort: 8000
+        env:
+        - name: api
+          value: api
+        - name: SERVICE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pods-secrets
+              key: service-password
+        - name: POSTGRES_USERNAME
+          value: pods-admin
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pods-secrets
+              key: postgres-password
+        - name: RABBITMQ_USERNAME
+          value: pods-admin
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-pods-secrets
+              key: rabbitmq-password
+        volumeMounts:
+        - name: pods-config
+          mountPath: /home/tapis/config.json
+          subPath: config.json
+      volumes:
+      - name: pods-config
+        configMap: 
+          name: pods-config 

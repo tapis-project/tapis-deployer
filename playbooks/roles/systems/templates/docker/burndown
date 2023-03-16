@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "burndown systems:"
+
+docker compose down

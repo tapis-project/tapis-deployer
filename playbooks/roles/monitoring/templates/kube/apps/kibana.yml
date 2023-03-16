@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitoring-kibana
+  template:
+    metadata:
+      labels:
+        app: monitoring-kibana
+    spec:
+      containers:
+      - name: monitoring-kibana
+        image: {{ monitoring_kibana_image }}
+        ports:
+        - containerPort: 5601
+        env:
+        - name: ELASTICSEARCH_HOSTS
+          value: "http://monitoring-elasticsearch:9200"
+        - name: ELASTICSEARCH_URL
+          value: "http://monitoring-elasticsearch:9200"
+

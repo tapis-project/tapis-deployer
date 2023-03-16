@@ -1,0 +1,32 @@
+---
+
+proxy_service_url: "{{ global_service_url }}"
+proxy_service_tenant_id: admin
+proxy_service_site_id: "{{ global_site_id }}"
+proxy_service_name: proxy
+proxy_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
+proxy_site_router_pvc: site-router-redis-vol01
+proxy_site_router_api_version: 1.3.0
+proxy_storage_class: "{{ global_storage_class }}"
+proxy_nginx_cert_file: $HOME/cert.pem
+proxy_nginx_cert_key: $HOME/cert.key
+proxy_nginx_server_name: 
+proxy_service_tenants:
+  - dev
+  - admin
+proxy_nginx_service_list:
+  - apps
+  - authenticator
+  - files
+  - jobs
+  - meta
+  - pgrest
+  - security
+  - streams
+  - systems
+  - tenants
+  - tokens
+
+proxy_pgrest_custom_block: null
+proxy_meta_custom_block: null
+

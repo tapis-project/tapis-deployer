@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restheart-mongo
+spec:
+  selector:
+    matchLabels:
+      app: restheart-mongo
+  template:
+    metadata:
+      labels:
+        app: restheart-mongo
+    spec:
+      hostname: restheart-mongo
+      containers:
+        - name: restheart-mongo
+          image: {{ meta_mongo_singlenode_image }}
+          imagePullPolicy: Always
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "restheart"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-meta-secrets
+                  key: mongo-password
+          ports:
+            - name: mongo
+              containerPort: 27017
+          volumeMounts:
+            - name: restheart-mongo-data
+              mountPath: "/data/db"
+      volumes:
+        - name: restheart-mongo-data
+          persistentVolumeClaim:
+            claimName: {{meta_restheart_mongo_pvc}}

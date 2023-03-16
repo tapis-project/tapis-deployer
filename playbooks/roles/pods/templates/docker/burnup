@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "burnup pods:"
+
+docker compose up -d
+

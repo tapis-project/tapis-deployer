@@ -1,0 +1,10 @@
+---
+
+- name: admin tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: admin
+    tree_name: admin
+
+

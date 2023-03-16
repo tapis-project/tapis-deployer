@@ -1,0 +1,6 @@
+---
+
+- include_tasks: '{{ tapisctl_action }}.yml'
+
+
+

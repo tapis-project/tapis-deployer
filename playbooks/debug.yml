@@ -1,0 +1,18 @@
+---
+
+- name: Print debug information 
+  hosts: all
+
+  tasks: 
+
+  - debug: 
+      msg: 'Your Tapis deployment is here: {{ tapisdir }}.'
+
+  - name: print vars
+    ansible.builtin.debug:
+      msg: "{{ vars }}"
+
+  - name: print components_to_deploy
+    ansible.builtin.debug:
+      var: components_to_deploy
+

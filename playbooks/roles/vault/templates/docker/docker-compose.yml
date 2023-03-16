@@ -1,0 +1,25 @@
+networks:
+  tapis:
+    name: tapis
+
+services:
+  vault:
+    container_name: vault
+    image: {{ vault_image }}
+    command: ['vault','server','-config=/vault/config']
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - 127.0.0.1:8200:8200
+    env_file:
+      - {{ tapisdatadir }}/vault/env
+    environment:
+      - VAULT_ADDR=http://0.0.0.0:8200
+    volumes:
+      # - '{{ vault_dir }}/vault-config.json:/vault/config/vault.hcl'
+      - '{{ vault_dir }}/vault.hcl:/vault/config/vault.hcl'
+      - '{{ vault_data_dir }}/data:/vault/data'
+      - '{{ tapisdatadir }}/vault/certs:/vault/certs/'
+    networks:
+      - tapis
+

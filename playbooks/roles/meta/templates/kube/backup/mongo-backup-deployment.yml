@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-backup
+spec:
+  selector:
+    matchLabels:
+      app: mongo-backup
+  template:
+    metadata:
+      labels:
+        app: mongo-backup
+    spec:
+      containers:
+        - name: mongo-backup
+          image: {{ meta_mongobackup_image }}
+          imagePullPolicy: Always
+          command: ["/bin/bash"]
+          args: ["-c", "/scripts/script.sh && cron && tail -f /var/log/cron.log"]
+          env:
+            - name: LOG_DIR
+              value: /backup/logs
+            - name: LOG_FILE
+              value: backup.log
+            - name: MONGODB_AUTH
+              value: admin
+            - name: MONGODB_HOST
+              value: restheart-mongo
+            - name: MONGODB_PORT
+              value: "27017"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-meta-secrets
+                  key: mongo-password
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: restheart
+          volumeMounts:
+            - name: meta-mongo-backup-vol
+              mountPath: /backup/
+      volumes:
+        - name: meta-mongo-backup-vol
+          persistentVolumeClaim:
+            claimName: {{meta_mongo_backup_pvc}}

@@ -1,0 +1,1 @@
+kubectl get all --context mpackard-tapis-dev > /tmp/hourly-tapis-dev-status

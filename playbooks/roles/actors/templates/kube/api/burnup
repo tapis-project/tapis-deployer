@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# security
+kubectl apply -f security.yml
+
+# configs
+kubectl apply -f ../actors-config.yml
+kubectl apply -f nginx-config.yml
+kubectl apply -f prometheus-config.yml
+kubectl apply -f configmap.yml
+
+# pvcs
+kubectl apply -f mongo-pvc.yml
+kubectl wait --for=condition=complete job/chown-actors-mongo-pvc
+kubectl apply -f rabbitmq-pvc.yml
+kubectl wait --for=condition=complete job/chown-actors-rabbitmq-pvc
+##### nfs and nfs-pvc is only needed when actors-config.yml has
+##### container_backend = "kubernetes"
+##### not "docker"
+#kubectl apply -f nfs-pvc.yml
+#kubectl wait --for=condition=complete job/chown-setup-actors-nfs
+#kubectl apply -f nfs.yml
+
+# services files
+kubectl apply -f service.yml
+
+# deploy
+kubectl apply -f rabbit.yml
+kubectl apply -f nginx.yml
+kubectl apply -f mongo.yml
+kubectl apply -f reg.yml
+kubectl apply -f mes.yml
+kubectl apply -f admin.yml
+kubectl apply -f events.yml
+kubectl apply -f prometheus.yml
+kubectl apply -f grafana.yml
+kubectl apply -f metrics.yml

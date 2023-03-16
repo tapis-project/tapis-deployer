@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# This version of SkAdmin burndown does not remove or affect any vault roles or
-# policies, it simply removes the vault token and the short-lived approle ids
-# from Kubernetes secrets.   
-#
-kubectl delete secret vault-token tapis-sk-vault-secrets
-
-

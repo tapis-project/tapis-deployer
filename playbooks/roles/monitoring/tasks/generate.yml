@@ -1,0 +1,22 @@
+---
+
+
+- name: monitoring tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: monitoring
+    tree_name: monitoring
+
+# if using docker, create data dirs
+- name: create data dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ tapisdatadir }}/monitoring'
+    - '{{ tapisdatadir }}/monitoring/prometheus'
+    - '{{ tapisdatadir }}/monitoring/grafana'
+    - '{{ tapisdatadir }}/monitoring/elasticsearch'
+  when: tapisflavor == "docker"
+

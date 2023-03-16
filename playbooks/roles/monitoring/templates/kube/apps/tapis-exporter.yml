@@ -1,0 +1,41 @@
+---
+# Tapis Exporter
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitoring-tapis-exporter
+  labels:
+    app: monitoring-tapis-exporter
+spec:
+  selector:
+    matchLabels:
+      app: monitoring-tapis-exporter
+  template:
+    metadata:
+      labels:
+        app: monitoring-tapis-exporter
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: monitoring-tapis-exporter
+        image: {{ monitoring_tapis_exporter_image }}
+        imagePullPolicy: Always
+        env:
+        - name: TAPIS_URL
+          value: {{monitoring_service_url}}
+        - name: TAPIS_SERVICES
+          value: '[{{ '\"' + monitoring_services_list | join('\", \"') + '\"' }}]'
+        - name: STREAMS_DB
+          value: 'StreamsDevDB'
+        - name: META_USER
+          value: 'restheart'
+        - name: META_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-meta-secrets
+              key: mongo-password
+        ports:
+        - name: tapis-exporter
+          containerPort: 5000
+      imagePullSecrets:
+        - name: regcred

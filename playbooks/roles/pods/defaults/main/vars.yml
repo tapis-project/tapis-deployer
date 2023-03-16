@@ -1,0 +1,18 @@
+---
+
+pods_service_name: pods
+pods_image_version: 1.2.2
+pods_service_site_id: "{{ global_site_id }}"
+pods_service_tenant_id: admin
+pods_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
+pods_kube_domain: 
+pods_image_pull_policy: Always
+pods_postgres_pvc: pods-postgres-vol01
+pods_storage_class: "{{ global_storage_class }}"
+pods_log_level: INFO
+pods_image_allow_list: 
+  - 
+pods_spawner_host_queues: 
+  - quick
+
+pods_pvc_storage_class_name: "{{ global_storage_class }}"

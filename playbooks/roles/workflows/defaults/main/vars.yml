@@ -1,0 +1,15 @@
+---
+
+workflows_django_superuser_email: user@example.com
+workflows_django_superuser_username: user
+workflows_log_level: INFO
+workflows_mysql_username: dev
+workflows_pipelines_deployment_type: kubernetes
+workflows_rabbitmq_username: dev
+workflows_service_name: workflows
+workflows_service_site_id: "{{ global_site_id }}"
+workflows_service_tenant_id: admin
+workflows_service_url: "{{ global_service_url }}"
+workflows_storage_class: "{{ global_storage_class }}"
+
+

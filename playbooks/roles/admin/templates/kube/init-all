@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo vault
+cd ../vault && . burnup 
+
+#echo tenants
+#cd ../tenants-api && . burnup 
+#
+#echo tokens
+#cd ../tokens-api && . burnup 
+#
+#echo postgres
+#cd ../postgres && . burnup 

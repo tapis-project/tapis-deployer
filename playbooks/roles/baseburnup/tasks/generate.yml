@@ -1,0 +1,9 @@
+---
+
+- name: baseburnup tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: baseburnup
+    tree_name: ""
+

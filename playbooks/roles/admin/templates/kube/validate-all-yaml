@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for i in `find {{ tapisdir }} -type f \( -iname '*.yml' -o -iname '*.yaml' \)`
+do 
+  ./validate-yaml $i
+done
+

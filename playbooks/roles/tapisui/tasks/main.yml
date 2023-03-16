@@ -1,0 +1,5 @@
+---
+# tasks file for tapisui
+
+- include_tasks: '{{ tapisctl_action }}.yml'
+

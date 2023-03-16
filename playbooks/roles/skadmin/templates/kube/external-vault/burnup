@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# This version of SkAdmin burnup does not create or affect vault roles or policies,
+# it simply creates two Kubernetes secrets.  The vault-token secret contains a secret
+# with authorization to access the Tapis AppRole role-id and secret-id values in 
+# vault. 
+
+if [ ! -f ~/vault-token ]
+then
+  echo "boo. need to create ~/vault-token"
+  exit 1
+fi
+
+# Put the Tapis administrative vault token into a kube secret.
+kubectl create secret generic vault-token --from-file ~/vault-token
+
+# Get a fresh pair of approle ids.
+./reset-approle-ids
+
+kubectl create configmap sk-admin-initialload --from-file ../initialLoad
+kubectl create configmap run-sk-admin --from-file ../run-sk-admin
+kubectl apply -f ../sk-admin-init.yml
+kubectl wait --for=condition=complete job/sk-admin-init

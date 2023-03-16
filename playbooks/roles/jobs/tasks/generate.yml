@@ -1,0 +1,21 @@
+---
+
+- name: jobs tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: jobs
+    tree_name: jobs
+
+# if using docker, create data dirs
+- name: create data dirs
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - '{{ tapisdatadir }}/jobs'
+    - '{{ tapisdatadir }}/jobs/postgres'
+    - '{{ tapisdatadir }}/jobs/rabbitmq'
+  when: tapisflavor == "docker"
+
+
