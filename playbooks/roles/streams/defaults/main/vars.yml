@@ -5,7 +5,7 @@ streams_service_name: streams
 streams_service_site_id: "{{ global_site_id }}"
 streams_service_url: "{{ global_service_url }}"
 streams_service_tenant_id: admin
-streams_log_level: DEBUG
+streams_log_level: INFO
 streams_show_traceback: false
 # Optional: set the "nodeName" spec on the streams container so it lands on a specific Kubernetes node
 streams_node_name: null

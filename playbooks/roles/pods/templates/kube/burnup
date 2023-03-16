@@ -5,7 +5,11 @@ kubectl apply -f services.yml
 kubectl apply -f security.yml
 
 # Certs
-kubectl create secret tls pods-certs --cert=$HOME/ssl/pods/wild.pods.icicle.develop.tapis.io.pem --key=$HOME/ssl/wild.pods.icicle.develop.tapis.io.key
+{% if pods_traefik_certs_file and pods_traefik_cert_key %}
+kubectl create secret tls pods-certs --cert={{ pods_traefik_certs_file }}  --key={{ pods_traefik_cert_key }}
+{% else %}
+kubectl create secret generic pods-certs
+{% endif %}
 
 # Configs
 kubectl create configmap pods-config --from-file=config.json
