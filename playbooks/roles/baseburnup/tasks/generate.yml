@@ -2,10 +2,11 @@
 
 - name: get git tag
   command:
-    cmd: git tag
+    cmd: git describe --tags
   args:
     chdir: "{{ playbook_dir }}"
   register: git_tag
+  ignore_errors: true
 
 - name: baseburnup tree
   include_role:
