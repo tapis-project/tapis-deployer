@@ -1,5 +1,5 @@
 tenants_pgadmin_image: dpage/pgadmin4:6.20
 tenants_postgres_image: postgres:11.4
-tenants_api_image: tapis/tenants-api:1.2.0
-tenants_migrations_image: tapis/tenants-api-migrations:1.2.0
-tenants_api_tests_image: tapis/tenants-api-tests:1.2.0
+tenants_api_image: tapis/tenants-api:1.3.0
+tenants_migrations_image: tapis/tenants-api-migrations:1.3.0
+tenants_api_tests_image: tapis/tenants-api-tests:1.3.0
