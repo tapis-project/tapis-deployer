@@ -1,5 +1,12 @@
 ---
 
+- name: get git tag
+  command:
+    cmd: git tag
+  args:
+    chdir: "{{ playbook_dir }}"
+  register: git_tag
+
 - name: baseburnup tree
   include_role:
     name: template-filetree
