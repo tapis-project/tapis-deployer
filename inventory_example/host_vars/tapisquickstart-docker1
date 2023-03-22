@@ -145,6 +145,7 @@ proxy_nginx_service_list:
   - security
   - streams
   - systems
+  - tapiui
   - tenants
   - tokens
   - workflows  
