@@ -24,8 +24,10 @@ proxy_nginx_service_list:
   - security
   - streams
   - systems
+  - tapisui
   - tenants
   - tokens
+  - workflows
 
 proxy_pgrest_custom_block: null
 proxy_meta_custom_block: null

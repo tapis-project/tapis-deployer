@@ -2,8 +2,8 @@ monitoring_stern_fluentd_image: tapis/stern-fluentd:1.3.0
 monitoring_tapis_exporter_image: tapis/exporter:latest
 monitoring_alpine_image: alpine:3.6
 monitoring_postgres_image: bitnami/postgresql:14
-monitoring_elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
-monitoring_kibana_image: docker.elastic.co/kibana/kibana:7.6.2
+monitoring_elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+monitoring_kibana_image: docker.elastic.co/kibana/kibana:7.17.9
 monitoring_grafana_image: grafana/grafana:8.5.5
 monitoring_prometheus_image: prom/prometheus:v2.38.0
 monitoring_thanos_image: quay.io/thanos/thanos:v0.8.0

@@ -8,21 +8,18 @@ cd $here/mysql
 
 # Wait a full 2 mintues, then wait for the mysql deployment to be
 # available if not already
-kubectl wait --timeout=120s
-kubectl wait --for=condition=available deploy/workflows-mysql-deployment
+kubectl wait --for=condition=available deploy/workflows-mysql-deployment --timeout=120s
 
 # rabbitmq
 cd $here/rabbitmq
 ./burnup
 
-kubectl wait --for=condition=available deploy/workflows-rabbitmq-deployment
-kubectl wait --timeout=120s
+kubectl wait --for=condition=available deploy/workflows-rabbitmq-deployment --timeout=120s
 
 cd $here/nfs-server
 ./burnup
 
-kubectl wait --for=condition=available deploy/workflows-nsf-server-deployment
-kubectl wait --timeout=120s
+kubectl wait --for=condition=available deploy/workflows-nsf-server-deployment --timeout=120s
 
 # workflow engine
 cd $here/engine
