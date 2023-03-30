@@ -7,47 +7,15 @@ Notable changes between versions.
 - Updated several image minor release versions. 
 - Added VERSION file to reflect which version of tapis-deployer was used.
 
-## 1.3.0 - 20230131
+## 1.3.0 
 
-### Breaking Changes:
+**Breaking Changes**
 
-
-### Migration from 1.2.0 steps 
-
-- Remove "tokens_tenants" var from the tokens section of your input file. Is now set to ["*"] by default, meaning tokens will get a list of tenants from tenants service.
-- Remove "authenticator_service_tenants" var from the authenticator section of your input file. Is now set to ["*"] by default, meaning authenticator will get a list of tenants from tenants service.
-- Update your host_vars (deployer input file) to include the following new variables. (see inventory_examples for reference):
-
-    global_tapis_domain: <your_domain>
-    global_service_url: https://admin.'{{ global_tapis_domain }}'
-    global_primary_site_admin_tenant_base_url: '{{ global_service_url }}'
-    global_devtenant_url: https://dev.'{{ global_tapis_domain }}'
+- Tapis Deployer 1.3.0 differs greatly from 1.2.x. Please refer to the documentation https://tapis.readthedocs.io/en/latest/technical/index.html for migration guide.  
+- The template generation backend was redone using Ansible.
+- The input generator is deprecated.
 
 
- 
-
-# Choose where your deployment files should be created.
-tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
-tapisdatadir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}-data'
-
-      
-### tapis vars
-global_tapis_domain: quick.example.com
-global_service_url: https://admin.'{{ global_tapis_domain }}'
-global_primary_site_admin_tenant_base_url: '{{ global_service_url }}'
-global_devtenant_url: https://dev.'{{ global_tapis_domain }}'
-global_site_id: tapis
-global_storage_class: default
-global_vault_url: http://vault:8200
-
-
-
-
-### Bug fixes:
-
-### Other:
-
-- Cleaned up some outdated documentation.
 
 ## 1.3.0 - 20230106 
 
