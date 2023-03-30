@@ -8,5 +8,4 @@ NFS_SERVER_SERVICE_IP=$(kubectl get service workflows-nfs-server-service -o json
 sed -i "s/__NFS_SERVER_SERVICE_IP__/$NFS_SERVER_SERVICE_IP/g" "$here/deployment.yml"
 
 kubectl apply -f "$here/service.yml"
-kubectl apply -f "$here/pvc.yml"
 kubectl apply -f "$here/deployment.yml"

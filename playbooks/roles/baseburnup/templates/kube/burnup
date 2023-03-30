@@ -109,6 +109,11 @@ files(){
   ./burnup
 }
 
+globus-proxy() {
+  cd $here/globus-proxy
+  ./burnup
+}
+
 jobs(){
   cd $here/jobs
   ./burnup
@@ -290,6 +295,10 @@ secondary_services() {
 
 {% if  "files" in components_to_deploy %}
   files
+{% endif %}
+
+{% if "gloubs-proxy" in components_to_deploy %}
+  globus-proxy
 {% endif %}
 
 {% if  "apps" in components_to_deploy %}

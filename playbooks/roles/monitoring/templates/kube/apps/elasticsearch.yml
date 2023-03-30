@@ -26,6 +26,12 @@ spec:
           value: single-node
         - name: search.max_buckets
           value: "65535"
+        - name: ES_JAVA_OPTS
+          value: "-Xmx8G -Xmx8G -Dlog4j2.formatMsgNoLookups=true"
+        - name: xpack.security.enabled
+          value: "false"
+        - name: cluster.routing.allocation.disk.watermark.enable_for_single_data_node
+          value: "true"
         volumeMounts:
         - name: elasticsearch-data
           mountPath: /usr/share/elasticsearch/data
