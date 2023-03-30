@@ -2,6 +2,11 @@
 
 Notable changes between versions.
 
+## 1.3.2
+
+- Updated several image minor release versions. 
+- Added VERSION file to relfect which version of tapis-deployer was used.
+
 ## 1.3.0 - 20230131
 
 ### Breaking Changes:
