@@ -7,3 +7,9 @@
     global_service_url: '{{ global_service_url | default(global_service_url_default) }}'
     components_to_deploy: '{{ components_to_deploy | default(components_to_deploy_default) }}'
     global_devtenant_url: '{{ global_devtenant_url | default(global_devtenant_url_default) }}'
+
+- name: Values being used
+  ansible.builtin.debug:
+    msg: 
+      - 'tapisdir: {{ tapisdir }}'
+      - 'components_to_deploy: {{ components_to_deploy }}'

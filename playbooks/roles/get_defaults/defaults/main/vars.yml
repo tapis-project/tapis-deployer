@@ -14,19 +14,19 @@ components_to_deploy_default:
   - files
   - globus-proxy
   - jobs
-  - meta
-  - monitoring
+#  - meta
+#  - monitoring
   - notifications
-  - pgrest
-  - pods
+#  - pgrest
+#  - pods
   - proxy
   - security
   - skadmin
-  - streams
+#  - streams
   - systems
   - tapisui
   - tenants
   - tokens
   - vault
-  - workflows  
+#  - workflows  
 
