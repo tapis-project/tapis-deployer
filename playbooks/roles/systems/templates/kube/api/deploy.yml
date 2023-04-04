@@ -12,7 +12,7 @@ spec:
       labels:
         app: systems-api
     spec:
-{% if systems_node_selector is defined %}
+{% if systems_node_selector %}
       nodeSelector:
         exempt: "{{systems_node_selector}}"
 {% endif %}
