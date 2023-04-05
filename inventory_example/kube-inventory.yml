@@ -1,7 +1,13 @@
 
 tapis_installs:
   hosts:
-    tapisquickstart-kube1:
+    # A tapis test environemnt. 
+    min_primary-kube:
       ansible_connection: local
       tapisflavor: kube
+
+    # Another Tapis environment
+    # all_services_primary-kube:
+    #   ansible_connection: local
+    #   tapisflavor: kube
 
