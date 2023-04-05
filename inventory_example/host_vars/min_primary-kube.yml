@@ -1,0 +1,25 @@
+# An example host vars file for a (minimal) primary site that 
+# sets all of the required fields and one optional field, tapisdir,
+# to customize the location of the install. 
+
+# this is a primary site
+site_type: 1
+
+# All tenants will be served off of a subdomain of test.tapis.io
+global_tapis_domain: test.tapis.io
+
+# this is the site's id
+global_site_id: tacc
+
+# kubernetes storage class for PVCs
+global_storage_class: rbd-new
+
+# base URL for the admin tenant in our site
+global_primary_site_admin_tenant_base_url: https://admin.test.tapis.io
+
+# location of the nginx cert files
+proxy_nginx_cert_file: $HOME/ssl/wild.tapis.io.pem
+proxy_nginx_cert_key: $HOME/ssl/wild.tapis.io.key
+
+# specify a different directory for the installation
+tapisdir: /home/jstubbs/fooy/tapistest
