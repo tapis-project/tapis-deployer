@@ -1,7 +1,7 @@
 api_addr = "http://127.0.0.1:8200"
 disable_mlock = true
 
-{% if vault_raft_storage == false %}
+{% if vault_raft_storage is defined and vault_raft_storage == false %}
 storage "file" {
     path = "/vault/data"
 }

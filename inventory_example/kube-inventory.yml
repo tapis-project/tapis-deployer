@@ -7,7 +7,7 @@ tapis_installs:
       tapisflavor: kube
 
     # Another Tapis environment
-    # all_services_primary-kube:
-    #   ansible_connection: local
-    #   tapisflavor: kube
+    all_services_primary-kube:
+      ansible_connection: local
+      tapisflavor: kube
 
