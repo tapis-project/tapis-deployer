@@ -1,13 +1,13 @@
 api_addr = "http://127.0.0.1:8200"
 disable_mlock = true
 
+{% if vault_raft_storage == false %}
 storage "file" {
-  path = "/vault/data"
+    path = "/vault/data"
 }
-
-{% if vault_raft_storage == true %}
-storage_destination "raft" {
-    path = "/opt/vault/data"
+{% else %}
+storage "raft" {
+    path = "/vault/data"
     node_id = "raft_node_1"
 }
 {% endif%}
