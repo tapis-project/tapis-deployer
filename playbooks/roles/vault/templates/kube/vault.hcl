@@ -6,6 +6,7 @@ storage "file" {
     path = "/vault/data"
 }
 {% else %}
+cluster_addr = "http://127.0.0.1:8201"
 storage "raft" {
     path = "/vault/data"
     node_id = "raft_node_1"
