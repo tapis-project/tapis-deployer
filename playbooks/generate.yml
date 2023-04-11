@@ -20,7 +20,6 @@
     file: 
       path: '{{ tapisdatadir }}'
       state: directory
-    when: tapisdatadir is defined
 
 ### tapis components
 

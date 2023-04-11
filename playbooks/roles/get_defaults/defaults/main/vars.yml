@@ -1,4 +1,5 @@
 tapisdir_default: '{{ ansible_env.HOME }}/.tapis/{{ inventory_hostname }}'
+tapisdatadir_default: '{{ ansible_env.HOME }}/.tapis-data/{{ inventory_hostname }}'
 global_vault_url_default: 'http://vault:8200'
 global_service_url_default: 'https://admin.{{ global_tapis_domain }}'
 global_devtenant_url_default: 'https://dev.{{ global_tapis_domain }}'
