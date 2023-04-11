@@ -49,31 +49,14 @@ If your storage type is "raft", no further action required. Ensure that "vault_r
 - Remove "authenticator_service_tenants" var from the authenticator section of your input file. Is now set to ["*"] by default, meaning authenticator will get a list of tenants from tenants service.
 - Update your host_vars (deployer input file) to include the following new variables. (see inventory_examples for reference):
 
-    global_tapis_domain: <your_domain>
-    global_service_url: https://admin.'{{ global_tapis_domain }}'
-    global_primary_site_admin_tenant_base_url: '{{ global_service_url }}'
-    global_devtenant_url: https://dev.'{{ global_tapis_domain }}'
+    # Choose where your deployment files should be created.
+    tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
+    tapisdatadir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}-data'
 
 
-# Choose where your deployment files should be created.
-tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
-tapisdatadir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}-data'
-
-      
-### tapis vars
-global_tapis_domain: quick.example.com
-global_service_url: https://admin.'{{ global_tapis_domain }}'
-global_primary_site_admin_tenant_base_url: '{{ global_service_url }}'
-global_devtenant_url: https://dev.'{{ global_tapis_domain }}'
-global_site_id: tapis
-global_storage_class: default
-global_vault_url: http://vault:8200
-
-
-## 1.2.x - 20230106 
+## 1.2.x - 2023-01-06 
 
 - Docker flavor: Proxy/Nginx: Moved each location stanza to its own file.
-
 
 
 ## 1.2.0 - 2022-05-31
@@ -116,4 +99,3 @@ Initial pre-release of Tapis Deployer for generating Tapis deployment YAML & scr
 ### Bug fixes:
 
 - None.
-[tapistest@cic02 tapis-deployer]$

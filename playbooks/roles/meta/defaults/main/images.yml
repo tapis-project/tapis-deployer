@@ -2,6 +2,6 @@ meta_api_image: tapis/metaapi:1.3.0
 meta_rh_server_image: tapis/tapis-meta-rh-server:1.3.0
 meta_mongo_exporter_image: tapis/mqe:0.1
 meta_mongo_singlenode_image: tapis/mongo-singlenode:4.4.6-bionic
-meta_mongodb_backup_image: tapis/mongodb-backup:latest
+meta_mongodb_backup_image: tapis/mongodb-backup:1
 meta_mongobackup_image: tapis/mongobackup:1.3.0
-meta_alpine_image: alpine:latest
+meta_alpine_image: alpine:3.17
