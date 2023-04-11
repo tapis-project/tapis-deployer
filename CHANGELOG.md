@@ -2,6 +2,9 @@
 
 Notable changes between versions.
 
+## 1.3.4
+
+- Vault config (vault.hcl) fixes
 
 ## 1.3.3
 
