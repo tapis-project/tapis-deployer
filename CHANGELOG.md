@@ -2,7 +2,7 @@
 
 Notable changes between versions.
 
-## 1.3.3
+## 1.3.5
 
 ### Breaking Changes:
 
@@ -22,15 +22,28 @@ If your storage type if "file", include this in your host_vars:
 If your storage type is "raft", no further action required. Ensure that "vault_raft_storage" var is undefined in your host_vars.
 
 
+## 1.3.4
 
+- Vault config (vault.hcl) fixes
 
+## 1.3.3
 
-## 1.3.0 - 20230131
+- Updated security images to 1.3.1 
 
-### Breaking Changes:
+## 1.3.2
 
+- Updated several image minor release versions. 
+- Added VERSION file to reflect which version of tapis-deployer was used.
 
-### Migration from 1.2.0 steps 
+## 1.3.0 
+
+**Breaking Changes**
+
+- Tapis Deployer 1.3.0 differs greatly from 1.2.x. Please refer to the documentation https://tapis.readthedocs.io/en/latest/technical/index.html for migration guide.  
+- The template generation backend was redone using Ansible.
+- The input generator is deprecated.
+
+### Migration from 1.2.x steps 
 
 - Remove "tokens_tenants" var from the tokens section of your input file. Is now set to ["*"] by default, meaning tokens will get a list of tenants from tenants service.
 - Remove "authenticator_service_tenants" var from the authenticator section of your input file. Is now set to ["*"] by default, meaning authenticator will get a list of tenants from tenants service.
@@ -41,8 +54,6 @@ If your storage type is "raft", no further action required. Ensure that "vault_r
     global_primary_site_admin_tenant_base_url: '{{ global_service_url }}'
     global_devtenant_url: https://dev.'{{ global_tapis_domain }}'
 
-
- 
 
 # Choose where your deployment files should be created.
 tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
@@ -59,26 +70,9 @@ global_storage_class: default
 global_vault_url: http://vault:8200
 
 
+## 1.2.x - 20230106 
 
-
-### Bug fixes:
-
-### Other:
-
-- Cleaned up some outdated documentation.
-
-## 1.3.0 - 20230106 
-
-### Breaking Changes:
-
-
-### New features:
-
-- Proxy/Nginx: Moved each location stanza to its own file.
-
-
-### Bug fixes:
-
+- Docker flavor: Proxy/Nginx: Moved each location stanza to its own file.
 
 
 
