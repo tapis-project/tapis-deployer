@@ -5,8 +5,7 @@ Notable changes between versions.
 
 ## 1.3.3
 
-
-
+- Updated security images to 1.3.1 
 
 ## 1.3.2
 
