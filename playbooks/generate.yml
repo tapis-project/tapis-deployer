@@ -5,8 +5,11 @@
 
   vars: 
     tapisctl_action: 'generate'
-  
+
   tasks: 
+  - name: Set default values for vars
+    include_role: 
+      name: get_defaults
 
   - name: create tapisdir 
     file: 

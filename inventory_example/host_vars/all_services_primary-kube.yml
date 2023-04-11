@@ -1,0 +1,46 @@
+# An example host vars file for a primary site that deploys all 
+# Tapis services. This configuration is significantly more complex that the minimal
+# primary site, since we have to provide additional configurations for the 
+# extra services.
+
+
+site_type: 1
+global_tapis_domain: develop.tapis.io
+
+# this is the site's id
+global_site_id: tacc
+
+# kubernetes storage class for PVCs
+global_storage_class: rbd-new
+
+# base URL for the admin tenant in our site
+global_primary_site_admin_tenant_base_url: https://admin.develop.tapis.io
+
+# location of the nginx cert files
+proxy_nginx_cert_file: $HOME/ssl/wild.develop.tapis.io.pem
+proxy_nginx_cert_key: $HOME/ssl/wild.develop.tapis.io.key
+
+# Specify a custom value for components_to_deploy so that we can deploy all of the services
+components_to_deploy:
+  - actors
+  - admin
+  - apps
+  - authenticator
+  - files
+  - globus-proxy
+  - jobs
+  - meta
+  - monitoring
+  - notifications
+  - pgrest
+  - pods
+  - proxy
+  - security
+  - skadmin
+  - streams
+  - systems
+  - tapisui
+  - tenants
+  - tokens
+  - vault
+  - workflows

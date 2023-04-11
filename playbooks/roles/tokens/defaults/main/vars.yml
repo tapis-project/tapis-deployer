@@ -5,7 +5,7 @@ tokens_service_site_id: '{{ global_site_id }}'
 tokens_use_sk: yes
 tokens_log_level: 'INFO'
 tokens_show_traceback: false
-tokens_use_allservices_password: true
+tokens_use_allservices_password: false
 tokens_tenants: ["*"]
 tokens_image_pull_policy: Always
 tokens_service_tenant_id: admin

@@ -11,5 +11,6 @@ workflows_service_site_id: "{{ global_site_id }}"
 workflows_service_tenant_id: admin
 workflows_service_url: "{{ global_service_url }}"
 workflows_storage_class: "{{ global_storage_class }}"
+workflows_tapis_dev_url: "{{ global_devtenant_url }}"
 
 
