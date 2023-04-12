@@ -6,33 +6,20 @@ networks:
 
 services:
     tokens-api:
-        # image: {{ tokens_api_image }} 
         container_name: tokens-api
         image: {{ tokens_api_image }}
-        ports:
-        #     - "127.0.0.1:5001:5000"
-            - "127.0.0.1:5221:5000"
+        # ports:
+        #     - "127.0.0.1:5221:5000"
         volumes:
             # uncomment one of the following ---
             # - ./config-local.json:/home/tapis/config.json
             - '{{ tapisdir }}/tokens/tokens-config.json:/home/tapis/config.json'
             # - ./config-local-uh.json:/home/tapis/config.json
             # - ./service.log:/home/tapis/service.log
-            - '{{ tapisdir }}/tokens/tokens-service.log:/home/tapis/service.log'
+            # - '{{ tapisdir }}/tokens/tokens-service.log:/home/tapis/service.log'
         networks:
             - tapis
         environment:
             # an example of the allservices_password, only used in develop. generate a new one with
             # date +%s | sha256sum | base64 | head -c 32 ; echo or something similar.
-            - allservices_password={{ tokens_allservices_password }} 
-#        depends_on:
-#            - postgres
-
-    # tokens-tests:
-    #     image: {{ tokens_api_tests_image }}
-    #     volumes:
-    #         # uncomment one of the following ---
-    #         - ./config-local.json:/home/tapis/config.json
-    #         # - ./config-local-uh.json:/home/tapis/config.json
-    #     environment:
-    #         - allservices_password={{ tokens_allservices_password }}
+            - JWTSIGNING_ADMIN_PRIVATEKEY

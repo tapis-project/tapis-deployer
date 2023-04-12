@@ -23,17 +23,20 @@ export SKEXPORT_PARMS="-vtok $VAULT_TOKEN -vurl {{ skadmin_vault_url }}"
 
 # create vault roles and policies
 docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN --env SKEXPORT_PARMS \
--v /home/rocky/tmp/tapisquickstart-docker1/skadmin/create-sk-roles:/tmp/create-sk-roles \
--v /home/rocky/tmp/tapisquickstart-docker1/skadmin/tapis-vault/policies/sk:/tmp/sk-policies \
--v /home/rocky/tmp/tapisquickstart-docker1/skadmin/tapis-vault/policies/sk-admin:/tmp/sk-admin-policies \
--v /home/rocky/tmp/tapisquickstart-docker1/skadmin/tapis-vault/roles:/tmp/sk-roles \
+-v {{ tapisdir }}/skadmin/create-sk-roles:/tmp/create-sk-roles \
+-v {{ tapisdir }}/skadmin/tapis-vault/policies/sk:/tmp/sk-policies \
+-v {{ tapisdir }}/skadmin/tapis-vault/policies/sk-admin:/tmp/sk-admin-policies \
+-v {{ tapisdir }}/skadmin/tapis-vault/roles:/tmp/sk-roles \
 {{ skadmin_util_image }} /tmp/create-sk-roles
+# {{ tapisdir }}/skadmin/create-sk-roles
 
 export VAULT_SECRETID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
 {{ skadmin_util_image }} curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
+# export VAULT_SECRETID=`curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
 
 export VAULT_ROLEID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
 {{ skadmin_util_image }} curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+# export VAULT_ROLEID=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
 
 if [ -z "$VAULT_SECRETID" ]
 then
@@ -49,9 +52,10 @@ fi
 
 # create tapis passwords in vault
 docker run --name skadmin-init -it --rm --net tapis --env VAULT_ROLEID --env VAULT_SECRETID \
--v /home/rocky/tmp/tapisquickstart-docker1/skadmin/initialLoad:/tmp/initialLoad \
--v /home/rocky/tmp/tapisquickstart-docker1/skadmin/run-sk-admin:/tmp/run-sk-admin \
+-v {{ tapisdir }}/skadmin/initialLoad:/tmp/initialLoad \
+-v {{ tapisdir }}/skadmin/run-sk-admin:/tmp/run-sk-admin \
 {{ skadmin_securityadmin_image }} /tmp/run-sk-admin
+# {{ tapisdir }}/skadmin/run-sk-admin
 
 
 {%- if site_type == 2 %}

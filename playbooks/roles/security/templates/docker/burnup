@@ -3,7 +3,7 @@
 echo "burnup security:"
 
 
-export POSTGRES_PASSWORD=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD /home/rocky/tmp/tapistest_primary-data/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
+export POSTGRES_PASSWORD=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 
 # start database 
 
@@ -16,8 +16,8 @@ fi
 
 # db setup / migration step
 
-export PW=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD /home/rocky/tmp/tapistest_primary-data/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
-export TPW=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD /home/rocky/tmp/tapistest_primary-data/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
+export PW=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
+export TPW=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 
 
 docker run --name security-migration -it --rm --net tapis \
@@ -44,8 +44,10 @@ then
   exit 1
 fi
 
-export VAULT_SECRETID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
-{{ security_util_image }} curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
+# export VAULT_SECRETID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
+# {{ security_util_image }} curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
+
+export VAULT_SECRETID=`curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
 
 if [ -z "$VAULT_SECRETID" ]
 then
@@ -53,16 +55,23 @@ then
   exit 1
 fi
 
-export VAULT_ROLEID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
-{{ security_util_image }} curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+export TAPIS_SK_VAULT_SECRET_ID=$VAULT_SECRETID
 
+# export VAULT_ROLEID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
+# {{ security_util_image }} curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+
+export VAULT_ROLEID=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
 if [ -z "$VAULT_ROLEID" ]
+
 then
   echo "\$VAULT_ROLEID is empty. Exiting."
   exit 1
 fi
 
+export TAPIS_SK_VAULT_ROLE_ID=$VAULT_ROLEID
+
 export TAPIS_PASSWORD=$TPW
+export TAPIS_DB_PASSWORD=$TPW
 
 docker compose up -d security-api
 if [ $? -ne 0 ]

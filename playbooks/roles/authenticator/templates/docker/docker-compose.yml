@@ -1,55 +1,46 @@
-
 networks:
     tapis:
         name: tapis
 
 services:
   authenticator-api: 
+    container_name: authenticator-api
     image: {{ authenticator_api_image }}
-    # ports:
-    #     - "127.0.0.1:5000:5000"
     networks:
         - tapis
-    environment: # TODO
-        dev_ldap_bind_credential: "dev-ldap-bind-credential"
-        postgres_password: "postgres-password"
-        service_password: "service-password"
+    environment:
+        - dev_ldap_bind_credential # this seems to be missing from skexport, maybe it's created when authenticator-ldap is spun up?
+        - postgres_password
+        - service_password
     volumes:
         - "{{ tapisdir }}/authenticator/authenticator-config.json:/home/tapis/config.json"
         # - "{{ tapisdatadir }}/authenticator/api/service.log:/home/tapis/service.log"
-    container_name: authenticator-api
     depends_on: 
         - authenticator-postgres
 
 
   authenticator-postgres:
+    container_name: authenticator-postgres
     image: {{ authenticator_postgres_image }}
-    # ports:
-    #     - "127.0.0.1:5432:5432"
     networks:
         - tapis
     environment:
-        PGDATA: "/pgdata/data"
-        POSTGRES_USER: "authenticator"
-        POSTGRES_DB: "authenticator"
-        POSTGRES_PASSWORD: "postgres-password" # TODO
+        - PGDATA=/pgdata/data
+        - POSTGRES_USER=authenticator
+        - POSTGRES_DB=authenticator
+        - POSTGRES_PASSWORD
     volumes:
         - {{ tapisdatadir }}/authenticator/postgres:/data/pgdata
-    container_name: authenticator-postgres
+    
         
   authenticator-ldap:
+    container_name: authenticator-ldap
     image: {{ authenticator_ldap_image }}
-    # ports:
-    #     - "127.0.0.1:389:389"
     networks:
         - tapis
-    environment: #TODO
-        LDAP_DOMAIN: "LDAP_DOMAIN"
-        LDAP_ORGANISATION: "LDAP_ORGANISATION"
-        LDAP_ROOTPASS: "dev-ldap-bind-credential"
+    environment:
+        - LDAP_DOMAIN="tapis"
+        - LDAP_ORGANISATION="tapis"
+        - LDAP_ROOTPASS
     volumes:
         - {{ tapisdatadir }}/authenticator/ldap:/data/ldap
-    container_name: authenticator-ldap
-
-networks:
-    tapis:

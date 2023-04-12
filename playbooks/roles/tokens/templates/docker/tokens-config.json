@@ -6,6 +6,8 @@
     "use_sk": true,
     "tenants": ["dev", "admin"],
     "log_level": "DEBUG",
-    "use_allservices_password": true,
-    "site_admin_privatekey": "TODO -- update"
+    "use_allservices_password": {{tokens_use_allservices_password|to_json}},
+    {% if tokens_use_allservices_password == true %}
+          "allservices_password": "{{tokens_allservices_password}}"
+    {% endif %}
   }
