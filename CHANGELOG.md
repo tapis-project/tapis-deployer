@@ -2,6 +2,18 @@
 
 Notable changes between versions.
 
+## 1.3.5
+
+Image updates
+
+- Systems: 1.3.0 to 1.3.1 (tapis/systems)
+- Apps: 1.3.1 to 1.3.2 (tapis/apps)
+- Notifications: 1.3.0 to 1.3.1 (tapis/notifications,notifications-dispatcher)
+- Jobs: 1.3.1 to 1.3.2 (tapis/jobsworker, jobsmigrate, jobsapi)
+- SK: 1.3.0 to 1.3.1 (tapis/securitymigrate, securityexport, securityadmin, securityapi)
+- Files: 1.3.2 to 1.3.3 (tapis/tapis-files and tapis/tapis-files-workers)
+
+
 ## 1.3.4
 
 - Vault config (vault.hcl) fixes
