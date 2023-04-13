@@ -16,10 +16,6 @@
       path: '{{ tapisdir }}'
       state: directory
 
-  - name: create tapisdatadir 
-    file: 
-      path: '{{ tapisdatadir }}'
-      state: directory
 
 ### tapis components
 

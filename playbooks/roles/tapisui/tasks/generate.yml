@@ -7,14 +7,6 @@
     calling_rolename: tapisui
     tree_name: tapisui
 
-# if using docker, create data dirs
-- name: create data dirs
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items:
-    - '{{ tapisdatadir }}/tapisui'
-  when: tapisflavor == "docker"
 
 
 

@@ -5,6 +5,8 @@
 
 echo "notifications:"
 
+mkdir -p {{ tapisdatadir }}/notifications
+
 here=`pwd`
 
 cd $here

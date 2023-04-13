@@ -16,12 +16,6 @@
       path: '{{ tapisdir }}'
       state: directory
 
-  - name: create tapisdatadir 
-    file: 
-      path: '{{ tapisdatadir }}'
-      state: directory
-    when: tapisdatadir is defined
-
 ### tapis components
 
   - include_role:
