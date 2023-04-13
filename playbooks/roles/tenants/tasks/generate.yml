@@ -7,16 +7,3 @@
     calling_rolename: tenants
     tree_name: tenants
 
-# if using docker, create data dirs
-- name: create data dirs
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items:
-    - '{{ tapisdatadir }}/tenants'
-    - '{{ tapisdatadir }}/tenants/postgres'
-    - '{{ tapisdatadir }}/tenants/pgadmin'
-  when: tapisflavor == "docker"
-  ignore_errors: true
-
-

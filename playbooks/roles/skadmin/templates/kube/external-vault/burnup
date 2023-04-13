@@ -5,14 +5,14 @@
 # with authorization to access the Tapis AppRole role-id and secret-id values in 
 # vault. 
 
-if [ ! -f ~/vault-token ]
+if [ ! -f {{ tapisdatadir }}/vault-token ]
 then
-  echo "boo. need to create ~/vault-token"
+  echo "boo. need to create {{ tapisdatadir }}/vault-token"
   exit 1
 fi
 
 # Put the Tapis administrative vault token into a kube secret.
-kubectl create secret generic vault-token --from-file ~/vault-token
+kubectl create secret generic vault-token --from-file {{ tapisdatadir }}/vault-token
 
 # Get a fresh pair of approle ids.
 ./reset-approle-ids

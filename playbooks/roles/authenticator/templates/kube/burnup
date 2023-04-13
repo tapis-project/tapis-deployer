@@ -4,6 +4,11 @@ echo "authenticator:"
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/authenticator
+mkdir -p {{ tapisdatadir }}/authenticator/postgres
+mkdir -p {{ tapisdatadir }}/authenticator/api
+mkdir -p {{ tapisdatadir }}/authenticator/ldap
+
 # first ensure that the ./postgres/burnup script has been run because we need configmap "authenticator-config-local" to exist.
 kubectl apply -f authenticator-config.yml
 

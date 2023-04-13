@@ -7,12 +7,4 @@
     calling_rolename: proxy
     tree_name: proxy
 
-# if using docker, create data dirs
-- name: create proxy directories
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items: 
-  - '{{ tapisdatadir }}/proxy-site-router-redis'
-  when: tapisflavor == "docker"
 

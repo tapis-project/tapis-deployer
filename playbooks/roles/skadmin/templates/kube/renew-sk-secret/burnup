@@ -1,14 +1,14 @@
 #!/bin/bash
 
 
-if [ ! -f ~/vault-token ]
+if [ ! -f {{ tapisdatadir }}/vault-token ]
 then
-  echo "boo. need to create ~/vault-token"
+  echo "boo. need to create {{ tapisdatadir }}/vault-token"
   exit 1
 fi
 
 kubectl delete secret vault-token 
-kubectl create secret generic vault-token --from-file ~/vault-token
+kubectl create secret generic vault-token --from-file {{ tapisdatadir }}/vault-token
 
 kubectl delete configmap renew-sk-secret
 kubectl create configmap renew-sk-secret --from-file renew-sk-secret-script

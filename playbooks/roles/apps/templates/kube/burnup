@@ -5,6 +5,9 @@
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/files
+mkdir -p {{ tapisdatadir }}/files/irods
+
 # Set up configmap for apps
 cd $here
 kubectl apply -f apps-config.yml

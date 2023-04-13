@@ -6,14 +6,14 @@
 # the SK container when it starts.  SK uses these secrets to obtain its 
 # initial AppRole token.
 
-if [ ! -f ~/vault-token ]
+if [ ! -f {{ tapisdatadir }}/vault-token ]
 then
-  echo "boo. need to create ~/vault-token"
+  echo "boo. need to create {{ tapisdatadir }}/vault-token"
   exit 1
 fi
 
 # Put the Tapis administrative vault token into a local variable.
-VAULT_TOKEN=`cat ~/vault-token`
+VAULT_TOKEN=`cat {{ tapisdatadir }}/vault-token`
 
 # Get a fresh pair of approle ids.
 kubectl delete secret tapis-sk-vault-secrets

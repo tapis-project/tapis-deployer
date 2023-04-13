@@ -7,6 +7,8 @@ echo "systems:"
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/systems
+
 # Deploy postgres and api
 
 cd $here

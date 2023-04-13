@@ -2,5 +2,10 @@
 
 echo "burnup authenticator:"
 
+mkdir -p {{ tapisdatadir }}/authenticator
+mkdir -p {{ tapisdatadir }}/authenticator/postgres
+mkdir -p {{ tapisdatadir }}/authenticator/api
+mkdir -p {{ tapisdatadir }}/authenticator/ldap
+
 docker compose up -d
 

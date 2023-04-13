@@ -8,6 +8,7 @@ set -e
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}
 
 usage(){
   echo "ERROR: This script requires 1 option to run."
