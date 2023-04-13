@@ -1,0 +1,33 @@
+tapisdir_default: '{{ ansible_env.HOME }}/.tapis/{{ inventory_hostname }}'
+tapisdatadir_default: '{{ ansible_env.HOME }}/.tapis-data/{{ inventory_hostname }}'
+global_vault_url_default: 'http://vault:8200'
+global_service_url_default: 'https://admin.{{ global_tapis_domain }}'
+global_devtenant_url_default: 'https://dev.{{ global_tapis_domain }}'
+
+# A) There should be NO choice for primary sites, 
+# B) For associate sites, we should actually compute the field from the site record.. (or anyway, the 
+#    value needs to match what it is on the site record).
+components_to_deploy_default:
+  - actors
+  - admin
+  - apps
+  - authenticator
+  - files
+  - globus-proxy
+  - jobs
+#  - meta
+#  - monitoring
+  - notifications
+#  - pgrest
+#  - pods
+  - proxy
+  - security
+  - skadmin
+#  - streams
+  - systems
+  - tapisui
+  - tenants
+  - tokens
+  - vault
+#  - workflows  
+

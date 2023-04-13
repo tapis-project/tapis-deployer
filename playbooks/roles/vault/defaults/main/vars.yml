@@ -15,4 +15,6 @@ vault_service_vault_url: '{{ global_vault_url }}'
 vault_service_url: '{{ global_service_url }}'
 vault_storage_class: '{{ global_storage_class }}'
 vault_pvc: vault-vol01
-vault_raft_storage: false
+
+# As of tapis-deployer 1.3.3, this var is not required because we default to using raft. Leaving here for legacy reference purposes.
+# vault_raft_storage: true
