@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# check for legacy/pre-existin vault init file
 if [ -f {{ tapisdatadir }}/vault ]
 then
   echo 
@@ -9,6 +10,7 @@ then
   exit 1 
 fi
 
+# check for legacy/pre-existin vault-token file
 if [ -f {{ tapisdatadir }}/vault-token ]
 then
   echo 
@@ -42,7 +44,7 @@ then
   kubectl delete deploy/vault
 fi
 
-if [ ! -f {{ tapisdatadir }}/vault-token ]
+if [ ! -f {{ tapisdatadir }}/vault/vault-token ]
 then
   grep "Initial Root Token" {{ tapisdatadir }}/vault/vault-init | awk -F: '{print $2}' | tr -d " \t\n\r" > {{ tapisdatadir }}/vault/vault-token
   chmod 400 {{ tapisdatadir }}/vault/vault-token
