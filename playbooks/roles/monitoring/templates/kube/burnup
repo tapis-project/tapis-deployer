@@ -2,6 +2,10 @@
 
 echo "monitoring:"
 
+mkdir -p {{ tapisdatadir }}/monitoring/prometheus
+mkdir -p {{ tapisdatadir }}/monitoring/grafana
+mkdir -p {{ tapisdatadir }}/monitoring/elasticsearch
+
 # kube config so we can access kube api
 kubectl create configmap kubeconfig --from-file=$HOME/.kube/config
 
