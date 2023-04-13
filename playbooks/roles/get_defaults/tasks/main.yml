@@ -3,7 +3,7 @@
 - name: Set default values for vars
   ansible.builtin.set_fact:
     tapisdir: '{{ tapisdir | default(tapisdir_default) }}'
-    tapisdatadir: '{{ tapisdir | default(tapisdatadir_default) }}'
+    tapisdatadir: '{{ tapisdatadir | default(tapisdatadir_default) }}'
     global_vault_url: '{{ global_vault_url | default(global_vault_url_default) }}'
     global_service_url: '{{ global_service_url | default(global_service_url_default) }}'
     components_to_deploy: '{{ components_to_deploy | default(components_to_deploy_default) }}'
@@ -14,4 +14,5 @@
   ansible.builtin.debug:
     msg: 
       - 'tapisdir: {{ tapisdir }}'
+      - 'tapisdatadir: {{ tapisdatadir }}'
       - 'components_to_deploy: {{ components_to_deploy }}'
