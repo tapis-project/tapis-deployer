@@ -44,8 +44,8 @@ CHANGELOG_URLS = {
       "images": ["tapis/tapis-files", "tapis/tapis-files-workers"],
     },
     "globus_proxy": {
-      "url": "",
-      "images": [],
+      "url": "https://raw.githubusercontent.com/tapis-project/globus-proxy/dev/CHANGELOG.md",
+      "images": ["tapis/globus-proxy"],
     },
     "jobs": {
       "url": "https://raw.githubusercontent.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md",
@@ -88,8 +88,8 @@ CHANGELOG_URLS = {
       "images": ["tapis/tokens-api"],
     },
     "workflows": {
-      "url": "",
-      "images": [],
+      "url": "https://raw.githubusercontent.com/tapis-project/tapis-workflows/prod/CHANGELOG.md",
+      "images": ["tapis/workflows-api", "tapis/workflows-pipelines", "tapis/workflow-engine-streams"],
     },
 
 }
