@@ -63,6 +63,8 @@ spec:
               value: {{workflows_service_site_id}}
             - name: TAPIS_SERVICE_TENANT_ID
               value: {{workflows_service_tenant_id}}
+            - name: WORKFLOW_NFS_SERVER
+              value: __NFS_SERVER_SERVICE_IP__
             - name: WORKFLOWS_SERVICE_URL
               value: {{workflows_service_url}}
             - name: WORKFLOWS_SERVICE_ACCOUNT
