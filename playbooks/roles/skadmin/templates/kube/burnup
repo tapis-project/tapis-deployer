@@ -2,6 +2,8 @@
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/skadmin
+
 {% if skadmin_vault_url == "http://vault:8200" %}
 
 echo "skadmin:"

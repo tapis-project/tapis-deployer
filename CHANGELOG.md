@@ -2,6 +2,18 @@
 
 Notable changes between versions.
 
+## 1.3.5
+
+Image updates
+
+- Systems: 1.3.0 to 1.3.1 (tapis/systems)
+- Apps: 1.3.1 to 1.3.2 (tapis/apps)
+- Notifications: 1.3.0 to 1.3.1 (tapis/notifications,notifications-dispatcher)
+- Jobs: 1.3.1 to 1.3.2 (tapis/jobsworker, jobsmigrate, jobsapi)
+- SK: 1.3.0 to 1.3.1 (tapis/securitymigrate, securityexport, securityadmin, securityapi)
+- Files: 1.3.2 to 1.3.3 (tapis/tapis-files and tapis/tapis-files-workers)
+
+
 ## 1.3.4
 
 - Vault config (vault.hcl) fixes
@@ -15,6 +27,23 @@ Notable changes between versions.
 - Updated several image minor release versions. 
 - Added VERSION file to reflect which version of tapis-deployer was used.
 
+### Breaking Changes:
+
+- If you have an existing Tapis deployment, you may be using the "file" storage type for vault. In the future the default will use "raft" storage type. For new installs, no action is required. Follow Migration steps below to migrate from file to raft storage.
+
+### Migration from 1.2.x steps 
+
+- Check your existing vault for storage type. Exec into the container and get storage type
+
+    kubectl exec -it deploy/vault vault status | grep "Storage Type"
+    Storage Type    file
+
+If your storage type if "file", include this in your host_vars:
+
+    vault_raft_storage: false
+
+If your storage type is "raft", no further action required. Ensure that "vault_raft_storage" var is undefined in your host_vars.
+
 ## 1.3.0 
 
 **Breaking Changes**
@@ -23,21 +52,20 @@ Notable changes between versions.
 - The template generation backend was redone using Ansible.
 - The input generator is deprecated.
 
+### Migration from 1.2.x steps 
+
+- Remove "tokens_tenants" var from the tokens section of your input file. Is now set to ["*"] by default, meaning tokens will get a list of tenants from tenants service.
+- Remove "authenticator_service_tenants" var from the authenticator section of your input file. Is now set to ["*"] by default, meaning authenticator will get a list of tenants from tenants service.
+- Update your host_vars (deployer input file) to include the following new variables. (see inventory_examples for reference):
+
+    # Choose where your deployment files should be created.
+    tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
+    tapisdatadir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}-data'
 
 
-## 1.3.0 - 20230106 
+## 1.2.x - 2023-01-06 
 
-### Breaking Changes:
-
-
-### New features:
-
-- Proxy/Nginx: Moved each location stanza to its own file.
-
-
-### Bug fixes:
-
-
+- Docker flavor: Proxy/Nginx: Moved each location stanza to its own file.
 
 
 ## 1.2.0 - 2022-05-31
@@ -80,4 +108,3 @@ Initial pre-release of Tapis Deployer for generating Tapis deployment YAML & scr
 ### Bug fixes:
 
 - None.
-[tapistest@cic02 tapis-deployer]$
