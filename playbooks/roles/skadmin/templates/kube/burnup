@@ -34,7 +34,7 @@ kubectl apply -f sk-presetup.yml
 kubectl wait --for=condition=complete job/sk-presetup
 
 kubectl apply -f sk-admin-init.yml
-kubectl wait --for=condition=complete job/sk-admin-init
+kubectl wait --timeout=90s --for=condition=complete job/sk-admin-init
 
 #kubectl apply -f util.yml
 #

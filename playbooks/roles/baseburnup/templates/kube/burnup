@@ -46,7 +46,7 @@ checkvault(){
   # TODO: fix to work if vault is remote
   # will not work until vault is up
   echo "Vault Sealed?" 
-  if kubectl exec -it deploy/vault vault status | grep Sealed | grep false 
+  if kubectl exec -it deploy/vault -- vault status | grep Sealed | grep false 
   then
     echo "Vault check succeeded."
   else
