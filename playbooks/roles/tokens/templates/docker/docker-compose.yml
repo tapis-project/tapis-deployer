@@ -2,6 +2,8 @@
 networks:
     tapis:
         name: tapis
+        external: true
+        external: true
 
 
 services:
@@ -22,4 +24,5 @@ services:
         environment:
             # an example of the allservices_password, only used in develop. generate a new one with
             # date +%s | sha256sum | base64 | head -c 32 ; echo or something similar.
-            - JWTSIGNING_ADMIN_PRIVATEKEY
+            - site-admin-privatekey
+            - site_dev_privatekey

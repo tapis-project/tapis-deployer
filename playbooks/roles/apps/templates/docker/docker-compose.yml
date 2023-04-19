@@ -2,6 +2,7 @@
 networks:
     tapis:
         name: tapis
+        external: true
 
 services:
     apps-api:

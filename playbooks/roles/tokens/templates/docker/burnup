@@ -4,6 +4,7 @@ echo "burnup tokens:"
 
 # Read secrets from env file
 export site_admin_privatekey=`grep JWTSIGNING_ADMIN_PRIVATEKEY {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2$3}'`
+export site_dev_privatekey=`grep JWTSIGNING_DEV_PRIVATEKEY {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2$3}'`
 # export tokens_service_password=`grep SERVICEPWD_TOKENS_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 
 docker compose up -d
