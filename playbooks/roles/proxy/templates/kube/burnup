@@ -4,6 +4,9 @@ echo "proxy:"
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/proxy
+mkdir -p {{ tapisdatadir }}/proxy/proxy-site-router-redis
+
 kubectl apply -f proxy-config.yml
 
 echo "proxy nginx:"

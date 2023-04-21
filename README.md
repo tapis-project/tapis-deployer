@@ -53,3 +53,14 @@ This applies to a quick image-version-only increment or a more substantial relea
         baseburnup_tapis_deployer_version: 1.3.99
     merge to main & immediately tag this new commit as a version "v1.3.99"
     send announcement of new release <boilerplate template HERE TBD>?
+
+## Developer Guide
+
+- Create a branch off of the appropriate trunk branch 
+  - If you want a very simple change, like a change to a component image version, quick bugfix, etc., branch off of *main* branch. 
+  - If it's a more elaborate change, branch off of *dev* branch. 
+- Make and commit your changes 
+  - For example, to increase the image version for the Apps API images, edit the file `playbooks/roles/apps/defaults/main/images.yml`
+- Create a Pull Request from your branch against the branch you created the branch from, *main* or *dev* 
+- Testers can pull and test your changes before merging into the common branches and creating a new release.
+

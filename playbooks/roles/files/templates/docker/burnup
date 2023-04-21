@@ -2,5 +2,11 @@
 
 echo "burnup files:"
 
+mkdir -p {{ tapisdatadir }}/files
+mkdir -p {{ tapisdatadir }}/files/rabbitmq
+mkdir -p {{ tapisdatadir }}/files/postgres
+mkdir -p {{ tapisdatadir }}/files/minio
+mkdir -p {{ tapisdatadir }}/files/irods
+
 docker compose up -d
 

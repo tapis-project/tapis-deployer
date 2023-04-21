@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+mkdir -p {{ tapisdatadir }}/streams
+mkdir -p {{ tapisdatadir }}/streams/influx
+mkdir -p {{ tapisdatadir }}/streams/mysql
+

@@ -1,7 +1,7 @@
 ---
 
 - name: test playbook for experimenting
-  hosts: all
+  hosts: tapis_installs
 
   vars:
     tapisctl_action: example-docker

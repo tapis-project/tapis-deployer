@@ -4,7 +4,19 @@ Notable changes between versions.
 
 ## 1.3.5
 
-Image updates
+**Breaking Changes**
+
+Previous versions of Tapis Deployer have placed important vault configs in ~/vault, ~/vault-token. These files are now moved to a configurable directory set by the `tapisdatadir` variable. This should be set to the directory on your deployment machine that contains data for your installation and should
+
+**If you migrating from an existing Tapis deployement** be sure to copy:
+- create the `tapisdatadir`/vault directory
+- copy ~/vault file to `tapisdatadir`/vault/vault-init file
+- copy ~/vault-token file to `tapisdatadir`/vault/vault-token file
+
+
+Other changes:
+
+Image updates for:
 
 - Systems: 1.3.0 to 1.3.1 (tapis/systems)
 - Apps: 1.3.1 to 1.3.2 (tapis/apps)
@@ -27,7 +39,7 @@ Image updates
 - Updated several image minor release versions. 
 - Added VERSION file to reflect which version of tapis-deployer was used.
 
-### Breaking Changes:
+**Breaking Changes**
 
 - If you have an existing Tapis deployment, you may be using the "file" storage type for vault. In the future the default will use "raft" storage type. For new installs, no action is required. Follow Migration steps below to migrate from file to raft storage.
 

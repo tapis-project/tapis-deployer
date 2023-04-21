@@ -4,6 +4,9 @@ echo "meta:"
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/meta
+mkdir -p {{ tapisdatadir }}/meta/restheart-mongo
+
 # Set up configmap 
 kubectl apply -f meta-config.yml
 

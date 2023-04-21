@@ -9,9 +9,9 @@ mkdir -p {{ tapisdatadir }}/skadmin
 echo "skadmin:"
 echo "using internal vault:" 
 
-if [ ! -f ~/vault-token ]
+if [ ! -f {{ tapisdatadir }}/vault/vault-token ]
 then
-  echo "boo. need to create ~/vault-token"
+  echo "boo. need to create {{ tapisdatadir }}/vault/vault-token"
   exit 1
 fi
 
@@ -20,7 +20,7 @@ cd $here/renew-sk-secret
 
 cd $here 
 kubectl apply -f skadmin-config.yml
-kubectl create secret generic vault-token --from-file ~/vault-token
+kubectl create secret generic vault-token --from-file {{ tapisdatadir }}/vault/vault-token
 
 kubectl create configmap sk-roles --from-file ${here}/tapis-vault/roles
 kubectl create configmap sk-policies --from-file ${here}/tapis-vault/policies/sk
@@ -34,7 +34,7 @@ kubectl apply -f sk-presetup.yml
 kubectl wait --for=condition=complete job/sk-presetup
 
 kubectl apply -f sk-admin-init.yml
-kubectl wait --for=condition=complete job/sk-admin-init
+kubectl wait --timeout=90s --for=condition=complete job/sk-admin-init
 
 #kubectl apply -f util.yml
 #
