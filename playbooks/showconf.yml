@@ -1,7 +1,7 @@
 ---
 
 - name: Show all veriables and configs. 
-  hosts: all
+  hosts: tapis_installs
   tasks:
   - name: Display all variables/facts known for a host
     debug:

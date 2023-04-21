@@ -2,6 +2,10 @@
 
 echo "burnup tenants:"
 
+mkdir -p {{ tapisdatadir }}/tenants
+mkdir -p {{ tapisdatadir }}/tenants/postgres
+mkdir -p {{ tapisdatadir }}/tenants/pgadmin
+
 export postgres_password=`grep DBCREDENTIAL_POSTGRES_TENANTS_POSTGRES_TENANTS_TENANTS_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 export POSTGRES_PASSWORD=`grep DBCREDENTIAL_POSTGRES_TENANTS_POSTGRES_TENANTS_TENANTS_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 export service_password=`grep SERVICEPWD_TENANTS_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`

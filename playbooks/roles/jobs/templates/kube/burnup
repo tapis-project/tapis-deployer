@@ -4,6 +4,11 @@ echo "jobs:"
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/jobs
+mkdir -p {{ tapisdatadir }}/jobs/postgres
+mkdir -p {{ tapisdatadir }}/jobs/rabbitmq
+
+
 # Set up configmap for jobs
 cd $here
 kubectl apply -f jobs-config.yml

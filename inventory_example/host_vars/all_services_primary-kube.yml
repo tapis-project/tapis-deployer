@@ -3,6 +3,8 @@
 # primary site, since we have to provide additional configurations for the 
 # extra services.
 
+tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
+tapisdatadir: '$HOME/tmp/{{ inventory_hostname }}-data'
 
 site_type: 1
 global_tapis_domain: develop.tapis.io

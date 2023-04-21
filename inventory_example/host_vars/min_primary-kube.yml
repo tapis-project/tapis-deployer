@@ -2,6 +2,9 @@
 # sets all of the required fields and one optional field, tapisdir,
 # to customize the location of the install. 
 
+tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
+tapisdatadir: '$HOME/tmp/{{ inventory_hostname }}-data'
+
 # this is a primary site
 site_type: 1
 
@@ -21,5 +24,3 @@ global_primary_site_admin_tenant_base_url: https://admin.test.tapis.io
 proxy_nginx_cert_file: $HOME/ssl/wild.tapis.io.pem
 proxy_nginx_cert_key: $HOME/ssl/wild.tapis.io.key
 
-# specify a different directory for the installation
-tapisdir: /home/jstubbs/fooy/tapistest

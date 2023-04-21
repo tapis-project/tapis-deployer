@@ -7,15 +7,3 @@
     calling_rolename: authenticator
     tree_name: authenticator
 
-# if using docker, create data dirs
-- name: 'create dir {{ tapisdir }}/authenticator'
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items: 
-    - '{{ tapisdir }}/authenticator'
-    - '{{ tapisdatadir }}/authenticator/api'
-    - '{{ tapisdatadir }}/authenticator/postgres'
-    - '{{ tapisdatadir }}/authenticator/ldap'
-  when: tapisflavor == "docker"
-

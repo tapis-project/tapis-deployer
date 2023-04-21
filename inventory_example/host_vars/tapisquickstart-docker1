@@ -1,7 +1,7 @@
 # Choose where your deployment files should be created.
+
 tapisdir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}'
-# tapisdatadir: '{{ inventory_hostname }}/data'
-tapisdatadir: '{{ ansible_env.HOME }}/tmp/{{ inventory_hostname }}-data'
+tapisdatadir: '$HOME/tmp/{{ inventory_hostname }}-data'
 
 
 ### tapis vars
