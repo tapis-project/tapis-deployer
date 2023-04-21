@@ -1,7 +1,7 @@
 ---
 
 - name: Check Tapis deployment YAML for validation problems
-  hosts: all
+  hosts: tapis_installs
 
   tasks: 
 

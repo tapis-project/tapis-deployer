@@ -1,5 +1,11 @@
 ---
 
+- name: Values being used
+  ansible.builtin.debug:
+    msg: 
+      - 'proxy_nginx_service_list : {{ proxy_nginx_service_list }}'
+
+
 - include_tasks: '{{ tapisctl_action }}.yml'
 
 

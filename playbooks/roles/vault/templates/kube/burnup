@@ -1,5 +1,28 @@
 #!/bin/bash
 
+# check for legacy/pre-existin vault init file
+if [ -f {{ tapisdatadir }}/vault ]
+then
+  echo 
+  echo "# ERROR: It looks like you have a {{ tapisdatadir }}/vault file, which may be part of a pre-existing Tapis install."
+  echo "#   Please make a backup of {{ tapisdatadir }} and rename the file {{ tapisdatadir }}/vault to {{ tapisdatadir }}/vault/vault-init."
+  echo "#   Exiting vault burnup."
+  exit 1 
+fi
+
+# check for legacy/pre-existin vault-token file
+if [ -f {{ tapisdatadir }}/vault-token ]
+then
+  echo 
+  echo "# ERROR: It looks like you have a {{ tapisdatadir }}/vault-token file, which may be part of a pre-existing Tapis install."
+  echo "#   Please make a backup of {{ tapisdatadir }} and rename the file {{ tapisdatadir }}/vault-token to {{ tapisdatadir }}/vault/vault-token."
+  echo "#   Exiting vault burnup."
+  exit 1 
+fi
+
+
+mkdir -p {{ tapisdatadir }}/vault
+
 kubectl apply -f vault-config.yml
 kubectl apply -f service.yml
 kubectl create configmap vaultconf --from-file vault.hcl
@@ -7,34 +30,33 @@ kubectl apply -f pvc.yml
 #kubectl wait --for=condition=complete job/prep-vault-pvc
 #kubectl delete job/prep-vault-pvc
 
-
 # only do this step once if vault is not initialized
-if [ ! -f ~/vault ]
+if [ ! -f {{ tapisdatadir }}/vault/vault-init ]
 then
   echo
-  echo "# WARNING! Important 1-time-only Vault information stored in ~/vault-token. If you lose it, your Vault may be locked forever!"
+  echo "# WARNING! Important 1-time-only Vault information stored in {{ tapisdatadir }}/vault/vault-init. If you lose it, your Vault may be locked forever!"
   echo
   kubectl apply -f vault-init.yml
   kubectl wait --for=condition=available deploy/vault
   pod=`kubectl get pods --selector=app=vault -o jsonpath='{.items[*].metadata.name}'`
-  kubectl exec -it $pod vault operator init | sed 's/\x1b\[[0-9;]*m//g' | tr -d "\r" >& ~/vault
-  chmod 400 ~/vault
+  kubectl exec -it $pod vault operator init | sed 's/\x1b\[[0-9;]*m//g' | tr -d "\r" >& {{ tapisdatadir }}/vault/vault-init
+  chmod 400 {{ tapisdatadir }}/vault/vault-init
   kubectl delete deploy/vault
 fi
 
-if [ ! -f ~/vault-token ]
+if [ ! -f {{ tapisdatadir }}/vault/vault-token ]
 then
-  grep "Initial Root Token" ~/vault | awk -F: '{print $2}' | tr -d " \t\n\r" > ~/vault-token
-  chmod 400 ~/vault-token
+  grep "Initial Root Token" {{ tapisdatadir }}/vault/vault-init | awk -F: '{print $2}' | tr -d " \t\n\r" > {{ tapisdatadir }}/vault/vault-token
+  chmod 400 {{ tapisdatadir }}/vault/vault-token
 fi
 
-u1=`grep '^Unseal Key 1:' ~/vault | awk '{print $4}'`
-u2=`grep '^Unseal Key 2:' ~/vault | awk '{print $4}'`
-u3=`grep '^Unseal Key 3:' ~/vault | awk '{print $4}'`
+u1=`grep '^Unseal Key 1:' {{ tapisdatadir }}/vault/vault-init | awk '{print $4}'`
+u2=`grep '^Unseal Key 2:' {{ tapisdatadir }}/vault/vault-init | awk '{print $4}'`
+u3=`grep '^Unseal Key 3:' {{ tapisdatadir }}/vault/vault-init | awk '{print $4}'`
 
 kubectl delete secret vault-keys
 
-kubectl create secret generic vault-token --from-file ~/vault-token
+kubectl create secret generic vault-token --from-file {{ tapisdatadir }}/vault/vault-token
 kubectl create secret generic vault-keys --from-literal=UNSEAL1=$u1 --from-literal=UNSEAL2=$u2 --from-literal=UNSEAL3=$u3
 kubectl apply -f vault-auto-unseal.yml
 

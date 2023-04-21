@@ -2,5 +2,7 @@
 
 echo "burnup tokens:"
 
+mkdir -p {{ tapisdatadir }}/tokens
+
 docker compose up -d
 

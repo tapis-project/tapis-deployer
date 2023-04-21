@@ -1,23 +1,21 @@
 ---
 
 - name: Generate Tapis Deployment Code
-  hosts: all
+  hosts: tapis_installs
 
   vars: 
     tapisctl_action: 'generate'
-  
+
   tasks: 
+  - name: Set default values for vars
+    include_role: 
+      name: get_defaults
 
   - name: create tapisdir 
     file: 
       path: '{{ tapisdir }}'
       state: directory
 
-  - name: create tapisdatadir 
-    file: 
-      path: '{{ tapisdatadir }}'
-      state: directory
-    when: tapisdatadir is defined
 
 ### tapis components
 

@@ -13,7 +13,7 @@ pods_log_level: INFO
 pods_traefik_certs_file: null
 pods_traefik_cert_key: null
 pods_image_allow_list: 
-  - alpine3.17
+  - alpine:3.17
 pods_spawner_host_queues: 
   - quick
 

@@ -4,6 +4,10 @@ echo "tenants:"
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/tenants
+mkdir -p {{ tapisdatadir }}/tenants/postgres
+mkdir -p {{ tapisdatadir }}/tenants/pgadmin
+
 kubectl apply -f tenants-config.yml
 
 cd $here/postgres

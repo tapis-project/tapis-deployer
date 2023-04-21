@@ -4,6 +4,8 @@ echo "security:"
 
 here=`pwd`
 
+mkdir -p {{ tapisdatadir }}/security
+
 kubectl apply -f security-kernel-config.yml
 
 echo "security security-kernel:"

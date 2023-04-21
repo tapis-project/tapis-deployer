@@ -2,6 +2,8 @@
 
 echo "pgrest:"
 
+mkdir -p {{ tapisdatadir }}/pgrest
+
 # Config
 kubectl apply -f pgrest-config.yml
 

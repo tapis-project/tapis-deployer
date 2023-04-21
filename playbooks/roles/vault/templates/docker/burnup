@@ -2,7 +2,9 @@
 
 echo "burnup vault:"
 
+mkdir -p {{ tapisdatadir }}/vault
 mkdir -p {{ tapisdatadir }}/vault/data
+
 docker run -it -v {{ tapisdatadir }}/vault:/vault {{ vault_image }} chown -R 100:1000 /vault/data
 
 docker compose up -d
