@@ -2,6 +2,10 @@
 
 Notable changes between versions.
 
+## 1.3.6
+
+- Jobs: 1.3.2 to 1.3.3 (tapis/jobsworker, jobsmigrate, jobsapi)
+
 ## 1.3.5
 
 **Breaking Changes**
