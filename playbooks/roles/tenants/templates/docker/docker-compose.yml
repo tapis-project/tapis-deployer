@@ -3,6 +3,7 @@
 networks:
   tapis:
     name: tapis
+    external: true
 
 services:
 
@@ -56,3 +57,17 @@ services:
       - dev_tenant_public_key
       - service_password
       - postgres_password
+
+  tenants-pgadmin:
+          image: dpage/pgadmin4
+          environment:
+            PGADMIN_DEFAULT_EMAIL: "admin@test.com"
+            PGADMIN_DEFAULT_PASSWORD: "password"
+          ports:
+              - "8000:80"
+          networks:
+              - tapis
+          depends_on:
+            - tenants-postgres
+          volumes:
+              - {{tapisdatadir}}/tenants/pgadmin:/var/lib/pgadmin
