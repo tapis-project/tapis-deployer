@@ -21,8 +21,8 @@ services:
         networks:
             - tapis
         environment:
-            # an example of the allservices_password, only used in develop. generate a new one with
-            # date +%s | sha256sum | base64 | head -c 32 ; echo or something similar.
+        #     # an example of the allservices_password, only used in develop. generate a new one with
+        #     # date +%s | sha256sum | base64 | head -c 32 ; echo or something similar.
             - site_admin_privatekey
-            - site_dev_privatekey
-            - tokens_service_password
+        #     - site_dev_privatekey
+        #     - tokens_service_password
