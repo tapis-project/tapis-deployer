@@ -73,6 +73,17 @@ data:
           sslmode: disable
           postgresVersion: 1200
 
+      - name: Authenticator DB
+        type: postgres
+        url: authenticator-postgres:5432
+        database: authenticator
+        user: monitor
+        secureJsonData:
+          password: $TAPIS_DB_MONITOR_PASSWORD
+        jsonData:
+          sslmode: disable
+          postgresVersion: 1200
+
       - name: Jobs DB
         type: postgres
         url: jobs-postgres:5432
