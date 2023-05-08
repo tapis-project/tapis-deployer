@@ -32,6 +32,12 @@ services:
         - POSTGRES_PASSWORD
     volumes:
         - {{ tapisdatadir }}/authenticator/postgres:/data/pgdata
+
+    #  authenticator-migrations:
+    #container_name: authenticator-migrations
+    #image: {{ authenticator_migrations_image }}
+    #networks:
+    #    - tapis
     
         
   authenticator-ldap:

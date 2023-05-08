@@ -1,0 +1,49 @@
+import json
+import os 
+import argparse
+
+# {{ tapisdatadir }} location
+tapisdatadir = '~/tmp/tapisquickstart-docker1-data/'
+
+# var mapping for all comps
+actors = {"":""}
+apps = = {"":""}
+authenticator = = {"":""}
+files = {"":""}
+globus-proxy = {"":""}
+jobs = {"":""}
+meta = {"":""}
+monitoring = {"":""}
+nginx-custom-locations = {"":""}
+notifications = {"":""}
+pgrest = {"":""}
+pods = {"":""}
+proxy = {"":""}
+security = {"":""}
+skadmin = {"":""}
+streams = {"":""}
+systems = {"":""}
+tapisui = {"":""}
+tenants = {"":""}
+tokens = {"":""}
+vault = {"":""}
+workflows = {"":""}
+
+# parse args
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--comp', help='Tapis component to export env file for')
+args = parser.parse_args()
+
+# read in the skexport json
+infile = tapisdatadir + 'skadmin/env'
+with open(infile, 'r'):
+    # parse skexport vars for component 
+    # build dict of new vars to write
+    pass
+infile.close()
+
+outfile = tapisdatadir + args.comp + 'env'
+# write output env file to data dir
+with open(outfile, 'w'):
+    pass
+outfile.close()

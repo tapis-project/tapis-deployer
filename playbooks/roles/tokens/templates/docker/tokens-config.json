@@ -3,7 +3,7 @@
     "primary_site_admin_tenant_base_url": "{{ tokens_service_url }}",
     "service_site_id": "{{ tokens_service_site_id }}",
     "service_tenant_id": "admin",
-    "use_sk": false,
+    "use_sk": true,
     "tenants": ["dev", "admin"],
     "log_level": "DEBUG",
     "use_allservices_password": {{tokens_use_allservices_password|to_json}},
