@@ -8,7 +8,7 @@ in a future release.
 ## User Documentation
 
 Full documentation is being developed for Tapis Deployer on the Tapis ReadTheDocs site. See 
-the [Deployment & Administration Guide](https://tapis.readthedocs.org/deployment/index.html). 
+the [Deployment & Administration Guide](https://tapis.readthedocs.io/en/latest/deployment/index.html). 
 
 
 ## Developer Documentation
