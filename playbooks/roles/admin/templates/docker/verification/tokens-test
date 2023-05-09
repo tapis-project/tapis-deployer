@@ -1,6 +1,7 @@
 #!/bin/bash
 
-s=`kubectl get secret tapis-tenants-secrets -o json | jq -r '.data["service-password"]' | base64 -d`
+# s=`kubectl get secret tapis-tenants-secrets -o json | jq -r '.data["service-password"]' | base64 -d`
+s=`grep SERVICEPWD_TENANTS_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 
 # tokens
 # should return 200 and JSON with token

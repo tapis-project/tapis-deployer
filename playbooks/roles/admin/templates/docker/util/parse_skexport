@@ -2,19 +2,17 @@ import json
 import os 
 import argparse
 
-# {{ tapisdatadir }} location
-tapisdatadir = '~/tmp/tapisquickstart-docker1-data/'
 
 # var mapping for all comps
+# e.g. {"{skexport_name}": "{internal_component_name}"}
 actors = {"":""}
-apps = = {"":""}
-authenticator = = {"":""}
+apps = {"":""}
+authenticator = {"":""}
 files = {"":""}
-globus-proxy = {"":""}
+globus_proxy = {"":""}
 jobs = {"":""}
 meta = {"":""}
 monitoring = {"":""}
-nginx-custom-locations = {"":""}
 notifications = {"":""}
 pgrest = {"":""}
 pods = {"":""}
@@ -25,25 +23,37 @@ streams = {"":""}
 systems = {"":""}
 tapisui = {"":""}
 tenants = {"":""}
-tokens = {"":""}
+tokens = {"JWTSIGNING_ADMIN_PRIVATEKEY": "site_admin_privatekey"}
 vault = {"":""}
 workflows = {"":""}
 
+
 # parse args
 parser = argparse.ArgumentParser()
-parser.add_argument('-c', '--comp', help='Tapis component to export env file for')
+parser.add_argument('-c', '--comp', help='Tapis component to export env file for', required=True)
+parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible', default="{{ tapisdatadir }}")
 args = parser.parse_args()
 
-# read in the skexport json
-infile = tapisdatadir + 'skadmin/env'
-with open(infile, 'r'):
-    # parse skexport vars for component 
-    # build dict of new vars to write
-    pass
-infile.close()
+# normalize component name
+component = args.comp.replace('-', '_')
 
-outfile = tapisdatadir + args.comp + 'env'
-# write output env file to data dir
-with open(outfile, 'w'):
-    pass
-outfile.close()
+# set local vars
+infile = args.dir + '/skadmin/env'
+local = locals()[component]
+outfile = open(args.dir + '/' + args.comp + '/env', 'w')
+
+
+
+with open(infile, 'r') as lines:
+    for line in lines:
+        if len(line) <= 1:
+            continue # ignore empty line
+        try:
+            skexport_key, skexport_value = line.split('=', 1)
+            skexport_value = skexport_value.replace('\\n', '\n') # sanitize newlines on priv/pub keys
+            outfile.write(f"{local[skexport_key]}='{skexport_value}'")
+        except KeyError:
+            pass
+            
+
+outfile.close() 
