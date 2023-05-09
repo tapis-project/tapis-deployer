@@ -5,6 +5,7 @@ Notable changes between versions.
 ## 1.3.6
 
 - Jobs: 1.3.2 to 1.3.3 (tapis/jobsworker, jobsmigrate, jobsapi)
+- Authenticator: 1.3.0 to 1.3.2 (authenticator & authenticator-migrations)
 
 ## 1.3.5
 
