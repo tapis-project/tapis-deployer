@@ -8,57 +8,26 @@ in a future release.
 ## User Documentation
 
 Full documentation is being developed for Tapis Deployer on the Tapis ReadTheDocs site. See 
-the [Deployment & Administration Guide](https://tapis.readthedocs.org/deployment/index.html). 
+the [Deployment & Administration Guide](https://tapis.readthedocs.io/en/latest/deployment/index.html). 
 
 
-## Developing Deployer
+## Developer Documentation
 
-This section describes the process by which changes are made to Deployer itself. 
 
-_In progress..._
+### Developer Guide
 
-### Procedures for normal development (By Developers and Deployer Maintainers together) 
-
-    DEVs: create a temporary feature branch off of tapis-deployer dev branch (https://github.com/tapis-project/tapis-deployer)
-        could be named for feature i.e. "refactor-tapisui" 
-        put all changes you wish to make into this branch
-        push your branch to github
-        when happy with these changes as a batch, create a PR from this branch to dev
-    Maintainers
-        Maintainers: folks will review and iterate on the PR, maybe decline, ask for edits, etc
-        Maintainers: once happy with the changes, folks will merge into dev  
-    Maintainers will create PRs to merge dev into staging
-        After some amount of testing and iteration
-        Create a PR to bring changes from dev branch to staging
-        Additional folks may review PR or just merge it.
-
-### Procedures for NEW TAPIS RELEASE (IN PROGRESS, draft)
-
-Performed by Deployer Maintainer Persons
-
-This applies to a quick image-version-only increment or a more substantial release after some development by above procedure.
-
-    Maintainers gather feedback and change requirements for new release. i.e. Ask developers, maintainers, users. This can be a longer dev process or a quick version-only change.
-        For image-version-only changes, developers request an update to one or more production Tapis services. Requests are informal and take the form of a slack message on the tapis-deployer channel.
-    Create a TEMPORARY branch from main called <next vesion of deployer>
-        i.e. 1.3.99-rc
-    bring in desired changes
-        if it's a quick image version adjustment, maintainers change image numbers in tapis-deployer/playbooks/roles/<component>/defaults/main/images.yml
-            The only changes to deployer are new image tags for the target services.
-        if more substantial release, manually curate the changes from the staging branch into this RC branch
-    update release notes
-
-    increment the deployer version in https://github.com/tapis-project/tapis-deployer/blob/main/playbooks/roles/baseburnup/defaults/main/vars.yml (e.g.
-
-        baseburnup_tapis_deployer_version: 1.3.99
-    merge to main & immediately tag this new commit as a version "v1.3.99"
-    send announcement of new release <boilerplate template HERE TBD>?
-
-## Developer Guide
-
-- Create a branch off of the *dev* branch 
-- Make and commit your changes 
+- Create a branch off of the *dev* branch
+  - Optional: Name it after your new feature or change, i.e. "refactor-tapisui"
+- Make and commit your changes to your branch
   - For example, to increase the image version for the Apps API images, edit the file `playbooks/roles/apps/defaults/main/images.yml`
-- Create a Pull Request from your branch against the branch you created the branch from, usually *dev* 
-- Testers can pull and test your changes before merging into the *staging* and *main* branches and creating a new release.
+  - Include a note about your changes in the CHANGELOG.md.
+  - **Note** Your changes could affect other services, so please be sure to describe these issues in CHANGELOG.md, especially if there are breaking changes or if your require additional steps for upgrade.
+- Create a Pull Request from your branch against the branch you created the branch from, (probably *dev*).  
 
+
+### Getting Changes into a Tapis Deployer Release
+
+- Once your changes are in *dev* branch (see above), Testers/Admins/Maintainers can then deploy and test your changes amongst various environments.
+  - This should be accompanied by an increase in the `baseburnup_tapis_deployer_version` variable in `playbooks/roles/baseburnup/defaults/main/vars.yml` (Maintainers do this.)
+- After successful testing and combined with other devs' changes, *dev* branch will be merged with *staging* in preparation for a release.
+- After successful testing in *staging* branch, it will be merged into *main* by Tapis Deployer Maintainers and a new release will be created.
