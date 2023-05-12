@@ -8,7 +8,7 @@ echo "burnup tokens:"
 
 #export site_admin_privatekey="$(grep JWTSIGNING_ADMIN_PRIVATEKEY {{ tapisdatadir }}/skadmin/env | awk -v RS='\r\n' -FJWTSIGNING_ADMIN_PRIVATEKEY= '{print $2}' | sed 's/\\n/\n/g')"
 
-python3 {{ tapisdir }}/admin/util/parse_skexport -c tokens
+python3 {{ tapisdir }}/admin/util/parse_skexport -c tokens -d {{ tapisdatadir }}
 
 docker compose up -d
 

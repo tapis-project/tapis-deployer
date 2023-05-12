@@ -28,4 +28,4 @@ services:
         #     - tokens_service_password
         env_file: 
             - {{ tapisdatadir }}/tokens/env
-            # site_admin_privatekey='VALUE' 
+            # site_admin_privatekey='VALUE'

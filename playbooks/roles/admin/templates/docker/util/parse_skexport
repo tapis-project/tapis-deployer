@@ -1,13 +1,18 @@
-import json
 import os 
 import argparse
+import requests
+import json
 
 
 # var mapping for all comps
 # e.g. {"{skexport_name}": "{internal_component_name}"}
 actors = {"":""}
 apps = {"":""}
-authenticator = {"":""}
+authenticator = {"POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
+                "postgres_password": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
+                "LDAP_ROOTPASS":"SERVICEPWD_AUTHENTICATOR_PASSWORD",
+                "service_password": "SERVICEPWD_AUTHENTICATOR_PASSWORD"}
+                
 files = {"":""}
 globus_proxy = {"":""}
 jobs = {"":""}
@@ -17,13 +22,26 @@ notifications = {"":""}
 pgrest = {"":""}
 pods = {"":""}
 proxy = {"":""}
-security = {"":""}
+security = {"TAPIS_SK_VAULT_SECRET_ID": "",
+            "TAPIS_SK_VAULT_ROLE_ID": "",
+            "TAPIS_DB_PASSWORD" : "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD",
+            "TAPIS_PASSWORD": "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD",
+            "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD",
+            "PW" : "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD",
+            "TPW" : "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD"}
+
 skadmin = {"":""}
 streams = {"":""}
 systems = {"":""}
 tapisui = {"":""}
-tenants = {"":""}
-tokens = {"JWTSIGNING_ADMIN_PRIVATEKEY": "site_admin_privatekey"}
+tenants = {"postgres_password": "DBCREDENTIAL_POSTGRES_TENANTS_POSTGRES_TENANTS_TENANTS_PASSWORD",
+            "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_TENANTS_POSTGRES_TENANTS_TENANTS_PASSWORD",
+            "service_password": "SERVICEPWD_TENANTS_PASSWORD",
+            "admin_tenant_public_key": "JWTSIGNING_ADMIN_PUBLICKEY",
+            "dev_tenant_public_key": "JWTSIGNING_DEV_PUBLICKEY" }
+
+tokens = {"site_admin_privatekey": "JWTSIGNING_ADMIN_PRIVATEKEY"}
+
 vault = {"":""}
 workflows = {"":""}
 
@@ -31,7 +49,8 @@ workflows = {"":""}
 # parse args
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comp', help='Tapis component to export env file for', required=True)
-parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible', default="{{ tapisdatadir }}")
+parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible', required=True)
+parser.add_argument('-v', '--verbose', help='Display debug information', action='store_true')
 args = parser.parse_args()
 
 # normalize component name
@@ -41,7 +60,39 @@ component = args.comp.replace('-', '_')
 infile = args.dir + '/skadmin/env'
 local = locals()[component]
 outfile = open(args.dir + '/' + args.comp + '/env', 'w')
+output_dict = {}
 
+# populate vault values for security
+if component == 'security':
+    vault_token = open('{{ tapisdatadir }}/vault/vault-token').read()
+    headers = {'X-Vault-Token': f'{vault_token}'}
+
+    r = requests.post('http://localhost:8200/v1/auth/approle/role/sk/secret-id', headers=headers)
+    if args.verbose:
+        print(f'getting secret-id, have:: {r.json()}')
+    output_dict['TAPIS_SK_VAULT_SECRET_ID'] =  r.json()['data']['secret_id']
+
+    r = requests.get('http://localhost:8200/v1/auth/approle/role/sk/role-id', headers=headers)
+    if args.verbose:
+        print(f'getting role-id, have:: {r.json()}')
+    output_dict['TAPIS_SK_VAULT_ROLE_ID'] =  r.json()['data']['role_id']
+    # export VAULT_ROLEID=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+
+    if args.verbose:
+        print(f'''populating values for security, have:
+            vault_token: {vault_token}
+            secret_id: {output_dict['TAPIS_SK_VAULT_SECRET_ID']}
+            role_id: {output_dict['TAPIS_SK_VAULT_ROLE_ID']}
+            ''')
+    
+
+# ensure data dir exists for component
+try:
+    os.makedirs(os.path.join(args.dir + '/' + args.comp))
+except FileExistsError:
+    pass #ignore file exists, supposed to be created already anyway
+
+opened_file = open(infile)
 
 
 with open(infile, 'r') as lines:
@@ -50,10 +101,18 @@ with open(infile, 'r') as lines:
             continue # ignore empty line
         try:
             skexport_key, skexport_value = line.split('=', 1)
-            skexport_value = skexport_value.replace('\\n', '\n') # sanitize newlines on priv/pub keys
-            outfile.write(f"{local[skexport_key]}='{skexport_value}'")
+            skexport_value = skexport_value.replace('\\n', '\n').strip() # sanitize newlines on priv/pub keys, strip trailing whitespace
+            for key in local:
+                if local[key] == skexport_key:
+                    if args.verbose:
+                        print(f"writing {key}='{skexport_value}'")
+                    # outfile.write(f"{key}='{skexport_value}'\n")
+                    output_dict[key] = skexport_value
         except KeyError:
             pass
+
+for key in output_dict:
+    outfile.write(f"{key}='{output_dict[key]}'\n")
             
 
 outfile.close() 

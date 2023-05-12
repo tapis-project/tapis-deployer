@@ -9,15 +9,14 @@ services:
     image: {{ authenticator_api_image }}
     networks:
         - tapis
-    environment:
-        - dev_ldap_bind_credential # this seems to be missing from skexport, maybe it's created when authenticator-ldap is spun up?
-        - postgres_password
-        - service_password
+    env_file:
+        - {{ tapisdatadir }}/authenticator/env
     volumes:
         - "{{ tapisdir }}/authenticator/authenticator-config.json:/home/tapis/config.json"
-        # - "{{ tapisdatadir }}/authenticator/api/service.log:/home/tapis/service.log"
     depends_on: 
         - authenticator-postgres
+        - authenticator-ldap
+        - authenticator-migrations
 
 
   authenticator-postgres:
@@ -29,16 +28,28 @@ services:
         - PGDATA=/pgdata/data
         - POSTGRES_USER=authenticator
         - POSTGRES_DB=authenticator
-        - POSTGRES_PASSWORD
+        - POSTGRES_HOST_AUTH_METHOD=trust
+        # - POSTGRES_PASSWORD
+    env_file:
+        - {{ tapisdatadir }}/authenticator/env
     volumes:
-        - {{ tapisdatadir }}/authenticator/postgres:/data/pgdata
+        - {{ tapisdatadir }}/authenticator/postgres:/var/lib/postgresql/data
 
-    #  authenticator-migrations:
-    #container_name: authenticator-migrations
-    #image: {{ authenticator_migrations_image }}
-    #networks:
-    #    - tapis
-    
+
+  authenticator-migrations:
+    container_name: authenticator-migrations
+    image: {{ authenticator_migrations_image }}
+    networks:
+        - tapis
+    env_file:
+        - {{ tapisdatadir }}/authenticator/env
+    depends_on:
+        - authenticator-postgres
+        - authenticator-ldap
+    command: ['upgrade']
+    volumes:
+        - "{{ tapisdir }}/authenticator/authenticator-config.json:/home/tapis/config.json"
+        
         
   authenticator-ldap:
     container_name: authenticator-ldap
@@ -46,8 +57,13 @@ services:
     networks:
         - tapis
     environment:
-        - LDAP_DOMAIN="tapis"
-        - LDAP_ORGANISATION="tapis"
-        - LDAP_ROOTPASS
+        - LDAP_DOMAIN=tapis
+        - LDAP_ORGANISATION=Tapis
+    env_file:
+        - {{ tapisdatadir }}/authenticator/env
     volumes:
         - {{ tapisdatadir }}/authenticator/ldap:/data/ldap
+        - "{{ tapisdir }}/authenticator/authenticator-config.json:/home/tapis/config.json"
+    depends_on:
+        - authenticator-postgres
+

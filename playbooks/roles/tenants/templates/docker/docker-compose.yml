@@ -34,10 +34,12 @@ services:
       - sql_db_url={{ tenants_postgres_url }} 
       - postgres_user=tenants 
       - postgres_database=tenants
-      - postgres_password 
-      - service_password
-      - admin_tenant_public_key
-      - dev_tenant_public_key
+      #- postgres_password 
+      #- service_password
+      #- admin_tenant_public_key
+      #- dev_tenant_public_key
+    env_file: 
+      - {{ tapisdatadir }}/tenants/env
 
   tenants-api:
     container_name: tenants-api
@@ -53,10 +55,12 @@ services:
       - sql_db_url={{ tenants_postgres_url }}
       - postgres_user=tenants
       - postgres_database=tenants
-      - admin_tenant_public_key
-      - dev_tenant_public_key
-      - service_password
-      - postgres_password
+      #- admin_tenant_public_key
+      #- dev_tenant_public_key
+      #- service_password
+      #- postgres_password
+    env_file: 
+      - {{ tapisdatadir }}/tenants/env
 
   tenants-pgadmin:
           image: dpage/pgadmin4

@@ -19,7 +19,7 @@ fi
 
 
 export VAULT_TOKEN=`cat {{ tapisdatadir }}/vault/vault-token`
-export SKEXPORT_PARMS="-vtok $VAULT_TOKEN -vurl {{ skadmin_vault_url }} -format JSON"
+export SKEXPORT_PARMS="-vtok $VAULT_TOKEN -vurl {{ skadmin_vault_url }}"
 
 # create vault roles and policies
 docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN --env SKEXPORT_PARMS \
