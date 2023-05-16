@@ -22,7 +22,7 @@ the [Deployment & Administration Guide](https://tapis.readthedocs.io/en/latest/d
   - For example, to increase the image version for the Apps API images, edit the file `playbooks/roles/apps/defaults/main/images.yml`
   - Include a note about your changes in the CHANGELOG.md.
   - **Note** Your changes could affect other services, so please be sure to describe these issues in CHANGELOG.md, especially if there are breaking changes or if your require additional steps for upgrade.
-- Create a Pull Request from your branch against the branch you created the branch from, (probably *dev*).  
+- Create a Pull Request from your branch against the source (*dev*).  
 
 
 ### Getting Changes into a Tapis Deployer Release
