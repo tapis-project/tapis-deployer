@@ -17,7 +17,7 @@ spec:
       labels:
         app: files-api
     spec:
-{% if files_node_selector is defined %}
+{% if files_node_selector is not none %}
       nodeSelector:
         exempt: "yes"
 {% endif %}
