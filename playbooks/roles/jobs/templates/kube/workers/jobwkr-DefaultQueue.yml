@@ -13,7 +13,7 @@ spec:
     spec:
       initContainers:
       automountServiceAccountToken: false
-{% if jobs_node_selector == true %}
+{% if jobs_node_selector is not none %}
       nodeSelector:
         exempt: "yes"
 {% endif %}
