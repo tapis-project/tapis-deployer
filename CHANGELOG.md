@@ -4,8 +4,12 @@ Notable changes between versions.
 
 ## 1.3.6
 
-- Jobs: 1.3.2 to 1.3.3 (tapis/jobsworker, jobsmigrate, jobsapi)
-- Authenticator: 1.3.0 to 1.3.3 (authenticator & authenticator-migrations)
+- [Authenticator: 1.3.0 to 1.3.3 (authenticator & authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
+- [Jobs: 1.3.2 to 1.3.4 (tapis/jobsapi, tapis/jobsmigrate, tapis/jobsworker)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [SK 1.3.1 to 1.3.2 (tapis/securitymigrate, tapis/securityexport, tapis/securityadmin, tapis/securityapi)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+- [Systems: 1.3.1 to 1.3.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.2/CHANGELOG.md)
+- [Apps: 1.3.2 to 1.3.3 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.3.3/CHANGELOG.md)
+- [Notifications: 1.3.1 to 1.3.3 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.3.3/CHANGELOG.md)
 
 ## 1.3.5
 
