@@ -20,7 +20,9 @@ the [Deployment & Administration Guide](https://tapis.readthedocs.io/en/latest/d
   - Optional: Name it after your new feature or change, i.e. "refactor-tapisui"
 - Make and commit your changes to your branch
   - For example, to increase the image version for the Apps API images, edit the file `playbooks/roles/apps/defaults/main/images.yml`
-  - Include a note about your changes in the CHANGELOG.md.
+  - Include a note about your changes in the CHANGELOG.md. 
+    - Link to your component's CHANGELOG.md details for the new version. For example: 
+      - [Tapis Systems version change from 1.3.1 to 1.3.2](https://github.com/tapis-project/tapis-systems/blob/local/CHANGELOG.md#132---2023-04-25)
   - **Note** Your changes could affect other services, so please be sure to describe these issues in CHANGELOG.md, especially if there are breaking changes or if your require additional steps for upgrade.
 - Create a Pull Request from your branch against the source (*dev*).  
 
