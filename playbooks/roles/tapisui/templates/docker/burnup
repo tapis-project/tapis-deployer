@@ -2,5 +2,7 @@
 
 here=$(dirname $0)
 
+mkdir -p {{ tapisdatadir }}/tapisui
+
 kubectl apply -f "$here/service.yml"
 kubectl apply -f "$here/deployment.yml"

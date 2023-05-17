@@ -2,5 +2,6 @@
 
 echo "burnup meta:"
 
+mkdir -p {{ tapisdatadir }}/meta
 docker compose up -d
 

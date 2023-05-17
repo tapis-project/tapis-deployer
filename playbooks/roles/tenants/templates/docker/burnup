@@ -11,13 +11,15 @@ echo "burnup tenants:"
 # export admin_tenant_public_key=$(grep JWTSIGNING_ADMIN_PUBLICKEY {{ tapisdatadir }}/skadmin/env | awk -v RS='\r\n' -FJWTSIGNING_ADMIN_PUBLICKEY= '{print $2}' | sed 's/\\n/\n/g')
 # export dev_tenant_public_key=$(grep JWTSIGNING_DEV_PUBLICKEY {{ tapisdatadir }}/skadmin/env | awk -v RS='\r\n' -FJWTSIGNING_DEV_PUBLICKEY= '{print $2}' | sed 's/\\n/\n/g')
 
+mkdir -p {{ tapisdatadir }}/tenants
 python3 {{ tapisdir }}/admin/util/parse_skexport -c tenants -d {{ tapisdatadir }}
 
-docker compose up -d tenants-postgres
+# docker compose up -d tenants-postgres
 
-docker compose run --rm tenants-migrations upgrade
+# docker compose run --rm tenants-migrations upgrade
 
-docker compose up -d tenants-api
+# docker compose up -d tenants-api
+docker compose up -d
 
 
 

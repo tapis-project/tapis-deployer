@@ -2,6 +2,7 @@
 
 echo "burnup authenticator:"
 
+mkdir -p {{ tapisdatadir }}/authenticator
 python3 {{ tapisdir }}/admin/util/parse_skexport -c authenticator -d {{ tapisdatadir }}
 
 # docker run --name authenticator-migrations -it --rm --net tapis --env-file {{ tapisdatadir }}/authenticator/env {{ authenticator_migrations_image }} upgrade

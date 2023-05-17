@@ -2,7 +2,13 @@
 
 echo "burnup vault:"
 
+
+
 mkdir -p {{ tapisdatadir }}/vault/data
+
+myuid=`id -u`
+
+docker run -it --rm -v /home/kprice/tmp/tapisquickstart-docker1-data/vault:/vault tapis/ubutil2204:1.3.0 chown $myuid /vault
 docker run -it -v {{ tapisdatadir }}/vault:/vault {{ vault_image }} chown -R 100:1000 /vault/data
 
 docker compose up -d

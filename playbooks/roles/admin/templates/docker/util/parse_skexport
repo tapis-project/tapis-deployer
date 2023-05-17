@@ -10,7 +10,7 @@ actors = {"":""}
 apps = {"":""}
 authenticator = {"POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
                 "postgres_password": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
-                "LDAP_ROOTPASS":"SERVICEPWD_AUTHENTICATOR_PASSWORD",
+                "LDAP_ROOTPASS":"USER_ADMIN_AUTHENTICATOR_LDAP_TAPIS_DEV_PASSWORD",
                 "service_password": "SERVICEPWD_AUTHENTICATOR_PASSWORD"}
                 
 files = {"":""}
@@ -56,6 +56,18 @@ args = parser.parse_args()
 # normalize component name
 component = args.comp.replace('-', '_')
 
+# ensure data dir exists for component
+try:
+    if args.verbose:
+        print(f"trying makedir with {os.path.join(args.dir + '/' + args.comp)}")
+    os.makedirs(os.path.join(args.dir + '/' + args.comp))
+    if args.verbose:
+        print(f'success')
+except FileExistsError:
+    if args.verbose:
+        print(f"error making {os.path.join(args.dir + '/' + args.comp)}, already exists. Ignoring")
+    pass #ignore file exists, supposed to be created already anyway
+
 # set local vars
 infile = args.dir + '/skadmin/env'
 local = locals()[component]
@@ -71,11 +83,14 @@ if component == 'security':
     if args.verbose:
         print(f'getting secret-id, have:: {r.json()}')
     output_dict['TAPIS_SK_VAULT_SECRET_ID'] =  r.json()['data']['secret_id']
+    output_dict['VAULT_SECRETID'] =  r.json()['data']['secret_id']
 
     r = requests.get('http://localhost:8200/v1/auth/approle/role/sk/role-id', headers=headers)
     if args.verbose:
         print(f'getting role-id, have:: {r.json()}')
     output_dict['TAPIS_SK_VAULT_ROLE_ID'] =  r.json()['data']['role_id']
+    output_dict['VAULT_ROLEID'] =  r.json()['data']['role_id']
+
     # export VAULT_ROLEID=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
 
     if args.verbose:
@@ -84,16 +99,6 @@ if component == 'security':
             secret_id: {output_dict['TAPIS_SK_VAULT_SECRET_ID']}
             role_id: {output_dict['TAPIS_SK_VAULT_ROLE_ID']}
             ''')
-    
-
-# ensure data dir exists for component
-try:
-    os.makedirs(os.path.join(args.dir + '/' + args.comp))
-except FileExistsError:
-    pass #ignore file exists, supposed to be created already anyway
-
-opened_file = open(infile)
-
 
 with open(infile, 'r') as lines:
     for line in lines:
@@ -105,14 +110,14 @@ with open(infile, 'r') as lines:
             for key in local:
                 if local[key] == skexport_key:
                     if args.verbose:
-                        print(f"writing {key}='{skexport_value}'")
+                        print(f'writing {key}="{skexport_value}"')
                     # outfile.write(f"{key}='{skexport_value}'\n")
                     output_dict[key] = skexport_value
         except KeyError:
             pass
 
 for key in output_dict:
-    outfile.write(f"{key}='{output_dict[key]}'\n")
+    outfile.write(f'{key}="{output_dict[key]}"\n')
             
 
 outfile.close() 

@@ -80,6 +80,7 @@ echo "burnup security:"
 #   exit 1
 # fi
 
+mkdir -p {{ tapisdatadir }}/security
 python3 {{ tapisdir }}/admin/util/parse_skexport -c security -d {{ tapisdatadir }}
 
 docker compose up -d

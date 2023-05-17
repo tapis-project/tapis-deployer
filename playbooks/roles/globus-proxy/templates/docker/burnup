@@ -2,5 +2,6 @@
 
 echo "burnup globus-proxy:"
 
+mkdir -p {{ tapisdatadir }}/globus-proxy
 docker compose up -d
 

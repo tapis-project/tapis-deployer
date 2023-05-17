@@ -2,5 +2,6 @@
 
 echo "burnup actors:"
 
+mkdir -p {{ tapisdatadir }}/actors
 docker compose up -d
 
