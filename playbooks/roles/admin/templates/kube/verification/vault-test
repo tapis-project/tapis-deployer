@@ -7,7 +7,7 @@
 
 VAULT_TOKEN=`vault_token_from_secret`
 
-kubectl run vault-test -i --tty --image={{ admin_centosutil_image }} --restart=Never --rm -- bash -c '/usr/bin/curl -H "X-Vault-Token: s.mJ10mKp7P2tTyncH5ZYXKF5P" http://vault:8200/v1/sys/health | /usr/bin/jq'
+kubectl run vault-test -i --tty --image={{ admin_centosutil_image }} --restart=Never --rm -- bash -c '/usr/bin/curl -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/sys/health | /usr/bin/jq'
 
 
 
