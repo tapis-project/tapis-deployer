@@ -1,8 +1,13 @@
 #!/bin/bash
 
 echo "streams:"
+  when: tapisflavor == "docker"
 
 here=`pwd`
+
+mkdir -p {{ tapisdatadir }}/streams
+mkdir -p {{ tapisdatadir }}/streams/influx
+mkdir -p {{ tapisdatadir }}/streams/mysql
 
 # config
 kubectl apply -f streams-config.yml

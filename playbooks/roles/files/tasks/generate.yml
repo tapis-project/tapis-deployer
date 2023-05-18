@@ -7,15 +7,3 @@
     calling_rolename: files
     tree_name: files
 
-# if using docker, create data dirs
-- name: create data dirs
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items: 
-    - '{{ tapisdatadir }}/files/rabbitmq'
-    - '{{ tapisdatadir }}/files/postgres'
-    - '{{ tapisdatadir }}/files/minio'
-    - '{{ tapisdatadir }}/files/irods'
-  when: tapisflavor == "docker"
-

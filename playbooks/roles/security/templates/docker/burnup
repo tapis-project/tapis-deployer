@@ -2,6 +2,7 @@
 
 echo "burnup security:"
 
+mkdir -p {{ tapisdatadir }}/security
 
 # export POSTGRES_PASSWORD=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 

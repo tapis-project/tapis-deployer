@@ -8,14 +8,6 @@
     calling_rolename: notifications
     tree_name: notifications
 
-# if using docker, create data dirs
-- name: create data dirs
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items:
-    - '{{ tapisdatadir }}/notifications'
-  when: tapisflavor == "docker"
 
 
 

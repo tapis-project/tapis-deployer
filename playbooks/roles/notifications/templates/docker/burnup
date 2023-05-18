@@ -3,5 +3,6 @@
 echo "burnup meta:"
 
 mkdir -p {{ tapisdatadir }}/notifications
+
 docker compose up -d
 

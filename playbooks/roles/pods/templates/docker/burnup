@@ -3,5 +3,6 @@
 echo "burnup pods:"
 
 mkdir -p {{ tapisdatadir }}/pods
+
 docker compose up -d
 

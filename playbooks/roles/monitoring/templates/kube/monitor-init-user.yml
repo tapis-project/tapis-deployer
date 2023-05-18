@@ -35,6 +35,33 @@ spec:
             secretKeyRef:
               name: tapis-monitoring-secrets
               key: postgres-ro-password
+      # TAPIS Authenticator
+      - name: monitor-init-user-authenticator
+        image: {{ monitoring_postgres_image }}
+        imagePullPolicy: Always
+        command: ["/tmp/monitor-init-user-sh"]
+        volumeMounts:
+        - name: monitor-init-user-vol
+          mountPath: /tmp
+        env:
+        - name: DB_HOST
+          value: authenticator-postgres
+        - name: DB_USER
+          value: authenticator
+        - name: DB_NAME
+          value: authenticator
+        - name: DB_SCHEMA
+          value: public
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-authenticator-secrets
+              key: postgres-password
+        - name: MONITOR_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-monitoring-secrets
+              key: postgres-ro-password              
       # TAPIS Jobs
       - name: monitor-init-user-jobs
         image: {{ monitoring_postgres_image }}

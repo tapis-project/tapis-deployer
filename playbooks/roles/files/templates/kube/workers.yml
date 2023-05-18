@@ -17,7 +17,7 @@ spec:
       labels:
         app: files-workers
     spec:
-{% if files_node_selector %}
+{% if files_node_selector is not none %}
       nodeSelector:
         exempt: "yes"
 {% endif %}

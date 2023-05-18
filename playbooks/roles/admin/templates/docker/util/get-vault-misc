@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-VAULT_TOKEN=`cat ~/vault-token`
+VAULT_TOKEN=`cat {{ tapisdatadir }}/vault/vault-token`
 VAULT_URL="{{admin_vault_url}}"
 
 echo "1. STATUS"

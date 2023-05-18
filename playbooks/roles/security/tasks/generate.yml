@@ -8,34 +8,3 @@
     calling_rolename: security
     tree_name: security
 
-# if using docker, create data dirs
-- name: create data dirs
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items:
-    - '{{ tapisdatadir }}/security'
-  when: tapisflavor == "docker"
-
-#- name: create renew-sk-secret
-#  copy:
-#    dest: '{{ tapisdatadir }}/security/renew-sk-secret.j2'
-#    content: |
-#      #!/bin/bash
-#
-#      export KUBE_TOKEN=`cat /var/run/secrets/kubernetes.io/serviceaccount/token`
-#      export KUBE_NAMESPACE=`cat /var/run/secrets/kubernetes.io/serviceaccount/namespace`
-#
-#      VAULT_SECRETID=`curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" {{global_vault_url}}/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
-#      VAULT_ROLEID=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" {{global_vault_url}}/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
-#
-#      # kubectl delete secret tapis-sk-vault-secrets
-#      # kubectl create secret generic tapis-sk-vault-secrets --from-literal=vault-secretid=$VAULT_SECRETID --from-literal=vault-roleid=$VAULT_ROLEID
-#      docker secret rm tapis-sk-vault-secrets
-#      docker secret create \
-#      --label vault-secretid=$VAULT_SECRETID \
-#      --label vault-roleid=$VAULT_ROLEID \
-#      tapis-sk-vault-secrets
-#    mode: u=rwx,g=rw,o=rw
-#  when: tapisflavor == "docker"
-

@@ -2,7 +2,7 @@
 
 echo "burnup skadmin:"
 
-mkdir -p {{ tapisdatadir }}}}/skadmin
+mkdir -p {{ tapisdatadir }}/skadmin
 
 # TODO
 # check if skadmin is already done

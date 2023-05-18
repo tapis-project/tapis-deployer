@@ -8,12 +8,4 @@
     calling_rolename: pods
     tree_name: pods
 
-# if using docker, create data dirs
-- name: create data dirs
-  file:
-    path: '{{ item }}'
-    state: directory
-  with_items:
-    - '{{ tapisdatadir }}/pods'
-  when: tapisflavor == "docker"
 

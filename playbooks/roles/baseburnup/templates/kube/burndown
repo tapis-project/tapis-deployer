@@ -146,9 +146,8 @@ init(){
 
 {% if "vault" in components_to_deploy%}
   vault
-  checkvault
 {% else %}
-  # using external vault, so do not start one here
+  # using external vault, skip vault step here
 {% endif %}
 
 {% if "proxy" in components_to_deploy%}

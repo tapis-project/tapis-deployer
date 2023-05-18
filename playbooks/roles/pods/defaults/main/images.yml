@@ -1,5 +1,5 @@
-pods_alpine_image: alpine:latest
+pods_alpine_image: alpine:3.17
 pods_postgres_image: postgres:14-alpine
 pods_rabbitmq_image: rabbitmq:3.6.12-management
 pods_api_image: tapis/pods-api:{{ pods_image_version }}
-pods_traefik_image: notchristiangarcia/traefik-testing:latest
+pods_traefik_image: notchristiangarcia/traefik-testing:1.3.0

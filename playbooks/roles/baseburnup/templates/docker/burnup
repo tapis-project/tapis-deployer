@@ -29,6 +29,8 @@ burnup_or_exit () {
 
 echo "Start: top-level-burnup"
 
+mkdir -p {{ tapisdatadir }}
+
 {%- if "tapisflavor" == "docker" %}
 ### Docker-specific setup 
 docker network inspect tapis || docker network create tapis 

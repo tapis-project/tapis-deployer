@@ -1,8 +1,8 @@
 pod=`kubectl get pods --selector=app=vault -o jsonpath='{.items[*].metadata.name}'` 
 
-k1=`grep "Unseal Key 1" ~/vault | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
-k2=`grep "Unseal Key 2" ~/vault | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
-k3=`grep "Unseal Key 3" ~/vault | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
+k1=`grep "Unseal Key 1" {{ tapisdatadir }}/vault/vault-init | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
+k2=`grep "Unseal Key 2" {{ tapisdatadir }}/vault/vault-init | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
+k3=`grep "Unseal Key 3" {{ tapisdatadir }}/vault/vault-init | awk '{print $4}' | sed 's/\x1b\[[0-9;]*m//g' | tr -d " \t\n\r"`
 
 kubectl exec -it $pod -- vault operator unseal $k1
 kubectl exec -it $pod -- vault operator unseal $k2

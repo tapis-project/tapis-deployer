@@ -2,5 +2,8 @@
 
 echo "burnup proxy:"
 
+mkdir -p {{ tapisdatadir }}/proxy
+mkdir -p {{ tapisdatadir }}/proxy/proxy-site-router-redis
+
 docker compose up -d
 

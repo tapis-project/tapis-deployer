@@ -3,5 +3,6 @@
 echo "burnup systems:"
 
 mkdir -p {{ tapisdatadir }}/systems
+
 docker compose up -d
 

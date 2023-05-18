@@ -1,65 +1,35 @@
-# Tapisctl 
+# Tapis Deployer 
 
-Based on Ansible playbooks and roles. Used for generating deployment files for tapis. 
+The Tapis Deployer software generates scripts for deploying and manging a Tapis installation.
+Tapis Deployer is based on the Ansible project. Currently, Tapis Deployer targets Kubernetes clusters
+for deployment of Tapis services, but we plan to support using Docker Compose instead of Kubernetes
+in a future release. 
 
-Includes both Docker and Kubernetes deployment flavors.
+## User Documentation
 
-## Install
-
-Run as regular user (e.g. rocky).
-
-Install Ansible using your Linux distro package manager. e.g. For Rocky Linux:
-
-    # sudo dnf install ansible libselinux-python3
-
-Install Ansible community module:
-
-    # ansible-galaxy collection install community.general
-
-For testing you can use one of the inventory_example inventories. For example
-
-    # ansible-playbook -i inventory_example/docker-inventory.yml playbooks/generate.yml
-
-After running you should find ~/tmp/tapisquickstart-docker1 containing docker compose.yml files for each Tapis component.
-
-There is a similar example playbook for Kubernetes inventory_example/kube-inventory.yml.
-
-## Customize Your Install
-
-Copy the inventory_example dir out of the repo dir and start modifying the hosts and host_vars files to suit your needs. 
-
-    # cp -r inventory_example ~/inventory
-    # mv ~/inventory/docker-inventory.yml ~/inventory/hosts
-
-For example if you want to change the location of the generated files, add a var to the ~/inventory/hosts file:
-
-    tapis_installs:
-      hosts:
-        tapisquickstart-docker1:
-          ansible_connection: local
-          tapisflavor: docker
-          tapisdir: '{{ ansible_env.HOME }}/tmp/tapis-1.3'
-
-(See Ansible docs for more setup.)
-
-Run the playbook after making changes:
-
-    # ansible-playbook -i ~/inventory/hosts playbooks/generate.yml
-
-## Docker vs. Kubernetes Installation
-
-You can generate either Docker- or Kubernetes-specific deployment files using the same playbooks. You specify this in your inventory (hosts file) by specifying the `tapisflavor` variable one of 2 ways.
-
-      tapisflavor: docker
-
-or:
-
-      tapisflavor: kube
+Full documentation is being developed for Tapis Deployer on the Tapis ReadTheDocs site. See 
+the [Deployment & Administration Guide](https://tapis.readthedocs.io/en/latest/deployment/index.html). 
 
 
-## Other Playbooks
+## Developer Documentation
 
-There are several other playbooks to help with other things, for example for printing all the config variables:
 
-    # ansible-playbook -i ~/inventory/hosts playbooks/showconf.yml
+### Developer Guide
 
+- Create a branch off of the *dev* branch
+  - Optional: Name it after your new feature or change, i.e. "refactor-tapisui"
+- Make and commit your changes to your branch
+  - For example, to increase the image version for the Apps API images, edit the file `playbooks/roles/apps/defaults/main/images.yml`
+  - Include a note about your changes in the CHANGELOG.md. 
+    - Link to your component's CHANGELOG.md details for the new version. For example: 
+      - [Tapis Systems version change from 1.3.1 to 1.3.2](https://github.com/tapis-project/tapis-systems/blob/local/CHANGELOG.md#132---2023-04-25)
+  - **Note** Your changes could affect other services, so please be sure to describe these issues in CHANGELOG.md, especially if there are breaking changes or if your require additional steps for upgrade.
+- Create a Pull Request from your branch against the source (*dev*).  
+
+
+### Getting Changes into a Tapis Deployer Release
+
+- Once your changes are in *dev* branch (see above), Testers/Admins/Maintainers can then deploy and test your changes amongst various environments.
+  - This should be accompanied by an increase in the `baseburnup_tapis_deployer_version` variable in `playbooks/roles/baseburnup/defaults/main/vars.yml` (Maintainers do this.)
+- After successful testing and combined with other devs' changes, *dev* branch will be merged with *staging* in preparation for a release.
+- After successful testing in *staging* branch, it will be merged into *main* by Tapis Deployer Maintainers and a new release will be created.
