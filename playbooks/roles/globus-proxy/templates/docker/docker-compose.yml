@@ -1,14 +1,15 @@
-
 networks:
   tapis:
     name: tapis
 
-
 services:
   globus-proxy: 
+    container_name: globus-proxy
     image: {{ globus_proxy_api_image }}
-    ports:
-      - "127.0.0.1:5071:5000"
     networks:
       - tapis
+    volumes:
+      - {{ tapisdir }}/globus-proxy/globus-proxy-config.json:/home/tapis/config.json
+    ports:
+      - 127.0.0.1:5000:5000
 

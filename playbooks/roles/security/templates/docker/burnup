@@ -4,71 +4,85 @@ echo "burnup security:"
 
 mkdir -p {{ tapisdatadir }}/security
 
-export POSTGRES_PASSWORD=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD /home/rocky/tmp/tapistest_primary-data/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
+# export POSTGRES_PASSWORD=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 
 # start database 
 
-docker compose up -d sk-postgres sk-pgadmin
-if [ $? -ne 0 ]
-then
-  echo "SK-ERROR: postgres failed to start."
-  exit 1
-fi
+# docker compose up -d sk-postgres sk-pgadmin
+# if [ $? -ne 0 ]
+# then
+#   echo "SK-ERROR: postgres failed to start."
+#   exit 1
+# fi
 
 # db setup / migration step
 
-export PW=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD /home/rocky/tmp/tapistest_primary-data/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
-export TPW=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD /home/rocky/tmp/tapistest_primary-data/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
+# export PW=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
+# export TPW=`grep DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 
 
-docker run --name security-migration -it --rm --net tapis \
---env HOST=sk-postgres \
---env PORT=5432 \
---env USER=postgres \
---env PW \
---env TPW \
-{{ security_migrations_image }}
-if [ $? -ne 0 ]
-then
-  echo "SK-ERROR: migration failed."
-  exit 1
-fi
+# docker run --name security-migration -it --rm --net tapis \
+# --env HOST=sk-postgres \
+# --env PORT=5432 \
+# --env USER=postgres \
+# --env PW \
+# --env TPW \
+# {{ security_migrations_image }}
+# if [ $? -ne 0 ]
+# then
+#   echo "SK-ERROR: migration failed."
+#   exit 1
+# fi
 
 
 # start api
 
-export VAULT_TOKEN=`cat {{ tapisdatadir }}/vault/vault-token`
+# export VAULT_TOKEN=`cat {{ tapisdatadir }}/vault/vault-token`
 
-if [ -z "$VAULT_TOKEN" ]
-then
-  echo "\$VAULT_TOKEN is empty. Exiting."
-  exit 1
-fi
+# if [ -z "$VAULT_TOKEN" ]
+# then
+#   echo "\$VAULT_TOKEN is empty. Exiting."
+#   exit 1
+# fi
 
-export VAULT_SECRETID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
-{{ security_util_image }} curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
+# export VAULT_SECRETID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
+# {{ security_util_image }} curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
 
-if [ -z "$VAULT_SECRETID" ]
-then
-  echo "\$VAULT_SECRETID is empty. Exiting."
-  exit 1
-fi
+# # export VAULT_SECRETID=`curl -s -X POST -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/secret-id | jq -r .data.secret_id`
 
-export VAULT_ROLEID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
-{{ security_util_image }} curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://vault:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+# if [ -z "$VAULT_SECRETID" ]
+# then
+#   echo "\$VAULT_SECRETID is empty. Exiting."
+#   exit 1
+# fi
 
-if [ -z "$VAULT_ROLEID" ]
-then
-  echo "\$VAULT_ROLEID is empty. Exiting."
-  exit 1
-fi
+# export TAPIS_SK_VAULT_SECRET_ID=$VAULT_SECRETID
 
-export TAPIS_PASSWORD=$TPW
+# export VAULT_ROLEID=`docker run --name skadmin-presetup -it --rm --net tapis --env VAULT_TOKEN \
+# {{ security_util_image }} curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
 
-docker compose up -d security-api
-if [ $? -ne 0 ]
-then
-  echo "SK-ERROR: security-api failed to start."
-  exit 1
-fi
+# # export VAULT_ROLEID=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
+# if [ -z "$VAULT_ROLEID" ]
+
+# then
+#   echo "\$VAULT_ROLEID is empty. Exiting."
+#   exit 1
+# fi
+
+# export TAPIS_SK_VAULT_ROLE_ID=$VAULT_ROLEID
+
+# export TAPIS_PASSWORD=$TPW
+# export TAPIS_DB_PASSWORD=$TPW
+
+# docker compose up -d security-api
+# if [ $? -ne 0 ]
+# then
+#   echo "SK-ERROR: security-api failed to start."
+#   exit 1
+# fi
+
+mkdir -p {{ tapisdatadir }}/security
+python3 {{ tapisdir }}/admin/util/parse_skexport -c security -d {{ tapisdatadir }}
+
+docker compose up -d
 

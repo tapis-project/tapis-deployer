@@ -3,9 +3,11 @@
     "primary_site_admin_tenant_base_url": "{{ tokens_service_url }}",
     "service_site_id": "{{ tokens_service_site_id }}",
     "service_tenant_id": "admin",
-    "use_sk": true,
-    "tenants": ["dev", "admin"],
-    "log_level": "DEBUG",
-    "use_allservices_password": true,
-    "site_admin_privatekey": "TODO -- update"
-  }
+    "tenants": {{ tokens_tenants|to_json }},
+    "log_level": "INFO",
+    "use_allservices_password": {{tokens_use_allservices_password|to_json}},
+{% if tokens_use_allservices_password == true %}
+    "allservices_password": "{{tokens_allservices_password}}"
+{% endif %}
+    "use_sk": true
+}

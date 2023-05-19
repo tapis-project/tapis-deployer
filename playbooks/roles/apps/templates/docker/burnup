@@ -2,8 +2,7 @@
 
 echo "burnup apps:"
 
-mkdir -p {{ tapisdatadir }}/files
-mkdir -p {{ tapisdatadir }}/files/irods
+mkdir -p {{ tapisdatadir }}/apps
 
 docker compose up -d
 
