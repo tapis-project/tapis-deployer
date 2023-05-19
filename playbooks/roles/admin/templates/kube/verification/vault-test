@@ -1,19 +1,14 @@
 #!/bin/bash
 
-#kubectl exec -it deploy/vault -- vault status
-
-
+# similar to this if run manually 
+# kubectl exec -it deploy/vault -- vault status
 
 . functions
 
-
 VAULT_TOKEN=`vault_token_from_secret`
 
+kubectl run vault-test -i --tty --image={{ admin_centosutil_image }} --restart=Never --rm -- bash -c '/usr/bin/curl -H "X-Vault-Token: $VAULT_TOKEN" {{ admin_vault_url }}/v1/sys/health | /usr/bin/jq'
 
-kubectl run centos -i --tty --image={{ admin_centosutil_image }} --restart=Never --rm -- '/usr/bin/curl -H "X-Vault-Token: '$VAULT_TOKEN'" {{admin_vault_url}}/v1/sys/health | /usr/bin/jq'
 
-#
-#
-#VAULTURL="http://vault:8200"
 
 

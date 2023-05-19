@@ -1,0 +1,6 @@
+{
+    "service_site_url": "{{security_service_url}}",
+    "service_tenant_id": "{{security_service_tenant_id}}",
+    "site_id": "{{security_service_site_id}}",
+    "service_name": "{{security_service_name}}"
+}

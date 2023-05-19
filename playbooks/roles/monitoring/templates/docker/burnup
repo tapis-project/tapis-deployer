@@ -2,5 +2,6 @@
 
 echo "burnup monitoring:"
 
+mkdir -p {{ tapisdatadir }}/monitoring
 docker compose up -d
 

@@ -3,6 +3,7 @@
 networks:
   tapis:
     name: tapis
+    external: true
 
 services:
 
@@ -10,7 +11,8 @@ services:
     container_name: tenants-postgres
     image: {{ tenants_postgres_image }}
     volumes:
-      - {{ tapisdatadir }}/tenants/postgres:/pgdata/data
+      - "{{ tapisdatadir }}/tenants/postgres:/pgdata/data"
+      - "{{ tapisdir }}/tenants/tenants-config.json:/home/tapis/config.json"
     networks:
       - tapis
     environment:
@@ -18,68 +20,49 @@ services:
       - PGDATA=/pgdata/data
       - POSTGRES_USER=tenants
       - POSTGRES_DB=tenants
-      - POSTGRES_PASSWORD
+    env_file:
+      - "{{ tapisdatadir }}/tenants/env"
+    healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
 
   tenants-migrations:
     container_name: tenants-migrations
     image: {{ tenants_migrations_image }}
     volumes:
-      - {{ tapisdir }}/tenants/tenants-config.json:/home/tapis/config.json 
+      - "{{ tapisdir }}/tenants/tenants-config.json:/home/tapis/config.json"
     networks:
       - tapis
     depends_on:
-      - tenants-postgres
+      tenants-postgres:
+        condition: service_healthy
     environment: 
       - sql_db_url={{ tenants_postgres_url }} 
       - postgres_user=tenants 
       - postgres_database=tenants
-      - postgres_password 
-      - service_password
-      - admin_tenant_public_key
-      - dev_tenant_public_key
+    env_file: 
+      - "{{ tapisdatadir }}/tenants/env"
+    command: ['upgrade']
 
   tenants-api:
     container_name: tenants-api
     image: {{ tenants_api_image }}
     volumes:
-    #   - ./config-local.json:/home/tapis/config.json
     #   - ./service.log:/home/tapis/service.log
-      - {{ tapisdir }}/tenants/tenants-config.json:/home/tapis/config.json
-      - {{ tapisdir }}/tenants/tenants-service.log:/home/tapis/service.log
+      - "{{ tapisdir }}/tenants/tenants-config.json:/home/tapis/config.json"
+      - "{{ tapisdir }}/tenants/tenants-service.log:/home/tapis/service.log"
     networks:
       - tapis
     environment:
       - sql_db_url={{ tenants_postgres_url }}
       - postgres_user=tenants
       - postgres_database=tenants
-      - admin_tenant_public_key
-      - dev_tenant_public_key
-      - service_password
-      - postgres_password
-
-#  tenants-tests:
-#    container_name: tenants-tests
-#    image: {{ tenants_api_tests_image }}
-#    networks:
-#      - tapis
-#    volumes:
-#    #   - ./config-local.json:/home/tapis/config.json
-#      - {{ tapisdir }}/tenants/tenants-tests-config.json:/home/tapis/config.json
-
-#  tenants-pgadmin:
-#    image: {{ tenants_pgadmin_image }}
-#    container_name: tenants-pgadmin
-#    environment:
-#      - PGADMIN_DEFAULT_EMAIL=admin@test.com
-#      - PGADMIN_DEFAULT_PASSWORD=password
-#    ports:
-#      # - 8000:80
-#      - 80
-#    networks:
-#      - tapis
-#    depends_on:
-#      - tenants-postgres
-#    #volumes:
-#    #  - {{ tapisdatadir }}/tenants/pgadmin:/var/lib/pgadmin
-#    #   - pgadmindata:/var/lib/pgadmin
-
+    env_file: 
+      - "{{ tapisdatadir }}/tenants/env"
+    depends_on:
+      tenants-migrations:
+        condition: service_completed_successfully
+      tenants-postgres:
+        condition: service_healthy
