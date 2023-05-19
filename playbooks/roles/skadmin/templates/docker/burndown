@@ -2,4 +2,4 @@
 
 echo "burndown skadmin:"
 
-docker compose down
+# docker compose down

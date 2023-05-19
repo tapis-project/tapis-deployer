@@ -16,24 +16,25 @@ myscript_absolute="$mydir_absolute/$myscript_nameonly"
 #echo $myscript_nameonly
 #echo $myscript_absolute
 
-
+# burn down in reverse order
 echo "Start: top-level-burndown"
 
-{% if "proxy" in components_to_deploy %}
-cd $mydir_absolute/proxy
+### secondary services
+
+{% if "jobs" in components_to_deploy %}
+cd $mydir_absolute/jobs
 ./burndown
 {% endif %}
 
-{% if "vault" in components_to_deploy %}
-cd $mydir_absolute/vault
+{% if "files" in components_to_deploy %}
+cd $mydir_absolute/files
 ./burndown
 {% endif %}
 
-{% if "skadmin" in components_to_deploy%}
-cd $mydir_absolute/skadmin
+{% if "systems" in components_to_deploy %}
+cd $mydir_absolute/systems
 ./burndown
 {% endif %}
-
 
 ### primary services
 
@@ -57,25 +58,22 @@ cd $mydir_absolute/authenticator
 ./burndown
 {% endif %}
 
+### init
 
-### secondary services
+# {% if "skadmin" in components_to_deploy%}
+# cd $mydir_absolute/skadmin
+# ./burndown
+# {% endif %}
 
-{% if "jobs" in components_to_deploy %}
-cd $mydir_absolute/jobs
+{% if "vault" in components_to_deploy %}
+cd $mydir_absolute/vault
 ./burndown
 {% endif %}
 
-{% if "files" in components_to_deploy %}
-cd $mydir_absolute/files
+{% if "proxy" in components_to_deploy %}
+cd $mydir_absolute/proxy
 ./burndown
 {% endif %}
-
-{% if "systems" in components_to_deploy %}
-cd $mydir_absolute/systems
-./burndown
-{% endif %}
-
-
 
 echo "Done: top-level-burndown"
 

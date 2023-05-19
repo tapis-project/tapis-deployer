@@ -2,6 +2,7 @@
 networks:
     tapis:
         name: tapis
+        external: true
 
 services:
     # A note on Mongo config. You cannot declare one in this image unless you want to stop using

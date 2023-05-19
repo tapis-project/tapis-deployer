@@ -1,55 +1,78 @@
-
 networks:
     tapis:
         name: tapis
+        external: true
 
 services:
   authenticator-api: 
+    container_name: authenticator-api
     image: {{ authenticator_api_image }}
-    # ports:
-    #     - "127.0.0.1:5000:5000"
     networks:
         - tapis
-    environment: # TODO
-        dev_ldap_bind_credential: "dev-ldap-bind-credential"
-        postgres_password: "postgres-password"
-        service_password: "service-password"
+    env_file:
+        - "{{ tapisdatadir }}/authenticator/env"
     volumes:
         - "{{ tapisdir }}/authenticator/authenticator-config.json:/home/tapis/config.json"
-        # - "{{ tapisdatadir }}/authenticator/api/service.log:/home/tapis/service.log"
-    container_name: authenticator-api
     depends_on: 
-        - authenticator-postgres
+        authenticator-postgres:
+            condition: service_healthy
+        authenticator-ldap:
+            condition: service_started
+        authenticator-migrations:
+            condition: service_completed_successfully
 
 
   authenticator-postgres:
+    container_name: authenticator-postgres
     image: {{ authenticator_postgres_image }}
-    # ports:
-    #     - "127.0.0.1:5432:5432"
     networks:
         - tapis
     environment:
-        PGDATA: "/pgdata/data"
-        POSTGRES_USER: "authenticator"
-        POSTGRES_DB: "authenticator"
-        POSTGRES_PASSWORD: "postgres-password" # TODO
+        # - PGDATA=/pgdata/data
+        - POSTGRES_USER=authenticator
+        - POSTGRES_DB=authenticator
+        - POSTGRES_HOST_AUTH_METHOD=trust
+    env_file:
+        - "{{ tapisdatadir }}/authenticator/env"
     volumes:
-        - {{ tapisdatadir }}/authenticator/postgres:/data/pgdata
-    container_name: authenticator-postgres
-        
-  authenticator-ldap:
-    image: {{ authenticator_ldap_image }}
-    # ports:
-    #     - "127.0.0.1:389:389"
+        - "{{ tapisdatadir }}/authenticator/postgres:/var/lib/postgresql/data"
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+
+
+  authenticator-migrations:
+    container_name: authenticator-migrations
+    image: {{ authenticator_migrations_image }}
     networks:
         - tapis
-    environment: #TODO
-        LDAP_DOMAIN: "LDAP_DOMAIN"
-        LDAP_ORGANISATION: "LDAP_ORGANISATION"
-        LDAP_ROOTPASS: "dev-ldap-bind-credential"
+    env_file:
+        - "{{ tapisdatadir }}/authenticator/env"
+    depends_on:
+        authenticator-postgres:
+            condition: service_healthy
+        authenticator-ldap:
+            condition: service_started
+    command: ['upgrade']
     volumes:
-        - {{ tapisdatadir }}/authenticator/ldap:/data/ldap
+        - "{{ tapisdir }}/authenticator/authenticator-config.json:/home/tapis/config.json"
+        
+        
+  authenticator-ldap:
     container_name: authenticator-ldap
+    image: {{ authenticator_ldap_image }}
+    networks:
+        - tapis
+    environment:
+        - LDAP_DOMAIN=tapis
+        - LDAP_ORGANISATION=Tapis
+    env_file:
+        - "{{ tapisdatadir }}/authenticator/env"
+    volumes:
+        - "{{ tapisdatadir }}/authenticator/ldap:/data/ldap"
+    depends_on:
+        authenticator-postgres:
+            condition: service_healthy
 
-networks:
-    tapis:

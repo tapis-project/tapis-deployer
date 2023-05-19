@@ -2,6 +2,7 @@
 networks:
     tapis:
         name: tapis
+        external: true
     
 
 services:
@@ -16,9 +17,14 @@ services:
             - {{ tapisdatadir }}/security/postgres:/pgdata/data
         environment:
             - PGDATA=/pgdata/data
-            - POSTGRES_PASSWORD
+        env_file:
+            - {{ tapisdatadir }}/security/env
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
 
-    
     sk-pgadmin:
         container_name: sk-pgadmin
         image: {{ security_pgadmin_image }}
@@ -27,25 +33,35 @@ services:
         environment:
             - PGADMIN_DEFAULT_EMAIL=wow@example.com
             - PGADMIN_DEFAULT_PASSWORD=password
+        env_file:
+            - {{ tapisdatadir }}/security/env
         networks:
             - tapis
+
+    security-migrations:
+        container_name: security-migrations
+        environment:
+            - HOST=sk-postgres
+            - PORT=5432 
+            - USER=postgres
+        image: {{ security_migrations_image }}
+        env_file:
+            - {{ tapisdatadir }}/security/env
+        networks:
+            - tapis
+        depends_on:
+            sk-postgres:
+                condition: service_healthy
+
 
     security-api:
         container_name: security-api
         image: {{ security_api_image }}
-#        ports:
-#            - 8000
-#            - 8080
-#            - 8443
-#            - 6157
         environment:
             - TAPIS_SITE_ID={{ security_service_site_id }}
             - TAPIS_TENANT_SVC_BASEURL={{ security_service_url }}
             - TAPIS_SK_VAULT_DISABLE=false 
             - TAPIS_SK_VAULT_ADDRESS={{ security_vault_url }}
-            - TAPIS_SK_VAULT_SECRET_ID 
-            - TAPIS_SK_VAULT_ROLE_ID
-            - TAPIS_DB_PASSWORD 
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
             - TAPIS_DB_USER=tapis
             - TAPIS_DB_JDBC_URL=jdbc:postgresql://sk-postgres:5432/tapissecdb
@@ -53,8 +69,15 @@ services:
             - TAPIS_REQUEST_LOGGING_IGNORE_SUFFIXES=/healthcheck;/ready;/hello
             - TAPIS_LOG_DIRECTORY=/opt/tomcat/logs
             - CATALINA_OPTS=-Xms{{security_heap_min}} -Xmx{{security_heap_max}} --add-opens java.base/java.time=ALL-UNNAMED
+        env_file:
+            - {{ tapisdatadir }}/security/env
         networks:
             - tapis
+        depends_on:
+            sk-postgres:
+                condition: service_started
+            security-migrations:
+                condition: service_completed_successfully
 
 
 
