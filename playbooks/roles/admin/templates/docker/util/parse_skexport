@@ -13,16 +13,29 @@ authenticator = {"POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICA
                 "LDAP_ROOTPASS":"USER_ADMIN_AUTHENTICATOR_LDAP_TAPIS_DEV_PASSWORD",
                 "service_password": "SERVICEPWD_AUTHENTICATOR_PASSWORD"}
                 
-files = {"":""}
+files = {"RABBITMQ_PASSWORD":"DBCREDENTIAL_RABBITMQ_TAPISFILES_RABBITMQ_FILES_FILES_PASSWORD",
+         "RABBITMQ_DEFAULT_PASS":"DBCREDENTIAL_RABBITMQ_TAPISFILES_RABBITMQ_FILES_FILES_PASSWORD",
+         "DB_PASSWORD":"DBCREDENTIAL_POSTGRES_TAPISFILES_POSTGRES_FILES_FILES_PASSWORD",
+         "POSTGRES_PASSWORD":"DBCREDENTIAL_POSTGRES_TAPISFILES_POSTGRES_FILES_FILES_PASSWORD",
+         "SERVICE_PASSWORD":"SERVICEPWD_FILES_PASSWORD"}
+
 globus_proxy = {"":""}
-jobs = {"":""}
+jobs = {"TAPIS_SERVICE_PASSWORD": "SERVICEPWD_JOBS_PASSWORD",
+        "TAPIS_DB_PASSWORD": "DBCREDENTIAL_POSTGRES_JOBS_POSTGRES_TAPISJOBSDB_TAPIS_PASSWORD",
+        "TAPIS_QUEUE_ADMIN_PASSWORD": "DBCREDENTIAL_RABBITMQ_JOBS_RABBITMQ_JOBSHOST_TAPIS_PASSWORD",
+        "TAPIS_QUEUE_PASSWORD": "DBCREDENTIAL_RABBITMQ_JOBS_RABBITMQ_JOBSHOST_JOBS_PASSWORD",
+        "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_JOBS_POSTGRES_TAPISJOBSDB_TAPIS_PASSWORD",
+        "RABBITMQ_DEFAULT_PASS": "DBCREDENTIAL_RABBITMQ_JOBS_RABBITMQ_JOBSHOST_TAPIS_PASSWORD",
+        "TPW": "DBCREDENTIAL_POSTGRES_JOBS_POSTGRES_TAPISJOBSDB_TAPIS_PASSWORD",
+        "PW": "DBCREDENTIAL_POSTGRES_JOBS_POSTGRES_TAPISJOBSDB_POSTGRES_PASSWORD"}
+
 meta = {"":""}
 monitoring = {"":""}
 notifications = {"":""}
 pgrest = {"":""}
 pods = {"":""}
 proxy = {"":""}
-security = {"TAPIS_SK_VAULT_SECRET_ID": "",
+security = {"TAPIS_SK_VAULT_SECRET_ID": "", # these two are populated later with curl cmds
             "TAPIS_SK_VAULT_ROLE_ID": "",
             "TAPIS_DB_PASSWORD" : "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD",
             "TAPIS_PASSWORD": "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD",
@@ -32,7 +45,16 @@ security = {"TAPIS_SK_VAULT_SECRET_ID": "",
 
 skadmin = {"":""}
 streams = {"":""}
-systems = {"":""}
+systems = {"pgadmin-password": "DBCREDENTIAL_PGADMIN_SYSTEMS_POSTGRES_TAPISSYSDB_WOW_PASSWORD",
+            "postgres-password": "DBCREDENTIAL_POSTGRES_SYSTEMS_POSTGRES_TAPISSYSDB_POSTGRES_PASSWORD",
+            "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_SYSTEMS_POSTGRES_TAPISSYSDB_POSTGRES_PASSWORD",
+            "postgres-user-password": "DBCREDENTIAL_POSTGRES_SYSTEMS_POSTGRES_TAPISSYSDB_TAPIS_SYS_PASSWORD",
+            "service-password": "SERVICEPWD_SYSTEMS_PASSWORD",
+            "service_password": "SERVICEPWD_SYSTEMS_PASSWORD",
+            "TAPIS_SERVICE_PASSWORD": "SERVICEPWD_SYSTEMS_PASSWORD",
+            "TAPIS_DB_PASSWORD": "DBCREDENTIAL_POSTGRES_SYSTEMS_POSTGRES_TAPISSYSDB_POSTGRES_PASSWORD",
+            }
+
 tapisui = {"":""}
 tenants = {"postgres_password": "DBCREDENTIAL_POSTGRES_TENANTS_POSTGRES_TENANTS_TENANTS_PASSWORD",
             "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_TENANTS_POSTGRES_TENANTS_TENANTS_PASSWORD",
@@ -71,8 +93,21 @@ except FileExistsError:
 # set local vars
 infile = args.dir + '/skadmin/env'
 local = locals()[component]
-outfile = open(args.dir + '/' + args.comp + '/env', 'w')
+try:
+    outfile = open(args.dir + '/' + args.comp + '/env', 'w')
+    if args.verbose:
+            print(f'successfuly opened {outfile}')
+except Exception as e:
+    print(f'''error opening outfile {outfile}::
+    {e}''')
 output_dict = {}
+
+if args.verbose:
+    print(f'''have local args:
+    component: {component}
+    infile: {infile}
+    local: {local}
+    outfile: {outfile}''')
 
 # populate vault values for security
 if component == 'security':
@@ -91,8 +126,6 @@ if component == 'security':
     output_dict['TAPIS_SK_VAULT_ROLE_ID'] =  r.json()['data']['role_id']
     output_dict['VAULT_ROLEID'] =  r.json()['data']['role_id']
 
-    # export VAULT_ROLEID=`curl -s -X GET -H "X-Vault-Token: $VAULT_TOKEN" http://localhost:8200/v1/auth/approle/role/sk/role-id | jq -r .data.role_id`
-
     if args.verbose:
         print(f'''populating values for security, have:
             vault_token: {vault_token}
@@ -101,6 +134,8 @@ if component == 'security':
             ''')
 
 with open(infile, 'r') as lines:
+    if args.verbose:
+        print(f'successfuly opened {infile}')
     for line in lines:
         if len(line) <= 1:
             continue # ignore empty line

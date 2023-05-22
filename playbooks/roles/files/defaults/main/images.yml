@@ -1,6 +1,7 @@
 files_api_image: tapis/tapis-files:1.3.5
 files_workers_image: tapis/tapis-files-workers:1.3.5
 files_postgres_image: postgres:11
+files_migrations_image: postgres:11
 files_minio_image: minio/minio
 files_irods_provider_postgres_image: mjstealey/irods-provider-postgres:4.2.4
 files_pgadmin_image: dpage/pgadmin4:6.20

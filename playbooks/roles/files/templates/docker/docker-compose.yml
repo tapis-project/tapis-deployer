@@ -1,55 +1,132 @@
-
-# volumes:
-#   miniodata:
-#   files-pgdata:
-
 networks:
     tapis:
         name: tapis
         external: true
 
 services:
-
   files-rabbitmq:
+    container_name: files-rabbitmq
     image: {{ files_rabbitmq_management_image }}
     environment:
       - RABBITMQ_DEFAULT_USER=dev
-      - RABBITMQ_DEFAULT_PASS=dev
       - RABBITMQ_DEFAULT_VHOST=dev
-    container_name: files-rabbitmq
+    env_file:
+      - {{ tapisdatadir }}/files/env
     networks: 
       - tapis
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      files-postgres:
+        condition: service_healthy
 
   files-postgres:
     container_name: files-postgres
     image: {{ files_postgres_image }}
     environment:
-      - POSTGRES_USER=dev
-      - POSTGRES_PASSWORD=dev
-      - POSTGRES_DATABASE=dev
+     - POSTGRES_USER=tapisfiles
+     - POSTGRES_DATABASE=tapisfiles
+     - PGDATA=/pgdata/data
     volumes:
-      - {{ tapisdatadir }}/files/postgres:/var/lib/postgresql/data
+      - {{ tapisdatadir }}/files/postgres:/pgdata/data
     networks:
       - tapis
+    env_file:
+      - {{ tapisdatadir }}/files/env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  files-minio:
-    image: {{ files_minio_image }}
+  files-migrations:
+    container_name: files-migrations
+    image: {{ files_migrations_image }}
+    depends_on:
+      files-postgres:
+        condition: service_healthy
+    volumes:
+      - {{ tapisdir }}/files/files-init-db-sh:/files-init-db-sh
+    command: chmod +x files-init-db-sh; /files-init-db-sh
+
+  # files-minio:
+  #   container_name: files-minio
+  #   image: {{ files_minio_image }}
+  #   command: server /data
+  #   environment:
+  #     - MINIO_ACCESS_KEY=user
+  #     - MINIO_SECRET_KEY=password
+  #   volumes:
+  #     - {{ tapisdatadir }}/files/minio:/data
+  #   networks:
+  #     - tapis
+  #   env_file:
+  #     - {{ tapisdatadir }}/files/env
+
+  # files-irods:
+  #   container_name: files-irods
+  #   image: {{ files_irods_provider_postgres_image }}
+  #   networks:
+  #     - tapis
+  #   env_file:
+  #     - {{ tapisdatadir }}/files/env
+
+  files-workers:
+    container_name: files-workers
+    image: {{ files_workers_image }}
+    networks:
+      - tapis
+    env_file: 
+      - {{ tapisdatadir }}/files/env
     environment:
-      - MINIO_ACCESS_KEY=user
-      - MINIO_SECRET_KEY=password
-    volumes:
-      - {{ tapisdatadir }}/files/minio:/data
-    command: server /data
-    container_name: files-minio
+      {% if jobs_node_name == true -%}
+      - TAPIS_LOCAL_NODE_NAME=spec.nodeName
+      {% endif -%}
+      - TAPIS_SITE_ID={{ files_service_site_id }}
+      - TOKENS_SERVICE_URL={{ files_service_url }}
+      - TENANTS_SERVICE_URL={{ files_service_url}}
+    command: ["java", "-Xmx3g", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.lib.transfers.TransfersApp"]
+    depends_on:
+      files-api: 
+        condition: service_started
+
+  files-api:
+    container_name: files-api
+    image: {{ files_api_image }}
     networks:
       - tapis
-
-  files-irods:
-    container_name: files-irods
-    image: {{ files_irods_provider_postgres_image }}
-    networks:
-      - tapis
-
+    command: ["java", "-Xdebug", "-Xmx3g", "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.api.FilesApplication"]
+    env_file:
+      - {{ tapisdatadir }}/files/env
+    environment:
+      {% if jobs_node_name == true -%}
+      - TAPIS_LOCAL_NODE_NAME=spec.nodeName
+      {% endif -%}
+      - TAPIS_SITE_ID={{ files_service_site_id }}
+      - TOKENS_SERVICE_URL={{ files_service_url }}
+      - TENANTS_SERVICE_URL={{ files_service_url}}
+      - DB_HOST=files-postgres
+      - DB_NAME=tapisfiles
+      - DB_USERNAME=tapisfiles
+      - POSTGRES_DB=tapisfiles
+      - POSTGRES_USER=tapisfiles
+      - RABBITMQ_DEFAULT_USER=tapisfiles
+      - RABBITMQ_DEFAULT_VHOST=tapisfiles
+      - RABBITMQ_HOSTNAME=files-rabbitmq
+      - RABBITMQ_USERNAME=tapisfiles
+      - RABBITMQ_VHOST=tapisfiles
+      # - JAVA_OPTS=-Xdebug -Xmx3g
+      # - MAIN_CLASS=edu.utexas.tacc.tapis.files.api.FilesApplication
+      # - JOBS_PARMS=-n rdr-alt
+      # - FILES_ARGS=["-Xdebug", "-Xmx3g", "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.api.FilesApplication"]
+    depends_on:
+      files-postgres:
+        condition: service_healthy
+      files-rabbitmq:
+        condition: service_healthy
   # files-ssh-machine:
   #   container_name: files-ssh-machine
   #   build:

@@ -3,6 +3,10 @@
 echo "burnup systems:"
 
 mkdir -p {{ tapisdatadir }}/systems
+myuid=`id -u`
+docker run -it --rm -v {{ tapisdatadir }}/systems:/systems tapis/ubutil2204:1.3.0 chown $myuid /systems
+
+python3 {{ tapisdir }}/admin/util/parse_skexport -c systems -d {{ tapisdatadir }}
 
 docker compose up -d
 
