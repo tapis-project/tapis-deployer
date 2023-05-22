@@ -49,7 +49,8 @@ services:
             - {{ tapisdir }}/systems/systems-init-db-sh:/init-db
         env_file:
             {{ tapisdatadir }}/systems/env
-        command: chmod +x init-db; /init-db
+        # command: /init-db
+        command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"
         # command: sleep infinity
         depends_on:
             systems-postgres:

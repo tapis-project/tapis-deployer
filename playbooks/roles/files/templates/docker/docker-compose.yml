@@ -50,6 +50,8 @@ services:
         condition: service_healthy
     volumes:
       - {{ tapisdir }}/files/files-init-db-sh:/files-init-db-sh
+    networks:
+      - tapis
     command: chmod +x files-init-db-sh; /files-init-db-sh
 
   # files-minio:
