@@ -5,6 +5,10 @@ global_service_url_default: 'https://admin.{{ global_tapis_domain }}'
 global_devtenant_url_default: 'https://dev.{{ global_tapis_domain }}'
 global_primary_site_admin_tenant_base_url_default: 'https://admin.{{ global_tapis_domain }}'
 
+# Set this to a different service account name (other than "default") to be used for for certain sk processes.
+# This service account should be created in Kubernetes outside of Tapis Deployer.
+global_sk_privileged_sa: null
+
 # A) There should be NO choice for primary sites, 
 # B) For associate sites, we should actually compute the field from the site record.. (or anyway, the 
 #    value needs to match what it is on the site record).
