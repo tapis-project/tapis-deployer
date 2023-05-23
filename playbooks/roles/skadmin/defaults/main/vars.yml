@@ -11,11 +11,9 @@ skadmin_initLoad_jwtsigning_tenants:
   - admin
   - dev
 
-# Set this to a different service account name (other than "default") to be used for for certain sk processes.
+# Set this to a different service account name (other than your default) to be used for for certain sk processes.
 # This service account should be created in Kubernetes outside of Tapis Deployer.
-# (This should always be inherited from global_sk_privileged_sa var.)
-skadmin_sk_privileged_sa: "{{ global_sk_privileged_sa }}"
-
+skadmin_sk_privileged_sa: null
 
 
 
