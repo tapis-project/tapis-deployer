@@ -1,0 +1,117 @@
+#!/bin/bash
+# Script to initialize Files service DB using psql
+# Create database, user and schema
+# Postgres password must be set in env var PG_PASSWORD
+
+function usage() {
+  echo "$0 [-p|--pg_port <port>] [-u|--pg_user <user>] [-w|pg_password <password>] [-d|--pg_database <database>] [-a|--pg_admin] [-h|--pg_host]"
+
+  echo "OPTIONS:"
+  echo "     -p --port"
+  echo "        The port to run postgres on"
+  echo 
+  echo "     -u --pg_user"
+  echo "        The postgres user for the service"
+  echo 
+  echo "     -w --pg_pass"
+  echo "        The postgres password for the service"
+  echo 
+  echo "     -d --pg_db"
+  echo "        The postgres database name for the service"
+  echo 
+  echo "     -a --pg_admin"
+  echo "        The postgres user to use for creating the new database and user"
+  echo 
+  echo "     -h --pg_host"
+  echo "        The hostname of the postgres server"
+  echo 
+  exit 1
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -p|--pg_port)
+      PG_PORT="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -u|--pg_user)
+      PG_USER="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -w|--pg_password)
+      PG_PASSWORD="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -d|--pg_database)
+      PG_DATABASE="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -a|--pg_admin)
+      PG_ADMIN="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -h|--pg_host)
+      PG_HOST="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      usage
+      ;;
+    *)
+      echo "Unknown positional arguement $1"
+      usage
+  esac
+done
+
+if [[ -z $PG_HOST ]]; then 
+  PG_HOST=files-postgres
+fi
+
+if [[ -z $PG_USER ]]; then 
+  PG_USER=tapis_files
+fi
+
+if [[ -z $PG_DATABASE ]]; then 
+  PG_DATABASE=tapisfilesdb
+fi
+
+if [[ -z $PG_PORT ]]; then 
+  PG_PORT="5432"
+fi
+
+if [[ -z $PG_ADMIN ]]; then 
+  PG_ADMIN="postgres"
+fi
+
+if [ -z "${PG_PASSWORD}" ]; then
+  echo "Please set env var PG_PASSWORD before running this script"
+  usage
+fi
+
+# Run psql command to create database if it does not exist
+echo "SELECT 'CREATE DATABASE ${PG_DATABASE} ENCODING=\"UTF8\" LC_COLLATE=\"en_US.utf8\" LC_CTYPE=\"en_US.utf8\" ' \
+  WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${PG_DATABASE}')\gexec" \
+  | psql --host=${PG_HOST} --username=${PG_ADMIN}
+
+
+# Run sql to create user and schema if they do not exist
+psql --host=${PG_HOST} --username=${PG_ADMIN} --dbname=${PG_DATABASE} -q << EOB
+-- Create user if it does not exist
+DO \$\$
+BEGIN
+  CREATE ROLE ${PG_USER} WITH LOGIN;
+  EXCEPTION WHEN DUPLICATE_OBJECT THEN
+  RAISE NOTICE 'User already exists. User name: "${PG_USER}"';
+END
+\$\$;
+ALTER USER ${PG_USER} WITH ENCRYPTED PASSWORD '${PG_PASSWORD}';
+GRANT ALL PRIVILEGES ON DATABASE ${PG_DATABASE} TO ${PG_USER};
+ALTER USER ${PG_USER} SUPERUSER; 
+EOB
