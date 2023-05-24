@@ -101,7 +101,9 @@ burnup_or_exit apps
 
 # monitoring
 
-# notifications
+{% if "notifications" in components_to_deploy %}
+burnup_or_exit notifications
+{% endif %}
 
 # pgrest
 
@@ -113,7 +115,9 @@ burnup_or_exit apps
 
 # streams
 
-# tapisui
+{% if "tapisui" in components_to_deploy %}
+burnup_or_exit tapisui
+{% endif %}
 
 # workflows
 
