@@ -89,7 +89,7 @@ services:
         env_file:
             - {{ tapisdatadir }}/jobs/env
         volumes:
-            - {{ tapisdatadir }}/jobs/jobs-rabbitmq-data
+            - {{ tapisdatadir }}/jobs/jobs-rabbitmq-data:/var/lib/rabbitmq/mnesia
         networks:
             - tapis
         depends_on:
