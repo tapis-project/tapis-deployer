@@ -10,7 +10,6 @@ Notable changes between versions.
 - Added optional `skadmin_sk_privileged_sa` var to skadmin component to enable Kubernetes privilege separation.
 - Beta release: A new way of deploying Tapis using Docker instead of Kubernetes is now in Beta. By setting `tapisflavor: docker` in the Ansible config, Deployer uses a different set of templates to create the Docker-based Tapis installation scripts. So far only a subset of the components are functional. 
 
-
 ## 1.3.6
 
 - [Authenticator: 1.3.0 to 1.3.3 (authenticator & authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
