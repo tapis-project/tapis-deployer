@@ -3,6 +3,13 @@
 # Create database, user and schema
 # Postgres password must be set in env var PG_PASSWORD
 
+PG_HOST=${DB_HOST}
+PG_USER=${DB_USERNAME}
+PG_DATABASE=${POSTGRES_DB}
+PG_PORT=${DB_PORT}
+PG_PASSWORD=${POSTGRES_PASSWORD}
+PG_ADMIN="postgres"
+
 function usage() {
   echo "$0 [-p|--pg_port <port>] [-u|--pg_user <user>] [-w|pg_password <password>] [-d|--pg_database <database>] [-a|--pg_admin] [-h|--pg_host]"
 
