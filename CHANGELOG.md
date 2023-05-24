@@ -7,6 +7,7 @@ Notable changes between versions.
 - [Authenticator: 1.3.3 to 1.3.4 (authenticator & authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
 - [Notifications: 1.3.3 to 1.3.4 (notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.3.4/CHANGELOG.md)
 - [Globus Proxy: 1.3.0 to 1.3.1 (globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+- Added optional `skadmin_sk_privileged_sa` var to skadmin component to enable Kubernetes privilege separation.
 
 ## 1.3.6
 
