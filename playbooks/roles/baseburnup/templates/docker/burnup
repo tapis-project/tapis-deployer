@@ -85,7 +85,41 @@ burnup_or_exit files
 burnup_or_exit systems
 {% endif %}
 
+{% if "apps" in components_to_deploy %}
+burnup_or_exit apps
+{% endif %}
 
+## tertiary services
+
+# actors
+
+# container-registry
+
+# globus-proxy
+
+# meta
+
+# monitoring
+
+{% if "notifications" in components_to_deploy %}
+burnup_or_exit notifications
+{% endif %}
+
+# pgrest
+
+# pgrest-a2cps-dev
+
+# pgrest-a2cps-prod
+
+# pods
+
+# streams
+
+{% if "tapisui" in components_to_deploy %}
+burnup_or_exit tapisui
+{% endif %}
+
+# workflows
 
 echo "Done: top-level-burnup"
 

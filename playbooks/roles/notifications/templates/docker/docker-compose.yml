@@ -2,6 +2,7 @@
 networks:
   tapis:
     name: tapis
+    external: true
 
 
 services:
@@ -9,78 +10,114 @@ services:
   notifications-api:
     container_name: notifications-api
     image: {{ notifications_api_image }} 
-    ports:
-      - "127.0.0.1:8080:8080"
-      - "127.0.0.1:8000:8000"
+    environment:
+      - TAPIS_SITE_ID={{ notifications_service_site_id }}
+      - TAPIS_TENANT_SVC_BASEURL={{ notifications_service_url }}
+      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres:5432/tapisntfdb
+      - TAPIS_DB_USER=tapis_ntf
+      - TAPIS_QUEUE_HOST=notifications-rabbitmq
+      - TAPIS_QUEUE_ADMIN_USER=tapis
+      - TAPIS_QUEUE_USER=notif
     env_file:
       - {{ tapisdatadir }}/notifications/env
     networks: 
       - tapis
+    depends_on:
+      notifications-postgres:
+        condition: service_healthy
+      notifications-rabbitmq:
+        condition: service_healthy
+    command: java -Xms{{ notifications_heap_min }} -Xmx{{ notifications_heap_max }} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -cp "notifications.jar:dependencies/*" edu.utexas.tacc.tapis.notifications.api.NotificationsApplication
 
   notifications-init-db:
-    container-name: notifications-init-db
+    container_name: notifications-init-db
     image: {{ notifications_postgres_image }}
-    imagePullPolicy: Always
-    command: ["/tmp/notifications-init-db-sh"]
+    command: bash -c "chmod +x /tmp/notifications-init-db-sh && /tmp/notifications-init-db-sh"
     volumes:
-    - name: {{ tapisdir }}/notifications/notifications-init-db-sh:/tmp/notifications-init-db-sh
+      - {{ tapisdir }}/notifications/notifications-init-db-sh:/tmp/notifications-init-db-sh
     env_file:
       - {{ tapisdatadir }}/notifications/env
     networks: 
       - tapis
+    depends_on:
+      notifications-postgres:
+        condition: service_healthy
 
   notifications-postgres:
-    container-name: notifications-postgres
+    container_name: notifications-postgres
     image: {{ notifications_postgres_image }}
-    ports:
-      - "127.0.0.1:5432:5432"
     environment:
-    - PGDATA="/pgdata/data"
+      - PGDATA=/pgdata/data
     env_file:
       - {{ tapisdatadir }}/notifications/env
     networks: 
       - tapis
-    # volumes:
-    #   - "{{ tapisdatadir }}/notifications/pgdata:/pgdata" # TODO!!
+    volumes:
+      - {{ tapisdatadir }}/notifications/pgdata:/pgdata/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   notifications-pgadmin:
-    container-name: notifications-pgadmin
+    container_name: notifications-pgadmin
     image: {{ notifications_pgadmin_image }}
-    ports:
-    - "127.0.0.1:81:80"
     environment:
-    - name: PGADMIN_DEFAULT_EMAIL=wow@example.com
+      - PGADMIN_DEFAULT_EMAIL=wow@example.com
     env_file:
       - {{ tapisdatadir }}/notifications/env
     networks:
       - tapis
+    depends_on:
+      notifications-postgres:
+        condition: service_healthy
+      notifications-rabbitmq:
+        condition: service_healthy
 
   notifications-dispatcher:
     container_name: notifications-dispatcher
     image: {{ notifications_dispatcher_image }}
+    environment:
+      - TAPIS_SITE_ID={{ notifications_service_site_id }}
+      - TAPIS_TENANT_SVC_BASEURL={{ notifications_service_url }}
+      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres:5432/tapisntfdb
+      - TAPIS_DB_USER=tapis_ntf
+      - TAPIS_QUEUE_HOST=notifications-rabbitmq
+      - TAPIS_QUEUE_ADMIN_USER=tapis
+      - TAPIS_QUEUE_USER=notif
     env_file:
       - {{ tapisdatadir }}/notifications/env
     networks:
       - tapis
+    command: java -Xms{{ notifications_heap_min }} -Xmx{{ notifications_heap_max }} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -cp "notifications.jar:dependencies/*" edu.utexas.tacc.tapis.notifications.DispatchApplication
+    depends_on:
+      notifications-postgres:
+        condition: service_healthy
+      notifications-rabbitmq:
+        condition: service_healthy
 
-  notifcations-rabbitmq:
-    container-name: notifications-rabbitmq
+  notifications-rabbitmq:
+    container_name: notifications-rabbitmq
     image: {{ notifications_rabbitmq_image }}
-    ports:
-      - 127.0.0.1:15672:5672
-      - 127.0.0.1:25672:5672
     environment:
-      - HOSTNAME="notifications-rabbitmq"
-      - RABBITMQ_HOSTNAME="notifications-rabbitmq"
-      - RABBITMQ_DEFAULT_USER="tapis"
-      - RABBITMQ_VM_MEMORY_HIGH_WATERMARK="2147483648"
+      - HOSTNAME=notifications-rabbitmq
+      - RABBITMQ_HOSTNAME=notifications-rabbitmq
+      - RABBITMQ_DEFAULT_USER=tapis
+      - RABBITMQ_VM_MEMORY_HIGH_WATERMARK=2147483648
     env_file: 
       - {{ tapisdatadir }}/notifications/env
+    volumes:
+      - {{ tapisdatadir }}/notifications/notifications-rabbitmq-data:/var/lib/rabbitmq/mnesia
     networks:
       - tapis
-
-    volumeMounts:
-    - name: notifications-rabbitmq-data="/var/lib/rabbitmq/mnesia"
-    networks:
-        - tapis
-
+    healthcheck:
+      test: rabbitmq-diagnostics check_running
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      notifications-postgres:
+        condition: service_healthy
+      notifications-init-db:
+        condition: service_completed_successfully
