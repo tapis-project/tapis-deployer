@@ -13,4 +13,5 @@ kubectl delete -f monitoring-config.yml
 kubectl delete -f apps
 kubectl delete -f stern-fluentd
 
-
+#Jobs
+ kubectl delete -f monitor-init-user.yml
