@@ -5,6 +5,7 @@ Notable changes between versions.
 ## 1.3.7
 
 - [Authenticator: 1.3.3 to 1.3.4 (authenticator & authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
+- [Notifications: 1.3.3 to 1.3.4 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.3.4/CHANGELOG.md)
 
 ## 1.3.6
 
