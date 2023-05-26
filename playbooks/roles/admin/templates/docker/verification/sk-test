@@ -3,13 +3,13 @@
 
 
 echo "hello"
-docker run --net tapis --rm -it {{ admin_util_image }} curl http://security-api:8000/v3/security/hello
+curl -s {{ admin_service_url }}/v3/security/hello | jq .status
 echo
 
 echo "ready"
-docker run --net tapis --rm -it {{ admin_util_image }} curl http://security-api:8000/v3/security/ready
+curl -s {{ admin_service_url }}/v3/security/ready | jq .status
 echo
 
 echo "healthcheck"
-docker run --net tapis --rm -it {{ admin_util_image }} curl http://security-api:8000/v3/security/healthcheck
+curl -s {{ admin_service_url }}/v3/security/healthcheck | jq .status
 echo
