@@ -2,9 +2,20 @@
 
 Notable changes between versions.
 
-## 1.3.6
+## 1.3.8 
 
 - added java heap max and min options for apps, systems, and notifications when using Docker compose
+
+## 1.3.7
+
+- [Authenticator: 1.3.3 to 1.3.4 (authenticator & authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
+- [Notifications: 1.3.3 to 1.3.4 (notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.3.4/CHANGELOG.md)
+- [Globus Proxy: 1.3.0 to 1.3.1 (globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+- Added optional `skadmin_sk_privileged_sa` var to skadmin component to enable Kubernetes privilege separation.
+- Beta release: A new way of deploying Tapis using Docker instead of Kubernetes is now in Beta. By setting `tapisflavor: docker` in the Ansible config, Deployer uses a different set of templates to create the Docker-based Tapis installation scripts. So far only a subset of the components are functional. 
+
+## 1.3.6
+
 - [Authenticator: 1.3.0 to 1.3.3 (authenticator & authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
 - [Jobs: 1.3.2 to 1.3.4 (tapis/jobsapi, tapis/jobsmigrate, tapis/jobsworker)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [SK 1.3.1 to 1.3.2 (tapis/securitymigrate, tapis/securityexport, tapis/securityadmin, tapis/securityapi)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
