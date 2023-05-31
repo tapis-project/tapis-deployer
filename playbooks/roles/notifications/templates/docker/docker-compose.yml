@@ -32,7 +32,6 @@ services:
 
   notifications-init-db:
     container_name: notifications-init-db
-    user: ${UID}:${GID}
     image: {{ notifications_postgres_image }}
     command: bash -c "chmod +x /tmp/notifications-init-db-sh && /tmp/notifications-init-db-sh"
     volumes:
