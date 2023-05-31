@@ -80,7 +80,6 @@ services:
     #         - "{{ tapisdatadir }}/jobs/jobs-pg-data:/pgdata"
 
     jobs-rabbitmq:
-        user: ${UID}:${GID}
         container_name: jobs-rabbitmq
         image: {{ jobs_rabbitmq_management_image }} 
         environment:

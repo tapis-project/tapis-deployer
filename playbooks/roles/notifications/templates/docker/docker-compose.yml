@@ -101,7 +101,6 @@ services:
 
   notifications-rabbitmq:
     container_name: notifications-rabbitmq
-    user: ${UID}:${GID}
     image: {{ notifications_rabbitmq_image }}
     environment:
       - HOSTNAME=notifications-rabbitmq

@@ -9,8 +9,6 @@ services:
     sk-postgres:
         container_name: sk-postgres
         image: {{ security_postgres_image }}
-#        ports: 
-#            - 5432
         networks:
             - tapis
         volumes:
@@ -28,8 +26,6 @@ services:
     sk-pgadmin:
         container_name: sk-pgadmin
         image: {{ security_pgadmin_image }}
-#        ports:
-#            - "127.0.0.1::80"
         environment:
             - PGADMIN_DEFAULT_EMAIL=wow@example.com
             - PGADMIN_DEFAULT_PASSWORD=password

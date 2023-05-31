@@ -78,6 +78,7 @@ services:
 
   files-workers:
     container_name: files-workers
+    user: ${UID}:${GID}
     image: {{ files_workers_image }}
     networks:
       - tapis
@@ -96,6 +97,7 @@ services:
         condition: service_started
 
   files-api:
+    user: ${UID}:${GID}
     container_name: files-api
     image: {{ files_api_image }}
     networks:
@@ -129,6 +131,7 @@ services:
         condition: service_healthy
       files-rabbitmq:
         condition: service_healthy
+
   # files-ssh-machine:
   #   container_name: files-ssh-machine
   #   build:

@@ -19,7 +19,6 @@ services:
             - TAPIS_GLOBUS_CLIENT_ID
             - TAPIS_DB_USER=tapis_sys
         command: java -Xms{{ systems_heap_min }} -Xmx{{ systems_heap_max }} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -cp "systems.jar:dependencies/*" edu.utexas.tacc.tapis.systems.api.SystemsApplication
-        # command: sleep infinity
         depends_on:
             systems-migrations:
                 condition: service_completed_successfully
@@ -50,9 +49,7 @@ services:
             - {{ tapisdir }}/systems/systems-init-db-sh:/init-db
         env_file:
             {{ tapisdatadir }}/systems/env
-        # command: /init-db
         command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"
-        # command: sleep infinity
         depends_on:
             systems-postgres:
                 condition: service_healthy
