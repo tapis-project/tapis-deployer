@@ -3,13 +3,13 @@
 
 
 echo "hello"
-curl -s {{ admin_service_url }}/v3/security/hello | jq .status
+curl -s {{ admin_devtenant_url }}/v3/security/hello | jq .status
 echo
 
 echo "ready"
-curl -s {{ admin_service_url }}/v3/security/ready | jq .status
+curl -s {{ admin_devtenant_url }}/v3/security/ready | jq .status
 echo
 
 echo "healthcheck"
-curl -s {{ admin_service_url }}/v3/security/healthcheck | jq .status
+curl -s {{ admin_devtenant_url }}/v3/security/healthcheck | jq .status
 echo
