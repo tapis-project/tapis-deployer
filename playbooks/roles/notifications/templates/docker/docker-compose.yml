@@ -9,6 +9,7 @@ services:
 
   notifications-api:
     container_name: notifications-api
+    user: ${UID}:${GID}
     image: {{ notifications_api_image }} 
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
@@ -31,6 +32,7 @@ services:
 
   notifications-init-db:
     container_name: notifications-init-db
+    user: ${UID}:${GID}
     image: {{ notifications_postgres_image }}
     command: bash -c "chmod +x /tmp/notifications-init-db-sh && /tmp/notifications-init-db-sh"
     volumes:
@@ -77,6 +79,7 @@ services:
 
   notifications-dispatcher:
     container_name: notifications-dispatcher
+    user: ${UID}:${GID}
     image: {{ notifications_dispatcher_image }}
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
@@ -99,6 +102,7 @@ services:
 
   notifications-rabbitmq:
     container_name: notifications-rabbitmq
+    user: ${UID}:${GID}
     image: {{ notifications_rabbitmq_image }}
     environment:
       - HOSTNAME=notifications-rabbitmq

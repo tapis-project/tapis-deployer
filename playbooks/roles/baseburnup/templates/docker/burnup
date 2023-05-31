@@ -39,10 +39,6 @@ docker network inspect tapis || docker network create tapis
 
 ### init / setup
 
-{% if "proxy" in components_to_deploy %}
-burnup_or_exit proxy
-{% endif %}
-
 {% if "vault" in components_to_deploy %}
 burnup_or_exit vault
 {% endif %}
@@ -56,6 +52,10 @@ burnup_or_exit skadmin
 
 {% if "tenants" in components_to_deploy %}
 burnup_or_exit tenants
+{% endif %}
+
+{% if "proxy" in components_to_deploy %}
+burnup_or_exit proxy
 {% endif %}
 
 {% if "security" in components_to_deploy %}

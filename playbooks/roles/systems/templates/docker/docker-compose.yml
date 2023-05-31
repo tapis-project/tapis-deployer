@@ -6,6 +6,7 @@ networks:
 services:
     systems-api:
         container_name: systems-api
+        user: ${UID}:${GID}
         image: {{ systems_api_image }}
         networks:
             - tapis

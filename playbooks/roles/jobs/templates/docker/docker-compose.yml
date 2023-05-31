@@ -8,6 +8,7 @@ networks:
 services:
     jobs-api:
         container_name: jobs-api
+        user: ${UID}:${GID}
         networks:
           - tapis
         image: {{ jobs_api_image }}
@@ -79,6 +80,7 @@ services:
     #         - "{{ tapisdatadir }}/jobs/jobs-pg-data:/pgdata"
 
     jobs-rabbitmq:
+        user: ${UID}:${GID}
         container_name: jobs-rabbitmq
         image: {{ jobs_rabbitmq_management_image }} 
         environment:
@@ -102,6 +104,7 @@ services:
             retries: 3
 
     jobs-altqueue:
+        user: ${UID}:${GID}
         container_name: jobs-altqueue
         image: {{ jobs_worker_image }}
         networks:
@@ -129,6 +132,7 @@ services:
 
     jobs-recovery:
         container_name: jobs-recovery
+        user: ${UID}:${GID}
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -155,6 +159,7 @@ services:
 
     jobs-deadletter:
         container_name: jobs-deadletter
+        user: ${UID}:${GID}
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -181,6 +186,7 @@ services:
 
     jobs-eventqueue:
         container_name: jobs-eventqueue
+        user: ${UID}:${GID}
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -207,6 +213,7 @@ services:
 
     jobs-workers:
         container_name: jobs-workers
+        user: ${UID}:${GID}
         image: {{ jobs_worker_image }}
         environment:
             {% if jobs_node_name == true -%}

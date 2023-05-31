@@ -7,6 +7,7 @@ networks:
 services:
     apps-api:
         container_name: apps-api
+        user: ${UID}:${GID}
         image: {{ apps_api_image }}
         networks:
             - tapis
