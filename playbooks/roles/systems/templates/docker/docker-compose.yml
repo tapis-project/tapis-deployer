@@ -42,7 +42,7 @@ services:
 
     systems-migrations:
         container_name: systems-migrations
-        image: {{ systems_migrations_image }}
+        image: {{ systems_postgres_image }}
         networks:
             - tapis
         volumes:
