@@ -19,6 +19,40 @@ myscript_absolute="$mydir_absolute/$myscript_nameonly"
 # burn down in reverse order
 echo "Start: top-level-burndown"
 
+### tertiary services
+
+# actors
+
+# container-registry
+
+# globus-proxy
+
+# meta
+
+# monitoring
+
+{% if "notifications" in components_to_deploy %}
+cd $mydir_absolute/notifications
+./burndown
+{% endif %}
+
+# pgrest
+
+# pgrest-a2cps-dev
+
+# pgrest-a2cps-prod
+
+# pods
+
+# streams
+
+{% if "tapisui" in components_to_deploy %}
+cd $mydir_absolute/tapisui
+./burndown
+{% endif %}
+
+# workflows
+
 ### secondary services
 
 {% if "jobs" in components_to_deploy %}

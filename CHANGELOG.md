@@ -4,11 +4,10 @@ Notable changes between versions.
 
 ## 1.3.8
 
-- Added java heap max and min options for apps, systems, and notifications when using Docker compose
+- Added java heap max and min options for apps, systems, and notifications when using Docker compose.
 - [Jobs: 1.3.4 to 1.3.5 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Systems: 1.3.2 to 1.3.3 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.3/CHANGELOG.md)
 - [Files: 1.3.5 to 1.3.6 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
-
 
 ## 1.3.7
 
@@ -26,6 +25,7 @@ Notable changes between versions.
 - [Systems: 1.3.1 to 1.3.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.2/CHANGELOG.md)
 - [Apps: 1.3.2 to 1.3.3 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.3.3/CHANGELOG.md)
 - [Notifications: 1.3.1 to 1.3.3 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.3.3/CHANGELOG.md)
+
 
 ## 1.3.5
 
