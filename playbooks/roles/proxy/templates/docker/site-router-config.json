@@ -4,5 +4,5 @@
     "service_tenant_id": "{{proxy_service_tenant_id}}",
     "service_name": "{{proxy_service_name}}",
     "tenants": ["*"],
-    "redis_host": "localhost"
+    "redis_host": "site-router-redis"
 }
