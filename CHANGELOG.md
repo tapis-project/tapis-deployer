@@ -9,6 +9,10 @@ Notable changes between versions.
 - [Systems: 1.3.2 to 1.3.3 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.3/CHANGELOG.md)
 - [Files: 1.3.5 to 1.3.6 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
 
+### Breaking Changes
+
+- There is a breaking change related to how Files and Systems interact for systems of type IRODS. Please see the [CHANGELOG](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md) for the Files service for more information.
+
 ## 1.3.7
 
 - [Authenticator: 1.3.3 to 1.3.4 (authenticator & authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
