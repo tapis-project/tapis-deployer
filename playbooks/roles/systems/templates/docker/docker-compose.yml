@@ -1,20 +1,55 @@
-
-# TODO!!! need to run the migrations for the DB before the sk-api can run. 
-# put an intermediate migrations container to run these between postgres & sk?
-
 networks:
     tapis:
         name: tapis
         external: true
 
-
 services:
     systems-api:
+        container_name: systems-api
+        user: ${UID}:${GID}
         image: {{ systems_api_image }}
         networks:
             - tapis
-
+        env_file:
+            {{ tapisdatadir }}/systems/env
+        environment:
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://systems-postgres:5432/tapissysdb
+            - TAPIS_SITE_ID={{ systems_service_site_id }}
+            - TAPIS_TENANT_SVC_BASEURL={{ systems_service_url }}
+            - TAPIS_GLOBUS_CLIENT_ID
+            - TAPIS_DB_USER=tapis_sys
+        command: java -Xms{{ systems_heap_min }} -Xmx{{ systems_heap_max }} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -cp "systems.jar:dependencies/*" edu.utexas.tacc.tapis.systems.api.SystemsApplication
+        depends_on:
+            systems-migrations:
+                condition: service_completed_successfully
+        
     systems-postgres:
+        container_name: systems-postgres
         image: {{ systems_postgres_image }}
         networks:
             - tapis
+        env_file:
+            {{ tapisdatadir }}/systems/env
+        environment:
+            - PGDATA=/pdgata/data
+        volumes:
+            - {{ tapisdatadir }}/systems/postgres:/pgdata/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    systems-migrations:
+        container_name: systems-migrations
+        image: {{ systems_postgres_image }}
+        networks:
+            - tapis
+        volumes:
+            - {{ tapisdir }}/systems/systems-init-db-sh:/init-db
+        env_file:
+            {{ tapisdatadir }}/systems/env
+        command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"
+        depends_on:
+            systems-postgres:
+                condition: service_healthy

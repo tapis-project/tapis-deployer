@@ -84,5 +84,8 @@ mkdir -p {{ tapisdatadir }}/security
 mkdir -p {{ tapisdatadir }}/security
 python3 {{ tapisdir }}/admin/util/parse_skexport -c security -d {{ tapisdatadir }}
 
+export UID=`id -u`
+export GID=`id -g`
+
 docker compose up -d
 
