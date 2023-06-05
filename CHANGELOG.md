@@ -8,7 +8,13 @@ Notable changes between versions.
 - [Jobs: 1.3.4 to 1.3.5 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Systems: 1.3.2 to 1.3.3 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.3/CHANGELOG.md)
 - [Files: 1.3.5 to 1.3.6 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
-
+- Docker Flavor update:  
+  - Added verification scripts for more core components
+  - Changed secrets to using a python script for parsing instead of bash scripting 
+  - Added a DB init script for files
+  - Removed hard-coded urls in proxy
+  - General cleanup & bugfixes
+  
 ### Breaking Changes
 
 - There is a breaking change related to how Files and Systems interact for systems of type IRODS. Please see the [CHANGELOG](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md) for the Files service for more information.
