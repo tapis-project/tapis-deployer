@@ -27,8 +27,10 @@ spec:
         - name: fastapi
           containerPort: 8000
         env:
-        - name: api
+        - name: PODS_COMPONENT
           value: api
+        - name: DEBUG_SLEEP_LOOP
+          value: "false"
         - name: SERVICE_PASSWORD
           valueFrom:
             secretKeyRef:

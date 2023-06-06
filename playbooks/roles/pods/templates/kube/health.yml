@@ -16,7 +16,6 @@ spec:
       - name: pods-health
         image: {{ pods_api_image }}
         imagePullPolicy: {{pods_image_pull_policy}}
-        command: ["python3", "-u", "/home/tapis/service/health.py"]
         resources:
           requests:
             cpu: "500m"
@@ -25,8 +24,10 @@ spec:
             cpu: "2"
             memory: "2G"
         env:
-        - name: api
-          value: api
+        - name: PODS_COMPONENT
+          value: health
+        - name: DEBUG_SLEEP_LOOP
+          value: 'false'
         - name: SERVICE_PASSWORD
           valueFrom:
             secretKeyRef:
