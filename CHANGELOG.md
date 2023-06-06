@@ -18,7 +18,8 @@ Notable changes between versions.
   - Added a DB init script for files
   - Removed hard-coded urls in proxy
   - General cleanup & bugfixes
-  
+- [Abaco: 1.3.0 to 1.3.1 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md#131---2023-06-06)
+
 ### Breaking Changes
 
 - There is a breaking change related to how Files and Systems interact for systems of type IRODS. Please see the [CHANGELOG](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md) for the Files service for more information.
