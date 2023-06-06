@@ -1,0 +1,39 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pods-nfs-vol
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd-new
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pods-nfs-mkdirs
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: pods-nfs-vol
+        image: alpine:latest
+        command:
+        - sh
+        - -c
+        - |
+          mkdir -p /podsnfs/volumes
+          mkdir -p /podsnfs/snapshots
+          chmod 777 /podsnfs/volumes /podsnfs/snapshots
+        volumeMounts:
+        - name: pods-nfs-data
+          mountPath: /podsnfs
+      volumes:
+      - name: pods-nfs-data
+        persistentVolumeClaim:
+          claimName: pods-nfs-vol
