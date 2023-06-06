@@ -18,7 +18,8 @@ Notable changes between versions.
   - Added a DB init script for files
   - Removed hard-coded urls in proxy
   - General cleanup & bugfixes
-  
+- [Pods: 1.3.0 to 1.3.1 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md#131---2023-06-06)
+
 ### Breaking Changes
 
 - There is a breaking change related to how Files and Systems interact for systems of type IRODS. Please see the [CHANGELOG](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md) for the Files service for more information.
