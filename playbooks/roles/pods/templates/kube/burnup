@@ -22,10 +22,13 @@ kubectl create configmap pods-traefik-conf --from-file=traefik.yml
 # PVC
 kubectl apply -f postgres-pvc.yml
 kubectl wait --for=condition=complete job/chown-pods-postgres-pvc
+kubectl apply -f nfs-pvc.yml
+kubectl wait --for=condition=complete job/pods-nfs-mkdirs
 
 # Storage
 kubectl apply -f postgres.yml
 kubectl apply -f rabbitmq.yml
+kubectl apply -f nfs.yml
 
 # App
 kubectl apply -f api.yml

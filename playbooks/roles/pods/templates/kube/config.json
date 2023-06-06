@@ -16,6 +16,11 @@
     "rabbitmq_dash_host": "pods-rabbitmq-dash",
     "rabbitmq_user": "pods-admin",
     "rabbitmq_pass": "$env{RABBITMQ_PASSWORD}",
+    "nfs_tapis_system_id": "pods-nfs-server",
+    "nfs_pvc_name": "pods-nfs-vol",
+    "nfs_base_path": "/podsnfs/",
+    "nfs_pods_user_password": "defaultpass",
+    "nfs_develop_mode": false,
     "image_allow_list": {{ pods_image_allow_list | to_json }},
     "pvc_storage_class_name": "{{ pods_pvc_storage_class_name }}",
     "spawner_abaco_conf_host_path": "$env{abaco_host_path}/config-local.json",
@@ -42,4 +47,3 @@
     "{{ pods_service_site_id }}_tenant_object": {
     }
 }
-
