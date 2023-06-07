@@ -1,8 +1,11 @@
 #!/bin/bash
 
-here=$(dirname $0)
+echo "burnup tapisui:"
 
-mkdir -p {{ tapisdatadir }}/tapisui
+# mkdir -p {{ tapisdatadir }}/tapisui
+# myuid=`id -u`
+# docker run -it --rm -v {{ tapisdatadir }}/tapisui:/tapisui tapis/ubutil2204:1.3.0 chown $myuid /tapisui
 
-kubectl apply -f "$here/service.yml"
-kubectl apply -f "$here/deployment.yml"
+# python3 {{ tapisdir }}/admin/util/parse_skexport -c tapisui -d {{ tapisdatadir }}
+
+docker compose up -d

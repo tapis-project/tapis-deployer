@@ -16,14 +16,16 @@ services:
         container_name: actors-mongo
         image: {{ actors_mongo_image }}
         environment:
-            MONGO_INITDB_ROOT_USERNAME: admin
-            MONGO_INITDB_ROOT_PASSWORD: admin
-            MONGO_REPLICA_SET_NAME: rs0
-        # ports:
-        #     - "127.0.0.1:27017:27017"
+            - MONGO_INITDB_ROOT_USERNAME: admin
+            - MONGO_REPLICA_SET_NAME: rs0
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         # volumes:
         #     - ./runtime_files/certs:/data/ssl
         #     - ./runtime_files/certs/mongo-replica-set-keyfile:/keyfiles/metakeyfile
+        volumes:
+            - {{ tapisdatadir }}/actors/mongo/data:/data/db
+            - {{ tapisdatadir }}/actors/mongo/keyfile:keyfile-base
         networks:
             - tapis
         ulimits:
@@ -47,18 +49,16 @@ services:
         #command: "mongod --bind_ip_all --replSet rs0 --keyFile /keyfiles/keyfile-to-use --tlsMode requireTLS --tlsCertificateKeyFile "/data/ssl/server.pem" --tlsCAFile "/data/ssl/ca.pem"
 
 
-    actors-rabbit:
-        container_name: actors-rabbit
+    actors-rabbitmq:
+        container_name: actors-rabbitmq
         image: {{ actors_rabbitmq_image }}
-        # ports:
-        #     - "127.0.0.1:5672:5672"
-        #     - "127.0.0.1:15672:15672"
         environment:
             RABBITMQ_NODENAME: abaco-rabbit
             RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "+A 128"
             RABBITMQ_DEFAULT_VHOST: abaco_vhost
             RABBITMQ_DEFAULT_USER: admin
-            RABBITMQ_DEFAULT_PASS: admin
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         ulimits:
             nproc: 65535
             nofile:
@@ -67,23 +67,23 @@ services:
         networks:
             - tapis
         depends_on:
-            - actors-mongo
+            actors-mongo:
+                condition: service_started
 
     actors-nginx:
         container_name: actors-nginx
         image: {{ actors_nginx_image }}
-        volumes:
-#             - ./config-local.json:/home/tapis/config.json
-          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
-# #            - ./images/nginx/nginx.conf:/etc/nginx/nginx.conf
-# #            - ./images/nginx/sites-enabled:/etc/nginx/sites-enabled
-#         ports:
-#             - "127.0.0.1:8000:80"
-        restart: always
-        depends_on:
-            - actors-mongo
         networks:
             - tapis
+        volumes:
+#             - ./config-local.json:/home/tapis/config.json
+          - "{{ tapisdir }}/actors/actors-config.json:/etc/nginx/sites-enabled/flask-project"
+# #            - ./images/nginx/nginx.conf:/etc/nginx/nginx.conf
+# #            - ./images/nginx/sites-enabled:/etc/nginx/sites-enabled
+        restart: always
+        depends_on:
+            actors-mongo:
+                condition: service_started
 
     actors-reg:
         container_name: actors-reg

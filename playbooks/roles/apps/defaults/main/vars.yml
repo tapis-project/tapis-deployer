@@ -11,4 +11,6 @@ apps_postgres_pvc: apps-postgres-vol01
 apps_service_password: null
 apps_postgres_password: null
 apps_pgadmin_password: null
+apps_heap_min: 1g
+apps_heap_max: 4g
 

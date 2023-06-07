@@ -16,8 +16,3 @@ services:
             - tapis
         env_file: 
             - "{{ tapisdatadir }}/tokens/env"
-        healthcheck: # TODO: fix this
-            test: ["CMD-SHELL", "./healthcheck"]
-            interval: 5s
-            timeout: 5s
-            retries: 5
