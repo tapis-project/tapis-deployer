@@ -6,6 +6,7 @@ Notable changes between versions.
 
 - [Pods: 1.3.0 to 1.3.1 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md#131---2023-06-06)
 - [Abaco: 1.3.0 to 1.3.1 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md#131---2023-06-06)
+- Refactored deployment scripts for files and added a script to create the files db if it doesn't exist
 
 ## 1.3.8
 
