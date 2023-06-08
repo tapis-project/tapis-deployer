@@ -1,0 +1,11 @@
+networks:
+    tapis:
+        name: tapis
+        external: true
+
+services:
+    tapisui:
+        container_name: tapisui
+        image: {{ tapisui_image }}
+        environment:
+            - LOG_LEVEL={{tapisui_log_level}}
