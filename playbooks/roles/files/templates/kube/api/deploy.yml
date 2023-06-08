@@ -74,5 +74,13 @@ spec:
             secretKeyRef:
               name: tapis-files-secrets
               key: service-password
+{% if files_globus_client_id is defined %}
+        - name: TAPIS_GLOBUS_CLIENT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: files-config
+              key: globus_client_id
+{% endif %}
+
       hostname: files-api
       restartPolicy: Always

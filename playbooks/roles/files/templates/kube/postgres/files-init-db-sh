@@ -8,7 +8,7 @@ PG_USER=${DB_USERNAME}
 PG_DATABASE=${POSTGRES_DB}
 PG_PORT=${DB_PORT}
 PG_PASSWORD=${POSTGRES_PASSWORD}
-PG_ADMIN="postgres"
+PG_ADMIN=${POSTGRES_USER}
 
 function usage() {
   echo "$0 [-p|--pg_port <port>] [-u|--pg_user <user>] [-w|pg_password <password>] [-d|--pg_database <database>] [-a|--pg_admin] [-h|--pg_host]"
@@ -101,6 +101,9 @@ if [ -z "${PG_PASSWORD}" ]; then
   echo "Please set env var PG_PASSWORD before running this script"
   usage
 fi
+
+# Put PGPASSWORD in environment for psql to pick up
+export PGPASSWORD=${POSTGRES_PASSWORD}
 
 # Run psql command to create database if it does not exist
 echo "SELECT 'CREATE DATABASE ${PG_DATABASE} ENCODING=\"UTF8\" LC_COLLATE=\"en_US.utf8\" LC_CTYPE=\"en_US.utf8\" ' \
