@@ -91,6 +91,16 @@ services:
       - TAPIS_SITE_ID={{ files_service_site_id }}
       - TOKENS_SERVICE_URL={{ files_service_url }}
       - TENANTS_SERVICE_URL={{ files_service_url}}
+      - DB_HOST=files-postgres
+      - DB_NAME=tapisfiles
+      - DB_USERNAME=tapisfiles
+      - POSTGRES_DB=tapisfiles
+      - POSTGRES_USER=tapisfiles
+      - RABBITMQ_DEFAULT_USER=tapisfiles
+      - RABBITMQ_DEFAULT_VHOST=tapisfiles
+      - RABBITMQ_HOSTNAME=files-rabbitmq
+      - RABBITMQ_USERNAME=tapisfiles
+      - RABBITMQ_VHOST=tapisfiles
     command: ["java", "-Xmx3g", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.lib.transfers.TransfersApp"]
     depends_on:
       files-api: 
