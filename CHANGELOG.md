@@ -2,6 +2,12 @@
 
 Notable changes between versions.
 
+## 1.3.9 
+
+- [Pods: 1.3.0 to 1.3.1 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md#131---2023-06-06)
+- [Abaco: 1.3.0 to 1.3.1 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md#131---2023-06-06)
+- Refactored deployment scripts for files and added a script to create the files db if it doesn't exist
+
 ## 1.3.8
 
 - Added java heap max and min options for apps, systems, and notifications when using Docker compose.
@@ -14,7 +20,7 @@ Notable changes between versions.
   - Added a DB init script for files
   - Removed hard-coded urls in proxy
   - General cleanup & bugfixes
-  
+
 ### Breaking Changes
 
 - There is a breaking change related to how Files and Systems interact for systems of type IRODS. Please see the [CHANGELOG](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md) for the Files service for more information.

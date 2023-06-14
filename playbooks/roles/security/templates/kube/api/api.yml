@@ -12,6 +12,9 @@ spec:
         app: sk-api
     spec:
 {% if security_renew_sk_script == true %}
+{% if skadmin_sk_privileged_sa is not none %}
+      serviceAccountName: {{ skadmin_sk_privileged_sa }}
+{% endif %}
       initContainers:
       - name: renew-sk-secret
         command: ["/tmp/renew-sk-secret-script"]

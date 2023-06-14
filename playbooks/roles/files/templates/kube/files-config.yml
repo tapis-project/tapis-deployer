@@ -7,3 +7,7 @@ data:
   "service_tenant_id": "{{files_service_tenant_id}}"
   "site_id": "{{files_service_site_id}}"
   "service_name": "{{files_service_name}}"
+{% if systems_globus_client_id is defined %}
+  "globus_client_id": "{{systems_globus_client_id}}"
+{% endif %}
+
