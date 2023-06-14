@@ -16,6 +16,7 @@ spec:
       - name: actors-metrics
         image: {{ actors_core_image }}
         imagePullPolicy: {{actors_image_pull_policy}}
+        command: ["/home/tapis/actors/metrics_cron_check.sh"]
         ports:
         - name: flask
           containerPort: 5000
