@@ -15,6 +15,9 @@ spec:
         volumeMounts:
         - name: files-init-db-vol
           mountPath: /tmp
+        envFrom:
+        - configMapRef:
+            name: files-environment-vars
         env:
         - name: POSTGRES_PASSWORD
           valueFrom:
