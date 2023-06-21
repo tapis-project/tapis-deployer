@@ -10,14 +10,14 @@ services:
     image: {{ meta_rh_server_image }}
     container_name: meta-restheart
     command: [ "java", "-Dfile.encoding=UTF-8", "-server", "-jar", "restheart.jar", "etc/restheart.yml", "--envFile", "etc/config.properties"]
-    # ports:
-    #   - "127.0.0.1:8080:8080"
     networks: 
       - tapis
     environment:
       - MONGO_URI=meta-mongo
     volumes:
       - "./meta-config.yml:/opt/restheart/etc/config.properties"
+    env_file:
+      - {{ tapisdatadir }}/meta/env      
 
   meta-restheart-security:
     image: {{ meta_api_image }}
@@ -28,11 +28,11 @@ services:
       - TAPIS_META_SERVICE_SK_SVC_URL={{ meta_service_url }}/v3
       - TAPIS_META_SERVICE_TOKEN_BASE_URL={{ meta_service_url }}/
       - TAPIS_META_CORE_SERVER=http://restheart:8080/
-      - TAPIS_SERVICE_PASSWORD={{ meta_service_password }}
       - MONGO_URI=meta-mongo
       - CATALINA_OPTS="-Xms16g -Xmx16g -Dlogback.configurationFile=/usr/local/tomcat/etc/logback.xml --add-opens java.base/java.time=ALL-UNNAMED"
-    # ports:
-    #   - "127.0.0.1:8080:8080"
+    env_file:
+      - {{ tapisdatadir }}/meta/env
+
 
   meta-mongo:
     image: {{ meta_mongo_singlenode_image }}
@@ -41,8 +41,8 @@ services:
       - tapis
     environment:
       - MONGO_INITDB_ROOT_USERNAME="restheart"
-      - MONGO_INITDB_ROOT_PASSWORD={{ meta_mongo_password }}
-    # ports:
-    #   - "127.0.0.1:27017:27017"
+
+    env_file:
+      - {{ tapisdatadir }}/meta/env
     # volumes:
     #   -  "{{ meta_restheart_mongo_pvc }}:/data/db"
