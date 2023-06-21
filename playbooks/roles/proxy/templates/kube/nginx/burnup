@@ -5,4 +5,5 @@ kubectl apply -f service.yml
 
 kubectl create configmap tapis-nginx-config --from-file=nginx.conf
 kubectl create configmap tapis-nginx-revoke-error --from-file=token-revoked.json
+kubectl create configmap tapis-nginx-locations --from-file=locations
 kubectl apply -f deploy.yml 

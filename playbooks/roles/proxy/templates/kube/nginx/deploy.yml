@@ -25,6 +25,8 @@ spec:
           subPath: nginx.conf
         - name: certs
           mountPath: /tmp/ssl
+        - name: locations
+          mountPath: /etc/nginx/conf.d/locations
         - name: revoke-error
           mountPath: /etc/nginx/html/token-revoked.json
           subPath: token-revoked.json
@@ -35,6 +37,9 @@ spec:
           items:
           - key: nginx.conf
             path: nginx.conf
+      - name: locations
+          configMap:
+            name: tapis-nginx-locations
       - name: certs
         secret: 
           secretName: tapis-tls-cert
