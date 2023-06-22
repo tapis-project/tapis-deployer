@@ -38,8 +38,8 @@ spec:
           - key: nginx.conf
             path: nginx.conf
       - name: locations
-          configMap:
-            name: tapis-nginx-locations
+        configMap:
+          name: tapis-nginx-locations
       - name: certs
         secret: 
           secretName: tapis-tls-cert
