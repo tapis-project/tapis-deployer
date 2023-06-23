@@ -2,18 +2,15 @@
 
 Notable changes between versions.
 
-## 1.3.9 
-
-- [Pods: 1.3.0 to 1.3.1 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md#131---2023-06-06)
-- [Abaco: 1.3.0 to 1.3.1 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md#131---2023-06-06)
-- Refactored deployment scripts for files and added a script to create the files db if it doesn't exist
-
 ## 1.3.8
 
 - Added java heap max and min options for apps, systems, and notifications when using Docker compose.
 - [Jobs: 1.3.4 to 1.3.5 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Systems: 1.3.2 to 1.3.3 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.3/CHANGELOG.md)
 - [Files: 1.3.5 to 1.3.6 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Pods: 1.3.0 to 1.3.1 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md#131---2023-06-06)
+- [Abaco: 1.3.0 to 1.3.1 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md#131---2023-06-06)
+- Refactored deployment scripts for files and added a script to create the files db if it doesn't exist
 - Docker Flavor update:  
   - Added verification scripts for more core components
   - Changed secrets to using a python script for parsing instead of bash scripting 
