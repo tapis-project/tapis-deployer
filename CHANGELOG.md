@@ -2,6 +2,8 @@
 
 Notable changes between versions.
 
+## 1.3.9
+
 ## 1.3.8
 
 - Added java heap max and min options for apps, systems, and notifications when using Docker compose.
