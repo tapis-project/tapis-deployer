@@ -298,7 +298,7 @@ secondary_services() {
   files
 {% endif %}
 
-{% if "gloubs-proxy" in components_to_deploy %}
+{% if "globus-proxy" in components_to_deploy %}
   globus-proxy
 {% endif %}
 
