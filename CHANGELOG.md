@@ -4,14 +4,29 @@ Notable changes between versions.
 
 ## 1.3.9
 
-- [Systems: 1.3.3 to 1.3.4 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.4/CHANGELOG.md)
-- [Apps: 1.3.3 to 1.3.4 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.3.4/CHANGELOG.md)
+### Services updated:
+
+- [Systems: 1.3.3 to 1.3.4 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.4/CHANGELOG.md) 
+- [Apps: 1.3.3 to 1.3.4 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.3.4/CHANGELOG.md)  
 - [Files: 1.3.6 to 1.3.7 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
 - [Jobs: 1.3.5 to 1.3.6 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Authenticator: 1.3.4 to 1.3.5 (authenticator_api_image, authenticator_migrations_image)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
 
-### Breaking Changes
+### Breaking Changes for Services / Tapis Users 
 
 - For Systems and Apps: Environment variables beginning with *_tapis* are no longer valid in the envVariables attribute. (This matches existing Jobs service behavior.) If you are a Tapis user who creates or maintains Systems or Apps resources, creating a resource that specifies an environment variable starting with *_tapis* will now result in the resource creation to be rejected. If such a resource already exists, future jobs that use it will fail.
+- Authenticator: 
+  - The DELETE /v3/oauth2/clients endpoint now returns the standard 5-stanza Tapis response. Previously, it returned an empty HTTP response. Applications that use this endpoint should be updated to handle a non-empty response.
+  - The POST /v3/oauth2/tokens endpoint has been changed in the case of the device_code grant to require only the client_id as a POST parameter. Previously, the client_id and client_key were erroneously both required to be passed using an HTTP Basic Auth header. Client applications that utilized the device code grant type and passed the client credentials as part of the HTTP Basic Auth header must be updated to pass only the client id as part of the POST payload. The OA3 spec has been updated to reflect this new requirement. See issue #32.
+
+
+### Deployer updates:
+
+- None
+
+### Breaking Changes for Tapis Deployer Admins
+
+- None
 
 ## 1.3.8
 
