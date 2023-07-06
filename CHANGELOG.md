@@ -2,6 +2,25 @@
 
 Notable changes between versions.
 
+## 1.4.0
+
+### Services updated:
+
+- [Pods: 1.3.2 to 1.4.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md#140---2023-07-06)
+
+### Breaking Changes for Services / Tapis Users 
+
+- None
+
+### Deployer updates:
+
+- None
+
+### Breaking Changes for Tapis Deployer Admins
+
+- None
+
+
 ## 1.3.9
 
 ### Services updated:
