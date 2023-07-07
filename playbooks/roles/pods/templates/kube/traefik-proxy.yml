@@ -32,22 +32,30 @@ spec:
         - --api.dashboard=true
         - --api.insecure=true
         - --accesslog=true
-        - --log.level=DEBUG
-        - --tracing.instana.loglevel=DEBUG
-        - --tracing.instana=false
-        #- --providers.file.directory=/etc/traefik/
+        - --log.level=INFO # INFO | DEBUG
+        - --certificatesresolvers.tlsletsencrypt.acme.tlschallenge=true
+        - --certificatesresolvers.tlsletsencrypt.acme.storage=/etc/traefik3/acme.json
+        # To use letsencrypts staging server, to avoid rate limiting when testing
+        #- --certificatesresolvers.tlsletsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+        # To use zerossl rather than letsencrypt, create account, fill in eab.kid and eab.hmacencoded.
+        #- --certificatesresolvers.tlsletsencrypt.acme.caserver=https://acme.zerossl.com/v2/DV90
+        #- --certificatesresolvers.tlsletsencrypt.acme.email=email@domain
+        #- --certificatesresolvers.tlsletsencrypt.acme.eab.kid=fromwebsite
+        #- --certificatesresolvers.tlsletsencrypt.acme.eab.hmacencoded=fromwebsite
+
         - --providers.http=true
         - --providers.http.endpoint=http://pods-api:8000/traefik-config
         volumeMounts:
         - name: pods-traefik-conf
           mountPath: /etc/traefik2/
-        - name: certs
-          mountPath: /tmp/ssl
+        - name: acme-storage
+          mountPath: /etc/traefik3/acme.json
+          subPath: acme.json
 
       volumes:
       - name: pods-traefik-conf
         configMap:
           name: pods-traefik-conf
-      - name: certs
-        secret:
-          secretName: pods-certs
+      - name: acme-storage
+        persistentVolumeClaim:
+          claimName: pods-traefik-vol01

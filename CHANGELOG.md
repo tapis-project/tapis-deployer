@@ -12,6 +12,7 @@ Notable changes between versions.
 - [Files: 1.3.6 to 1.3.7 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
 - [Jobs: 1.3.5 to 1.3.6 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Authenticator: 1.3.4 to 1.3.5 (authenticator_api_image, authenticator_migrations_image)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
+- [Pods: 1.3.2 to 1.4.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md#140---2023-07-06)
 
 ### Breaking Changes for Services / Tapis Users 
 
