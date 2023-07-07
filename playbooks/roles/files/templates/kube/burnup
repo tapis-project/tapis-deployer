@@ -7,16 +7,26 @@ mkdir -p {{ tapisdatadir }}/files/rabbitmq
 mkdir -p {{ tapisdatadir }}/files/postgres
 mkdir -p {{ tapisdatadir }}/files/minio
 mkdir -p {{ tapisdatadir }}/files/irods
- 
 
-kubectl apply -f files-config.yml
-kubectl apply -f service.yml 
 kubectl apply -f configmap.yml
-kubectl apply -f pvc.yml
-kubectl apply -f rabbitmq-pvc.yml
-kubectl apply -f postgres.yml 
-kubectl wait --for=condition=available deploy/files-postgres
-kubectl apply -f rabbitmq.yml 
-kubectl wait --for=condition=available deploy/files-rabbitmq
-kubectl apply -f api.yml
-kubectl apply -f workers.yml
+kubectl apply -f files-config.yml
+
+pushd ./postgres
+./burnup
+popd
+
+pushd ./pgadmin
+./burnup
+popd
+
+pushd ./rabbitmq
+./burnup
+popd
+
+pushd ./api
+./burnup
+popd
+
+pushd ./worker
+./burnup
+popd
