@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# recreate config
-kubectl delete configmap tapis-nginx-config
-kubectl create configmap tapis-nginx-config --from-file=nginx.conf
-
-# relaunch deploy pod
-kubectl rollout restart deployment tapis-nginx
-

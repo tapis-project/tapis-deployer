@@ -1,4 +1,5 @@
 #!/bin/bash
 
 kubectl delete configmap tapis-nginx-config
+kubectl delete configmap tapis-nginx-locations
 kubectl delete -f deploy.yml 

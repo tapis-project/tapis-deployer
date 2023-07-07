@@ -2,10 +2,11 @@
 
 Notable changes between versions.
 
-## 1.3.9
+## 1.4.0
 
 ### Services updated:
 
+- Nginx locations for individual components have been split into their own location files. Should not cause a breaking change or interrupt routing. 
 - [Systems: 1.3.3 to 1.3.4 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.4/CHANGELOG.md) 
 - [Apps: 1.3.3 to 1.3.4 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.3.4/CHANGELOG.md)  
 - [Files: 1.3.6 to 1.3.7 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
@@ -18,7 +19,6 @@ Notable changes between versions.
 - Authenticator: 
   - The DELETE /v3/oauth2/clients endpoint now returns the standard 5-stanza Tapis response. Previously, it returned an empty HTTP response. Applications that use this endpoint should be updated to handle a non-empty response.
   - The POST /v3/oauth2/tokens endpoint has been changed in the case of the device_code grant to require only the client_id as a POST parameter. Previously, the client_id and client_key were erroneously both required to be passed using an HTTP Basic Auth header. Client applications that utilized the device code grant type and passed the client credentials as part of the HTTP Basic Auth header must be updated to pass only the client id as part of the POST payload. The OA3 spec has been updated to reflect this new requirement. See issue #32.
-
 
 ### Deployer updates:
 
