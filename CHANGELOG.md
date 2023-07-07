@@ -2,6 +2,10 @@
 
 Notable changes between versions.
 
+## 1.4.0
+
+- Nginx locations for individual components have been split into their own location files. Should not cause a breaking change or interrupt routing. 
+
 ## 1.3.8
 
 - Added java heap max and min options for apps, systems, and notifications when using Docker compose.
