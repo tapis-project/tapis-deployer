@@ -5,6 +5,7 @@ Notable changes between versions.
 ## 1.4.0
 
 ### Services updated:
+- [Workflow: 1.3.1 to 1.4.0 (tapis/workflows)](https://github.com/tapis-project/tapis-workflows/blob/release-1.4.0/CHANGELOG.md)
 
 - [Systems: 1.3.3 to 1.4.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.4.0/CHANGELOG.md) 
 
