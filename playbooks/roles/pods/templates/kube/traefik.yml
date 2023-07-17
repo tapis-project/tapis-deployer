@@ -40,16 +40,3 @@ http:
       loadBalancer:
         servers:
          - url: http://pods-api:8000
-
-tls:
-  options:
-    default:
-      minVersion: VersionTLS12
-  certificates:
-    - certFile: /tmp/ssl/tls.crt
-      keyFile: /tmp/ssl/tls.key
-  stores:
-    default:
-      defaultCertificate:
-        certFile: /tmp/ssl/tls.crt
-        keyFile: /tmp/ssl/tls.key
