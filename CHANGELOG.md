@@ -7,10 +7,12 @@ Notable changes between versions.
 ### Services updated:
 
 - Nginx locations for individual components have been split into their own location files. Should not cause a breaking change or interrupt routing. 
-- [Systems: 1.3.3 to 1.3.4 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.3.4/CHANGELOG.md) 
-- [Apps: 1.3.3 to 1.3.4 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.3.4/CHANGELOG.md)  
-- [Files: 1.3.6 to 1.3.7 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
-- [Jobs: 1.3.5 to 1.3.6 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Systems: 1.3.3 to 1.4.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.4.0/CHANGELOG.md) 
+- [Apps: 1.3.3 to 1.4.0 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.4.0/CHANGELOG.md)  
+- [Notifications: 1.3.4 to 1.4.0 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.4.0/CHANGELOG.md)  
+- [Files: 1.3.6 to 1.4.0 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Jobs: 1.3.5 to 1.4.0 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Security: 1.3.2 to 1.4.0 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
 - [Authenticator: 1.3.4 to 1.3.5 (authenticator_api_image, authenticator_migrations_image)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
 - [Pods: 1.3.2 to 1.4.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md#140---2023-07-06)
 
