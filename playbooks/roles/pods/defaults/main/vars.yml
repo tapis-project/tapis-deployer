@@ -1,7 +1,7 @@
 ---
 
 pods_service_name: pods
-pods_image_version: 1.3.1
+pods_image_version: 1.4.0
 pods_service_site_id: "{{ global_site_id }}"
 pods_service_tenant_id: admin
 pods_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
