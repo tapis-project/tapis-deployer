@@ -1,0 +1,34 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pods-traefik-vol01
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: rbd-new
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: chown-pods-traefik-pvc
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: touch-acme-json
+        image: busybox
+        command: ["bin/sh", "-c"]
+        args: ["touch /mnt/acme.json && chmod 0600 /mnt/acme.json"]
+        volumeMounts:
+        - name: pods-traefik-data
+          mountPath: /mnt
+      volumes:
+      - name: pods-traefik-data
+        persistentVolumeClaim:
+          claimName: pods-traefik-vol01
