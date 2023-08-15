@@ -2,6 +2,16 @@
 
 Notable changes between versions.
 
+## 1.4.1
+
+### Services Updated
+
+- All Tapis components will be updated from versions 1.3.x to 1.4.0.
+  - [Systems](https://github.com/tapis-project/tapis-systems/blob/1.4.1/CHANGELOG.md)
+  - [Apps](https://github.com/tapis-project/tapis-apps/blob/1.4.1/CHANGELOG.md)
+  - [Files](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+  - [Jobs](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+
 ## 1.4.0
 
 ### Services Updated
