@@ -51,7 +51,7 @@ checkvault(){
     echo "Vault check succeeded."
   else
     echo "Vault check failed. Check vault status & re-run burnup."
-    echo "e.g. 'kubectl exec -it deploy/vault vault status'"
+    echo "e.g. 'kubectl exec -it deploy/vault -- vault status'"
     echo "(Vault should be Initialized = true and Sealed = false.)"
     echo "Exiting."
     exit 1
