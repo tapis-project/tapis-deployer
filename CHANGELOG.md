@@ -6,11 +6,10 @@ Notable changes between versions.
 
 ### Services Updated
 
-- All Tapis components will be updated from versions 1.3.x to 1.4.0.
-  - [Systems](https://github.com/tapis-project/tapis-systems/blob/1.4.1/CHANGELOG.md)
-  - [Apps](https://github.com/tapis-project/tapis-apps/blob/1.4.1/CHANGELOG.md)
-  - [Files](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
-  - [Jobs](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Systems: 1.4.0 to 1.4.1 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.4.1/CHANGELOG.md)
+- [Apps: 1.4.0 to 1.4.1 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.4.1/CHANGELOG.md)
+- [Files: 1.4.0 to 1.4.1 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Jobs: 1.4.0 to 1.4.1 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 
 ## 1.4.0
 
