@@ -2,6 +2,13 @@
 
 Notable changes between versions.
 
+## 1.4.2
+
+### Services Updated
+
+- [Files: 1.4.1 to 1.4.2 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Jobs: 1.4.1 to 1.4.2 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+
 ## 1.4.1
 
 ### Services Updated
