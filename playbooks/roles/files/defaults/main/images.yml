@@ -1,5 +1,5 @@
-files_api_image: tapis/tapis-files:1.4.1
-files_workers_image: tapis/tapis-files-workers:1.4.1
+files_api_image: tapis/tapis-files:1.4.2
+files_workers_image: tapis/tapis-files-workers:1.4.2
 files_postgres_image: postgres:11
 files_migrations_image: postgres:11
 files_minio_image: minio/minio
