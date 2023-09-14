@@ -31,7 +31,7 @@ services:
         env_file:
             {{ tapisdatadir }}/systems/env
         environment:
-            - PGDATA=/pdgata/data
+            - PGDATA=/pgdata/data
         volumes:
             - {{ tapisdatadir }}/systems/postgres:/pgdata
         healthcheck:
