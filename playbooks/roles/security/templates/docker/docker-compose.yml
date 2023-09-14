@@ -12,7 +12,7 @@ services:
         networks:
             - tapis
         volumes:
-            - {{ tapisdatadir }}/security/postgres:/pgdata/data
+            - {{ tapisdatadir }}/security/postgres:/pgdata
         environment:
             - PGDATA=/pgdata/data
         env_file:
@@ -23,16 +23,17 @@ services:
             timeout: 5s
             retries: 5
 
-    sk-pgadmin:
-        container_name: sk-pgadmin
-        image: {{ security_pgadmin_image }}
-        environment:
-            - PGADMIN_DEFAULT_EMAIL=wow@example.com
-            - PGADMIN_DEFAULT_PASSWORD=password
-        env_file:
-            - {{ tapisdatadir }}/security/env
-        networks:
-            - tapis
+# Do not start pgadmin by default 
+#    sk-pgadmin:
+#        container_name: sk-pgadmin
+#        image: {{ security_pgadmin_image }}
+#        environment:
+#            - PGADMIN_DEFAULT_EMAIL=wow@example.com
+#            - PGADMIN_DEFAULT_PASSWORD=password
+#        env_file:
+#            - {{ tapisdatadir }}/security/env
+#        networks:
+#            - tapis
 
     security-migrations:
         container_name: security-migrations
@@ -52,7 +53,7 @@ services:
 
     security-api:
         container_name: security-api
-        user: ${UID}:${GID}
+        user: ${UID_GID}
         image: {{ security_api_image }}
         environment:
             - TAPIS_SITE_ID={{ security_service_site_id }}
@@ -63,7 +64,7 @@ services:
             - TAPIS_DB_USER=tapis
             - TAPIS_DB_JDBC_URL=jdbc:postgresql://sk-postgres:5432/tapissecdb
             - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES=/v3/security
-            - TAPIS_REQUEST_LOGGING_IGNORE_SUFFIXES=/healthcheck;/ready;/hello
+            - TAPIS_REQUEST_LOGGING_IGNORE_SUFFIXES="/healthcheck;/ready;/hello"
             - TAPIS_LOG_DIRECTORY=/opt/tomcat/logs
             - CATALINA_OPTS=-Xms{{security_heap_min}} -Xmx{{security_heap_max}} --add-opens java.base/java.time=ALL-UNNAMED
         env_file:

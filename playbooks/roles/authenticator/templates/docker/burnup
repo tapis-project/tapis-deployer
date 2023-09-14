@@ -1,11 +1,13 @@
 #!/bin/bash
 
 echo "burnup authenticator:"
-python3 ../admin/util/parse_skexport -c authenticator -d {{ tapisdatadir }}
+
 mkdir -p {{ tapisdatadir }}/authenticator
 mkdir -p {{ tapisdatadir }}/authenticator/postgres
 mkdir -p {{ tapisdatadir }}/authenticator/api
 mkdir -p {{ tapisdatadir }}/authenticator/ldap
+
+python3 ../admin/util/parse_skexport -c authenticator -d {{ tapisdatadir }}
 
 docker compose up -d
 

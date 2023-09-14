@@ -6,7 +6,7 @@ networks:
 services:
     systems-api:
         container_name: systems-api
-        user: ${UID}:${GID}
+        user: ${UID_GID}
         image: {{ systems_api_image }}
         networks:
             - tapis
@@ -33,7 +33,7 @@ services:
         environment:
             - PGDATA=/pdgata/data
         volumes:
-            - {{ tapisdatadir }}/systems/postgres:/pgdata/data
+            - {{ tapisdatadir }}/systems/postgres:/pgdata
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U postgres"]
             interval: 5s
@@ -46,7 +46,7 @@ services:
         networks:
             - tapis
         volumes:
-            - {{ tapisdir }}/systems/systems-init-db-sh:/init-db
+            - ./systems-init-db-sh:/init-db
         env_file:
             {{ tapisdatadir }}/systems/env
         command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"

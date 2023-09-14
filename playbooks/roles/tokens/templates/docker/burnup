@@ -4,9 +4,9 @@ echo "burnup tokens:"
 
 # Read secrets from env file
 mkdir -p {{ tapisdatadir }}/tokens
-myuid=`id -u`
-docker run -it --rm -v {{ tapisdatadir }}/tokens:/tokens tapis/ubutil2204:1.4.0 chown $myuid /tokens
-python3 {{ tapisdir }}/admin/util/parse_skexport -c tokens -d {{ tapisdatadir }}
+MYUID=`id -u`
+docker run -it --rm -v {{ tapisdatadir }}/tokens:/tokens tapis/ubutil2204:1.4.0 chown $MYUID /tokens
+python3 ../admin/util/parse_skexport -c tokens -d {{ tapisdatadir }}
 
 docker compose up -d
 
