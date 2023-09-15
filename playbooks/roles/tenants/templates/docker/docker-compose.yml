@@ -11,8 +11,8 @@ services:
     container_name: tenants-postgres
     image: {{ tenants_postgres_image }}
     volumes:
-      - "{{ tapisdatadir }}/tenants/postgres:/pgdata/data"
-      - "./tenants-config.json:/home/tapis/config.json"
+      - {{ tapisdatadir }}/tenants/postgres:/pgdata
+      - ./tenants-config.json:/home/tapis/config.json
     networks:
       - tapis
     environment:

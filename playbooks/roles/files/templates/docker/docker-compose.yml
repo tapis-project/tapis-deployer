@@ -16,12 +16,9 @@ services:
       - tapis
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 5s
-      timeout: 5s
+      interval: 30s
+      timeout: 30s
       retries: 3
-    depends_on:
-      files-postgres:
-        condition: service_healthy
 
   files-postgres:
     container_name: files-postgres
@@ -31,7 +28,7 @@ services:
      - POSTGRES_DATABASE=tapisfiles
      - PGDATA=/pgdata/data
     volumes:
-      - {{ tapisdatadir }}/files/postgres:/pgdata/data
+      - {{ tapisdatadir }}/files/postgres:/pgdata
     networks:
       - tapis
     env_file:
@@ -49,7 +46,7 @@ services:
       files-postgres:
         condition: service_healthy
     volumes:
-      - {{ tapisdir }}/files/files-init-db-sh:/files-init-db-sh
+      - ./files-init-db-sh:/files-init-db-sh
     networks:
       - tapis
     command: chmod +x files-init-db-sh; /files-init-db-sh
@@ -78,7 +75,7 @@ services:
 
   files-workers:
     container_name: files-workers
-    user: ${UID}:${GID}
+    user: ${UID_GID}
     image: {{ files_workers_image }}
     networks:
       - tapis
@@ -107,7 +104,7 @@ services:
         condition: service_started
 
   files-api:
-    user: ${UID}:${GID}
+    user: ${UID_GID}
     container_name: files-api
     image: {{ files_api_image }}
     networks:

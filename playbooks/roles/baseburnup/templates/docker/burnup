@@ -31,13 +31,21 @@ echo "Start: top-level-burnup"
 
 mkdir -p {{ tapisdatadir }}
 
-{%- if "tapisflavor" == "docker" %}
+{% if tapisflavor == "docker" %}
 ### Docker-specific setup 
-docker network inspect tapis || docker network create tapis 
+if ! docker network inspect tapis >& /dev/null
+then 
+  echo "Creating docker tapis network:"
+  docker network create tapis 
+fi
 {% endif %}
 
 
 ### init / setup
+
+{% if "proxy" in components_to_deploy %}
+burnup_or_exit proxy
+{% endif %}
 
 {% if "vault" in components_to_deploy %}
 burnup_or_exit vault
@@ -52,10 +60,6 @@ burnup_or_exit skadmin
 
 {% if "tenants" in components_to_deploy %}
 burnup_or_exit tenants
-{% endif %}
-
-{% if "proxy" in components_to_deploy %}
-burnup_or_exit proxy
 {% endif %}
 
 {% if "security" in components_to_deploy %}
@@ -89,6 +93,11 @@ burnup_or_exit systems
 burnup_or_exit apps
 {% endif %}
 
+{% if "notifications" in components_to_deploy %}
+burnup_or_exit notifications
+{% endif %}
+
+
 ## tertiary services
 
 # actors
@@ -100,10 +109,6 @@ burnup_or_exit apps
 # meta
 
 # monitoring
-
-{% if "notifications" in components_to_deploy %}
-burnup_or_exit notifications
-{% endif %}
 
 # pgrest
 

@@ -7,7 +7,7 @@
     "log_level": "INFO",
     "use_allservices_password": {{tokens_use_allservices_password|to_json}},
 {% if tokens_use_allservices_password == true %}
-    "allservices_password": "{{tokens_allservices_password}}"
+    "allservices_password": "{{tokens_allservices_password}}",
 {% endif %}
     "use_sk": true
 }

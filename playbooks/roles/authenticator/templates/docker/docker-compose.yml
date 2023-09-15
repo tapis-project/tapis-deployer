@@ -10,9 +10,9 @@ services:
     networks:
         - tapis
     env_file:
-        - "{{ tapisdatadir }}/authenticator/env"
+        - {{ tapisdatadir }}/authenticator/env
     volumes:
-        - "./authenticator-config.json:/home/tapis/config.json"
+        - ./authenticator-config.json:/home/tapis/config.json
     depends_on: 
         authenticator-postgres:
             condition: service_healthy
@@ -28,16 +28,16 @@ services:
     networks:
         - tapis
     environment:
-        # - PGDATA=/pgdata/data
+        - PGDATA=/pgdata/data
         - POSTGRES_USER=authenticator
         - POSTGRES_DB=authenticator
         - POSTGRES_HOST_AUTH_METHOD=trust
     env_file:
-        - "{{ tapisdatadir }}/authenticator/env"
+        - {{ tapisdatadir }}/authenticator/env
     volumes:
-        - "{{ tapisdatadir }}/authenticator/postgres:/var/lib/postgresql/data"
+        - {{ tapisdatadir }}/authenticator/postgres:/pgdata
     healthcheck:
-        test: pg_isready -U postgres
+        test: pg_isready -U authenticator
         interval: 5s
         timeout: 5s
         retries: 5
@@ -49,7 +49,7 @@ services:
     networks:
         - tapis
     env_file:
-        - "{{ tapisdatadir }}/authenticator/env"
+        - {{ tapisdatadir }}/authenticator/env
     depends_on:
         authenticator-postgres:
             condition: service_healthy
@@ -57,7 +57,7 @@ services:
             condition: service_started
     command: ['upgrade']
     volumes:
-        - "./authenticator-config.json:/home/tapis/config.json"
+        - ./authenticator-config.json:/home/tapis/config.json
         
         
   authenticator-ldap:
@@ -69,9 +69,9 @@ services:
         - LDAP_DOMAIN=tapis
         - LDAP_ORGANISATION=Tapis
     env_file:
-        - "{{ tapisdatadir }}/authenticator/env"
+        - {{ tapisdatadir }}/authenticator/env
     volumes:
-        - "{{ tapisdatadir }}/authenticator/ldap:/data/ldap"
+        - {{ tapisdatadir }}/authenticator/ldap:/data/ldap
     depends_on:
         authenticator-postgres:
             condition: service_healthy

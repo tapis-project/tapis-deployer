@@ -2,6 +2,17 @@
 
 Notable changes between versions.
 
+## 1.4.3
+
+### Services Updated 
+
+- This release contains several bugfixes & improvements for the Docker flavor of Tapis Deployer. 
+
+### Breaking Changes for Deployer Admins
+
+- This is ONLY for Docker Tapis installs updating; it is NOT applicable to Kubernetes installs: Some components' Postgres directory volume mounts have moved within the `tapisdatadir` and may need to be moved on disk before starting the containers. Each component should now follow a similar structure, e.g. for authenticator: `tapisdatadir/authenticator/postgres/data` should contain the Postgres data, such as the `PG_VERSION` file, `pg_wal` directory, etc. 
+
+
 ## 1.4.2
 
 ### Services Updated
