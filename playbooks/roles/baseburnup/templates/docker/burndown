@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e 
 
 # global Tapis burndown script
 
@@ -67,6 +66,11 @@ cd $mydir_absolute/files
 
 {% if "systems" in components_to_deploy %}
 cd $mydir_absolute/systems
+./burndown
+{% endif %}
+
+{% if "apps" in components_to_deploy %}
+cd $mydir_absolute/apps
 ./burndown
 {% endif %}
 

@@ -3,13 +3,15 @@
 echo "burnup apps:"
 
 mkdir -p {{ tapisdatadir }}/apps
-myuid=`id -u`
-export UID=`id -u`
-export GID=`id -g`
+mkdir -p {{ tapisdatadir }}/apps/postgres
 
-docker run -it --rm -v {{ tapisdatadir }}/apps:/apps tapis/ubutil2204:1.4.0 chown $myuid /apps
+MYUID=`id -u`
 
-python3 {{ tapisdir }}/admin/util/parse_skexport -c apps -d {{ tapisdatadir }}
+export UID_GID="$(id -u):$(id -g)"
+
+docker run -it --rm -v {{ tapisdatadir }}/apps:/apps tapis/ubutil2204:1.4.0 chown $MYUID /apps
+
+python3 ../admin/util/parse_skexport -c apps -d {{ tapisdatadir }}
 
 docker compose up -d
 

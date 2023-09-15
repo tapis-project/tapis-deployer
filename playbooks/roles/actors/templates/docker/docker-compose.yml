@@ -77,7 +77,7 @@ services:
             - tapis
         volumes:
 #             - ./config-local.json:/home/tapis/config.json
-          - "{{ tapisdir }}/actors/actors-config.json:/etc/nginx/sites-enabled/flask-project"
+          - "./actors-config.json:/etc/nginx/sites-enabled/flask-project"
 # #            - ./images/nginx/nginx.conf:/etc/nginx/nginx.conf
 # #            - ./images/nginx/sites-enabled:/etc/nginx/sites-enabled
         restart: always
@@ -92,7 +92,7 @@ services:
         #     - "127.0.0.1:5000:5000"
         volumes:
         #     - ./config-local.json:/home/tapis/config.json
-          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+          - "./actors-config.json:/home/tapis/config.json"
         #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
         #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
         environment:
@@ -115,7 +115,7 @@ services:
         image: {{ actors_core_image }}
         volumes:
         #     - ./config-local.json:/home/tapis/config.json
-          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+          - "./actors-config.json:/home/tapis/config.json"
         #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
         #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
         # ports:
@@ -141,7 +141,7 @@ services:
         image: {{ actors_core_image }}
         volumes:
         #     - ./config-local.json:/home/tapis/config.json
-          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+          - "./actors-config.json:/home/tapis/config.json"
         #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
         #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
         ports:
@@ -168,7 +168,7 @@ services:
         command: "python3 -u /home/tapis/actors/spawner.py"
         volumes:
         #     - ./config-local.json:/home/tapis/config.json
-          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+          - "./actors-config.json:/home/tapis/config.json"
         #     - /var/run/docker.sock:/var/run/docker.sock
         #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
         #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
@@ -193,7 +193,7 @@ services:
         volumes:
             - /:/host
         #     - ./config-local.json:/home/tapis/config.json
-            - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+            - "./actors-config.json:/home/tapis/config.json"
             - /var/run/docker.sock:/var/run/docker.sock
         #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
         #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
@@ -220,7 +220,7 @@ services:
         command: "python3 -u /home/tapis/actors/events.py"
         volumes:
         #     - ./config-local.json:/home/tapis/config.json
-          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+          - "./actors-config.json:/home/tapis/config.json"
         #     - /var/run/docker.sock:/var/run/docker.sock
         #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
         #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
@@ -286,7 +286,7 @@ services:
             - tapis
         volumes:
         #     - ./config-local.json:/home/tapis/config.json
-          - "{{ tapisdir }}/actors/actors-config.json:/home/tapis/config.json"
+          - "./actors-config.json:/home/tapis/config.json"
         #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
         #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
         # ports:

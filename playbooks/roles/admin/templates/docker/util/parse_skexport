@@ -61,8 +61,6 @@ notifications = {"PGADMIN_DEFAULT_PASSWORD": "DBCREDENTIAL_PGADMIN_NOTIFICATIONS
                 "TAPIS_SERVICE_PASSWORD": "SERVICEPWD_NOTIFICATIONS_PASSWORD",
                 "service_password": "SERVICEPWD_NOTIFICATIONS_PASSWORD"}
 
-
-
 pgrest = {"":""}
 
 pods = {"":""}
@@ -75,7 +73,7 @@ security = {"TAPIS_SK_VAULT_SECRET_ID": "", # these two are populated later with
             "TAPIS_PASSWORD": "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD",
             "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD",
             "PW" : "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD",
-            "TPW" : "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_POSTGRES_PASSWORD"}
+            "TPW" : "DBCREDENTIAL_POSTGRES_SK_POSTGRES_TAPISSECDB_TAPIS_PASSWORD"}
 
 skadmin = {"":""}
 
@@ -121,23 +119,26 @@ args = parser.parse_args()
 # normalize component name
 component = args.comp.replace('-', '_')
 
+# expand directory vars with things like ~ and $HOME
+tapisdatadir_absolute = os.path.expanduser(os.path.expandvars(args.dir))
+
 # ensure data dir exists for component
 try:
     if args.verbose:
-        print(f"trying makedir with {os.path.join(args.dir + '/' + args.comp)}")
-    os.makedirs(os.path.join(args.dir + '/' + args.comp))
+        print(f"trying makedir with {os.path.join(tapisdatadir_absolute + '/' + args.comp)}")
+    os.makedirs(os.path.join(tapisdatadir_absolute + '/' + args.comp))
     if args.verbose:
         print(f'success')
 except FileExistsError:
     if args.verbose:
-        print(f"error making {os.path.join(args.dir + '/' + args.comp)}, already exists. Ignoring")
+        print(f"error making {os.path.join(tapisdatadir_absolute + '/' + args.comp)}, already exists. Ignoring")
     pass #ignore file exists, supposed to be created already anyway
 
 # set local vars
-infile = args.dir + '/skadmin/env'
+infile = tapisdatadir_absolute + '/skadmin/env'
 local = locals()[component]
 try:
-    outfile = open(args.dir + '/' + args.comp + '/env', 'w')
+    outfile = open((tapisdatadir_absolute + '/' + args.comp + '/env'), 'w')
     if args.verbose:
             print(f'successfuly opened {outfile}')
 except Exception as e:
@@ -154,7 +155,7 @@ if args.verbose:
 
 # populate vault values for security
 if component == 'security':
-    vault_token = open('{{ tapisdatadir }}/vault/vault-token').read()
+    vault_token = open(tapisdatadir_absolute + '/vault/vault-token').read()
     headers = {'X-Vault-Token': f'{vault_token}'}
 
     r = requests.post('http://localhost:8200/v1/auth/approle/role/sk/secret-id', headers=headers)

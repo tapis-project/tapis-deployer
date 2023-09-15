@@ -10,5 +10,7 @@ services:
     networks:
       - tapis
     volumes:
-      - {{ tapisdir }}/globus-proxy/globus-proxy-config.json:/home/tapis/config.json
+      - ./globus-proxy-config.json:/home/tapis/config.json
+    ports:
+      - 127.0.0.1:5000:5000
 
