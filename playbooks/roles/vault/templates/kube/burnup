@@ -39,7 +39,7 @@ then
   kubectl apply -f vault-init.yml
   kubectl wait --for=condition=available deploy/vault
   pod=`kubectl get pods --selector=app=vault -o jsonpath='{.items[*].metadata.name}'`
-  kubectl exec -it $pod vault operator init | sed 's/\x1b\[[0-9;]*m//g' | tr -d "\r" >& {{ tapisdatadir }}/vault/vault-init
+  kubectl exec -it $pod -- vault operator init | sed 's/\x1b\[[0-9;]*m//g' | tr -d "\r" >& {{ tapisdatadir }}/vault/vault-init
   chmod 400 {{ tapisdatadir }}/vault/vault-init
   kubectl delete deploy/vault
 fi

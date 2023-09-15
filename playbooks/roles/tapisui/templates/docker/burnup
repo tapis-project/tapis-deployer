@@ -4,7 +4,7 @@ echo "burnup tapisui:"
 
 # mkdir -p {{ tapisdatadir }}/tapisui
 # myuid=`id -u`
-# docker run -it --rm -v {{ tapisdatadir }}/tapisui:/tapisui tapis/ubutil2204:1.3.0 chown $myuid /tapisui
+# docker run -it --rm -v {{ tapisdatadir }}/tapisui:/tapisui tapis/ubutil2204:1.4.0 chown $myuid /tapisui
 
 # python3 {{ tapisdir }}/admin/util/parse_skexport -c tapisui -d {{ tapisdatadir }}
 

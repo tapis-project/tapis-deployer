@@ -6,7 +6,7 @@ mkdir -p {{ tapisdatadir }}/notifications
 myuid=`id -u`
 export UID=`id -u`
 export GID=`id -g`
-docker run -it --rm -v {{ tapisdatadir }}/notifications:/notifications tapis/ubutil2204:1.3.0 chown $myuid /notifications
+docker run -it --rm -v {{ tapisdatadir }}/notifications:/notifications tapis/ubutil2204:1.4.0 chown $myuid /notifications
 
 python3 {{ tapisdir }}/admin/util/parse_skexport -c notifications -d {{ tapisdatadir }}
 

@@ -5,4 +5,4 @@ streams_mysql_image: mysql:5.7
 streams_chords_image: ncareol/chords:1.0
 streams_tapis_chords_app_image: scleveland/tapis-chords-app:0.9.8.2.3
 streams_tapis_chords_db_image: mysql:5.7
-streams_api_image: tapis/streams-api:1.3.0
+streams_api_image: tapis/streams-api:1.4.0

@@ -12,7 +12,7 @@ services:
     env_file:
         - "{{ tapisdatadir }}/authenticator/env"
     volumes:
-        - "{{ tapisdir }}/authenticator/authenticator-config.json:/home/tapis/config.json"
+        - "./authenticator-config.json:/home/tapis/config.json"
     depends_on: 
         authenticator-postgres:
             condition: service_healthy
@@ -57,7 +57,7 @@ services:
             condition: service_started
     command: ['upgrade']
     volumes:
-        - "{{ tapisdir }}/authenticator/authenticator-config.json:/home/tapis/config.json"
+        - "./authenticator-config.json:/home/tapis/config.json"
         
         
   authenticator-ldap:

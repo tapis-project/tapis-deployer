@@ -12,7 +12,7 @@ services:
     image: {{ tenants_postgres_image }}
     volumes:
       - "{{ tapisdatadir }}/tenants/postgres:/pgdata/data"
-      - "{{ tapisdir }}/tenants/tenants-config.json:/home/tapis/config.json"
+      - "./tenants-config.json:/home/tapis/config.json"
     networks:
       - tapis
     environment:
@@ -32,7 +32,7 @@ services:
     container_name: tenants-migrations
     image: {{ tenants_migrations_image }}
     volumes:
-      - "{{ tapisdir }}/tenants/tenants-config.json:/home/tapis/config.json"
+      - "./tenants-config.json:/home/tapis/config.json"
     networks:
       - tapis
     depends_on:
@@ -51,8 +51,8 @@ services:
     image: {{ tenants_api_image }}
     volumes:
     #   - ./service.log:/home/tapis/service.log
-      - "{{ tapisdir }}/tenants/tenants-config.json:/home/tapis/config.json"
-      - "{{ tapisdir }}/tenants/tenants-service.log:/home/tapis/service.log"
+      - "./tenants-config.json:/home/tapis/config.json"
+      - "./tenants-service.log:/home/tapis/service.log"
     networks:
       - tapis
     environment:

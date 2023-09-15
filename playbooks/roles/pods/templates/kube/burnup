@@ -8,24 +8,24 @@ kubectl apply -f services.yml
 # Security/Roles
 kubectl apply -f security.yml
 
-# Certs
-{% if pods_traefik_certs_file and pods_traefik_cert_key %}
-kubectl create secret tls pods-certs --cert={{ pods_traefik_certs_file }}  --key={{ pods_traefik_cert_key }}
-{% else %}
-kubectl create secret generic pods-certs
-{% endif %}
-
 # Configs
 kubectl create configmap pods-config --from-file=config.json
 kubectl create configmap pods-traefik-conf --from-file=traefik.yml
 
 # PVC
 kubectl apply -f postgres-pvc.yml
+kubectl apply -f nfs-pvc.yml
+kubectl apply -f traefik-pvc.yml
+
+# Wait for PVC jobs to complete
 kubectl wait --for=condition=complete job/chown-pods-postgres-pvc
+kubectl wait --for=condition=complete job/pods-nfs-mkdirs
+kubectl wait --for=condition=complete job/chown-pods-traefik-pvc
 
 # Storage
 kubectl apply -f postgres.yml
 kubectl apply -f rabbitmq.yml
+kubectl apply -f nfs.yml
 
 # App
 kubectl apply -f api.yml

@@ -4,7 +4,7 @@ echo "burnup systems:"
 
 mkdir -p {{ tapisdatadir }}/systems
 myuid=`id -u`
-docker run -it --rm -v {{ tapisdatadir }}/systems:/systems tapis/ubutil2204:1.3.0 chown $myuid /systems
+docker run -it --rm -v {{ tapisdatadir }}/systems:/systems tapis/ubutil2204:1.4.0 chown $myuid /systems
 
 export UID=`id -u`
 export GID=`id -g`

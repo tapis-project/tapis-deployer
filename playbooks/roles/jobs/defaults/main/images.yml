@@ -1,6 +1,6 @@
-jobs_api_image: tapis/jobsapi:1.3.4
-jobs_migrations_image: tapis/jobsmigrate:1.3.4
-jobs_worker_image: tapis/jobsworker:1.3.4
+jobs_api_image: tapis/jobsapi:1.4.2
+jobs_migrations_image: tapis/jobsmigrate:1.4.2
+jobs_worker_image: tapis/jobsworker:1.4.2
 jobs_postgres_image: postgres:12.4
 jobs_pgadmin_image: dpage/pgadmin4:6.20
 jobs_rabbitmq_management_image: rabbitmq:3.8.11-management

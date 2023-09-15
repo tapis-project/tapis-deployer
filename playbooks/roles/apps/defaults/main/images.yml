@@ -1,3 +1,3 @@
-apps_api_image: tapis/apps:1.3.3
+apps_api_image: tapis/apps:1.4.1
 apps_postgres_image: postgres:12.4
 apps_pgadmin_image: dpage/pgadmin4:6.20

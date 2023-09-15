@@ -4,9 +4,6 @@
 # Security/Roles
 #kubectl delete -f security.yml
 
-# Certs
-#kubectl delete secret pods-certs
-
 # Configs
 kubectl delete configmap pods-config
 kubectl delete configmap pods-traefik-conf
@@ -20,6 +17,9 @@ kubectl delete -f traefik-proxy.yml
 # Storage
 kubectl delete -f postgres.yml
 kubectl delete -f rabbitmq.yml
+kubectl delete -f nfs.yml
 
 # PVC - Don't burn these down silly.
 #kubectl delete -f postgres-pvc.yml
+#kubectl delete -f nfs-pvc.yml
+#kubectl delete -f traefik-pvc.yml

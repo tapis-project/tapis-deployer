@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "burnup authenticator:"
-python3 {{ tapisdir }}/admin/util/parse_skexport -c authenticator -d {{ tapisdatadir }}
+python3 ../admin/util/parse_skexport -c authenticator -d {{ tapisdatadir }}
 mkdir -p {{ tapisdatadir }}/authenticator
 mkdir -p {{ tapisdatadir }}/authenticator/postgres
 mkdir -p {{ tapisdatadir }}/authenticator/api

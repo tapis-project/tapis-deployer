@@ -16,7 +16,7 @@ Start vault:
 Enter the pod and init the vault:
 
     pod=`kubectl get pods --selector=app=vault -o jsonpath='{.items[*].metadata.name}'` 
-    kubectl exec -it $pod sh
+    kubectl exec -it $pod -- sh
     # vault operator init 
 
 **You will now see a big thing like this. Copy and paste into a safe place. You will never see it again. If it is lost, your vault is sealed forever.**
@@ -63,7 +63,7 @@ BTW now you can stop and start the vault deployment:
 You will have to exec into the new pod and "unseal" the vault *3* time using the keys you saved:
 
     pod=`kubectl get pods --selector=app=vault -o jsonpath='{.items[*].metadata.name}'` 
-    kubectl exec -it $pod sh
+    kubectl exec -it $pod -- sh
     # vault operator unseal 
     Unseal Key (will be hidden): 
     Key                Value

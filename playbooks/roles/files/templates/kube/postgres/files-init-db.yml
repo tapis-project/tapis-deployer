@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: files-init-db
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: files-init-db
+        image: {{ files_postgres_image }}
+        imagePullPolicy: Always
+        command: ["/tmp/files-init-db-sh"]
+        volumeMounts:
+        - name: files-init-db-vol
+          mountPath: /tmp
+        envFrom:
+        - configMapRef:
+            name: files-environment-vars
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-files-secrets
+              key: postgres-password
+      volumes:
+      - name: files-init-db-vol
+        configMap:
+          name: files-init-db-configmap
+          defaultMode: 0777
+  backoffLimit: 4
+
