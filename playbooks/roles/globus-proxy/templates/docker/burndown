@@ -2,4 +2,4 @@
 
 echo "burndown globus-proxy:"
 
-docker compose down
+docker-compose down

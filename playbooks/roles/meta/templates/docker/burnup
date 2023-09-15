@@ -4,5 +4,5 @@ echo "burnup meta:"
 
 mkdir -p {{ tapisdatadir }}/meta/restheart-mongo
 
-docker compose up -d
+docker-compose up -d
 

@@ -2,4 +2,4 @@
 
 echo "burndown actors:"
 
-docker compose down
+docker-compose down

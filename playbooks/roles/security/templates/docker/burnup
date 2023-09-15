@@ -8,7 +8,7 @@ mkdir -p {{ tapisdatadir }}/security
 
 # start database 
 
-# docker compose up -d sk-postgres sk-pgadmin
+# docker-compose up -d sk-postgres sk-pgadmin
 # if [ $? -ne 0 ]
 # then
 #   echo "SK-ERROR: postgres failed to start."
@@ -74,7 +74,7 @@ mkdir -p {{ tapisdatadir }}/security
 # export TAPIS_PASSWORD=$TPW
 # export TAPIS_DB_PASSWORD=$TPW
 
-# docker compose up -d security-api
+# docker-compose up -d security-api
 # if [ $? -ne 0 ]
 # then
 #   echo "SK-ERROR: security-api failed to start."
@@ -87,5 +87,5 @@ python3 {{ tapisdir }}/admin/util/parse_skexport -c security -d {{ tapisdatadir 
 export UID=`id -u`
 export GID=`id -g`
 
-docker compose up -d
+docker-compose up -d
 

@@ -2,4 +2,4 @@
 
 echo "burndown tapisui:"
 
-docker compose down
+docker-compose down

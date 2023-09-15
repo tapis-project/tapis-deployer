@@ -2,4 +2,4 @@
 
 echo "burndown pods:"
 
-docker compose down
+docker-compose down

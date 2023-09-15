@@ -2,4 +2,4 @@
 
 echo "burndown meta:"
 
-docker compose down
+docker-compose down

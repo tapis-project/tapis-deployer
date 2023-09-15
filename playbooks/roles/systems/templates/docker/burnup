@@ -10,5 +10,5 @@ export UID=`id -u`
 export GID=`id -g`
 python3 {{ tapisdir }}/admin/util/parse_skexport -c systems -d {{ tapisdatadir }}
 
-docker compose up -d
+docker-compose up -d
 

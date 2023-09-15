@@ -12,10 +12,10 @@ docker run -it --rm -v {{ tapisdatadir }}/vault:/vault tapis/ubutil2204:1.4.0 ch
 
 docker run -it -v {{ tapisdatadir }}/vault:/vault {{ vault_image }} chown -R 100:1000 /vault/data
 
-docker compose up -d
+docker-compose up -d
 if [ $? -ne 0 ]
 then
-  echo "docker compose up failed. Exiting burnup."
+  echo "docker-compose up failed. Exiting burnup."
   exit 1
 fi
 

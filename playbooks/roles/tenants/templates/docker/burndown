@@ -2,6 +2,6 @@
 
 echo "burndown tenants:"
 
-docker compose down
+docker-compose down
 
 

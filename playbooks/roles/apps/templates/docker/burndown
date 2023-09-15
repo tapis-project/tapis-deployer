@@ -2,4 +2,4 @@
 
 echo "burndown apps:"
 
-docker compose down
+docker-compose down

@@ -2,4 +2,4 @@
 
 echo "burndown authenticator:"
 
-docker compose down
+docker-compose down

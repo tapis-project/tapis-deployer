@@ -2,4 +2,4 @@
 
 echo "burndown jobs:"
 
-docker compose down
+docker-compose down

@@ -2,4 +2,4 @@
 
 echo "burndown monitoring:"
 
-docker compose down
+docker-compose down

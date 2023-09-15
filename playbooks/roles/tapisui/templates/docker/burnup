@@ -8,4 +8,4 @@ echo "burnup tapisui:"
 
 # python3 {{ tapisdir }}/admin/util/parse_skexport -c tapisui -d {{ tapisdatadir }}
 
-docker compose up -d
+docker-compose up -d

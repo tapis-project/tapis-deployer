@@ -15,5 +15,5 @@ docker run -it --rm -v {{ tapisdatadir }}/files:/files tapis/ubutil2204:1.4.0 ch
 
 python3 {{ tapisdir }}/admin/util/parse_skexport -c files -d {{ tapisdatadir }}
 
-docker compose up -d
+docker-compose up -d
 
