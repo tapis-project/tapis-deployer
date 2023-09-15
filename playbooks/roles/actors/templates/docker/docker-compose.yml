@@ -66,9 +66,6 @@ services:
                 hard: 65535
         networks:
             - tapis
-        depends_on:
-            actors-mongo:
-                condition: service_started
 
     actors-nginx:
         container_name: actors-nginx

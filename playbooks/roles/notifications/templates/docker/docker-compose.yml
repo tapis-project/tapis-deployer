@@ -116,10 +116,5 @@ services:
     healthcheck:
       test: rabbitmq-diagnostics check_running
       interval: 30s
-      timeout: 5s
+      timeout: 30s
       retries: 3
-    #depends_on:
-    #  notifications-postgres:
-    #    condition: service_healthy
-    #  notifications-init-db:
-    #    condition: service_completed_successfully

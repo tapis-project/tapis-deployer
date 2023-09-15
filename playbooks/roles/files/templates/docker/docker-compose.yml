@@ -16,12 +16,9 @@ services:
       - tapis
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 5s
-      timeout: 5s
+      interval: 30s
+      timeout: 30s
       retries: 3
-    depends_on:
-      files-postgres:
-        condition: service_healthy
 
   files-postgres:
     container_name: files-postgres
