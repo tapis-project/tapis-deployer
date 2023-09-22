@@ -74,13 +74,12 @@ docker run --name skadmin-init -it --rm --net tapis --env VAULT_ROLEID --env VAU
 -v ./run-sk-admin:/tmp/run-sk-admin \
 {{ skadmin_securityadmin_image }} /tmp/run-sk-admin
 
+# export tapis passwords to env file
+docker run --name skadmin-export -it --rm --net tapis --env SKEXPORT_PARMS {{ skadmin_securityexport_image }} > {{ tapisdatadir }}/skadmin/env
 
 {% if site_type == 2 %}
 echo "Collecting public keys for associate site tenants. Please send these to your tenants admin before next steps in deployment."
-cd $here/../admin
+cd ../admin
 ./get-assocsite-publickeys
 {% endif %}
 
-
-# export tapis passwords to env file
-docker run --name skadmin-export -it --rm --net tapis --env SKEXPORT_PARMS {{ skadmin_securityexport_image }} > {{ tapisdatadir }}/skadmin/env
