@@ -3,11 +3,13 @@
 echo "burnup notifications:"
 
 mkdir -p {{ tapisdatadir }}/notifications
-myuid=`id -u`
-export UID=`id -u`
-export GID=`id -g`
-docker run -it --rm -v {{ tapisdatadir }}/notifications:/notifications tapis/ubutil2204:1.4.0 chown $myuid /notifications
+mkdir -p {{ tapisdatadir }}/notifications/postgres
 
-python3 {{ tapisdir }}/admin/util/parse_skexport -c notifications -d {{ tapisdatadir }}
+MYUID=`id -u`
+export UID_GID="$(id -u):$(id -g)"
+
+docker run -it --rm -v {{ tapisdatadir }}/notifications:/notifications tapis/ubutil2204:1.4.0 chown $MYUID /notifications
+
+python3 ../admin/util/parse_skexport -c notifications -d {{ tapisdatadir }}
 
 docker compose up -d

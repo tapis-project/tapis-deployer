@@ -10,8 +10,8 @@ services:
         container_name: tokens-api
         image: {{ tokens_api_image }}
         volumes:
-            - '{{ tapisdir }}/tokens/tokens-config.json:/home/tapis/config.json'
-            - '{{ tapisdir }}/admin/verification/tokens-test:/home/tapis/healthcheck'
+            - ./tokens-config.json:/home/tapis/config.json
+            - ../admin/verification/tokens-test:/home/tapis/healthcheck
         networks:
             - tapis
         env_file: 
