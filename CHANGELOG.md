@@ -12,6 +12,7 @@ Notable changes between versions.
 - [ Notifications: 1.4.0 to 1.4.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.4.1/CHANGELOG.md)
 - [ Files: 1.4.2 to 1.4.3 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
 - [ Jobs: 1.4.2 to 1.4.3 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [ Globus-Proxy: 1.4.2 to 1.4.3 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
 
 
 ### Breaking Changes for Deployer Admins
