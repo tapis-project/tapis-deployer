@@ -6,11 +6,11 @@ echo "burnup vault:"
 
 mkdir -p {{ tapisdatadir }}/vault/data
 
-myuid=`id -u`
+MYUID=`id -u`
 
-docker run -it --rm -v {{ tapisdatadir }}/vault:/vault tapis/ubutil2204:1.4.0 chown $myuid /vault
+docker run -it --rm -v {{ tapisdatadir }}/vault:/vault tapis/ubutil2204:1.4.0 chown $MYUID /vault
 
-docker run -it -v {{ tapisdatadir }}/vault:/vault {{ vault_image }} chown -R 100:1000 /vault/data
+docker run -it --rm -v {{ tapisdatadir }}/vault:/vault {{ vault_image }} chown -R 100:1000 /vault/data
 
 docker compose up -d
 if [ $? -ne 0 ]
@@ -95,4 +95,9 @@ then
   echo "Vault should be up and unsealed." 
 fi
 
+# give vault some time to get fully booted up before the following services try to use it
+sleep 30
+
 exit 0
+
+

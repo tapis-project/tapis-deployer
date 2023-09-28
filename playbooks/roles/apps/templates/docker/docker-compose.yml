@@ -7,7 +7,7 @@ networks:
 services:
     apps-api:
         container_name: apps-api
-        user: ${UID}:${GID}
+        user: ${UID_GID}
         image: {{ apps_api_image }}
         networks:
             - tapis
@@ -50,7 +50,7 @@ services:
             - {{ tapisdatadir }}/apps/env
         volumes:
             - {{ tapisdatadir }}/apps/postgres:/pgdata
-            - {{ tapisdir }}/apps/apps-init-db-sh:/init-db
+            - ./apps-init-db-sh:/init-db
         command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"
         depends_on:
             apps-postgres:
