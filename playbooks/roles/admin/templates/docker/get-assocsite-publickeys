@@ -1,8 +1,4 @@
 #!/bin/bash
 
-for i in ADMIN DEV
-do 
-  echo "$i : "
-  grep JWTSIGNING_${i}_PUBLICKEY {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | sed 's/\\n/\n/g'
-done
+grep JWTSIGNING_.*_PUBLICKEY {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | sed 's/\\n/\n/g'
 
