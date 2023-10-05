@@ -93,9 +93,6 @@ services:
             - {{ tapisdatadir }}/jobs/jobs-rabbitmq-data:/var/lib/rabbitmq/mnesia
         networks:
             - tapis
-        depends_on:
-            jobs-migrations:
-                condition: service_completed_successfully
         healthcheck:
             test: rabbitmq-diagnostics -q ping
             interval: 30s

@@ -16,12 +16,9 @@ services:
       - tapis
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 5s
-      timeout: 5s
+      interval: 30s
+      timeout: 30s
       retries: 3
-    depends_on:
-      files-postgres:
-        condition: service_healthy
 
   files-postgres:
     container_name: files-postgres
@@ -101,7 +98,7 @@ services:
       - RABBITMQ_HOSTNAME=files-rabbitmq
       - RABBITMQ_USERNAME=tapisfiles
       - RABBITMQ_VHOST=tapisfiles
-    command: ["java", "-Xmx3g", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.lib.transfers.TransfersApp"]
+    command: ["java", "-Xmx3g", "-Dlogback.configurationFile=target/classes/logback.xml", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.lib.transfers.TransfersApp"]
     depends_on:
       files-api: 
         condition: service_started
@@ -112,7 +109,7 @@ services:
     image: {{ files_api_image }}
     networks:
       - tapis
-    command: ["java", "-Xdebug", "-Xmx3g", "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.api.FilesApplication"]
+    command: ["java", "-Xdebug", "-Xmx3g", "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", "-Dlogback.configurationFile=target/classes/logback.xml", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.api.FilesApplication"]
     env_file:
       - {{ tapisdatadir }}/files/env
     environment:

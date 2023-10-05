@@ -2,6 +2,24 @@
 
 Notable changes between versions.
 
+## 1.4.3
+
+### Services Updated 
+
+- This release contains several bugfixes & improvements for the Docker flavor of Tapis Deployer. 
+- [ Systems: 1.4.1 to 1.4.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.4.2/CHANGELOG.md)
+- [ Apps: 1.4.1 to 1.4.2 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.4.2/CHANGELOG.md)
+- [ Notifications: 1.4.0 to 1.4.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.4.1/CHANGELOG.md)
+- [ Files: 1.4.2 to 1.4.3 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [ Jobs: 1.4.2 to 1.4.3 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [ Globus-Proxy: 1.4.2 to 1.4.3 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+
+
+### Breaking Changes for Deployer Admins
+
+- This is ONLY for Docker Tapis installs updating; it is NOT applicable to Kubernetes installs: Some components' Postgres directory volume mounts have moved within the `tapisdatadir` and may need to be moved on disk before starting the containers. Each component should now follow a similar structure, e.g. for authenticator: `tapisdatadir/authenticator/postgres/data` should contain the Postgres data, such as the `PG_VERSION` file, `pg_wal` directory, etc. 
+
+
 ## 1.4.2
 
 ### Services Updated
