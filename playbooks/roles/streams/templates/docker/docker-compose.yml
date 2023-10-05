@@ -86,7 +86,7 @@ services:
     command: bash -c "dos2unix ./chords_start.sh && chmod a+x ./chords_start.sh && ./chords_start.sh"
     logging:
       driver: "json-file"
-      options:v 
+      options:
         max-size: "1m"
         max-file: "5"
     # ports:
@@ -97,7 +97,7 @@ services:
 
   # Rails mysql database
   mysql:
-    container_name: chords_mysql
+    container_name: streams-chords_mysql
     image: {{ streams_tapis_chords_db_image }}
     volumes:
       - mysql-data:/var/lib/mysql
@@ -138,7 +138,7 @@ services:
   #     - 8083:8083
 
   influxdb2.1.1:
-    container_name: chords_influxdb2.1.1
+    container_name: streams-chords_influxdb
     image: influxdb:latest
     volumes:
       - influxdb-data2.1.1:/var/lib/influxdb
@@ -161,7 +161,7 @@ services:
 
   # InfluxData kapacitor time series monitoring
   kapacitor:
-    container_name: chords_kapacitor
+    container_name: streams-chords_kapacitor
     image: ncareol/kapacitor
     volumes:
       - kapacitor-data:/var/lib/kapacitor
@@ -198,7 +198,7 @@ services:
 
   # Grafana graphing server. It draws data from influxdb.
   grafana:
-    container_name: chords_grafana
+    container_name: strams-chords_grafana
     image: ncareol/grafana:6.0.2
     # Note: GF_ variables are used by grafana, meaning that
     # you should not create your own variables beginning with GF_.

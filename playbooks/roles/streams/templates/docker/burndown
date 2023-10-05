@@ -2,4 +2,4 @@
 echo burndown streams
 
 
-docker compose down -d
+docker compose down

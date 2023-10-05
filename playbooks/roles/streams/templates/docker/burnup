@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo burnup streams
 
 mkdir -p {{ tapisdatadir }}/streams
 mkdir -p {{ tapisdatadir }}/streams/influx
