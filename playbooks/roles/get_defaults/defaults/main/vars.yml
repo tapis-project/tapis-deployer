@@ -16,7 +16,7 @@ components_to_deploy_default:
   - files
   - globus-proxy
   - jobs
-#  - meta
+  - meta
 #  - monitoring
   - notifications
 #  - pgrest
@@ -24,11 +24,12 @@ components_to_deploy_default:
   - proxy
   - security
   - skadmin
-#  - streams
+  - streams
   - systems
   - tapisui
   - tenants
   - tokens
   - vault
 #  - workflows  
+  - test-resources
 
