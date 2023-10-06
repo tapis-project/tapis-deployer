@@ -1,0 +1,4 @@
+#!/bin/bash
+
+grep JWTSIGNING_.*_PUBLICKEY {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | sed 's/\\n/\n/g'
+

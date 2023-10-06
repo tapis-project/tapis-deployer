@@ -13,9 +13,9 @@ services:
           - tapis
         image: {{ jobs_api_image }}
         environment:
-            {% if jobs_node_name == true -%}
-            - TAPIS_LOCAL_NODE_NAME=spec.nodeName
-            {% endif -%}
+{% if jobs_node_name == true %}
+            - TAPIS_LOCAL_NODE_NAME={{ global_tapis_domain }}
+{% endif %}
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
@@ -206,9 +206,9 @@ services:
         user: ${UID_GID}
         image: {{ jobs_worker_image }}
         environment:
-            {% if jobs_node_name == true -%}
-            - TAPIS_LOCAL_NODE_NAME=spec.nodeName
-            {% endif -%}
+{% if jobs_node_name == true %}
+            - TAPIS_LOCAL_NODE_NAME={{ global_tapis_domain }}
+{% endif %}
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10

@@ -76,9 +76,9 @@ services:
     env_file: 
       - {{ tapisdatadir }}/files/env
     environment:
-      {% if jobs_node_name == true -%}
-      - TAPIS_LOCAL_NODE_NAME=spec.nodeName
-      {% endif -%}
+{% if files_node_name == true %}
+      - TAPIS_LOCAL_NODE_NAME={{ global_tapis_domain }}
+{% endif %}
       - TAPIS_SITE_ID={{ files_service_site_id }}
       - TOKENS_SERVICE_URL={{ files_service_url }}
       - TENANTS_SERVICE_URL={{ files_service_url}}
@@ -107,9 +107,9 @@ services:
     env_file:
       - {{ tapisdatadir }}/files/env
     environment:
-      {% if jobs_node_name == true -%}
-      - TAPIS_LOCAL_NODE_NAME=spec.nodeName
-      {% endif -%}
+{% if files_node_name == true %}
+      - TAPIS_LOCAL_NODE_NAME={{ global_tapis_domain }}
+{% endif %}
       - TAPIS_SITE_ID={{ files_service_site_id }}
       - TOKENS_SERVICE_URL={{ files_service_url }}
       - TENANTS_SERVICE_URL={{ files_service_url}}
