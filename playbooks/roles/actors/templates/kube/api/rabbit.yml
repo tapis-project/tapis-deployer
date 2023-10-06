@@ -12,6 +12,7 @@ spec:
       labels:
         app: actors-rabbit
     spec:
+      hostname: actors-rabbit # sets static hostname rather than k8 generated. Without rabbit can't use pvc to restart.
       containers:
       - name: actors-rabbit
         image: {{ actors_rabbitmq_image }}
@@ -39,4 +40,3 @@ spec:
       - name: actors-rabbitmq-data
         persistentVolumeClaim:
           claimName: {{actors_rabbit_pvc}}
-
