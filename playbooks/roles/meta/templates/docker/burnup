@@ -2,7 +2,7 @@
 
 echo "burnup meta:"
 
-mkdir -p {{ tapisdatadir }}/meta/restheart-mongo
+mkdir -p {{ tapisdatadir }}/meta/mongodb/data
 
 myuid=`id -u`
 export UID=`id -u`

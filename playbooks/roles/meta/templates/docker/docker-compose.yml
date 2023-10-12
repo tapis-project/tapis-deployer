@@ -6,43 +6,52 @@ networks:
 
 
 services:
-  meta-restheart:
+  restheart:
     image: {{ meta_rh_server_image }}
-    container_name: meta-restheart
+    container_name: restheart
     command: [ "java", "-Dfile.encoding=UTF-8", "-server", "-jar", "restheart.jar", "etc/restheart.yml", "--envFile", "etc/config.properties"]
     networks: 
       - tapis
-    environment:
-      - MONGO_URI=meta-mongo
     volumes:
-      - "./meta-config.yml:/opt/restheart/etc/config.properties"
+      - ./meta-config.yml:/opt/restheart/etc/config.properties
     env_file:
-      - {{ tapisdatadir }}/meta/env      
+      - {{ tapisdatadir }}/meta/env
 
-  meta-restheart-security:
+  restheart-security:
     image: {{ meta_api_image }}
-    container_name: meta-restheart-security
+    container_name: restheart-security
+    networks:
+      - tapis
     environment:
       - TAPIS_SITE_ID={{ meta_service_site_id }}
       - TAPIS_META_SERVICE_TENANT_BASE_URL={{ meta_service_url }}/
       - TAPIS_META_SERVICE_SK_SVC_URL={{ meta_service_url }}/v3
       - TAPIS_META_SERVICE_TOKEN_BASE_URL={{ meta_service_url }}/
       - TAPIS_META_CORE_SERVER=http://restheart:8080/
-      - MONGO_URI=meta-mongo
-      - CATALINA_OPTS="-Xms16g -Xmx16g -Dlogback.configurationFile=/usr/local/tomcat/etc/logback.xml --add-opens java.base/java.time=ALL-UNNAMED"
+      - CATALINA_OPTS=-Dlogback.configurationFile=/usr/local/tomcat/etc/logback.xml --add-opens java.base/java.time=ALL-UNNAMED
     env_file:
       - {{ tapisdatadir }}/meta/env
 
 
-  meta-mongo:
+  restheart-mongo:
     image: {{ meta_mongo_singlenode_image }}
-    container_name: meta-mongo
+    container_name: restheart-mongo
     networks: 
       - tapis
     environment:
-      - MONGO_INITDB_ROOT_USERNAME="restheart"
-
+      - MONGO_INITDB_ROOT_USERNAME=restheart
+      - MONGO_REPLICA_SET_NAME=rs0
     env_file:
       - {{ tapisdatadir }}/meta/env
-    # volumes:
-    #   -  "{{ meta_restheart_mongo_pvc }}:/data/db"
+    volumes:
+      -  {{ tapisdatadir }}/meta/mongodb/data:/data/db
+      - ./initdb.sh:/home/tapis/initdb.sh
+    # entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" echo init done sleep(5); /home/tapis/initdb.sh ]
+    command: >
+      bash -c "/usr/bin/mongod --bind_ip_all --replSet rs0 --host restheart-mongo:27017
+      && echo init done
+      && sleep 5
+      && /home/tapis/initdb.sh"
+      
+
+    
