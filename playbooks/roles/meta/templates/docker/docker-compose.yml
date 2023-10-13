@@ -36,6 +36,7 @@ services:
   restheart-mongo:
     image: {{ meta_mongo_singlenode_image }}
     container_name: restheart-mongo
+    hostname: restheart-mongo
     networks: 
       - tapis
     environment:
@@ -46,12 +47,18 @@ services:
     volumes:
       -  {{ tapisdatadir }}/meta/mongodb/data:/data/db
       - ./initdb.sh:/home/tapis/initdb.sh
-    # entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" echo init done sleep(5); /home/tapis/initdb.sh ]
-    command: >
-      bash -c "/usr/bin/mongod --bind_ip_all --replSet rs0 --host restheart-mongo:27017
-      && echo init done
-      && sleep 5
-      && /home/tapis/initdb.sh"
-      
-
+      - ./initdb.py:/home/tapis/initdb/py
+    entrypoint: 
+      - bash
+      - -c
+      - |
+        cp /keyfiles/metakeyfile /keyfiles/keyfile-to-use
+        chmod 400 /keyfiles/keyfile-to-use
+        chown 999:999 /keyfiles/keyfile-to-use
+        exec docker-entrypoint.sh $$@
+    command: "mongod --bind_ip_all --replSet rs0 --keyFile /keyfiles/keyfile-to-use"
+    healthcheck:
+      test: mongo -u $$MONGO_INITDB_ROOT_USERNAME -p $$MONGO_INITDB_ROOT_PASSWORD --eval 'rs.initiate()'
+      interval: 10s
+      start_period: 30s
     
