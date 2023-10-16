@@ -1,2 +1,2 @@
-pgrest_api_image: tapis/pgrest-api:1.4.0
+pgrest_api_image: tapis/pgrest-api:1.5.0
 pgrest_postgres_image: postgres:13

@@ -2,6 +2,14 @@
 
 Notable changes between versions.
 
+## 1.5.0 
+
+### Services Updated
+
+- [ Authenticator: 1.4.0 -> 1.5.0 (tapis/authenticator, tapis/authenticator-migrations)[https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md]
+- [ Streams: 1.4.0 -> 1.5.0 (tapis/streams-api)[https://github.com/tapis-project/streams-api/blob/prod/CHANGELOG.md]
+- Other 1.4.x Tapis containers versions will be updated to 1.5.0
+
 ## 1.4.3
 
 ### Services Updated 
