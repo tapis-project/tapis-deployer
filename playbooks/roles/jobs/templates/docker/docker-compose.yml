@@ -26,8 +26,6 @@ services:
             - TAPIS_QUEUE_USER=jobs
             - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES=/v3/jobs
             - TAPIS_REQUEST_LOGGING_INGORE_SUFFIXES=/healthcheck;/ready;/hello
-        #        - name: TAPIS_LOG_DIRECTORY
-        #          value: "/opt/tomcat/logs"
             - CATALINA_OPTS=-Xms1g -Xmx3g --add-opens java.base/java.time=ALL-UNNAMED
         env_file:
             - {{ tapisdatadir }}/jobs/env
@@ -73,11 +71,11 @@ services:
     #     container_name: jobs-pgadmin
     #     image: {{ jobs_postgres_image }}
     #     environment:
-    #         - PGDATA="/pgdata/data"
+    #         - PGDATA=/pgdata/data
     #     env_file:
-    #         - "{{ tapisdatadir }}/jobs/env"
+    #         - {{ tapisdatadir }}/jobs/env
     #     volumes:
-    #         - "{{ tapisdatadir }}/jobs/jobs-pg-data:/pgdata"
+    #         - {{ tapisdatadir }}/jobs/jobs-pg-data:/pgdata
 
     jobs-rabbitmq:
         container_name: jobs-rabbitmq
