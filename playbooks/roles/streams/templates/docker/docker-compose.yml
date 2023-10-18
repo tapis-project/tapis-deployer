@@ -98,7 +98,7 @@ services:
   # Rails mysql database
   mysql:
     container_name: streams-chords_mysql
-    image: {{ streams_tapis_chords_db_image }}
+    image: {{ streams_mysql_image }}
     volumes:
       - mysql-data:/var/lib/mysql
       - mysql-log:/var/log/mysql
