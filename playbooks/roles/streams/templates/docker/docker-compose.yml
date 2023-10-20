@@ -53,7 +53,7 @@ services:
       options:
         max-size: "1m"
         max-file: "5"
-
+        
   # Rails mysql database
   chords-mysql:
     container_name: chords-mysql
