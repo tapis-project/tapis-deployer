@@ -2,6 +2,14 @@
 
 Notable changes between versions.
 
+## 1.5.0 
+
+### Services Updated
+
+- [ Authenticator: 1.4.0 -> 1.5.0 (tapis/authenticator, tapis/authenticator-migrations)[https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md]
+- [ Streams: 1.4.0 -> 1.5.0 (tapis/streams-api)[https://github.com/tapis-project/streams-api/blob/prod/CHANGELOG.md]
+- Other 1.4.x Tapis containers versions will be updated to 1.5.0
+
 ## 1.4.3
 
 ### Services Updated 
@@ -10,9 +18,10 @@ Notable changes between versions.
 - [ Systems: 1.4.1 to 1.4.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.4.2/CHANGELOG.md)
 - [ Apps: 1.4.1 to 1.4.2 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.4.2/CHANGELOG.md)
 - [ Notifications: 1.4.0 to 1.4.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.4.1/CHANGELOG.md)
-- [ Files: 1.4.2 to 1.4.3 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
-- [ Jobs: 1.4.2 to 1.4.3 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [ Files: 1.4.2 to 1.5.0 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [ Jobs: 1.4.2 to 1.5.0 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [ Globus-Proxy: 1.4.2 to 1.4.3 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+
 
 
 ### Breaking Changes for Deployer Admins

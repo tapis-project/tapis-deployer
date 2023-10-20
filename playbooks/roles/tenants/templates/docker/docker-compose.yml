@@ -21,7 +21,7 @@ services:
       - POSTGRES_USER=tenants
       - POSTGRES_DB=tenants
     env_file:
-      - "{{ tapisdatadir }}/tenants/env"
+      - {{ tapisdatadir }}/tenants/env
     healthcheck:
             test: ["CMD-SHELL", "pg_isready -U postgres"]
 
@@ -29,7 +29,7 @@ services:
     container_name: tenants-migrations
     image: {{ tenants_migrations_image }}
     volumes:
-      - "./tenants-config.json:/home/tapis/config.json"
+      - ./tenants-config.json:/home/tapis/config.json
     networks:
       - tapis
     depends_on:
@@ -40,7 +40,7 @@ services:
       - postgres_user=tenants 
       - postgres_database=tenants
     env_file: 
-      - "{{ tapisdatadir }}/tenants/env"
+      - {{ tapisdatadir }}/tenants/env
     command: ['upgrade']
 
   tenants-api:
@@ -48,8 +48,8 @@ services:
     image: {{ tenants_api_image }}
     volumes:
     #   - ./service.log:/home/tapis/service.log
-      - "./tenants-config.json:/home/tapis/config.json"
-      - "./tenants-service.log:/home/tapis/service.log"
+      - ./tenants-config.json:/home/tapis/config.json
+      - ./tenants-service.log:/home/tapis/service.log
     networks:
       - tapis
     environment:
@@ -57,7 +57,7 @@ services:
       - postgres_user=tenants
       - postgres_database=tenants
     env_file: 
-      - "{{ tapisdatadir }}/tenants/env"
+      - {{ tapisdatadir }}/tenants/env
     depends_on:
       tenants-migrations:
         condition: service_completed_successfully
