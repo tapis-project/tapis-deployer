@@ -31,4 +31,5 @@ components_to_deploy_default:
   - tokens
   - vault
 #  - workflows  
+  - test-resources
 

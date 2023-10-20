@@ -38,9 +38,6 @@ services:
         - {{ tapisdatadir }}/authenticator/postgres:/pgdata
     healthcheck:
         test: pg_isready -U authenticator
-        interval: 5s
-        timeout: 5s
-        retries: 5
 
 
   authenticator-migrations:
@@ -75,4 +72,6 @@ services:
     depends_on:
         authenticator-postgres:
             condition: service_healthy
+    healthcheck:
+        test: slapcat
 

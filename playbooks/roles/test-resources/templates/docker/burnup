@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "burnup test-resources:"
+
+mkdir -p {{ tapisdatadir }}/test-resources
+
+export UID_GID="$(id -u):$(id -g)"
+
+echo minio
+echo sshd
+echo jobs
+echo files
+echo irods
+
+#docker compose up -d
+

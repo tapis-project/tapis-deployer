@@ -15,4 +15,4 @@ services:
         networks:
             - tapis
         env_file: 
-            - "{{ tapisdatadir }}/tokens/env"
+            - {{ tapisdatadir }}/tokens/env

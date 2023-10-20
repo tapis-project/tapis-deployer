@@ -15,7 +15,8 @@ kubectl delete -f nginx.yml
 
 # storage
 kubectl delete -f mongo.yml
-#kubectl delete -f mongo-pvc.yml
-# rabbit can be killed each time. If you drop rabbit, must also kill the pvc.
 kubectl delete -f rabbit.yml
-kubectl delete -f rabbitmq-pvc.yml
+
+# pvc
+# kubectl delete -f mongo-pvc.yml
+# kubectl delete -f rabbitmq-pvc.yml
