@@ -10,23 +10,24 @@ services:
     image: tapis/streams-api:dev
     env_file:
       - {{ tapisdatadir }}/streams/env
-    
+    networks: 
+      - tapis
 
-  app:
+  chords-app:
     container_name: chords-app
     image: {{ streams_tapis_chords_app_image }}
-    #${DOCKER_TAG}
+    networks:
+      - tapis
     volumes:
       - mysql-data:/var/lib/mysql
       - /var/run/docker.sock:/var/run/docker.sock
-      - shared-tmp:/tmp/
-      - nginx-log:/var/log/nginx
-      - rails-log:/chords/log
+      - ./chords/tapis_chords_start.sh:./chords_start.sh
+      - ./chords/influxdb.yml:/chords/config/influxdb.yml
+      - ./chords/production.rb:/chords/config/environments/production.rb
+      - ./chords/database.yml:/chords/config/database.yml
     environment:
       - RAILS_ENV=production
-      - CHORDS_ADMIN_PW=chords_ec_demo
-      - CHORDS_GUEST_PW=guest 
-      - GRAFANA_ADMIN_PW=admin
+      - CHORDS_GUEST_PW=guest
       - GRAFANA_HTTP_PORT=3000
       - SECRET_KEY_BASE=aaaaaaaaaaa
       - DB_RETENTION=inf
@@ -36,7 +37,7 @@ services:
       - CHORDS_EMAIL_ADDRESS=unknown@gmail.com
       - CHORDS_EMAIL_PASSWORD=unknown
       - WORKERS=4
-      - CHORDS_MYSQL_HOST=mysql
+      - CHORDS_MYSQL_HOST=chords-mysql
       - CHORDS_MYSQL_PORT=3306
       - CHORDS_PORTAL_ADMIN_USER=streams@admin.tapis
       - CHORDS_PORTAL_ADMIN_PASSWORD=streamsrealtime
@@ -46,24 +47,19 @@ services:
       - tapis_base_url={{ streams_service_url }}
       - alert_secret=testalert
       - workerCls="gthread"
- 
-
     command: bash -c "dos2unix ./chords_start.sh && chmod a+x ./chords_start.sh && ./chords_start.sh"
     logging:
       driver: "json-file"
       options:
         max-size: "1m"
         max-file: "5"
-    # ports:
-    #     - 80:80
-    links:
-      - mysql
-      - influxdb2.1.1
 
   # Rails mysql database
   chords-mysql:
     container_name: chords-mysql
     image: {{ streams_mysql_image }}
+    networks: 
+      - tapis
     volumes:
       - {{ tapisdatadir }}/streams/mysql/data:/var/lib/mysql
       - {{ tapisdatadir }}/streams/mysql/log:/var/log/mysql
@@ -106,6 +102,8 @@ services:
   influxdb2.1.1:
     container_name: streams-chords_influxdb
     image: influxdb:latest
+    networks: 
+      - tapis
     volumes:
       - influxdb-data2.1.1:/var/lib/influxdb
       - influxdb-log2.1.1:/var/log/influxdb
@@ -129,6 +127,8 @@ services:
   kapacitor:
     container_name: streams-chords_kapacitor
     image: ncareol/kapacitor
+    networks: 
+      - tapis
     volumes:
       - kapacitor-data:/var/lib/kapacitor
       - kapacitor-log:/var/log/kapacitor
@@ -166,6 +166,8 @@ services:
   grafana:
     container_name: strams-chords_grafana
     image: ncareol/grafana:6.0.2
+    networks: 
+      - tapis
     # Note: GF_ variables are used by grafana, meaning that
     # you should not create your own variables beginning with GF_.
     environment:
