@@ -3,65 +3,31 @@ networks:
         name: tapis
         external: true
 
-# The CHORDS configuration (x86) for docker-compose.
-#
-# When run with "-p chords", it creates these containers:
-#   1. chords_app:      The CHORDS Ruby on Rails server
-#   2. chords_mysql:    A MyQSL database for CHORDS metadata.
-#   3. chords_influxdb: An InfluxDB database for real-time time series data.
-#   4. chords_grafana:  A Grafana dashboard server
-#
-# The following docker volumes provide data persistance:
-#   1. mysql-data:     (/var/lib/mysql)
-#   2. influxdb-data:  (/var/lib/influxdb)
-#   3. grafana-data:   (/var/lib/grafana)
-#   4. postfix-spool:  (var/spool/postfox)
-#
-# This configuration is used to both build the chords image,
-# and to deploy the CHORDS system. Dockerfile provides the recipe
-# for the chords image.
-#
-# To build and upload the chords image:
-#   cd <directory containing the CHORDS project>
-#   docker build --squash --tag ncareol/chords:<tag>
-#   docker push ncareol/chords:<tag>
-#
-# Create a .env file (in the directory that you run docker-compose from) containing
-# CHORDS configuration values. See chords_env_template for a description of values.
-#
-# To deploy/start/stop CHORDS:
-#   curl -L https://github.com/NCAR/chords_portal/raw/<branch>/docker-compose.yml > docker-compose.yml
-#   docker-compose pull
-#   docker-compose -p chords up -d
-#   docker-compose -p chords down
-#
-# To update a running system:
-#  docker-compose pull
-#  docker-compose -p chords down
-#  docker-compose -p chords up -d
-
 services:
   # CHORDS Rails application: nginx + rails + CHORDS rails code
-  # streams:
-  #   container_name: streamsapi
-  #   image: tapis/streams-api:dev
-  #   ports:
-  #     - 5000:5000
-  app:
-    container_name: streams-chords-app
+  streams:
+    container_name: streams-api
+    image: tapis/streams-api:dev
+    env_file:
+      - {{ tapisdatadir }}/streams/env
+    networks: 
+      - tapis
+
+  chords-app:
+    container_name: chords-app
     image: {{ streams_tapis_chords_app_image }}
-    #${DOCKER_TAG}
+    networks:
+      - tapis
     volumes:
       - mysql-data:/var/lib/mysql
       - /var/run/docker.sock:/var/run/docker.sock
-      - shared-tmp:/tmp/
-      - nginx-log:/var/log/nginx
-      - rails-log:/chords/log
+      - ./chords/tapis_chords_start.sh:./chords_start.sh
+      - ./chords/influxdb.yml:/chords/config/influxdb.yml
+      - ./chords/production.rb:/chords/config/environments/production.rb
+      - ./chords/database.yml:/chords/config/database.yml
     environment:
       - RAILS_ENV=production
-      - CHORDS_ADMIN_PW=chords_ec_demo
-      - CHORDS_GUEST_PW=guest 
-      - GRAFANA_ADMIN_PW=admin
+      - CHORDS_GUEST_PW=guest
       - GRAFANA_HTTP_PORT=3000
       - SECRET_KEY_BASE=aaaaaaaaaaa
       - DB_RETENTION=inf
@@ -71,7 +37,7 @@ services:
       - CHORDS_EMAIL_ADDRESS=unknown@gmail.com
       - CHORDS_EMAIL_PASSWORD=unknown
       - WORKERS=4
-      - CHORDS_MYSQL_HOST=mysql
+      - CHORDS_MYSQL_HOST=chords-mysql
       - CHORDS_MYSQL_PORT=3306
       - CHORDS_PORTAL_ADMIN_USER=streams@admin.tapis
       - CHORDS_PORTAL_ADMIN_PASSWORD=streamsrealtime
@@ -81,31 +47,27 @@ services:
       - tapis_base_url={{ streams_service_url }}
       - alert_secret=testalert
       - workerCls="gthread"
- 
-
     command: bash -c "dos2unix ./chords_start.sh && chmod a+x ./chords_start.sh && ./chords_start.sh"
     logging:
       driver: "json-file"
       options:
         max-size: "1m"
         max-file: "5"
-    # ports:
-    #     - 80:80
-    links:
-      - mysql
-      - influxdb2.1.1
-
+        
   # Rails mysql database
-  mysql:
-    container_name: streams-chords_mysql
+  chords-mysql:
+    container_name: chords-mysql
     image: {{ streams_mysql_image }}
+    networks: 
+      - tapis
     volumes:
-      - mysql-data:/var/lib/mysql
-      - mysql-log:/var/log/mysql
+      - {{ tapisdatadir }}/streams/mysql/data:/var/lib/mysql
+      - {{ tapisdatadir }}/streams/mysql/log:/var/log/mysql
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
       - MYSQL_USER=chords_demo_user
-      - MYSQL_PASSWORD=chords_ec_demo
+    env_file:
+      - {{ tapisdatadir }}/streams/env
     logging:
       driver: "json-file"
       options:
@@ -140,6 +102,8 @@ services:
   influxdb2.1.1:
     container_name: streams-chords_influxdb
     image: influxdb:latest
+    networks: 
+      - tapis
     volumes:
       - influxdb-data2.1.1:/var/lib/influxdb
       - influxdb-log2.1.1:/var/log/influxdb
@@ -163,6 +127,8 @@ services:
   kapacitor:
     container_name: streams-chords_kapacitor
     image: ncareol/kapacitor
+    networks: 
+      - tapis
     volumes:
       - kapacitor-data:/var/lib/kapacitor
       - kapacitor-log:/var/log/kapacitor
@@ -200,6 +166,8 @@ services:
   grafana:
     container_name: strams-chords_grafana
     image: ncareol/grafana:6.0.2
+    networks: 
+      - tapis
     # Note: GF_ variables are used by grafana, meaning that
     # you should not create your own variables beginning with GF_.
     environment:
@@ -222,32 +190,6 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-    # ports:
-    #   - ${GRAFANA_HTTP_PORT}:${GRAFANA_HTTP_PORT}
     user: "104"
     links:
       - influxdb2.1.1
-
-volumes:
-  # CHORDS Rails meta-data
-  mysql-data:
-  # CHORDS time-series data
-  influxdb-data:
-  influxdb-data2.0.0:
-  influxdb-data2.1.1:
-  # kapacitor data
-  kapacitor-data:
-  # Grafana configuration data
-  grafana-data:
-  #shared_tmp volume
-  shared-tmp:
-  # log directories
-  rails-log:
-  nginx-log:
-  mysql-log:
-  influxdb-log:
-  influxdb-log2.0.0:
-  influxdb-log2.1.1:
-  kapacitor-log:
-  grafana-log:
-

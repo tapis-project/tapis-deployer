@@ -2,7 +2,14 @@
 
 echo "burnup meta:"
 
-mkdir -p {{ tapisdatadir }}/meta/restheart-mongo
+mkdir -p {{ tapisdatadir }}/meta/mongodb/data
+
+export MYUID="$(id -u)"
+export UID_GID="$(id -u):$(id -g)"
+
+docker run -it --rm -v {{ tapisdatadir }}/meta:/meta tapis/ubutil2204:1.3.0 chown $MYUID /meta
+
+python3 {{ tapisdir }}/admin/util/parse_skexport -c meta -d {{ tapisdatadir }}
 
 myuid=`id -u`
 export UID=`id -u`

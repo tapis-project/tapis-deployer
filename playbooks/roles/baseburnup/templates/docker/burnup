@@ -106,7 +106,9 @@ burnup_or_exit notifications
 
 # globus-proxy
 
-# meta
+{% if "meta" in components_to_deploy %}
+burnup_or_exit meta
+{% endif %}
 
 # monitoring
 
@@ -118,7 +120,9 @@ burnup_or_exit notifications
 
 # pods
 
-# streams
+{% if "streams" in components_to_deploy %}
+burnup_or_exit streams
+{% endif %}
 
 {% if "tapisui" in components_to_deploy %}
 burnup_or_exit tapisui
