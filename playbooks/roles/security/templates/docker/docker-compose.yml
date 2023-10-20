@@ -19,9 +19,6 @@ services:
             - {{ tapisdatadir }}/security/env
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U postgres"]
-            interval: 5s
-            timeout: 5s
-            retries: 5
 
 # Do not start pgadmin by default 
 #    sk-pgadmin:

@@ -1,0 +1,10 @@
+---
+
+
+- name: test-resources tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: test-resources
+    tree_name: test-resources
+

@@ -51,7 +51,7 @@ restheart-security-config.properties: |-
   ping-hello-message=Hello from MetaV3 Security!
   #serviceToken=get_from_secrets
   tokenHeader=X-Tapis-Token
-  securityKernalEndPoint=https://change.me.for.your.site/v3/security
+  securityKernalEndPoint=https://{{ meta_service_url }}/v3/security
   
   #suggested value: core*2
   io-threads=2
