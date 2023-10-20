@@ -1,0 +1,13 @@
+FROM rastasheep/ubuntu-sshd:18.04
+
+RUN useradd --create-home --shell /bin/bash testuser
+RUN echo 'testuser:password' | chpasswd
+RUN mkdir -p /home/testuser/.ssh/
+COPY ./ssh/ssh-key.pub /home/testuser/.ssh/authorized_keys
+RUN chown -R testuser:testuser /home/testuser
+RUN chmod 600 /home/testuser/.ssh/authorized_keys
+RUN apt update
+RUN apt-get install -y acl
+RUN apt-get install -y less
+RUN apt-get install -y vim
+

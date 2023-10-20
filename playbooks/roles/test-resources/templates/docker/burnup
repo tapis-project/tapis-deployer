@@ -6,11 +6,130 @@ mkdir -p {{ tapisdatadir }}/test-resources
 
 export UID_GID="$(id -u):$(id -g)"
 
-echo minio
-echo sshd
-echo jobs
-echo files
-echo irods
-
 #docker compose up -d
+
+SCRIPT_DIR=$(dirname $0)
+
+SERVICE_CODE="files"
+
+IRODS_CONTAINER="irods-1"
+IRODS_ADMIN_USER="rods"
+IRODS_ADMIN_PASSWORD="rods"
+IRODS_USER="dev"
+IRODS_PASSWORD="dev"
+
+function usage() {
+  echo "$0 [-t tenant] [-p password] [-u user] [--dev | --prod | --staging]"
+
+  echo "OPTIONS:"
+  echo "     -p --port"
+  echo "        The port to run postgres on"
+  echo 
+  echo "     -u --pguser"
+  echo "        The postgres user for the service"
+  echo 
+  echo "     -w --pgpass"
+  echo "        The postgres password for the service"
+  echo 
+  echo "     -d --pgdb"
+  echo "        The postgres database name for the service"
+  echo 
+  echo "     -s --pgschema"
+  echo "        The postgres schema for the service"
+  echo 
+  exit 1
+}
+
+function announce() {
+  echo ---==== $@ ====---
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -p|--port)
+      PG_PORT="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -u|--pguser)
+      PG_USER="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -w|--pgpass)
+      PG_PASSWORD="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -d|--pgdb)
+      PG_DATABASE="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -s|--pgschema)
+      PG_SCHEMA="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      usage
+      ;;
+    *)
+      echo "Unknown positional arguement $1"
+      usage
+  esac
+done
+
+announce "running docker compose up"
+docker compose up --wait
+
+sleep 5
+
+announce "setting up irods container"
+docker exec -i ${IRODS_CONTAINER} iinit <<EOD
+localhost
+${IRODS_ADMIN_USER}
+${IRODS_ADMIN_PASSWORD}
+EOD
+
+announce "creating irods user"
+docker exec -i ${IRODS_CONTAINER} iadmin mkuser ${IRODS_USER} rodsuser
+docker exec -i ${IRODS_CONTAINER} iadmin moduser ${IRODS_USER} password ${IRODS_PASSWORD}
+
+announce "creating ssh-1 users and groups"
+docker exec -i ssh-1 /bin/bash << EOF
+mkdir -p /data/home/testuser/
+chown -R testuser:testuser /data/home/testuser/
+apt update
+apt-get install acl
+groupadd faclgrp1
+groupadd faclgrp2
+groupadd faclgrp3
+useradd -g faclgrp1 facluser1
+useradd -g faclgrp1 facluser2
+useradd -g faclgrp1 facluser3
+EOF
+
+announce "creating ssh-2 users and groups"
+docker exec -i ssh-2 /bin/bash << EOF
+mkdir -p /data/home/testuser/
+chown -R testuser:testuser /data/home/testuser/
+apt update
+apt-get install acl
+groupadd faclgrp1
+groupadd faclgrp2
+groupadd faclgrp3
+useradd -g faclgrp1 facluser1
+useradd -g faclgrp1 facluser2
+useradd -g faclgrp1 facluser3
+EOF
+
+
+announce "creating minio-1 buckets"
+docker exec -i minio-1 /bin/bash << EOF
+mc mb /data/test-bucket-1
+mc mb /data/test-bucket-2
+EOF
+
 
