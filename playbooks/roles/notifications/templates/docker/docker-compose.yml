@@ -57,9 +57,6 @@ services:
       - {{ tapisdatadir }}/notifications/postgres:/pgdata
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
 #  notifications-pgadmin:
 #    container_name: notifications-pgadmin
@@ -115,6 +112,3 @@ services:
       - tapis
     healthcheck:
       test: rabbitmq-diagnostics check_running
-      interval: 30s
-      timeout: 30s
-      retries: 3
