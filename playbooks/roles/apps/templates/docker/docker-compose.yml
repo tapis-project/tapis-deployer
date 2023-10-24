@@ -37,9 +37,6 @@ services:
             - {{ tapisdatadir }}/apps/postgres:/pgdata
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U postgres"]
-            interval: 5s
-            timeout: 5s
-            retries: 5
 
     apps-migrations:
         container_name: apps-migrations
