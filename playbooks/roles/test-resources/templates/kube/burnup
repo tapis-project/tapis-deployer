@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Do a full burnup for the test-resources service
+#
+
+echo "test-resources:"
+
+here=`pwd`
+
+mkdir -p {{ tapisdatadir }}/test-resources
+
+cd $here
+kubectl apply -f test-resources-config.yml
+
+cd $here/test-resources
+./burnup
+
+cd $here/test-configs
+./burnup

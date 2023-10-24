@@ -16,9 +16,6 @@ services:
       - tapis
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 30s
-      timeout: 30s
-      retries: 3
 
   files-postgres:
     container_name: files-postgres
@@ -35,9 +32,6 @@ services:
       - {{ tapisdatadir }}/files/env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   files-migrations:
     container_name: files-migrations
@@ -82,9 +76,9 @@ services:
     env_file: 
       - {{ tapisdatadir }}/files/env
     environment:
-      {% if jobs_node_name == true -%}
-      - TAPIS_LOCAL_NODE_NAME=spec.nodeName
-      {% endif -%}
+{% if files_node_name == true %}
+      - TAPIS_LOCAL_NODE_NAME={{ global_tapis_domain }}
+{% endif %}
       - TAPIS_SITE_ID={{ files_service_site_id }}
       - TOKENS_SERVICE_URL={{ files_service_url }}
       - TENANTS_SERVICE_URL={{ files_service_url}}
@@ -113,9 +107,9 @@ services:
     env_file:
       - {{ tapisdatadir }}/files/env
     environment:
-      {% if jobs_node_name == true -%}
-      - TAPIS_LOCAL_NODE_NAME=spec.nodeName
-      {% endif -%}
+{% if files_node_name == true %}
+      - TAPIS_LOCAL_NODE_NAME={{ global_tapis_domain }}
+{% endif %}
       - TAPIS_SITE_ID={{ files_service_site_id }}
       - TOKENS_SERVICE_URL={{ files_service_url }}
       - TENANTS_SERVICE_URL={{ files_service_url}}

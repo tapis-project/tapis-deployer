@@ -16,7 +16,7 @@ services:
       - ./locations:/etc/nginx/conf.d/locations:ro
       - {{proxy_nginx_cert_file}}:/tmp/ssl/tls.crt:ro
       - {{proxy_nginx_cert_key}}:/tmp/ssl/tls.key:ro
-      - ./token-revoked.json:/etc/nginx/html/token-revoked.json:ro
+      - {{tapisdir}}proxy/token-revoked.json:/etc/nginx/html/token-revoked.json
     networks:
       - tapis
     restart: always
@@ -27,7 +27,7 @@ services:
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
-      - ./site-router-config.json:/home/tapis/config.json:ro
+      - {{ tapisdir }}/proxy/site-router-config.json:/home/tapis/config.json:ro
     networks:
       - tapis
     restart: always

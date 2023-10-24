@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# Do a full burndown for the test-resources service 
+#
+
+echo "test-resources:"
+
+here=`pwd`
+
+cd $here/test-resources
+./burndown
+
+cd $here/test-configs
+./burndown
