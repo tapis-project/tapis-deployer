@@ -7,9 +7,9 @@ Notable changes between versions.
 
 ### Services Updates
 
-This is a bugfix release to address a small bug with Authenticator in 1.5.0. It is not an critical bug and does not affect Tapis < 1.5.0. 
-
+- This is a bugfix release to address a small bug with Authenticator in 1.5.0. It is not an critical bug and does not affect Tapis < 1.5.0. 
 - [ Authenticator: 1.5.0 -> 1.5.1 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
+- Several bugfixes & improvements to the Docker flavor of deployer.
 
 ## 1.5.0 
 
