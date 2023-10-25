@@ -89,9 +89,10 @@ fi
 RESULT=$(http --check-status ${URL} Content-type:application/json username=${USERNAME} password=${PASSWORD} grant_type=password)
 EXIT_CODE=$?
 if [[ ${EXIT_CODE} -ne 0 || -z $RESULT ]] ; then 
-  echo No token returned
-  echo ${RESULT}
-  echo exit code ${EXIT_CODE}
+  echo >&2 No token returned
+  echo >&2 ${RESULT}
+  echo >&2 exit code ${EXIT_CODE}
+  exit ${EXIT_CODE}
 else
   TOKEN=`echo ${RESULT} | jq -r ".result[] | (.access_token)"`
   echo ${TOKEN}

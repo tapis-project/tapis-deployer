@@ -2,7 +2,22 @@
 
 SCRIPT_DIR=$(dirname $0)
 TENANT=dev
+
+echo Checking to make sure HTTPie is installed 
+HTTPIE_VERSION=$(http --version)
+if [[ $? -eq 0 ]]  ; then 
+  echo "Found HTTPie version ${HTTPIE_VERSION}"
+else
+  echo "HTTPie not found - Command 'http --version' failed"
+  exit 1
+fi
+
 TOKEN=$(${SCRIPT_DIR}/getToken.sh --tenant dev --username testuser2)
+
+if [[ $? -ne 0 ]]  ; then 
+  echo "Error getting token."
+  exit 1
+fi
 
 if [[ -z ${TOKEN} ]] ; then
   echo "Unable to find token file"
