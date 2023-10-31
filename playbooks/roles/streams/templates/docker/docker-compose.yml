@@ -7,11 +7,16 @@ services:
   # CHORDS Rails application: nginx + rails + CHORDS rails code
   streams:
     container_name: streams-api
-    image: tapis/streams-api:dev
+    image: {{ streams_api_image }}
     env_file:
       - {{ tapisdatadir }}/streams/env
+    volumes:
+      - ./config-local.json:/home/tapis/config.json
     networks: 
       - tapis
+    depends_on:
+      chords-app:
+        condition: service_started
 
   chords-app:
     container_name: chords-app
@@ -19,41 +24,59 @@ services:
     networks:
       - tapis
     volumes:
-      - mysql-data:/var/lib/mysql
+      - {{tapisdatadir}}/streams/mysql/data:/var/lib/mysql
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./chords/tapis_chords_start.sh:./chords_start.sh
+      - ./chords/tapis_chords_start.sh:/chords/chords_start.sh
       - ./chords/influxdb.yml:/chords/config/influxdb.yml
       - ./chords/production.rb:/chords/config/environments/production.rb
       - ./chords/database.yml:/chords/config/database.yml
     environment:
-      - RAILS_ENV=production
       - CHORDS_GUEST_PW=guest
-      - GRAFANA_HTTP_PORT=3000
-      - SECRET_KEY_BASE=aaaaaaaaaaa
-      - DB_RETENTION=inf
-      - DOCKER_TAG=latest
-      - CHORDS_EMAIL_SERVER=smtp.gmail.com
-      - CHORDS_EMAIL_PORT=587
       - CHORDS_EMAIL_ADDRESS=unknown@gmail.com
       - CHORDS_EMAIL_PASSWORD=unknown
-      - WORKERS=4
-      - CHORDS_MYSQL_HOST=chords-mysql
-      - CHORDS_MYSQL_PORT=3306
+      - CHORDS_EMAIL_SERVER=smtp.gmail.com
+      - CHORDS_EMAIL_PORT=587
       - CHORDS_PORTAL_ADMIN_USER=streams@admin.tapis
       - CHORDS_PORTAL_ADMIN_PASSWORD=streamsrealtime
-      # Note: INFLUXDB_ variables are used by the Influxer gem, meaning that
-      # you should NOT create your own variables beginning with INFLUXDB_.
+      - GRAFANA_ADMIN_PW=admin
+      - SECRET_KEY_BASE=aaaaaaaaaaa
+      - DB_RETENTION=inf
+      - DOCKER_TAG=1.0
+      - GIT_BRANCH=master
+      - CHORDS_HTTP_PORT=80
+      - GRAFANA_HTTP_PORT=3000
+      - PROXY=
+      - KAPACITOR_ENABLED=false
+      - RAILS_ENV=production
+      - WORKERS=4
       - INFLUXDB_USERNAME=admin
-      - tapis_base_url={{ streams_service_url }}
-      - alert_secret=testalert
-      - workerCls="gthread"
-    command: bash -c "dos2unix ./chords_start.sh && chmod a+x ./chords_start.sh && ./chords_start.sh"
+      - INFLUXDB_HOST=chords-influxdb
+      - INFLUXDB_ADMIN_USER=admin
+      - CHORDS_MYSQL_SERVICE_HOST=chords-mysql
+      - CHORDS_MYSQL_PORT_3306_TCP_ADDR=chords-mysql
+      - CHORDS_MYSQL_PORT_3306_TCP=tcp://chords-mysql:3306
+      - CHORDS_MYSQL_PORT=tcp://chords-mysql:3306
+      - MYSQL_HOST=chords-mysql
+      - MYSQL_USER=chords_demo_user
+      - CHORDS_MYSQL_USER=chords_demo_user
+      - CHORDS_INFLUXDB_PORT_8086_TCP=tcp://chords-influxdb:8086
+      - CHORDS_INFLUXDB_PORT_8083_TCP_ADDR=chords-influxdb
+      - CHORDS_INFLUXDB_PORT_8083_TCP=tcp://chords-influxdb:8083
+      - CHORDS_INFLUXDB_PORT_8086_TCP_ADDR=chords-influxdb
+      - CHORDS_INFLUXDB_PORT=tcp://chords-influxdb:8086
+      - CHORDS_INFLUXDB_SERVICE_HOST=chords-influxdb2
+    env_file:
+      - {{tapisdatadir}}/streams/env
+    command: bash -c "chmod a+x chords_start.sh && ./chords_start.sh"
     logging:
       driver: "json-file"
       options:
         max-size: "1m"
         max-file: "5"
-        
+    depends_on:
+      chords-influxdb2:
+        condition: service_started
+
   # Rails mysql database
   chords-mysql:
     container_name: chords-mysql
@@ -66,6 +89,7 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
       - MYSQL_USER=chords_demo_user
+      - MYSQL_DATABASE=CHORDS_SEEDED_production
     env_file:
       - {{ tapisdatadir }}/streams/env
     logging:
@@ -73,40 +97,17 @@ services:
       options:
         max-size: "1m"
         max-file: "5"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
 
-  # InfluxData influxdb time-series database
-  # influxdb:
-  #   container_name: chords_influxdb
-  #   image: influxdb:1.6
-  #   volumes:
-  #     - influxdb-data:/var/lib/influxdb
-  #     - influxdb-log:/var/log/influxdb
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - shared-tmp:/tmp/
-  #   environment:
-  #     - INFLUXDB_HTTP_MAX_ROW_LIMIT=1000000
-  #     - INFLUXDB_HTTP_AUTH_ENABLED=true
-  #     - INFLUXDB_DATA_QUERY_LOG_ENABLED=false
-  #     - INFLUXDB_REPORTING_DISABLED=true
-  #     - INFLUXDB_USERNAME=admin
-  #     - INFLUXDB_PASSWORD=${CHORDS_ADMIN_PW}
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #       max-file: "5"
-  #   ports:
-  #     - 8086:8086
-  #     - 8083:8083
-
-  influxdb2.1.1:
-    container_name: streams-chords_influxdb
-    image: influxdb:latest
+  chords-influxdb2:
+    container_name: chords-influxdb2
+    image: {{ streams_influxdb2_image }}
     networks: 
       - tapis
     volumes:
-      - influxdb-data2.1.1:/var/lib/influxdb
-      - influxdb-log2.1.1:/var/log/influxdb
+      - {{ tapisdatadir }}/streams/influx2/influxdb-data2.1.1:/var/lib/influxdb
+      - {{tapisdatadir}}/streams/influx2/influxdb-log2.1.1:/var/log/influxdb
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=admin
@@ -119,77 +120,38 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-    # ports:
-    #   - 8087:8086
-    #   - 8084:8083
-
-  # InfluxData kapacitor time series monitoring
-  kapacitor:
-    container_name: streams-chords_kapacitor
-    image: ncareol/kapacitor
-    networks: 
-      - tapis
-    volumes:
-      - kapacitor-data:/var/lib/kapacitor
-      - kapacitor-log:/var/log/kapacitor
-    environment:
-      # Custom environment variable, used by ncareol/kapacitor
-      - KAPACITOR_ENABLED=true
-      #
-      - KAPACITOR_HOSTNAME=chords_kapacitor
-      - KAPACITOR_LOGGING_LEVEL=INFO
-      - KAPACITOR_REPORTING_ENABLED=false
-      #
-      - KAPACITOR_HTTP_AUTH_ENABLED=true
-      #
-      - KAPACITOR_INFLUXDB_0_URLS_0=http://chords_influxdb:8086
-      - KAPACITOR_INFLUXDB_0_USERNAME=admin
-      - KAPACITOR_INFLUXDB_0_PASSWORD=chords_ec_demo
-      #
-      - KAPACITOR_SMTP_ENABLED=true
-      - KAPACITOR_SMTP_FROM=unknown@gmail.com
-      - KAPACITOR_SMTP_HOST=smtp.gmail.com
-      - KAPACITOR_SMTP_PORT=587
-      - KAPACITOR_SMTP_USERNAME=unknown@gmail.com
-      - KAPACITOR_SMTP_PASSWORD=unknown
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
-    # ports:
-    #   - 9092:9092
-    links:
-      - app
+    depends_on:
+      chords-mysql:
+        condition: service_healthy
 
   # Grafana graphing server. It draws data from influxdb.
-  grafana:
-    container_name: strams-chords_grafana
-    image: ncareol/grafana:6.0.2
-    networks: 
-      - tapis
-    # Note: GF_ variables are used by grafana, meaning that
-    # you should not create your own variables beginning with GF_.
-    environment:
-      - GF_DEFAULT_INSTANCE_NAME=localhost.localdomain
-      - GF_SERVER_HTTP_PORT=3000
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_EMAILS_WELCOME_EMAIL_ON_SIGN_UP=true
-      - GF_SMTP_ENABLED=true
-      - GF_SMTP_FROM_ADDRESS=unknown@gmail.com
-      - GF_SMTP_FROM_NAME=CHORDS Grafana
-      - GF_SMTP_HOST=unknown@gmail.com:587
-      - GF_SMTP_USER=unknown@gmail.com
-      - GF_SMTP_PASSWORD=unknown
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - grafana-log:/var/log/grafana
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
-    user: "104"
-    links:
-      - influxdb2.1.1
+  # grafana:
+  #   container_name: chords-grafana
+  #   image: ncareol/grafana:6.0.2
+  #   networks: 
+  #     - tapis
+  #   # Note: GF_ variables are used by grafana, meaning that
+  #   # you should not create your own variables beginning with GF_.
+  #   environment:
+  #     - GF_DEFAULT_INSTANCE_NAME=localhost.localdomain
+  #     - GF_SERVER_HTTP_PORT=3000
+  #     - GF_AUTH_ANONYMOUS_ENABLED=true
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #     - GF_EMAILS_WELCOME_EMAIL_ON_SIGN_UP=true
+  #     - GF_SMTP_ENABLED=true
+  #     - GF_SMTP_FROM_ADDRESS=unknown@gmail.com
+  #     - GF_SMTP_FROM_NAME=CHORDS Grafana
+  #     - GF_SMTP_HOST=unknown@gmail.com:587
+  #     - GF_SMTP_USER=unknown@gmail.com
+  #     - GF_SMTP_PASSWORD=unknown
+  #   volumes:
+  #     - grafana-data:/var/lib/grafana
+  #     - grafana-log:/var/log/grafana
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "5"
+  #   user: "104"
+  #   links:
+  #     - influxdb2.1.1
