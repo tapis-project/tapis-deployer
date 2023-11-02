@@ -4,7 +4,7 @@
     "service_tenant_id": "admin",
     "service_site_id": "{{ streams_service_site_id }}",
     "service_name": "{{ streams_service_name }}",
-    "tenant": {"tacc": {"stream_db": "StreamsTaccDevelopDB", "tapis_base_url": "https://tacc.develop.tapis.io"}, "dev": {"stream_db": "StreamsDevDevelopDB", "tapis_base_url": "https://dev.develop.tapis.io"}},
+    "tenant": {"tacc": {"stream_db": "StreamsTaccDevelopDB", "tapis_base_url": "{{ streams_service_url }}"}, "dev": {"stream_db": "StreamsDevDevelopDB", "tapis_base_url": "{{ streams_service_url }}"}},
     "tenants": ["dev", "admin"],
     "log_level": "INFO",
     "show_traceback": false,

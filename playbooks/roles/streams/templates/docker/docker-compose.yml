@@ -145,13 +145,11 @@ services:
   #     - GF_SMTP_USER=unknown@gmail.com
   #     - GF_SMTP_PASSWORD=unknown
   #   volumes:
-  #     - grafana-data:/var/lib/grafana
-  #     - grafana-log:/var/log/grafana
+  #     - {{ tapisdatadir}}/streams/grafana/data:/var/lib/grafana
+  #     - {{ tapisdatadir}}/streams/grafana/log:/var/log/grafana
   #   logging:
   #     driver: "json-file"
   #     options:
   #       max-size: "10m"
   #       max-file: "5"
   #   user: "104"
-  #   links:
-  #     - influxdb2.1.1

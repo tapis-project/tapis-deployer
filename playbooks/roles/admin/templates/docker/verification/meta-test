@@ -1,9 +1,10 @@
 #!/bin/bash
 
 
-TOK=`curl -d '{"username": "testuser2", "password": "testuser2", "grant_type": "password"}' -H "Content-type: application/json"  https://admin.kprice01.tacc.utexas.edu/v3/oauth2/tokens | jq -r '.result.access_token.access_token'`
+source functions
+gettoken
 
-curl -H X-Tapis-Token:$TOK {{admin_devtenant_url}}/v3/meta/hello 
+curl -H X-Tapis-Token:$tok {{admin_devtenant_url}}/v3/meta/hello 
 
 
 curl {{admin_devtenant_url}}/v3/meta/ready
