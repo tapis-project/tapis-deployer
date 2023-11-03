@@ -9,7 +9,7 @@ MYUID=`id -u`
 
 export UID_GID="$(id -u):$(id -g)"
 
-docker run -it --rm -v {{ tapisdatadir }}/apps:/apps tapis/ubutil2204:1.4.0 chown $MYUID /apps
+docker run -it --rm -v {{ tapisdatadir }}/apps:/apps {{ apps_util_image }} chown $MYUID /apps
 
 python3 ../admin/util/parse_skexport -c apps -d {{ tapisdatadir }}
 

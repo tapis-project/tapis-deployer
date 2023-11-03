@@ -8,7 +8,7 @@ mkdir -p {{ tapisdatadir }}/vault/data
 
 MYUID=`id -u`
 
-docker run -it --rm -v {{ tapisdatadir }}/vault:/vault tapis/ubutil2204:1.4.0 chown $MYUID /vault
+docker run -it --rm -v {{ tapisdatadir }}/vault:/vault {{ vault_util_image }} chown $MYUID /vault
 
 docker run -it --rm -v {{ tapisdatadir }}/vault:/vault {{ vault_image }} chown -R 100:1000 /vault/data
 
