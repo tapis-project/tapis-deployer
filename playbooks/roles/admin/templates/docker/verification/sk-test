@@ -1,6 +1,7 @@
 #!/bin/bash
 
-
+source functions
+gettoken
 
 echo "hello"
 curl -s {{ admin_devtenant_url }}/v3/security/hello | jq .status
