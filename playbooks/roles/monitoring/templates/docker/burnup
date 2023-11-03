@@ -2,7 +2,7 @@
 
 echo burnup monitoring
 
-mkdir -p {{ tapisdatadir }}/monitoring/prometheus
+mkdir -p {{ tapisdatadir }}/monitoring/prometheus/data
 mkdir -p {{ tapisdatadir }}/monitoring/grafana/data
 mkdir -p {{ tapisdatadir }}/monitoring/elasticsearch/data
 
