@@ -7,4 +7,4 @@ actors_mongo_image: mongo:4.2.6
 actors_alpine_image: alpine:3.17
 actors_mongobackup_image: tapis/mongobackup:0.1
 actors_rabbitmq_image: rabbitmq:3.6.12-management
-actors__util_image: tapis/ubutil2204:1.5.0
+actors_util_image: tapis/ubutil2204:1.5.0
