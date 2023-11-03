@@ -11,12 +11,5 @@ docker run -it --rm -v {{ tapisdatadir }}/meta:/meta {{ meta_util_image }} chown
 
 python3 {{ tapisdir }}/admin/util/parse_skexport -c meta -d {{ tapisdatadir }}
 
-myuid=`id -u`
-export UID=`id -u`
-export GID=`id -g`
-docker run -it --rm -v {{ tapisdatadir }}/meta:/meta {{ meta_util_image }} chown $myuid /meta
-
-python3 {{ tapisdir }}/admin/util/parse_skexport -c meta -d {{ tapisdatadir }}
-
 docker compose up -d
 
