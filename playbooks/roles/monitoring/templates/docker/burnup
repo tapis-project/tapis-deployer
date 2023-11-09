@@ -1,7 +1,16 @@
 #!/bin/bash
 
-echo "burnup monitoring:"
+echo burnup monitoring
 
-mkdir -p {{ tapisdatadir }}/monitoring
+mkdir -p {{ tapisdatadir }}/monitoring/prometheus/data
+mkdir -p {{ tapisdatadir }}/monitoring/grafana/data
+mkdir -p {{ tapisdatadir }}/monitoring/elasticsearch/data
+
+export MYUID="$(id -u)"
+export UID_GID="$(id -u):$(id -g)"
+
+docker run -it --rm -v {{ tapisdatadir }}/monitoring:/monitoring tapis/ubutil2204:1.3.0 chown $MYUID /monitoring
+
+python3 {{ tapisdir }}/admin/util/parse_skexport -c monitoring -d {{ tapisdatadir }}
+
 docker compose up -d
-
