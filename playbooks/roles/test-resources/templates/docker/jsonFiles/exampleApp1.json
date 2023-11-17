@@ -3,7 +3,7 @@
   "version":"1.0.0",
   "description":"Sample Application",
   "runtime":"SINGULARITY",
-  "containerImage":"docker.io/hello-world:latest",
+  "containerImage":"docker://hello-world:latest",
   "jobType":"FORK",
   "runtimeOptions":[ "SINGULARITY_RUN" ],
   "jobAttributes": {

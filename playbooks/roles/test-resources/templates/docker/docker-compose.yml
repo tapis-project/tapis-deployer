@@ -62,4 +62,4 @@ services:
       - "{{ test_resources_slurm_1_port }}:22"
     networks: 
       - tapis
-
+    privileged: true
