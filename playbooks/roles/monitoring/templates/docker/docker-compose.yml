@@ -6,24 +6,108 @@ networks:
 
 
 services:
-  monitoring-elisticsearch:
+  monitoring-elasticsearch:
+    container_name: monitoring-elasticsearch
+    image: {{ monitoring_elasticsearch_image }}
     networks: 
       - tapis
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
+    environment:
+      - discovery.type=single-node
+      - search.max_buckets=65535
+      - ES_JAVA_OPTS=-Xmx8G -Xmx8G -Dlog4j2.formatMsgNoLookups=true
+      - xpack.security.enabled=false
+      - cluster.routing.allocation.disk.watermark.enable_for_single_data_node=true
+    volumes:
+      - {{ tapisdatadir}}/monitoring/elasticsearch/data:/usr/share/elasticsearch/data
 
   monitoring-grafana:
+    container_name: monitoring-grafana
+    image: {{ monitoring_grafana_image }}
     networks: 
       - tapis
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_SERVER_DOMAIN={{  monitoring_service_url |replace("https://", "") }}
+      - GF_SERVER_ROOT_URL=%(protocol)s://%(domain)s/grafana
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    volumes: 
+      - {{ tapisdatadir }}/monitoring/grafana/data:/var/lib/grafana
+      - ./prometheus-datasources.yml:/etc/grafana/provisioning/datasources/prometheus.yaml
+    user: "0"
 
   monitoring-kibana:
+    container_name: monitoring-kibana
+    image: {{ monitoring_kibana_image }}
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
     networks: 
       - tapis
+    environment:
+      - ELASTICSEARCH_HOSTS=http://monitoring-elasticsearch:9200
+      - ELASTICSEARCH_URL=http://monitoring-elasticsearch:9200
 
   monitoring-prometheus:
+    container_name: monitoring-prometheus
+    image: {{ monitoring_prometheus_image }}
     networks: 
       - tapis
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
+    volumes:
+      # - ./monitoring-config.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus-config.yml:/etc/prometheus/prometheus.yml
+      - {{ tapisdatadir }}/monitoring/prometheus/data:/prometheus
+    command: --config.file=/etc/prometheus/prometheus.yml --web.enable-admin-api
+
+  thanos:
+    container_name: thanos
+    image: {{ monitoring_thanos_image }}
+    networks:
+      - tapis
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
+    environment:
+      - POD_NAME=thanos
+      - AWS_ACCESS_KEY_ID=EVF6UU73C36GCHRLGXQV
+    command: 
+      - sidecar
+      - |
+        --objstore.config=type: S3
+        config:
+          bucket: "prometheus-long-term"
+          endpoint: "172.16.120.102:7480"
+          region: ""
+          insecure: true
+          signature_version2: false
+          encrypt_sse: false
+          put_user_metadata: {}
+          trace:
+            enable: false
+          part_size: 134217728
+      - "--tsdb.path=/prometheus/data"
+      - "--prometheus.url=http://127.0.0.1:9090"
+      #- "--objstore.config-file=/etc/thanos/objstore-config.yml"
+      - "--http-address=0.0.0.0:19191"
+      - "--grpc-address=0.0.0.0:10901"
+    volumes:
+      - {{ tapisdatadir }}/monitoring/prometheus/data:/prometheus
 
   monitoring-tapis-exporter:
+    container_name: monitoring-tapis-exporter
+    image: {{ monitoring_tapis_exporter_image }}
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
     networks: 
       - tapis
+    environment:
+      - TAPIS_URL={{ monitoring_service_url }}
+      - TAPIS_SERVICES=["security", "streams", "meta"]
+      - STREAMS_DB=StreamsDevDB
+      - META_USER=restheart
 
 

@@ -1,6 +1,7 @@
 #!/bin/bash
 
-TOK=`curl -d '{"username": "testuser2", "password": "testuser2", "grant_type": "password"}' -H "Content-type: application/json"  {{ admin_service_url }}/v3/oauth2/tokens | jq -r '.result.access_token.access_token'`
+source functions
+gettoken
 
-curl {{ admin_devtenant_url }}/v3/jobs/healthcheck | jq 
+curl {{ admin_devtenant_url }}/v3/apps/healthcheck | jq 
 
