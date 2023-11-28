@@ -1,0 +1,12 @@
+{
+  "id": "tapisv3-minio-2",
+  "description": "minio-2 system for testing",
+  "host": "http://minio-1",
+  "port": 9000,
+  "systemType":"S3",
+  "defaultAuthnMethod": "ACCESS_KEY",
+  "effectiveUserId": "${apiUserId}",
+  "bucketName":"test-bucket-2",
+  "canExec": false
+}
+

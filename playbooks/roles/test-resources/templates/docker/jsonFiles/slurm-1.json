@@ -1,0 +1,15 @@
+{
+  "id": "tapisv3-slurm-1",
+  "description": "slurm-1 system for testing",
+  "host": "slurm-1",
+  "port": 22,
+  "systemType":"LINUX",
+  "defaultAuthnMethod": "PKI_KEYS",
+  "effectiveUserId": "${apiUserId}",
+  "rootDir": "/",
+  "jobWorkingDir": "/home/testuser/jobWorkingDir",
+  "batchScheduler": "SLURM",
+  "jobRuntimes": [{"runtimeType": "SINGULARITY"}],
+  "canExec": true
+}
+
