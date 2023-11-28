@@ -1,0 +1,13 @@
+{
+  "id":"example-app-1",
+  "version":"1.0.0",
+  "description":"Sample Application",
+  "runtime":"SINGULARITY",
+  "containerImage":"docker://hello-world:latest",
+  "jobType":"FORK",
+  "runtimeOptions":[ "SINGULARITY_RUN" ],
+  "jobAttributes": {
+    "description": "default job description",
+    "execSystemId": "tapisv3-slurm-1"
+  }
+}

@@ -4,7 +4,7 @@ echo "burnup actors:"
 
 mkdir -p {{ tapisdatadir }}/actors
 MYUID=`id -u`
-docker run -it --rm -v {{ tapisdatadir }}/actors:/actors tapis/ubutil2204:1.4.0 chown $MYUID /actors
+docker run -it --rm -v {{ tapisdatadir }}/actors:/actors {{ actors_util_image }} chown $MYUID /actors
 
 python3 ../admin/util/parse_skexport -c actors -d {{ tapisdatadir }}
 

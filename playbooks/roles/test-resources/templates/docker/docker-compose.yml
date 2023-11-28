@@ -1,0 +1,65 @@
+---
+version: "3"
+
+volumes:
+  files-minio-data:
+
+networks:
+    tapis:
+        name: tapis
+        external: true
+
+services:
+  minio:
+    container_name: minio-1
+    image: minio/minio:RELEASE.2023-10-25T06-33-25Z
+    environment:
+      - MINIO_ACCESS_KEY={{ test_resources_minio_1_user }}
+      - MINIO_SECRET_KEY={{ test_resources_minio_1_password }}
+    ports:
+      - "{{ test_resources_minio_1_server_port }}:9000"
+      - "{{ test_resources_minio_1_console_port }}:9001"
+    networks: 
+      - tapis
+    volumes:
+      - {{ tapisdatadir }}/test-resources/minio-1-data:/data
+    command: server /data --console-address :9001
+
+  irods-1:
+    container_name: irods-1
+    image: mjstealey/irods-provider-postgres:4.2.4
+    ports:
+      - "{{ test_resources_irods_1_port }}:22"
+    networks: 
+      - tapis
+
+  ssh-1:
+    container_name: ssh-1
+    build:
+      context: .
+      dockerfile: ssh/Dockerfile.ssh
+    ports:
+      - "{{ test_resources_ssh_1_port }}:22"
+    networks: 
+      - tapis
+
+  ssh-2:
+    container_name: ssh-2
+    build:
+      context: .
+      dockerfile: ssh/Dockerfile.ssh
+    ports:
+      - "{{ test_resources_ssh_2_port }}:22"
+    networks: 
+      - tapis
+
+  slurm-1:
+    container_name: slurm-1
+    build:
+      context: .
+      dockerfile: slurm/Dockerfile.ssh
+    ports:
+      - "{{ test_resources_slurm_1_port }}:22"
+    networks: 
+      - tapis
+    privileged: true

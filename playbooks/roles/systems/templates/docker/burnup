@@ -6,7 +6,7 @@ mkdir -p {{ tapisdatadir }}/systems
 mkdir -p {{ tapisdatadir }}/systems/postgres
 
 MYUID=`id -u`
-docker run -it --rm -v {{ tapisdatadir }}/systems:/systems tapis/ubutil2204:1.4.0 chown $MYUID /systems
+docker run -it --rm -v {{ tapisdatadir }}/systems:/systems {{ systems_util_image }} chown $MYUID /systems
 
 export UID_GID="$(id -u):$(id -g)"
 

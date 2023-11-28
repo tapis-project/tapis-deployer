@@ -6,7 +6,7 @@ mkdir -p {{ tapisdatadir }}/tenants
 mkdir -p {{ tapisdatadir }}/tenants/postgres
 
 MYUID=`id -u`
-docker run -it --rm -v {{ tapisdatadir }}/tenants:/tenants tapis/ubutil2204:1.4.0 chown $MYUID /tenants
+docker run -it --rm -v {{ tapisdatadir }}/tenants:/tenants {{ tenants_util_image }} chown $MYUID /tenants
 python3 ../admin/util/parse_skexport -c tenants -d {{ tapisdatadir }}
 
 docker compose up -d

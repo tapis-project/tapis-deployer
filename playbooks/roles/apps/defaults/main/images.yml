@@ -1,3 +1,4 @@
-apps_api_image: tapis/apps:1.5.0
+apps_api_image: tapis/apps:1.5.10
 apps_postgres_image: postgres:12.4
 apps_pgadmin_image: dpage/pgadmin4:6.20
+apps_util_image: tapis/ubutil2204:1.5.0

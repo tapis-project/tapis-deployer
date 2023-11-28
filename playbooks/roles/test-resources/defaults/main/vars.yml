@@ -1,0 +1,11 @@
+---
+
+test_resources_minio_1_user: user
+test_resources_minio_1_password: password
+test_resources_minio_1_server_port: 9000
+test_resources_minio_1_console_port: 9001
+test_resources_irods_1_port: 1247
+test_resources_ssh_1_port: 2222
+test_resources_ssh_2_port: 2223
+test_resources_slurm_1_port: 2224
+
