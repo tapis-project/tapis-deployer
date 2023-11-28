@@ -7,3 +7,4 @@ files_irods_provider_postgres_image: mjstealey/irods-provider-postgres:4.2.4
 files_pgadmin_image: dpage/pgadmin4:6.20
 files_rabbitmq_image: rabbitmq:3.8.11-management
 files_rabbitmq_management_image: rabbitmq:3-management-alpine
+files_util_image: tapis/ubutil2204:1.5.0

@@ -7,3 +7,4 @@ monitoring_kibana_image: docker.elastic.co/kibana/kibana:7.17.9
 monitoring_grafana_image: grafana/grafana:8.5.5
 monitoring_prometheus_image: prom/prometheus:v2.38.0
 monitoring_thanos_image: quay.io/thanos/thanos:v0.8.0
+monitoring_util_image: tapis/ubutil2204:1.5.0
