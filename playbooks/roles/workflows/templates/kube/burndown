@@ -11,6 +11,9 @@ cd $here/engine
 cd $here/engine-streams
 ./burndown
 
+# make sure the NFS server doesn't shut down before clients, to prevent pod hung up in "Terminating" status
+kubectl wait --for=delete pod/workflows-engine-deployment --timeout=60s
+
 cd $here/nfs-server
 ./burndown
 
