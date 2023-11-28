@@ -1,0 +1,12 @@
+{
+  "id": "tapisv3-irods-1",
+  "description": "irods-1 system for testing",
+  "host": "irods-1",
+  "port": 1247,
+  "systemType":"IRODS",
+  "defaultAuthnMethod": "PASSWORD",
+  "effectiveUserId": "${apiUserId}",
+  "rootDir": "/tempZone/home/rods",
+  "canExec": false
+}
+

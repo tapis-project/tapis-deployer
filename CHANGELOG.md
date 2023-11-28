@@ -2,12 +2,34 @@
 
 Notable changes between versions.
 
+## 1.5.2
+
+### Services Updates
+
+- [Systems: 1.5.0 to 1.5.10 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Apps: 1.5.0 to 1.5.10 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/dev/CHANGELOG.md)
+- [Notifications: 1.5.0 to 1.5.10 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+- [Files: 1.5.0 to 1.5.10 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Jobs: 1.5.0 to 1.5.10 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Security: 1.5.0 to 1.5.10 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+- [Meta: 1.5.0 to 1.5.10 (tapis/metaapi)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
+- Rebuild java services with latest shared code to fix JWT validation issue.
+
+
+## 1.5.1
+
+### Services Updates
+
+- This is a bugfix release to address a small bug with Authenticator in 1.5.0. It is not an critical bug and does not affect Tapis < 1.5.0. 
+- [ Authenticator: 1.5.0 -> 1.5.1 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
+- Several bugfixes & improvements to the Docker flavor of deployer.
+
 ## 1.5.0 
 
 ### Services Updated
 
-- [ Authenticator: 1.4.0 -> 1.5.0 (tapis/authenticator, tapis/authenticator-migrations)[https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md]
-- [ Streams: 1.4.0 -> 1.5.0 (tapis/streams-api)[https://github.com/tapis-project/streams-api/blob/prod/CHANGELOG.md]
+- [ Authenticator: 1.4.0 -> 1.5.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md]
+- [ Streams: 1.4.0 -> 1.5.0 (tapis/streams-api)]https://github.com/tapis-project/streams-api/blob/prod/CHANGELOG.md)
 - Other 1.4.x Tapis containers versions will be updated to 1.5.0
 
 ## 1.4.3
