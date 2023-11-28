@@ -37,6 +37,8 @@
     "web_max_log_length": 1000000,
     "web_case": "snake",
     "site_id": "{{ pods_service_site_id }}",
+    "maximum_pod_cpu_val": 10001,
+    "maximum_pod_mem_val": 15001,
     "global_site_object": {
         "site_rabbitmq_pass": "defaultpass"
     },
