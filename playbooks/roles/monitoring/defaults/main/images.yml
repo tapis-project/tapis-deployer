@@ -1,4 +1,4 @@
-monitoring_stern_fluentd_image: tapis/stern-fluentd:1.5.0
+monitoring_stern_fluentd_image: tapis/stern-fluentd:1.5.1
 monitoring_tapis_exporter_image: tapis/exporter:1.5.0
 monitoring_alpine_image: alpine:3.6
 monitoring_postgres_image: bitnami/postgresql:14
