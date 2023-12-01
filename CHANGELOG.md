@@ -2,6 +2,12 @@
 
 Notable changes between versions.
 
+## 1.5.3
+
+### Services Updates
+
+- [Pods: 1.5.0 to 1.5.3 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md)
+
 ## 1.5.2
 
 ### Services Updates

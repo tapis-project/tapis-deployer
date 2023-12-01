@@ -18,7 +18,7 @@
     "rabbitmq_pass": "$env{RABBITMQ_PASSWORD}",
     "nfs_tapis_system_id": "pods-nfs-server",
     "nfs_pvc_name": "pods-nfs-vol",
-    "nfs_base_path": "/podsnfs/",
+    "nfs_base_path": "/podsnfs",
     "nfs_pods_user_password": "defaultpass",
     "nfs_develop_mode": false,
     "image_allow_list": {{ pods_image_allow_list | to_json }},
