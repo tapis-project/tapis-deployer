@@ -17,6 +17,8 @@ spec:
 {% if security_renew_sk_script == true %}
       initContainers:
       - name: renew-sk-secret
+        # restartPolicy requires Kubernetes >= 1.28
+        restartPolicy: Always
         command: ["/tmp/renew-sk-secret-script"]
         #command: ["sleep","3600"]
         image: {{ security_skadminutil_image }}
