@@ -33,6 +33,7 @@ services:
     ports: 
             - "{{notifications_port}}:8080"
     {% endif %}
+    
   notifications-init-db:
     container_name: notifications-init-db
     image: {{ notifications_postgres_image }}
