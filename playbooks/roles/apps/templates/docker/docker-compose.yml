@@ -23,7 +23,8 @@ services:
             apps-migrations:
                 condition: service_completed_successfully
     {% if apps_port is not none %}
-    ports: "{{apps_port}}:8080"
+    ports: 
+            - "{{apps_port}}:8080"
     {% endif %}
         
 
