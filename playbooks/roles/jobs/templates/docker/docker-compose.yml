@@ -36,7 +36,7 @@ services:
                 condition: service_healthy
     {% if jobs_port is not none %}
     ports: 
-        - "{{jobs_port}}:8080"
+            - "{{jobs_port}}:8080"
     {% endif %}
 
     jobs-postgres:
