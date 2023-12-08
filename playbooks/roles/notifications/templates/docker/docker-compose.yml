@@ -29,7 +29,10 @@ services:
       notifications-rabbitmq:
         condition: service_healthy
     command: java -Xms{{ notifications_heap_min }} -Xmx{{ notifications_heap_max }} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -cp "notifications.jar:dependencies/*" edu.utexas.tacc.tapis.notifications.api.NotificationsApplication
-
+    {% if notifications_port is not none %}
+    ports: 
+            - "{{notifications_port}}:8080"
+    {% endif %}
   notifications-init-db:
     container_name: notifications-init-db
     image: {{ notifications_postgres_image }}
