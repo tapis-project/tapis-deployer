@@ -34,6 +34,9 @@ services:
                 condition: service_completed_successfully
             jobs-rabbitmq:
                 condition: service_healthy
+    {% if jobs_port is not none %}
+    ports: "{{jobs_port}}:8080"
+    {% endif %}
 
     jobs-postgres:
         container_name: jobs-postgres
