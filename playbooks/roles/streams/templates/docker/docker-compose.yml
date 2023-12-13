@@ -106,8 +106,8 @@ services:
     networks: 
       - tapis
     volumes:
-      - {{ tapisdatadir }}/streams/influx2/influxdb-data2.1.1:/var/lib/influxdb
-      - {{tapisdatadir}}/streams/influx2/influxdb-log2.1.1:/var/log/influxdb
+      - {{ tapisdatadir }}/streams/influx2/influxdb-data2.1.1:/var/lib/influxdb2
+      - {{ tapisdatadir }}/streams/influx2/influxdb-log2.1.1:/var/log/influxdb2
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=admin
