@@ -3,7 +3,7 @@
     container_name: chords_influxdb2
     image: {{ streams_influxdb2_image }}
     volumes:
-      - influxdb-data:/var/lib/influxdb
+      - influxdb-data:/var/lib/influxdb2
       - influxdb-log:/var/log/influxdb
       - /var/run/docker.sock:/var/run/docker.sock
       - shared-tmp:/tmp/
