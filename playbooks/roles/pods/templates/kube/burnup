@@ -19,7 +19,6 @@ kubectl apply -f traefik-pvc.yml
 
 # Wait for PVC jobs to complete
 kubectl wait --for=condition=complete job/chown-pods-postgres-pvc
-kubectl wait --for=condition=complete job/pods-nfs-mkdirs
 kubectl wait --for=condition=complete job/chown-pods-traefik-pvc
 
 # Storage
@@ -27,8 +26,18 @@ kubectl apply -f postgres.yml
 kubectl apply -f rabbitmq.yml
 kubectl apply -f nfs.yml
 
+
+### Replace nfs server IP at runtime to correct ip. Works during each burnup
+## This sed is from Nathan Freeman's Workflows.
+here=`pwd`
+NFS_SERVICE_IP=$(kubectl get service pods-nfs -o jsonpath='{.spec.clusterIP}')
+sed -i "s/server:.*/server: $NFS_SERVICE_IP/g" "$here/api.yml" "$here/health-central.yml"
+
 # App
 kubectl apply -f api.yml
+kubectl apply -f health-central.yml
+kubectl apply -f traefik-proxy.yml
+
+# App - when deployed in single namespace
 kubectl apply -f spawner.yml
 kubectl apply -f health.yml
-kubectl apply -f traefik-proxy.yml

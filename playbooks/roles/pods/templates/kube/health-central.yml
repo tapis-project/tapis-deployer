@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pods-api
+  name: pods-health-central
 spec:
   selector:
     matchLabels:
-      app: pods-api
+      app: pods-health-central
   template:
     metadata:
       labels:
-        app: pods-api
+        app: pods-health-central
     spec:
       serviceAccountName: pods-serviceaccount
       containers:
-      - name: pods-api
+      - name: pods-health-central
         image: {{ pods_api_image }}
         imagePullPolicy: {{pods_image_pull_policy}}
         resources:
@@ -23,14 +23,11 @@ spec:
           limits:
             cpu: "2"
             memory: "2G"
-        ports:
-        - name: fastapi
-          containerPort: 8000
         env:
         - name: PODS_COMPONENT
-          value: api
+          value: health-central
         - name: DEBUG_SLEEP_LOOP
-          value: "false"
+          value: 'false'
         - name: SERVICE_PASSWORD
           valueFrom:
             secretKeyRef:
