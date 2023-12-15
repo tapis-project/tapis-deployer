@@ -2,12 +2,13 @@
 
 Notable changes between versions.
 
-## 1.5.3 
+## 1.5.3
 
 ### Services Updates
 
 - [Streams: 1.5.0 -> 1.5.1 (tapis/streams-api)](https://github.com/tapis-project/streams-api/blob/prod/CHANGELOG.md)
 - This release also fixes a bug with Streams InfluxDB data location inside the container that was causing saved data to be lost between container restarts.
+- [Pods: 1.5.0 to 1.5.3 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md)
 
 
 ## 1.5.2
