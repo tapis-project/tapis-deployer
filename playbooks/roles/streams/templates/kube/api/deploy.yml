@@ -34,7 +34,7 @@ spec:
           value: "admin"
         volumeMounts:
         - name: influx-data
-          mountPath: "/var/lib/influxdb"
+          mountPath: "/var/lib/influxdb2"
       volumes:
       - name: influx-data
         persistentVolumeClaim:
