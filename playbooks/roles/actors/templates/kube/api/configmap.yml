@@ -8,4 +8,5 @@ data:
   TAS_ROLE_ACCT: "{{ actors_tas_role_acct }}"
   TAS_ROLE_PASS: "{{ actors_tas_role_pass }}"
   timeout: "{{ actors_timeout }}"
-  
+  threads: "{{ actors_threads }}"
+  processes: "{{ actors_processes }}"
