@@ -2,6 +2,12 @@
 
 Notable changes between versions.
 
+## 1.6.0 
+
+### Service Updates
+
+- [ Authenticator: 1.5.1 -> 1.6.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md)
+
 ## 1.5.3
 
 ### Services Updates
