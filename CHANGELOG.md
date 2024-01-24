@@ -2,6 +2,14 @@
 
 Notable changes between versions.
 
+## 1.5.4
+
+### Services Updates
+
+- [Abaco: 1.5.0 to 1.5.1 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md)
+
+
+
 ## 1.5.3
 
 ### Services Updates
