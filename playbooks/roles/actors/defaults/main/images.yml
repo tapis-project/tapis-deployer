@@ -1,7 +1,7 @@
 actors_core_image: abaco/core-v3:{{ actors_service_version }}
 actors_grafana_image: grafana/grafana:9.4.7
-actors_nginx_image: abaco/nginx:1.9.1
-actors_nginxk8s_image: abaco/nginxk8s:1.4.0
+actors_nginx_image: abaco/nginx:1.6.0
+actors_nginxk8s_image: abaco/nginxk8s:1.6.0
 actors_mongo_image: mongo:4.2.6
 actors_alpine_image: alpine:3.17
 actors_mongobackup_image: tapis/mongobackup:1.6.0
