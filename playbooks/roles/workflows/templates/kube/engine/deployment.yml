@@ -83,7 +83,7 @@ spec:
           tty: true
           volumeMounts:
             - name: pipelines-mount
-              mountPath: /mnt/pipelines/
+              mountPath: /var/lib/open-workflow-engine
       volumes:
         - name: pipelines-mount
           nfs: 
