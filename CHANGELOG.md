@@ -6,7 +6,9 @@ Notable changes between versions.
 
 ### Service Updates
 
-- [ Authenticator: 1.5.1 -> 1.6.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md)
+- [Authenticator: 1.5.1 -> 1.6.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md)
+- [Abaco: 1.5.0 to 1.6.0 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md)
+
 
 ## 1.5.3
 

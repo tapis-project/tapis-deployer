@@ -11,6 +11,7 @@ spec:
       labels:
         app: actors-mongo
     spec:
+      hostname: actors-mongo # sets static hostname rather than random k8 generated. Without mongo gets replica-set confused.
       containers:
       - name: actors-mongo
         image: {{ actors_mongo_image }}
