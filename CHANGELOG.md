@@ -10,6 +10,7 @@ Notable changes between versions.
 - [Apps: 1.5.10 to 1.6.0 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/dev/CHANGELOG.md)
 - [Authenticator: 1.5.1 -> 1.6.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md)
 - [Files: 1.5.10 to 1.6.0 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Globus-Proxy: 1.5.0 to 1.6.0 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
 - [Jobs: 1.5.10 to 1.6.0 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Meta: 1.5.10 to 1.6.0 (tapis/metaapi, tapis-meta-rh-server)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
 - [Notifications: 1.5.12 to 1.6.0 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
