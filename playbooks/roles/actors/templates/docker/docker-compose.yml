@@ -239,39 +239,13 @@ services:
         networks:
             - tapis
 
-    actors-prometheus:
-        container_name: actors-prometheus
-        # build: ./images/prometheus
-        image: {{ actors_prometheus_image }}
-        # volumes:
-        #     - ./images/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-        #     - ./images/prometheus/alert.rules.yml:/etc/prometheus/alert.rules.yml
-        command:
-          - '--config.file=/etc/prometheus/prometheus.yml'
-        #   - '-storage.local.path=/prometheus'
-        # ports:
-        #     - 127.0.0.1:9090:9090
-        networks:
-            - tapis
-        depends_on:
-            - actors-mongo
-            - actors-reg
-
     actors-grafana:
         container_name: acrots-grafana
         image: {{ actors_grafana_image }}
         user: "104"
         depends_on:
-            - actors-prometheus
             - actors-mongo
             - actors-reg
-        # ports:
-        #     - "127.0.0.1:3000:3000"
-        # volumes:
-        #     - grafana_data:/var/lib/grafana
-        #     - ./images/prometheus/grafana/provisioning/:/etc/grafana/provisioning/
-        # env_file:
-        #     - ./images/prometheus/grafana/config.monitoring
         networks:
             - tapis
         restart: always
@@ -301,7 +275,6 @@ services:
         depends_on:
             - actors-mongo
             - actors-reg
-            - actors-prometheus
 
 # volumes:
 #     grafana_data: {}
