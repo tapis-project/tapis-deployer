@@ -14,5 +14,5 @@ echo debug130 namespace
 echo $KUBE_NAMESPACE
 
 
-#java -Djdk.tls.client.protocols=TLSv1.2 -cp /usr/local/bin/shaded-securitylib.jar edu.utexas.tacc.tapis.security.commands.SkAdmin -c -i /tmp/initialLoad -vr VAULT_ROLEID -vs VAULT_SECRETID -b {{skadmin_vault_url}} -kt KUBE_TOKEN -kn KUBE_NAMEPSACE -ku https://kubernetes.default.svc.cluster.local
-java -Djdk.tls.client.protocols=TLSv1.2 -cp /usr/local/bin/shaded-securitylib.jar edu.utexas.tacc.tapis.security.commands.SkAdmin -c -i /tmp/updateLoad -vr $VAULT_ROLEID -vs $VAULT_SECRETID -b {{skadmin_vault_url}} -dm -kt KUBE_TOKEN -kn $KUBE_NAMESPACE -ku https://kubernetes.default.svc.cluster.local
+#java -Djdk.tls.client.protocols=TLSv1.3 -cp /usr/local/bin/shaded-securitylib.jar edu.utexas.tacc.tapis.security.commands.SkAdmin -c -i /tmp/initialLoad -vr VAULT_ROLEID -vs VAULT_SECRETID -b {{skadmin_vault_url}} -kt KUBE_TOKEN -kn KUBE_NAMEPSACE -ku https://kubernetes.default.svc.cluster.local
+java -Djdk.tls.client.protocols=TLSv1.3 -cp /usr/local/bin/shaded-securitylib.jar edu.utexas.tacc.tapis.security.commands.SkAdmin -c -i /tmp/updateLoad -vr $VAULT_ROLEID -vs $VAULT_SECRETID -b {{skadmin_vault_url}} -dm -kt KUBE_TOKEN -kn $KUBE_NAMESPACE -ku https://kubernetes.default.svc.cluster.local
