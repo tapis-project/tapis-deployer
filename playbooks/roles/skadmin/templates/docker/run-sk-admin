@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -Djdk.tls.client.protocols=TLSv1.3 -cp /usr/local/bin/shaded-securitylib.jar edu.utexas.tacc.tapis.security.commands.SkAdmin -c -i /tmp/initialLoad -vr $VAULT_ROLEID -vs $VAULT_SECRETID -b {{ skadmin_vault_url }} 
+java -Djdk.tls.client.protocols=TLSv1.2 -cp /usr/local/bin/shaded-securitylib.jar edu.utexas.tacc.tapis.security.commands.SkAdmin -c -i /tmp/initialLoad -vr $VAULT_ROLEID -vs $VAULT_SECRETID -b {{ skadmin_vault_url }} 

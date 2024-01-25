@@ -17,7 +17,6 @@ Notable changes between versions.
 - [Security: 1.5.10 to 1.6.0 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
 - [Systems: 1.5.10 to 1.6.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
 - Removed the stern component from monitoring
-- Updated all nginx configs to use TLSv1.3
 
 
 ## 1.5.3
