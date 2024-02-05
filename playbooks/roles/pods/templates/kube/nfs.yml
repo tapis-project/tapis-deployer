@@ -14,54 +14,43 @@ spec:
       containers:
       - name: pods-nfs
         image: itsthenetwork/nfs-server-alpine:12
-        # This is an NFS image which we deploy SSH in along with a lot of permissioning/keys
-        # We create a pods user using adduser
-        # We then "unlock" the user in Alpine by removing the ! in /etc/shadow for the user. User's are locked by default.
-        #     You cannot ssh via pubkey to a locked user in Alpine. I could not way to do this during the adduser step. 
-        # We install openssh/openrc/acl for ssh, service management, and permissioning later  
-        # We enable the sshd service
-        # We touch /run/openrc/softlevel so that openrc will run on a host it wasn't started up on
-        # we create some prerequisite folders
-        # Create our neccessary keys for the pods user, and the public to authorized_keys for ssh access
-        # ssh-keyget -A creates host keys that sshd requires
-        # chown the pods user's ssh folder
-        # Turn on PubKeyAuthentication in the ssd_config
-        # Restart sshd
-        # Run the nfsd.sh script which is the entrypoint for the nfs-server-alpine image, it starts the NFS process.
-        command:
-          - /bin/sh
-          - -c
-          - |
-            adduser -D -g "Pods service user used by Files API to manage NFS folder." pods &&\
-            sed -i 's/pods:!:/pods::/g' /etc/shadow &&\
-            apk add --no-cache openssh openrc acl &&\
-            rc-status &&\
-            rc-update add sshd &&\
-            touch /run/openrc/softlevel &&\
-            setfacl -R -m u:pods:rwx /podsnfs &&\
-            mkdir /home/pods/.ssh &&\
-            ssh-keygen -f /home/pods/.ssh/podskey -m PEM -q -N '' &&\
-            cp /home/pods/.ssh/podskey.pub /home/pods/.ssh/authorized_keys &&\
-            ssh-keygen -A &&\
-            chown pods:pods /home/pods/.ssh/* &&\
-            sed -i 's/#PubkeyAuthentication/PubkeyAuthentication/g' /etc/ssh/sshd_config &&\
-            rc-service sshd restart &&\
-            /usr/bin/nfsd.sh
         securityContext:
-          privileged: true
+          privileged: true # required by image
         env:
         - name: SHARED_DIRECTORY
           value: "/podsnfs"
         ports:
         - name: pods-nfs
           containerPort: 2049
-        - name: pods-nfs-ssh
-          containerPort: 22
         volumeMounts:
         - name: pods-nfs-vol
           mountPath: "/podsnfs"
-
+        - name: pods-nfs-config
+          mountPath: "/etc/exports"
+          subPath: "exports"
       volumes:
       - name: pods-nfs-vol
         persistentVolumeClaim:
           claimName: pods-nfs-vol
+      - name: pods-nfs-config
+        configMap:
+          name: pods-nfs-config
+          items:
+          - key: exports
+            path: exports
+
+# Config overwrites /etc/exports which is was nfsd is looking for.
+# all_squash makes it so all clients are squashed to the same user, in this case 4872:4872.
+# Meaning all clients, no matter uid, write as 4872(tapis uid) regardless of their container id.
+--- 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pods-nfs-config
+data:
+  exports: |
+    /podsnfs *(rw,fsid=0,async,no_subtree_check,anonuid=0,anongid=0,all_squash,insecure)
+# This only works if user is root on health-central and api otherwise it can't edit anything.    
+#/podsnfs *(rw,fsid=0,async,no_subtree_check,insecure,no_root_squash)
+# This works when user is `tapis` on health-central and api.
+#/podsnfs *(rw,fsid=0,async,no_subtree_check,anonuid=0,anongid=0,all_squash,insecure)
