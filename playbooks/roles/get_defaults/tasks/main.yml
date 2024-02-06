@@ -2,6 +2,7 @@
 
 - name: Set default values for vars
   ansible.builtin.set_fact:
+    global_service_tenant_id: '{{ global_service_tenant_id | default(global_service_tenant_id_default) }}'
     tapisdir: '{{ tapisdir | default(tapisdir_default) }}'
     tapisdatadir: '{{ tapisdatadir | default(tapisdatadir_default) }}'
     global_vault_url: '{{ global_vault_url | default(global_vault_url_default) }}'

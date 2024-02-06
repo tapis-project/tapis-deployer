@@ -8,6 +8,7 @@ mkdir -p {{ tapisdatadir }}/security/postgres
 python3 ../admin/util/parse_skexport -c security -d {{ tapisdatadir }}
 
 export UID_GID="$(id -u):$(id -g)"
+docker run -it --rm -v {{ tapisdatadir }}/security:/security {{ meta_util_image }} chown $UID_GID /security
 
 docker compose up -d
 
