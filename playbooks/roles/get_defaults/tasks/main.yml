@@ -2,14 +2,32 @@
 
 - name: Set default values for vars
   ansible.builtin.set_fact:
-    global_service_tenant_id: '{{ global_service_tenant_id | default(global_service_tenant_id_default) }}'
     tapisdir: '{{ tapisdir | default(tapisdir_default) }}'
     tapisdatadir: '{{ tapisdatadir | default(tapisdatadir_default) }}'
+    global_service_tenant_id: '{{ global_service_tenant_id | default(global_service_tenant_id_default) }}'
     global_vault_url: '{{ global_vault_url | default(global_vault_url_default) }}'
     global_service_url: '{{ global_service_url | default(global_service_url_default) }}'
     components_to_deploy: '{{ components_to_deploy | default(components_to_deploy_default) }}'
     global_devtenant_url: '{{ global_devtenant_url | default(global_devtenant_url_default) }}'
     global_primary_site_admin_tenant_base_url: '{{ global_primary_site_admin_tenant_base_url | default(global_primary_site_admin_tenant_base_url_default) }}'
+    actors_location: '{{ actors_location | default(actors_location_default) }}'
+    apps_location: '{{ apps_location | default(apps_location_default) }}'
+    authenticator_location: '{{ authenticator_location | default(authenticator_location_default) }}'
+    files_location: '{{ files_location | default(files_location_default) }}'
+    globus_proxy_location: '{{ globus_proxy_location | default(globus_proxy_location_default) }}'
+    jobs_location: '{{ jobs_location | default(jobs_location_default) }}'
+    meta_location: '{{ meta_location | default(meta_location_default) }}'
+    notifications_location: '{{notifications_location | default(notifications_location_default) }}'
+    pgrest_location: '{{pgrest_location | default(pgrest_location_default) }}'
+    pods_location: '{{pods_location | default(pods_location_default) }}'
+    security_location: '{{pods_location | default(pods_location_default) }}'
+    site_router_location: '{{site_router_location | default(site_router_location_default) }}'
+    sites_location: '{{sites_location | default(sites_location_default) }}'
+    streams_location: '{{streams_location | default(streams_location_default) }}'
+    systems_location: '{{systems_location | default(systems_location_default) }}'
+    tenants_location: '{{tenants_location | default(tenants_location_default) }}'
+    tokens_location: '{{tokens_location | default(tokens_location_default) }}'
+    workflows_location: '{{workflows_location | default(workflows_location_default) }}'
 
 - name: Values being used
   ansible.builtin.debug:

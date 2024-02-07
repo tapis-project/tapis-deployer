@@ -1,8 +1,8 @@
-global_service_tenant_id_default: admin
 tapisdir_default: '{{ ansible_env.HOME }}/.tapis/{{ inventory_hostname }}'
 tapisdatadir_default: '{{ ansible_env.HOME }}/.tapis-data/{{ inventory_hostname }}'
+global_service_tenant_id_default: admin
 global_vault_url_default: 'http://vault:8200'
-global_service_url_default: 'https://{{ global_service_tenant_id }}.{{ global_tapis_domain }}'
+global_service_url_default: 'https://{{ global_service_tenant_id_default }}.{{ global_tapis_domain }}'
 global_devtenant_url_default: 'https://dev.{{ global_tapis_domain }}'
 global_primary_site_admin_tenant_base_url_default: 'https://admin.{{ global_tapis_domain }}'
 
@@ -35,3 +35,21 @@ components_to_deploy_default:
 #  - workflows  
 #  - test-resources
 
+actors_location_default: "http://actors-nginx:80"
+apps_location_default: "http://apps-api:8080"
+authenticator_location_default: "http://authenticator-api:5000"
+files_location_default: "http://files-api:8080"
+globus_proxy_location_default: "http://globus-proxy:5000"
+jobs_location_default: "http://jobs-api:8080"
+meta_location_default: "http://restheart-security:8080"
+notifications_location_default: "http://notifications-api:8080"
+pgrest_location_default: "http://pgrest-api:5000"
+pods_location_default: "{{ global_service_url_default }}"
+security_location_default: "http://security-api:8080"
+site_router_location_default: "http://site-router:8000"
+sites_location_default: "http://tenants-api:5000"
+streams_location_default: "http://streams-api:5000"
+systems_location_default: "http://systems-api:8080"
+tenants_location_default: "http://tenants-api:5000"
+tokens_location_default: "http://tokens-api:5000"
+workflows_location_default: "http://workflows-api-service:8000"

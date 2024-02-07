@@ -25,7 +25,7 @@ apps = {
 authenticator = {
     "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
     "postgres_password": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
-    "LDAP_ROOTPASS": "USER_ADMIN_AUTHENTICATOR_LDAP_TAPIS_DEV_PASSWORD",
+    "LDAP_ROOTPASS": "USER_{{ global_service_tenant_id | upper }}_AUTHENTICATOR_LDAP_TAPIS_DEV_PASSWORD",
     "service_password": "SERVICEPWD_AUTHENTICATOR_PASSWORD"
     }
                 
@@ -144,7 +144,7 @@ tenants = {
     }
 
 tokens = {
-    "site_admin_privatekey": "JWTSIGNING_ADMIN_PRIVATEKEY"
+    "site_admin_privatekey": "JWTSIGNING_{{ global_service_tenant_id | upper }}_PRIVATEKEY"
     }
 
 vault = {"":""}
