@@ -250,7 +250,7 @@ if args.verbose:
     print(f'Completed mapping. Writing {output_dict}')
     
 for key in output_dict:
-    outfile.write(f'{key}="{output_dict[key]}"\n')
+    outfile.write(f'{key}={output_dict[key]}\n')
             
 
 outfile.close() 
