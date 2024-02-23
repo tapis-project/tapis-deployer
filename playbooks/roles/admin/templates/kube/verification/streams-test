@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl {{admin_service_url}}/v3/streams/hello 
+curl {{admin_service_url}}/v3/streams/ready 
 
 
 curl {{admin_service_url}}/v3/streams/hello
