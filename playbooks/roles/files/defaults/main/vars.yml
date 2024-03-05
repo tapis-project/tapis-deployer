@@ -1,7 +1,5 @@
 ---
 
-files_args: ["-Xdebug", "-Xmx3g", "-agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n", "-Dlogback.configurationFile=target/classes/logback.xml", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.api.FilesApplication"]
-files_commands: ["java", "-Xmx3g", "-Dlogback.configurationFile=target/classes/logback.xml", "-cp", "target/tapis-files.jar:target/dependencies/*", "edu.utexas.tacc.tapis.files.lib.transfers.TransfersApp"]
 files_node_selector: null
 files_rabbitmq_hostname: files-rabbitmq
 files_service_name: files
