@@ -155,7 +155,7 @@ workflows = {"":""}
 # parse args
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comp', help='Tapis component to export env file for', required=True)
-parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible', required=True)
+parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible host vars', required=True)
 parser.add_argument('-v', '--verbose', help='Display debug information', action='store_true')
 args = parser.parse_args()
 
@@ -226,6 +226,7 @@ if component == 'security':
             role_id: {output_dict['TAPIS_SK_VAULT_ROLE_ID']}
             ''')
 
+
 with open(infile, 'r') as lines:
     if args.verbose:
         print(f'successfuly opened infile: {infile}')
@@ -243,9 +244,13 @@ with open(infile, 'r') as lines:
                     output_dict[key] = skexport_value
                     if key == 'MONGO_INITDB_ROOT_PASSWORD':
                         output_dict["MONGO_URI"] = f"mongodb://restheart:{skexport_value}@restheart-mongo:27017/?authSource=admin"
+                    if "public_key" in key or "private_key" in key or "privatekey" in key:
+                        if args.verbose:
+                            print(f'Key {key} is a signing token. Need to make sure it\'s quoted')
+                        output_dict[key] = f'"{skexport_value}"'
         except KeyError:
             pass
-
+ 
 if args.verbose:
     print(f'Completed mapping. Writing {output_dict}')
     
