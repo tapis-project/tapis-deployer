@@ -1,0 +1,66 @@
+---
+# This is a helper playbook to copy the burnups for components you'd like to place on a different host than the main deployer host
+
+# This playbook should be run ONLY on remote_hosts, a separate group in your Ansible inventory.
+
+# This playbook assumes it is running on the "main" deployment host, AFTER burnup has been run (to populate skadmin/env file.
+
+- name: Copy Tapis components to other hosts
+  hosts: remote_hosts
+
+  vars:
+
+    # Grab the tapisdir & tapisdatadir from the first [0] host in the tapis_installs group.
+    # This should be the path on the "main" deployment host
+    tapis_remote_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
+    tapis_remote_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
+
+
+  tasks:
+
+  - name: debug1 tapis_remote_dir
+    ansible.builtin.debug:
+      var: tapis_remote_dir 
+    failed_when: tapis_remote_dir is not defined
+
+  - name: debug2 tapis_remote_data_dir
+    ansible.builtin.debug:
+      var: tapis_remote_data_dir 
+    failed_when: tapis_remote_data_dir is not defined
+
+  - name: print remote components
+    ansible.builtin.debug:
+      var: item
+    loop: "{{ remote_components }}"
+
+  - name: Create remote dirs
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+    loop: 
+    - "{{ tapis_remote_dir }}"
+    - "{{ tapis_remote_data_dir }}"
+    - "{{ tapis_remote_data_dir }}/skadmin"
+
+  - name: Copy remote components 
+    ansible.builtin.copy:
+      # localhost
+      src: "{{ tapis_remote_dir }}/{{ item }}/"
+      # remote host
+      dest: "{{ tapis_remote_dir }}/{{ item }}/"
+      mode: preserve
+    loop: "{{ remote_components }}"
+    
+  - name: Copy skadmin env
+    ansible.builtin.copy:
+      src: "{{ tapis_remote_data_dir }}/skadmin/env"
+      dest: "{{ tapis_remote_data_dir }}/skadmin/env"
+      mode: preserve
+    
+
+
+
+
+
+
+

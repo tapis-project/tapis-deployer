@@ -2,7 +2,7 @@
 
 echo burnup streams
 
-mkdir -p {{ tapisdatadir }}/streams/influx
+mkdir -p {{ tapisdatadir }}/streams/influx2
 mkdir -p {{ tapisdatadir }}/streams/mysql/data
 mkdir -p {{ tapisdatadir }}/streams/grafana/data
 

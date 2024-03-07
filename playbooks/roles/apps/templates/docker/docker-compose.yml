@@ -23,7 +23,6 @@ services:
             apps-migrations:
                 condition: service_completed_successfully
         
-
     apps-postgres:
         container_name: apps-postgres
         image: {{ apps_postgres_image }}

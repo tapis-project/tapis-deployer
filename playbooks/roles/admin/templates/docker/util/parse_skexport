@@ -25,7 +25,7 @@ apps = {
 authenticator = {
     "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
     "postgres_password": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
-    "LDAP_ROOTPASS":"USER_ADMIN_AUTHENTICATOR_LDAP_TAPIS_DEV_PASSWORD",
+    "LDAP_ROOTPASS": "USER_{{ global_service_tenant_id | upper }}_AUTHENTICATOR_LDAP_TAPIS_DEV_PASSWORD",
     "service_password": "SERVICEPWD_AUTHENTICATOR_PASSWORD"
     }
                 
@@ -64,7 +64,12 @@ monitoring = {
     "GF_SERVER_DOMAIN": "{{  global_service_url |replace("https://", "") }}",
     "TAPIS_DB_MONITOR_PASSWORD":"USER_ADMIN_GRAFANA_ADMIN_POSTGRES_RO_PASSWORD_PASSWORD",
     "AWS_SECRET_ACCESS_KEY": "USER_ADMIN_GRAFANA_ADMIN_THANOS_S3_SECRET_KEY_PASSWORD",
-    "META_PASSWORD": "DBCREDENTIAL_MONGO_RESTHEART_MONGO_NA_RESTHEART_PASSWORD"
+    "META_PASSWORD": "DBCREDENTIAL_MONGO_RESTHEART_MONGO_NA_RESTHEART_PASSWORD",
+    "POSTGRES_PASSWORD_AUTH": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
+    "POSTGRES_PASSWORD_APPS": "DBCREDENTIAL_POSTGRES_APPS_POSTGRES_TAPISAPPDB_POSTGRES_PASSWORD",
+    "POSTGRES_PASSWORD_JOBS": "DBCREDENTIAL_POSTGRES_JOBS_POSTGRES_TAPISJOBSDB_TAPIS_PASSWORD",
+    "MONITOR_PASSWORD": ""
+
 }
 
 notifications = {
@@ -139,7 +144,7 @@ tenants = {
     }
 
 tokens = {
-    "site_admin_privatekey": "JWTSIGNING_ADMIN_PRIVATEKEY"
+    "site_admin_privatekey": "JWTSIGNING_{{ global_service_tenant_id | upper }}_PRIVATEKEY"
     }
 
 vault = {"":""}
@@ -150,7 +155,7 @@ workflows = {"":""}
 # parse args
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comp', help='Tapis component to export env file for', required=True)
-parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible', required=True)
+parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible host vars', required=True)
 parser.add_argument('-v', '--verbose', help='Display debug information', action='store_true')
 args = parser.parse_args()
 
@@ -221,6 +226,7 @@ if component == 'security':
             role_id: {output_dict['TAPIS_SK_VAULT_ROLE_ID']}
             ''')
 
+
 with open(infile, 'r') as lines:
     if args.verbose:
         print(f'successfuly opened infile: {infile}')
@@ -238,14 +244,18 @@ with open(infile, 'r') as lines:
                     output_dict[key] = skexport_value
                     if key == 'MONGO_INITDB_ROOT_PASSWORD':
                         output_dict["MONGO_URI"] = f"mongodb://restheart:{skexport_value}@restheart-mongo:27017/?authSource=admin"
+                    if "public_key" in key or "private_key" in key or "privatekey" in key:
+                        if args.verbose:
+                            print(f'Key {key} is a signing token. Need to make sure it\'s quoted')
+                        output_dict[key] = f'"{skexport_value}"'
         except KeyError:
             pass
-
+ 
 if args.verbose:
     print(f'Completed mapping. Writing {output_dict}')
     
 for key in output_dict:
-    outfile.write(f'{key}="{output_dict[key]}"\n')
+    outfile.write(f'{key}={output_dict[key]}\n')
             
 
 outfile.close() 
