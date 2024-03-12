@@ -77,6 +77,10 @@ burnup_or_exit authenticator
 
 ### secondary services
 
+{% if "notifications" in components_to_deploy %}
+burnup_or_exit notifications
+{% endif %}
+
 {% if "jobs" in components_to_deploy %}
 burnup_or_exit jobs  
 {% endif %}
@@ -92,11 +96,6 @@ burnup_or_exit systems
 {% if "apps" in components_to_deploy %}
 burnup_or_exit apps
 {% endif %}
-
-{% if "notifications" in components_to_deploy %}
-burnup_or_exit notifications
-{% endif %}
-
 
 ## tertiary services
 

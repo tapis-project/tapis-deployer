@@ -2,6 +2,18 @@
 
 Notable changes between versions.
 
+## 1.6.1 
+
+### Service Updates
+
+- [Security: 1.6.0 to 1.6.1 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+- [Systems: 1.6.0 to 1.6.1 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Apps: 1.6.0 to 1.6.1 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/dev/CHANGELOG.md)
+- [Jobs: 1.6.0 to 1.6.1 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Files: 1.6.0 to 1.6.1 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Notifications: 1.6.0 to 1.6.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+
+
 ## 1.6.0 
 
 ### Service Updates
