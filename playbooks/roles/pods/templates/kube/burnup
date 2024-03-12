@@ -13,6 +13,7 @@ kubectl create configmap pods-config --from-file=config.json
 kubectl create configmap pods-traefik-conf --from-file=traefik.yml
 
 # PVC
+kubectl apply -f rabbitmq-pvc.yml
 kubectl apply -f postgres-pvc.yml
 kubectl apply -f nfs-pvc.yml
 kubectl apply -f traefik-pvc.yml
