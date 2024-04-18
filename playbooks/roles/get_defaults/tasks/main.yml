@@ -20,7 +20,7 @@
     notifications_location: '{{notifications_location | default(notifications_location_default) }}'
     pgrest_location: '{{pgrest_location | default(pgrest_location_default) }}'
     pods_location: '{{pods_location | default(pods_location_default) }}'
-    security_location: '{{pods_location | default(pods_location_default) }}'
+    security_location: '{{security_location | default(security_location_default) }}'
     site_router_location: '{{site_router_location | default(site_router_location_default) }}'
     sites_location: '{{sites_location | default(sites_location_default) }}'
     streams_location: '{{streams_location | default(streams_location_default) }}'

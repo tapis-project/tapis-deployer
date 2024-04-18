@@ -3,4 +3,4 @@
 source functions
 gettoken
 
-curl {{ admin_devtenant_url }}/v3/jobs/healthcheck | jq 
+curl {{ admin_devtenant_url }}/v3/jobs/healthcheck 

@@ -4,13 +4,13 @@ source functions
 gettoken
 
 echo "hello"
-curl -s {{ admin_devtenant_url }}/v3/security/hello | jq .status
+curl -s {{ admin_devtenant_url }}/v3/security/hello
 echo
 
 echo "ready"
-curl -s {{ admin_devtenant_url }}/v3/security/ready | jq .status
+curl -s {{ admin_devtenant_url }}/v3/security/ready 
 echo
 
 echo "healthcheck"
-curl -s {{ admin_devtenant_url }}/v3/security/healthcheck | jq .status
+curl -s {{ admin_devtenant_url }}/v3/security/healthcheck 
 echo

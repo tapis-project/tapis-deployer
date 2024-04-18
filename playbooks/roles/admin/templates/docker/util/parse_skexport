@@ -210,14 +210,20 @@ if component == 'security':
     r = requests.post('http://localhost:8200/v1/auth/approle/role/sk/secret-id', headers=headers)
     if args.verbose:
         print(f'getting secret-id, have:: {r.json()}')
-    output_dict['TAPIS_SK_VAULT_SECRET_ID'] =  r.json()['data']['secret_id']
-    output_dict['VAULT_SECRETID'] =  r.json()['data']['secret_id']
+    try:
+        output_dict['TAPIS_SK_VAULT_SECRET_ID'] =  r.json()['data']['secret_id']
+        output_dict['VAULT_SECRETID'] =  r.json()['data']['secret_id']
+    except KeyError as e:
+        print(f'Encountered key error while parsing {r.json()}:: {e}')
 
     r = requests.get('http://localhost:8200/v1/auth/approle/role/sk/role-id', headers=headers)
     if args.verbose:
         print(f'getting role-id, have:: {r.json()}')
-    output_dict['TAPIS_SK_VAULT_ROLE_ID'] =  r.json()['data']['role_id']
-    output_dict['VAULT_ROLEID'] =  r.json()['data']['role_id']
+    try:
+        output_dict['TAPIS_SK_VAULT_ROLE_ID'] =  r.json()['data']['role_id']
+        output_dict['VAULT_ROLEID'] =  r.json()['data']['role_id']
+    except KeyError as e:
+        print(f'Encountered key error while parsing {r.json()}:: {e}')
 
     if args.verbose:
         print(f'''populating values for security, have:

@@ -100,25 +100,41 @@ burnup_or_exit notifications
 
 ## tertiary services
 
-# actors
+{% if "actors" in components_to_deploy %}
+burnup_or_exit actors
+{% endif %}
 
-# container-registry
+{% if "container-registry" in components_to_deploy %}
+burnup_or_exit container-registry
+{% endif %}
 
-# globus-proxy
+{% if "globus-proxy" in components_to_deploy %}
+burnup_or_exit globus-proxy
+{% endif %}
 
 {% if "meta" in components_to_deploy %}
 burnup_or_exit meta
 {% endif %}
 
-# monitoring
+{% if "monitoring" in components_to_deploy %}
+burnup_or_exit monitoring
+{% endif %}
 
-# pgrest
+{% if "pgrest" in components_to_deploy %}
+burnup_or_exit pgrest
+{% endif %}
 
-# pgrest-a2cps-dev
+{% if "pgrest-a2cps-dev" in components_to_deploy %}
+burnup_or_exit pgrest-a2cps-dev
+{% endif %}
 
-# pgrest-a2cps-prod
+{% if "pgrest-a2cps-prod" in components_to_deploy %}
+burnup_or_exit pgrest-a2cps-prod
+{% endif %}
 
-# pods
+{% if "pods" in components_to_deploy %}
+burnup_or_exit pods
+{% endif %}
 
 {% if "streams" in components_to_deploy %}
 burnup_or_exit streams
@@ -128,7 +144,9 @@ burnup_or_exit streams
 burnup_or_exit tapisui
 {% endif %}
 
-# workflows
+{% if "workflows" in components_to_deploy %}
+burnup_or_exit workflows
+{% endif %}
 
 echo "Done: top-level-burnup"
 
