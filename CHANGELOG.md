@@ -26,6 +26,7 @@ Tapis 1.6.1 contains a number of new features, enhancements and bug fixes.  In a
   - Regex/glob matching for file listings on POSIX systems.
   - Refactored codebase to improve reliability.
 - [Notifications: 1.6.0 to 1.6.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+- [Globus-Proxy: 1.6.0 to 1.6.1 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
 
 
 
