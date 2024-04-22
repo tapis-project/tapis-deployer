@@ -73,7 +73,6 @@ spec:
           image: {{ files_workers_image }}
           imagePullPolicy: Always
           name: files-workers
-          command: {{ files_commands| to_json }}
           stdin: true
           tty: true
       restartPolicy: Always

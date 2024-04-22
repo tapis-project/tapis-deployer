@@ -24,8 +24,6 @@ spec:
       containers:
       - name: files-api
         image: {{ files_api_image }}
-        command: ["java"]
-        args: {{ files_args|to_json }}
         imagePullPolicy: Always
         ports:
         - name: "files-api"

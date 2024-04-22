@@ -11,6 +11,7 @@ spec:
       labels:
         app: pods-rabbitmq
     spec:
+      hostname: pods-rabbitmq # sets static hostname rather than k8 generated. Without rabbit can't use pvc to restart.
       containers:
       - name: pods-rabbitmq
         image: {{ pods_rabbitmq_image }}
@@ -38,4 +39,10 @@ spec:
             secretKeyRef:
               name: tapis-pods-secrets
               key: rabbitmq-password
-
+        volumeMounts:
+        - name: pods-rabbitmq-data
+          mountPath: "/var/lib/rabbitmq"
+      volumes:
+      - name: pods-rabbitmq-data
+        persistentVolumeClaim:
+          claimName: {{pods_rabbitmq_pvc}}
