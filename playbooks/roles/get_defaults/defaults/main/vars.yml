@@ -1,9 +1,11 @@
+global_service_tenant_id_default: admin
 tapisdir_default: '{{ ansible_env.HOME }}/.tapis/{{ inventory_hostname }}'
 tapisdatadir_default: '{{ ansible_env.HOME }}/.tapis-data/{{ inventory_hostname }}'
 global_vault_url_default: 'http://vault:8200'
-global_service_url_default: 'https://admin.{{ global_tapis_domain }}'
+global_service_url_default: 'https://{{ global_service_tenant_id_default }}.{{ global_tapis_domain }}'
 global_devtenant_url_default: 'https://dev.{{ global_tapis_domain }}'
 global_primary_site_admin_tenant_base_url_default: 'https://admin.{{ global_tapis_domain }}'
+
 
 # A) There should be NO choice for primary sites, 
 # B) For associate sites, we should actually compute the field from the site record.. (or anyway, the 

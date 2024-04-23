@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Put PGPASSWORD in environment for psql to pick up
+export PGPASSWORD=${POSTGRES_PASSWORD}
+
+
+### hammock/mpackard 20210616
+
+
+# Script to add Monitoring read only access for service DB using psql
+# user and grant read only acces
+# Postgres password must be set in env var MONITOR_PASSWORD
+
+if [ -z "${MONITOR_PASSWORD}" ]; then
+  echo "Please set env var MONITOR_PASSWORD before running this script"
+  exit 1
+fi
+
+# Run sql to create user if it does not exist
+psql --host=${DB_HOST} --username=${DB_USER} --dbname=${DB_NAME} -q << EOB
+-- Create user if it does not exist
+DO \$\$
+BEGIN
+  CREATE ROLE monitor WITH LOGIN;
+  EXCEPTION WHEN DUPLICATE_OBJECT THEN
+  RAISE NOTICE 'User already exists. User name: monitor';
+END
+\$\$;
+ALTER USER monitor WITH ENCRYPTED PASSWORD '${MONITOR_PASSWORD}';
+GRANT SELECT ON ALL TABLES IN SCHEMA ${DB_SCHEMA} TO monitor;
+GRANT CONNECT ON DATABASE ${DB_NAME} TO monitor;
+GRANT USAGE ON SCHEMA ${DB_SCHEMA} TO monitor;
+
+EOB
+
