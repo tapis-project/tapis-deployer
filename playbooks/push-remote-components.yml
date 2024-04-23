@@ -7,15 +7,11 @@
 
 - name: Copy Tapis components to other hosts
   hosts: remote_hosts
-
   vars:
-
     # Grab the tapisdir & tapisdatadir from the first [0] host in the tapis_installs group.
     # This should be the path on the "main" deployment host
     tapis_remote_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
     tapis_remote_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
-
-
   tasks:
 
   - name: debug1 tapis_remote_dir
