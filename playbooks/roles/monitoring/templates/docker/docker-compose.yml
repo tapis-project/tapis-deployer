@@ -110,4 +110,56 @@ services:
       - STREAMS_DB=StreamsDevDB
       - META_USER=restheart
 
+  monitoring-apps:
+    container_name: monitoring-apps
+    image: {{ monitoring_postgres_image }}
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
+    networks: 
+      - tapis
+    environment:
+        - DB_HOST=apps-postgres
+        - DB_USER=postgres
+        - DB_NAME=tapisappdb
+        - DB_SCHEMA=tapis_app
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_APPS}
+        - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD_APPS}
+    volumes:
+      - ./monitor-init-user-sh:/tmp/monitor-init-user-sh
+
+  monitoring-authenticator:
+    container_name: monitoring-authenticator
+    image: {{ monitoring_postgres_image }}
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
+    networks: 
+      - tapis
+    environment:
+        - DB_HOST=authenticator-postgres
+        - DB_USER=authenticator
+        - DB_NAME=authenticator
+        - DB_SCHEMA=public
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_AUTH}
+        - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD_AUTH}
+    volumes:
+      - ./monitor-init-user-sh:/tmp/monitor-init-user-sh
+
+  monitoring-jobs:
+    container_name: monitoring-jobs
+    image: {{ monitoring_postgres_image }}
+    env_file:
+      - {{ tapisdatadir }}/monitoring/env
+    networks: 
+      - tapis
+    environment:
+        - DB_HOST=jobs-postgres
+        - DB_USER=postgres
+        - DB_NAME=tapisjobsdb
+        - DB_SCHEMA=public
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_JOBS}
+        - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD_JOBS}
+    volumes:
+      - ./monitor-init-user-sh:/tmp/monitor-init-user-sh
+
+
 
