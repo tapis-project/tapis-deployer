@@ -1,0 +1,32 @@
+---
+# This is a helper playbook to copy the burnups for components you'd like to place on a different host than the main deployer host
+
+# This playbook should be run ONLY on remote_hosts, a separate group in your Ansible inventory.
+
+# This playbook assumes it is running on the "main" deployment host, AFTER burnup has been run (to populate skadmin/env file.
+
+- name: Map Tapis components to hosts
+  hosts: remote_hosts
+  vars:
+    tapis_remote_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
+    tapis_remote_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
+    components_to_deploy: "{{ hostvars[groups['tapis_installs'][0]] }}"
+  tasks:
+
+    - name: debug1 tapis_data_dir
+      ansible.builtin.debug:
+        var: tapis_remote_dir
+      failed_when: tapis_remote_dir is not defined
+
+    - name: debug2 tapis_remote_data_dir
+      ansible.builtin.debug:
+        var: tapis_remote_data_dir 
+      failed_when: tapis_remote_data_dir is not defined
+
+    - name: debug3 loop_hosts_components
+      ansible.builtin.debug:
+        var: item
+      loop: "{{ components_to_deploy }}"
+
+    # - name: Configure Nginx routes between hosts
+    # - name: Push generated components to hosts
