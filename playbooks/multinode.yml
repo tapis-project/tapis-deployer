@@ -10,23 +10,15 @@
   vars:
     tapis_remote_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
     tapis_remote_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
-    components_to_deploy: "{{ hostvars[groups['tapis_installs'][0]] }}"
   tasks:
-
-    - name: debug1 tapis_data_dir
-      ansible.builtin.debug:
-        var: tapis_remote_dir
-      failed_when: tapis_remote_dir is not defined
-
-    - name: debug2 tapis_remote_data_dir
-      ansible.builtin.debug:
-        var: tapis_remote_data_dir 
-      failed_when: tapis_remote_data_dir is not defined
-
-    - name: debug3 loop_hosts_components
-      ansible.builtin.debug:
-        var: item
+  
+    - name: Set location variables for each host
+      ansible.builtin.set_fact: 
+        "{{ item }}_host": "{{ inventory_hostname }}"
+        cacheable: True
       loop: "{{ components_to_deploy }}"
 
-    # - name: Configure Nginx routes between hosts
-    # - name: Push generated components to hosts
+    - name: debug5 print location facts
+      ansible.builtin.debug:
+        msg: "{{ item + '_host' }} :: {{ lookup('ansible.builtin.vars', item + '_host') }}"
+      loop: "{{ components_to_deploy }}"

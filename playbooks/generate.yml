@@ -16,6 +16,30 @@
       path: '{{ tapisdir }}'
       state: directory
 
+  - name: debug remote hosts
+    ansible.builtin.debug:
+      msg: "{{ groupvars }}"
+
+  - name: set multinode mode
+    set_fact:
+      multinode: "{{ true if hostvars[groups['remote_hosts']] is defined else false }}"
+      cacheable: true
+
+  - name: debug1 is multinode?
+    ansible.builtin.debug:
+      msg: "is multinode? : {{ multinode }}"
+
+    #check if params are invalid then abort below all tasks.  
+  - name: exit
+    fail: 
+      msg: "exit because of debug"
+    when: "param1 is not defined or param2 is not defined"
+
+  - name: set variables for remote components
+    include_role: 
+      name: multinode
+    when: 
+
 
 ### tapis components
 
