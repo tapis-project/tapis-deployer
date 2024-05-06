@@ -6,7 +6,7 @@
 # This playbook assumes it is running on the "main" deployment host, AFTER burnup has been run (to populate skadmin/env file.
 
 - name: Copy Tapis components to other hosts
-  hosts: remote_hosts
+  hosts: tapis_installs
 
   vars:
 
@@ -28,10 +28,32 @@
       var: tapis_remote_data_dir 
     failed_when: tapis_remote_data_dir is not defined
 
+  - name: change connection type for remote components
+    block:
+      - name: change to remote mode
+        # ansible.builtin.debug:
+        #   msg: "{{ 'local' if not remote else 'ssh' }}"
+        var:
+          connection: "{{ 'local' if not remote else 'ssh' }}"
+        set_fact:
+          ansible_connection: "{{connection}}"
+    when: remote is defined and remote
+
+  - name: debug connection type
+    ansible.builtin.debug: 
+      msg: "{{ hostvars['connection_type'] }}"
+  - name: debug fail
+    fail:
+      msg: "fail"
+    when: True
+
   - name: print remote components
-    ansible.builtin.debug:
-      var: item
-    loop: "{{ remote_components }}"
+    block:
+      - name: print
+        ansible.builtin.debug:
+          var: item
+        loop: "{{ remote_components }}"
+    when: remote is defined and remote
 
   - name: Create remote dirs
     ansible.builtin.file:

@@ -8,7 +8,8 @@ networks:
 services:
     jobs-api:
         container_name: jobs-api
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         networks:
           - tapis
         image: {{ jobs_api_image }}
