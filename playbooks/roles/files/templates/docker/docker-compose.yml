@@ -98,7 +98,8 @@ services:
         condition: service_started
 
   files-api:
-    user: ${UID_GID}
+    # user: ${UID_GID}
+    user: root
     container_name: files-api
     image: {{ files_api_image }}
     networks:

@@ -9,7 +9,8 @@ services:
 
   notifications-api:
     container_name: notifications-api
-    user: ${UID_GID}
+    # user: ${UID_GID}
+    user: root
     image: {{ notifications_api_image }} 
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
