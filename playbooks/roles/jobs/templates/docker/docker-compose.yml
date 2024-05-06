@@ -93,7 +93,8 @@ services:
             test: rabbitmq-diagnostics -q ping
 
     jobs-altqueue:
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         container_name: jobs-altqueue
         image: {{ jobs_worker_image }}
         networks:
@@ -121,7 +122,8 @@ services:
 
     jobs-recovery:
         container_name: jobs-recovery
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -148,7 +150,8 @@ services:
 
     jobs-deadletter:
         container_name: jobs-deadletter
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -175,7 +178,8 @@ services:
 
     jobs-eventqueue:
         container_name: jobs-eventqueue
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -202,7 +206,8 @@ services:
 
     jobs-workers:
         container_name: jobs-workers
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         image: {{ jobs_worker_image }}
         environment:
 {% if jobs_node_name == true %}

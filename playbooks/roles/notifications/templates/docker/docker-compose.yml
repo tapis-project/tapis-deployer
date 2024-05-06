@@ -76,7 +76,8 @@ services:
 
   notifications-dispatcher:
     container_name: notifications-dispatcher
-    user: ${UID_GID}
+    # user: ${UID_GID}
+    user: root
     image: {{ notifications_dispatcher_image }}
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
