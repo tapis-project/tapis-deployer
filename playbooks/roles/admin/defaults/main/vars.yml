@@ -4,7 +4,7 @@
 admin_service_url: "{{ global_service_url }}"
 admin_devtenant_url: "{{ global_devtenant_url }}"
 admin_site_id: "{{ global_site_id }}"
-admin_service_tenant_id: admin
+admin_service_tenant_id: "{{ global_service_tenant_id }}"
 admin_service_name: admin
 admin_service_site_id: "{{ global_site_id }}"
 admin_storage_class: "{{ global_storage_class }}"

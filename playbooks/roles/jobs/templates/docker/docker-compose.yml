@@ -35,10 +35,6 @@ services:
                 condition: service_completed_successfully
             jobs-rabbitmq:
                 condition: service_healthy
-    {% if jobs_port is not none %}
-    ports: 
-            - "{{jobs_port}}:8080"
-    {% endif %}
 
     jobs-postgres:
         container_name: jobs-postgres
@@ -94,10 +90,11 @@ services:
         networks:
             - tapis
         healthcheck:
-            test: rabbitmq-diagnostics -q ping
+            test: rabbitmq-diagnostics check_running
 
     jobs-altqueue:
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         container_name: jobs-altqueue
         image: {{ jobs_worker_image }}
         networks:
@@ -125,7 +122,8 @@ services:
 
     jobs-recovery:
         container_name: jobs-recovery
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -152,7 +150,8 @@ services:
 
     jobs-deadletter:
         container_name: jobs-deadletter
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -179,7 +178,8 @@ services:
 
     jobs-eventqueue:
         container_name: jobs-eventqueue
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -206,7 +206,8 @@ services:
 
     jobs-workers:
         container_name: jobs-workers
-        user: ${UID_GID}
+        # user: ${UID_GID}
+        user: root
         image: {{ jobs_worker_image }}
         environment:
 {% if jobs_node_name == true %}

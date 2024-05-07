@@ -3,5 +3,5 @@
 source functions
 gettoken
 
-curl {{ admin_devtenant_url }}/v3/files/healthcheck | jq 
+curl {{ admin_devtenant_url }}/v3/files/healthcheck 
 

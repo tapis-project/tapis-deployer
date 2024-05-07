@@ -15,7 +15,7 @@ services:
     networks: 
       - tapis
     healthcheck:
-      test: rabbitmq-diagnostics -q ping
+      test: rabbitmq-diagnostics check_running
 
   files-postgres:
     container_name: files-postgres
@@ -69,7 +69,8 @@ services:
 
   files-workers:
     container_name: files-workers
-    user: ${UID_GID}
+    # user: ${UID_GID}
+    user: root
     image: {{ files_workers_image }}
     networks:
       - tapis

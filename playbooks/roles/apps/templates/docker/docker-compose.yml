@@ -23,12 +23,7 @@ services:
         depends_on:
             apps-migrations:
                 condition: service_completed_successfully
-    {% if apps_port is not none %}
-    ports: 
-            - "{{apps_port}}:8080"
-    {% endif %}
         
-
     apps-postgres:
         container_name: apps-postgres
         image: {{ apps_postgres_image }}
