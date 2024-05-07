@@ -30,26 +30,26 @@
       - name: change to remote mode
         # ansible.builtin.debug:
         #   msg: "{{ 'local' if not remote else 'ssh' }}"
-        var:
-          connection: "{{ 'local' if not remote else 'ssh' }}"
         set_fact:
-          ansible_connection: "{{connection}}"
+          ansible_connection: "{{ 'local' if not remote else 'ssh' }}"
     when: remote is defined and remote
 
   - name: debug connection type
     ansible.builtin.debug: 
       msg: "{{ hostvars['connection_type'] }}"
-  - name: debug fail
-    fail:
-      msg: "fail"
-    when: True
+
+  # - name: debug fail
+  #   fail:
+  #     msg: "fail"
+  #   when: True
 
   - name: print remote components
     block:
       - name: print
         ansible.builtin.debug:
           var: item
-        loop: "{{ remote_components }}"
+        # loop: "{{ remote_components }}"
+        loop: "{{ components_to_deploy }}"
     when: remote is defined and remote
 
   - name: Create remote dirs
@@ -68,7 +68,8 @@
       # remote host
       dest: "{{ tapis_remote_dir }}/{{ item }}/"
       mode: preserve
-    loop: "{{ remote_components }}"
+    # loop: "{{ remote_components }}"
+    loop: "{{ components_to_deploy }}"
     
   - name: Copy skadmin env
     ansible.builtin.copy:
