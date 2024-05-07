@@ -90,7 +90,7 @@ services:
         networks:
             - tapis
         healthcheck:
-            test: rabbitmq-diagnostics -q ping
+            test: rabbitmq-diagnostics check_running
 
     jobs-altqueue:
         # user: ${UID_GID}
