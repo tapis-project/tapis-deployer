@@ -1,0 +1,9 @@
+#!/bin/bash
+
+curl {{admin_service_url}}/v3/systems/ready 
+
+
+curl {{admin_service_url}}/v3/systems/hello
+
+
+
