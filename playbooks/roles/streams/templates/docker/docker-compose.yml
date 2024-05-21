@@ -24,7 +24,7 @@ services:
     networks:
       - tapis
     volumes:
-      - {{tapisdatadir}}/streams/mysql/data:/var/lib/mysql
+      - {{ tapisdatadir }}/streams/mysql/data:/var/lib/mysql
       - /var/run/docker.sock:/var/run/docker.sock
       - ./chords/tapis_chords_start.sh:/chords/chords_start.sh
       - ./chords/influxdb.yml:/chords/config/influxdb.yml
