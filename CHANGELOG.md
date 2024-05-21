@@ -11,6 +11,7 @@
 - [Jobs: 1.6.1 to 1.6.2 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Security: 1.6.1 to 1.6.2 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
 - [Meta: 1.6.0 to 1.6.1 (tapis/metaapi, tapis-meta-rh-server)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
+- [Authenticator: 1.6.0 to 1.6.1 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md#161---2024-05-21-estimated)
 
 
 ## 1.6.1 
