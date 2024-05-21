@@ -7,7 +7,7 @@
 - [Systems: 1.6.1 to 1.6.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.6.2/CHANGELOG.md)
 - [Apps: 1.6.1 to 1.6.2 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.6.2/CHANGELOG.md)
 - [Notifications: 1.6.1 to 1.6.2 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/1.6.2/CHANGELOG.md)
-- [Files: 1.6.2 to 1.6.2 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Files: 1.6.1 to 1.6.2 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
 - [Jobs: 1.6.1 to 1.6.2 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Security: 1.6.1 to 1.6.2 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
 - [Meta: 1.6.0 to 1.6.1 (tapis/metaapi, tapis-meta-rh-server)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
