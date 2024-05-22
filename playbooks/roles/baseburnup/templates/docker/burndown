@@ -26,7 +26,9 @@ echo "Start: top-level-burndown"
 
 # globus-proxy
 
-# meta
+{% if "meta" in components_to_deploy %}
+burnup_or_exit meta
+{% endif %}
 
 # monitoring
 
