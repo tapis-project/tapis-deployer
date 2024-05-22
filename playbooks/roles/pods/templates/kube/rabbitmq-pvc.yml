@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{pods_rabbitmq_pvc}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{pods_storage_class}}
+  resources:
+    requests:
+      storage: 10Gi

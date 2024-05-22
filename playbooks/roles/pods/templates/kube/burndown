@@ -24,6 +24,7 @@ kubectl delete -f rabbitmq.yml
 kubectl delete -f nfs.yml
 
 # PVC - Don't burn these down silly.
+#kubectl delete -f rabbitmq-pvc.yml
 #kubectl delete -f postgres-pvc.yml
 #kubectl delete -f nfs-pvc.yml
 #kubectl delete -f traefik-pvc.yml

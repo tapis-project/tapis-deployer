@@ -8,6 +8,7 @@ pods_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_ba
 pods_image_pull_policy: Always
 pods_pvc_storage_class_name: "{{ global_storage_class }}"
 pods_postgres_pvc: pods-postgres-vol01
+pods_rabbitmq_pvc: pods-rabbitmq-vol01
 pods_storage_class: "{{ global_storage_class }}"
 pods_log_level: INFO
 pods_traefik_certs_file: null

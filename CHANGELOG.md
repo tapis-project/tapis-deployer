@@ -2,6 +2,34 @@
 
 Notable changes between versions.
 
+## 1.6.1 
+
+Tapis 1.6.1 contains a number of new features, enhancements and bug fixes.  In addition to across-the-board dependency updates, significant new capabilities are highlighted below. More detail can be found in the Changelog for each of the services.
+
+### Service Updates
+
+- [Security: 1.6.0 to 1.6.1 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+  - Improved performance of role and permission APIs.
+- [Systems: 1.6.0 to 1.6.1 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+  - Upgraded DTN support (breaking change for existing DTN users only)
+  - Added system ID parameter on initial Globus authentication (breaking change).
+  - Extended tenant administrator's ability to list systems.
+- [Apps: 1.6.0 to 1.6.1 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/dev/CHANGELOG.md)
+  - Upgraded DTN support (breaking change for existing DTN users only)
+  - Allow enable/disable of specific application versions.
+  - Added envKey attribute for file inputs.
+- [Jobs: 1.6.0 to 1.6.1 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+  - Upgraded DTN support (breaking change for existing DTN users only)
+  - Added envKey attribute for file inputs.
+  - Added job termination condition code.
+- [Files: 1.6.0 to 1.6.1 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+  - Regex/glob matching for file listings on POSIX systems.
+  - Refactored codebase to improve reliability.
+- [Notifications: 1.6.0 to 1.6.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+- [Globus-Proxy: 1.6.0 to 1.6.1 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+
+
+
 ## 1.6.0 
 
 ### Service Updates

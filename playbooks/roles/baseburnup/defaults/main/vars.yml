@@ -1,4 +1,4 @@
-baseburnup_tapis_deployer_version: 1.6.0
+baseburnup_tapis_deployer_version: 1.6.1
 baseburnup_service_url: "{{ global_service_url }}"
 baseburnup_vault_url: "{{ global_vault_url }}"
 
