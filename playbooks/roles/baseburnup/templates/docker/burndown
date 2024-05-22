@@ -45,7 +45,9 @@ cd $mydir_absolute/notifications
 
 # pods
 
-# streams
+{% if "streams" in components_to_deploy %}
+burnup_or_exit streams
+{% endif %}
 
 {% if "tapisui" in components_to_deploy %}
 cd $mydir_absolute/tapisui
