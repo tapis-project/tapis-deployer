@@ -7,6 +7,7 @@ services:
   
   proxy:
     container_name: proxy
+    restart_policy: unless-stopped
     image: {{ proxy_nginx_image }}
     ports:
       - "80:80"
@@ -23,6 +24,7 @@ services:
   
   site-router:
     container_name: site-router
+    restart_policy: unless-stopped
     image: {{ proxy_site_router_api_image }}
     ports:
       - "127.0.0.1:8000:8000"
@@ -34,6 +36,7 @@ services:
   
   site-router-redis:
     container_name: site-router-redis
+    restart_policy: unless-stopped
     image: {{ proxy_redis_image }}
     ports:
       - "127.0.0.1:6379:6379"

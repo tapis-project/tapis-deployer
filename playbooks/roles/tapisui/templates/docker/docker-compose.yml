@@ -6,6 +6,7 @@ networks:
 services:
     tapisui:
         container_name: tapisui
+        restart_policy: unless-stopped
         image: {{ tapisui_image }}
         environment:
             - LOG_LEVEL={{tapisui_log_level}}

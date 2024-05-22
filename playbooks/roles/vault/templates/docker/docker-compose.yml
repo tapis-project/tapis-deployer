@@ -6,6 +6,7 @@ networks:
 services:
   vault:
     container_name: vault
+    restart_policy: unless-stopped
     image: {{ vault_image }}
     command: ['vault','server','-config=/vault/config']
     cap_add:

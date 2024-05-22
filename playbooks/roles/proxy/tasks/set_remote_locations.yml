@@ -1,0 +1,21 @@
+---
+
+- name: debug remote hosts
+  ansible.builtin.debug:
+    var: remote_hosts
+
+- name: set location vars for remote hosts
+  with_items: "{{ groups['remote_hosts'] }}"
+  ansible.builtin.set_fact:
+    # "{{item | replace('-', '_' )}}_host": "https://{{ remote_host }}"
+    # "{{item | replace('-', '_' )}}_port": "{{ 8080 + indexnum }}"
+    "{{item | replace('-', '_' )}}_location": "https://{{ remote_host }}:{{ 8080 + indexnum }}"
+    cacheable: true
+  loop: "{{ components_to_deploy }}"
+  loop_control:
+    index_var: indexnum
+
+- name: debug comp locations
+  ansible.builtin.debug:
+    var: "{{item | replace('-', '_' )}}_location"
+  loop: "{{components_to_deploy}}"

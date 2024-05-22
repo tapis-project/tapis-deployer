@@ -5,6 +5,7 @@ networks:
 
 services:
   authenticator-api: 
+    restart_policy: unless-stopped
     container_name: authenticator-api
     image: {{ authenticator_api_image }}
     networks:

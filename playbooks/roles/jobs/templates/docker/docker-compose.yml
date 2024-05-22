@@ -7,6 +7,7 @@ networks:
 
 services:
     jobs-api:
+        restart_policy: unless-stopped
         container_name: jobs-api
         # user: ${UID_GID}
         user: root
@@ -38,6 +39,7 @@ services:
 
     jobs-postgres:
         container_name: jobs-postgres
+        restart_policy: unless-stopped
         networks:
             - tapis
         image: {{ jobs_postgres_image }}
@@ -52,6 +54,7 @@ services:
     
     jobs-migrations:
         container_name: jobs-migrations
+        restart_policy: unless-stopped
         networks: 
             - tapis
         image: {{ jobs_migrations_image }}
@@ -77,6 +80,7 @@ services:
 
     jobs-rabbitmq:
         container_name: jobs-rabbitmq
+        restart_policy: unless-stopped
         image: {{ jobs_rabbitmq_management_image }} 
         environment:
             - HOSTNAME=jobs-rabbitmq
@@ -96,6 +100,7 @@ services:
         # user: ${UID_GID}
         user: root
         container_name: jobs-altqueue
+        restart_policy: unless-stopped
         image: {{ jobs_worker_image }}
         networks:
             - tapis
@@ -122,6 +127,7 @@ services:
 
     jobs-recovery:
         container_name: jobs-recovery
+        restart_policy: unless-stopped
         # user: ${UID_GID}
         user: root
         image: {{ jobs_worker_image }}
@@ -150,6 +156,7 @@ services:
 
     jobs-deadletter:
         container_name: jobs-deadletter
+        restart_policy: unless-stopped
         # user: ${UID_GID}
         user: root
         image: {{ jobs_worker_image }}
@@ -178,6 +185,7 @@ services:
 
     jobs-eventqueue:
         container_name: jobs-eventqueue
+        restart_policy: unless-stopped
         # user: ${UID_GID}
         user: root
         image: {{ jobs_worker_image }}
@@ -206,6 +214,7 @@ services:
 
     jobs-workers:
         container_name: jobs-workers
+        restart_policy: unless-stopped
         # user: ${UID_GID}
         user: root
         image: {{ jobs_worker_image }}

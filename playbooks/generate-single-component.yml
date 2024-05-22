@@ -5,6 +5,7 @@
 
   vars: 
     tapisctl_action: 'generate'
+    remote_hosts: "{{ groups['remote_hosts'] }}"
   
   tasks: 
 

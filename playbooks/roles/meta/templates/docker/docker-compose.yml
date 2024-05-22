@@ -7,6 +7,7 @@ networks:
 
 services:
   restheart:
+    restart_policy: unless-stopped
     image: {{ meta_rh_server_image }}
     container_name: restheart
     command: [ "java", "-Dfile.encoding=UTF-8", "-server", "-jar", "restheart.jar", "etc/restheart.yml", "--envFile", "etc/config.properties"]
@@ -18,6 +19,7 @@ services:
       - {{ tapisdatadir }}/meta/env
 
   restheart-security:
+    restart_policy: unless-stopped
     image: {{ meta_api_image }}
     container_name: restheart-security
     networks:
@@ -34,6 +36,7 @@ services:
 
 
   restheart-mongo:
+    restart_policy: unless-stopped
     image: {{ meta_mongo_singlenode_image }}
     container_name: restheart-mongo
     hostname: restheart-mongo

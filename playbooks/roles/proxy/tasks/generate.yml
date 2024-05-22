@@ -1,10 +1,83 @@
 ---
 
+- name: debug remote hosts
+  ansible.builtin.debug:
+    msg: "{{ groups['remote_hosts'] | default(False)}}"
+
+- name: set remote
+  ansible.builtin.set_fact:
+    is_remote: "{{ groups['remote_hosts'] | default(False)}}"
+
+- name: set_remote_locations
+  include_tasks: set_remote_locations.yml
+  vars:
+    remote_host: "{{ rh }}"
+  when: is_remote is defined and is_remote
+  loop: "{{ groups['remote_hosts'] }}"
+  loop_control:
+    loop_var: rh
+
 - name: proxy tree
   include_role:
     name: template-filetree
   vars:
     calling_rolename: proxy
     tree_name: proxy
+
+# - name: debug remote_hosts
+#   ansible.builtin.debug:
+#     var: remote_hosts
+
+# - name: set hostname facts for remote hosts
+#   block:
+#     - name: debug inside loop
+#       ansible.builtin.debug:
+#         msg: "in loop!"
+
+    # - name: increment ports
+    #   with_items: "{{ groups['remote_hosts'] }}"
+    #   ansible.builtin.set_fact:
+    #     "{{ item | replace('-', '_' ) }}_port": "{{ 8080 + indexnum }}"
+    #     cacheable: True
+    #   # ansible.builtin.debug:
+    #   #   msg: "{{ item }}_port: {{ 8080 + indexnum }}"
+    #   loop_control:
+    #     index_var: indexnum
+    #   loop: "{{ components_to_deploy }}"
+
+    # - name: print remote port mapping
+    #   ansible.builtin.debug:
+    #     # msg: "{{ item | replace('-', '_' ) }}_port: {{ {{item}}_port }}"
+    #     var: "{{ item }}_port"
+    #   loop: "{{ components_to_deploy }}"
+
+    # - name: map components to hosts
+    #   ansible.builtin.set_fact: 
+    #     "{{ item | replace('-', '_' ) }}_host": "https://{{ inventory_hostname }}"
+    #     cacheable: True
+    #   loop: "{{ components_to_deploy }}"
+
+    # - name: print remote host mapping
+    #   ansible.builtin.debug:
+    #     # msg: "{{ item | replace('-', '_' ) }}_host"
+    #     var: "{{ item }}_host"
+    #   loop: "{{ components_to_deploy }}"
+
+    # - name: register item_location for remote hosts
+    #   ansible.builtin.debug:
+    #     msg: "item location test"
+    #   loop: "{{ components_to_deploy }}"
+
+    # - name: print item_location
+    #   ansible.builtin.debug:
+    #     var: "{{ item }}_location"
+    #   loop: "{{ components_to_deploy }}"
+
+    # - name: ensure proxy is generated on main host
+    #   ansible.builtin.set_fact: 
+    #     ansible_host: 
+  # when: remote_hosts is defined
+
+
 
 

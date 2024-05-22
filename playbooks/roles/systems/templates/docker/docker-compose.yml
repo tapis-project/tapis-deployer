@@ -6,6 +6,7 @@ networks:
 services:
     systems-api:
         container_name: systems-api
+        restart_policy: unless-stopped
         # user: ${UID_GID}
         user: root
         image: {{ systems_api_image }}
@@ -26,6 +27,7 @@ services:
         
     systems-postgres:
         container_name: systems-postgres
+        restart_policy: unless-stopped
         image: {{ systems_postgres_image }}
         networks:
             - tapis
@@ -40,6 +42,7 @@ services:
 
     systems-migrations:
         container_name: systems-migrations
+        restart_policy: unless-stopped
         image: {{ systems_postgres_image }}
         networks:
             - tapis

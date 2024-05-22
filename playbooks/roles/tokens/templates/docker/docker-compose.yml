@@ -8,6 +8,7 @@ networks:
 services:
     tokens-api:
         container_name: tokens-api
+        restart_policy: unless-stopped
         image: {{ tokens_api_image }}
         volumes:
             - ./tokens-config.json:/home/tapis/config.json

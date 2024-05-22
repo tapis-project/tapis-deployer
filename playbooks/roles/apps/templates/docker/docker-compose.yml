@@ -6,6 +6,7 @@ networks:
 
 services:
     apps-api:
+        restart_policy: unless-stopped
         container_name: apps-api
         # user: ${UID_GID}
         user: root

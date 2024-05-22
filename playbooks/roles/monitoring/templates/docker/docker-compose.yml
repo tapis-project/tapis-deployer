@@ -8,6 +8,7 @@ networks:
 services:
   monitoring-elasticsearch:
     container_name: monitoring-elasticsearch
+    restart_policy: unless-stopped
     image: {{ monitoring_elasticsearch_image }}
     networks: 
       - tapis
@@ -24,6 +25,7 @@ services:
 
   monitoring-grafana:
     container_name: monitoring-grafana
+    restart_policy: unless-stopped
     image: {{ monitoring_grafana_image }}
     networks: 
       - tapis
@@ -42,6 +44,7 @@ services:
 
   monitoring-kibana:
     container_name: monitoring-kibana
+    restart_policy: unless-stopped
     image: {{ monitoring_kibana_image }}
     env_file:
       - {{ tapisdatadir }}/monitoring/env
@@ -53,6 +56,7 @@ services:
 
   monitoring-prometheus:
     container_name: monitoring-prometheus
+    restart_policy: unless-stopped
     image: {{ monitoring_prometheus_image }}
     networks: 
       - tapis
@@ -66,6 +70,7 @@ services:
 
   thanos:
     container_name: thanos
+    restart_policy: unless-stopped
     image: {{ monitoring_thanos_image }}
     networks:
       - tapis
@@ -99,6 +104,7 @@ services:
 
   monitoring-tapis-exporter:
     container_name: monitoring-tapis-exporter
+    restart_policy: unless-stopped
     image: {{ monitoring_tapis_exporter_image }}
     env_file:
       - {{ tapisdatadir }}/monitoring/env
@@ -112,6 +118,7 @@ services:
 
   monitoring-apps:
     container_name: monitoring-apps
+    restart_policy: unless-stopped
     image: {{ monitoring_postgres_image }}
     env_file:
       - {{ tapisdatadir }}/monitoring/env
@@ -129,6 +136,7 @@ services:
 
   monitoring-authenticator:
     container_name: monitoring-authenticator
+    restart_policy: unless-stopped
     image: {{ monitoring_postgres_image }}
     env_file:
       - {{ tapisdatadir }}/monitoring/env
@@ -146,6 +154,7 @@ services:
 
   monitoring-jobs:
     container_name: monitoring-jobs
+    restart_policy: unless-stopped
     image: {{ monitoring_postgres_image }}
     env_file:
       - {{ tapisdatadir }}/monitoring/env

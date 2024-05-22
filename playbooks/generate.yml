@@ -7,6 +7,7 @@
     tapisctl_action: 'generate'
 
   tasks: 
+
   - name: Set default values for vars
     include_role: 
       name: get_defaults
@@ -14,45 +15,8 @@
   - name: create tapisdir 
     file: 
       path: '{{ tapisdir }}'
-      state: directory
-
-  # - name: debug remote hosts
-  #   ansible.builtin.debug:
-  #     msg: "{{ vars }}"
-
-  # - name: debug1 is multinode?
-  #   ansible.builtin.debug:
-  #     msg: "{{ inventory_hostname }} is remote? : {{ is_remote }}"
-  #   vars:
-  #     is_remote: "{{ True if remote else False }}"
-
-  - name: set hostname facts for remote hosts
-    block:
-      - name: increment ports
-        ansible.builtin.set_fact:
-          "{{ item }}_port": "{{ 8080 + indexnum }}"
-          cacheable: True
-        # ansible.builtin.debug:
-        #   msg: "{{ item }}_port: {{ 8080 + indexnum }}"
-        loop_control:
-          index_var: indexnum
-        loop: "{{ components_to_deploy }}"
-
-      - name: map components to hosts
-        ansible.builtin.set_fact: 
-          "{{ item }}_host": "https://{{ inventory_hostname }}"
-          cacheable: True
-        loop: "{{ components_to_deploy }}"
-
-      - name: generate proxy/location files for each host
-        include_role:
-          name: 'proxy'
-
-    when: remote is defined and remote
-    
+      state: directory    
       
-      
-
 ### tapis components
 
   - name: baseburnup role
@@ -66,4 +30,65 @@
     loop_control:
       loop_var: comp
 
+### remote hosts
+- name: generate proxy for remote_hosts
+  hosts: remote_hosts
+  vars: 
+    remote_hosts: "{{ groups['remote_hosts'] }}"
+    tapisctl_action: 'generate'
+  tasks:
+
+  - name: Set default values for vars
+    include_role: 
+      name: get_defaults
+
+  - name: set hostname facts for remote hosts
+    block:
+      - name: debug inside loop
+        ansible.builtin.debug:
+          msg: "in loop!"
+
+      - name: increment ports
+        with_items: "{{ groups['remote_hosts'] }}"
+        ansible.builtin.set_fact:
+          "{{ item | replace('-', '_' ) }}_port": "{{ 8080 + indexnum }}"
+          cacheable: True
+        # ansible.builtin.debug:
+        #   msg: "{{ item }}_port: {{ 8080 + indexnum }}"
+        loop_control:
+          index_var: indexnum
+        loop: "{{ components_to_deploy }}"
+
+      - name: print remote port mapping
+        ansible.builtin.debug:
+          # msg: "{{ item | replace('-', '_' ) }}_port: {{ {{item}}_port }}"
+          var: "{{ item }}_port"
+        loop: "{{ components_to_deploy }}"
+
+      - name: map components to hosts
+        ansible.builtin.set_fact: 
+          "{{ item | replace('-', '_' ) }}_host": "https://{{ inventory_hostname }}"
+          cacheable: True
+        loop: "{{ components_to_deploy }}"
+
+      - name: print remote host mapping
+        ansible.builtin.debug:
+          # msg: "{{ item | replace('-', '_' ) }}_host"
+          var: "{{ item }}_host"
+        loop: "{{ components_to_deploy }}"
+
+      - name: register item_location for remote hosts
+        ansible.builtin.set_fact:
+          "{{ item }}_location": "{{ {{ item }}_host }}:{{ {{ item }}_port }}" 
+        loop: "{{ components_to_deploy }}"
+
+      - name: print item_location
+        ansible.builtin.debug:
+          var: "{{ item }}_location"
+        loop: "{{ components_to_deploy }}"
+
+      - name: generate proxy/location files for each host
+        include_role:
+          name: 'proxy'
+    when: remote_hosts is defined
 

@@ -5,6 +5,7 @@ networks:
 
 services:
   globus-proxy: 
+    restart_policy: unless-stopped
     container_name: globus-proxy
     image: {{ globus_proxy_api_image }}
     networks:

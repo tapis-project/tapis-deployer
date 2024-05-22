@@ -9,6 +9,7 @@ services:
 
   notifications-api:
     container_name: notifications-api
+    restart_policy: unless-stopped
     # user: ${UID_GID}
     user: root
     image: {{ notifications_api_image }} 
@@ -33,6 +34,7 @@ services:
     
   notifications-init-db:
     container_name: notifications-init-db
+    restart_policy: unless-stopped
     image: {{ notifications_postgres_image }}
     command: bash -c "chmod +x /tmp/notifications-init-db-sh && /tmp/notifications-init-db-sh"
     volumes:
@@ -47,6 +49,7 @@ services:
 
   notifications-postgres:
     container_name: notifications-postgres
+    restart_policy: unless-stopped
     image: {{ notifications_postgres_image }}
     environment:
       - PGDATA=/pgdata/data
@@ -76,6 +79,7 @@ services:
 
   notifications-dispatcher:
     container_name: notifications-dispatcher
+    restart_policy: unless-stopped
     # user: ${UID_GID}
     user: root
     image: {{ notifications_dispatcher_image }}
@@ -100,6 +104,7 @@ services:
 
   notifications-rabbitmq:
     container_name: notifications-rabbitmq
+    restart_policy: unless-stopped
     image: {{ notifications_rabbitmq_image }}
     environment:
       - HOSTNAME=notifications-rabbitmq
