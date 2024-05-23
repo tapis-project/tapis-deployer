@@ -27,7 +27,8 @@ echo "Start: top-level-burndown"
 # globus-proxy
 
 {% if "meta" in components_to_deploy %}
-burnup_or_exit meta
+cd $mydir_absolute/meta
+./burndown
 {% endif %}
 
 # monitoring
@@ -46,7 +47,8 @@ cd $mydir_absolute/notifications
 # pods
 
 {% if "streams" in components_to_deploy %}
-burnup_or_exit streams
+cd $mydir_absolute/streams
+./burndown streams
 {% endif %}
 
 {% if "tapisui" in components_to_deploy %}
