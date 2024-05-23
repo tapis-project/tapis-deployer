@@ -11,6 +11,6 @@ export UID_GID="$(id -u):$(id -g)"
 
 docker run -it --rm -v {{ tapisdatadir }}/streams:/streams {{ streams_util_image }} chown $MYUID /streams
 
-python3 {{ tapisdir }}/admin/util/parse_skexport -c streams -d {{ tapisdatadir }}
+python3 ../admin/util/parse_skexport -c streams -d {{ tapisdatadir }}
 
 docker compose up -d
