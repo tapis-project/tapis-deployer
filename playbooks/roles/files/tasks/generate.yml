@@ -1,9 +1,28 @@
 ---
 
-- name: files tree
-  include_role:
-    name: template-filetree
-  vars:
-    calling_rolename: files
-    tree_name: files
+- name: get remote host
+  ansible.builtin.set_fact:
+    remote_hosts: "{{ groups['remote_hosts'] }}"
+
+- name: debug remote host
+  ansible.builtin.debug:
+    var: remote_hosts
+
+- name: find host with component
+  ansible.builtin.debug:
+    msg: 'files is hosted on {{ remote_host }}'
+  vars: 
+    remote_host: "{{ map('extract', remote_hosts, 'components_to_deploy') }}"
+
+
+# - name: debug files location
+#   ansible.builtin.debug:
+#     var: files_location
+
+# - name: files tree
+#   include_role:
+#     name: template-filetree
+#   vars:
+#     calling_rolename: files
+#     tree_name: files
 

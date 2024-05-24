@@ -104,10 +104,10 @@ services:
       - tapis
     env_file:
       - {{ tapisdatadir }}/files/env
-{% if files_port %}
-    ports:
-      - "{{ files_port }}:8080"
-{% endif %}
+# {% if files_port %}
+#     ports:
+#       - "{{ files_port }}:8080"
+# {% endif %}
     environment:
       - TAPIS_SITE_ID={{ files_service_site_id }}
       - TOKENS_SERVICE_URL={{ files_service_url }}

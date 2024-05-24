@@ -7,8 +7,8 @@
 - name: set location vars for remote hosts
   with_items: "{{ groups['remote_hosts'] }}"
   ansible.builtin.set_fact:
-    # "{{item | replace('-', '_' )}}_host": "https://{{ remote_host }}"
-    # "{{item | replace('-', '_' )}}_port": "{{ 8080 + indexnum }}"
+    "{{item | replace('-', '_' )}}_host": "https://{{ remote_host }}"
+    "{{item | replace('-', '_' )}}_port": "{{ 8080 + indexnum }}"
     "{{item | replace('-', '_' )}}_location": "https://{{ remote_host }}:{{ 8080 + indexnum }}"
     cacheable: true
   loop: "{{ components_to_deploy }}"
