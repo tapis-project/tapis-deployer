@@ -11,18 +11,11 @@
   vars:
     # Grab the tapisdir & tapisdatadir from the first [0] host in the tapis_installs group.
     # This should be the path on the "main" deployment host
-    # tapis_remote_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
-    # tapis_remote_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
-    # tapis_remote_dir: "{{ hostvars[groups['remote_hosts'[ansible_host['tapisdir']]]] }}"
-    tapis_remote_dir: "{{ remotedir }}"
-    tapis_remote_data_dir: "{{ remotedatadir }}"
+    tapis_remote_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
+    tapis_remote_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
     tapis_local_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
     tapis_local_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
   tasks:
-
-  - name: print ansible_host
-    ansible.builtin.debug:
-      var: ansible_host
 
   - name: debug1 tapis_remote_dir
     ansible.builtin.debug:
@@ -33,6 +26,16 @@
     ansible.builtin.debug:
       var: tapis_remote_data_dir 
     failed_when: tapis_remote_data_dir is not defined
+
+  - name: debug2 tapisdir
+    ansible.builtin.debug:
+      var: tapisdir 
+    failed_when: tapisdir is not defined
+
+  - name: debug2 tapisdatadir
+    ansible.builtin.debug:
+      var: tapisdatadir 
+    failed_when: tapisdatadir is not defined
 
   - name: print remote components
     block:
@@ -45,7 +48,8 @@
 
   - name: print ansible_user
     ansible.builtin.debug:
-      var: ansible_user
+      var: item
+    loop: "{{ remote_components }}"
 
   - name: Create remote dirs
     ansible.builtin.file:
@@ -55,12 +59,11 @@
     - "{{ tapis_remote_dir }}"
     - "{{ tapis_remote_data_dir }}"
     - "{{ tapis_remote_data_dir }}/skadmin"
-    - "{{ tapis_remote_dir }}/proxy"
 
   - name: Copy remote components 
     ansible.builtin.copy:
       # localhost
-      src: "{{ tapis_local_dir }}/{{ item }}/"
+      src: "{{ tapis_remote_dir }}/{{ item }}/"
       # remote host
       dest: "{{ tapis_remote_dir }}/{{ item }}/"
       mode: preserve
@@ -69,30 +72,9 @@
     
   - name: Copy skadmin env
     ansible.builtin.copy:
-      src: "{{ tapis_local_data_dir }}/skadmin/env"
+      src: "{{ tapis_remote_data_dir }}/skadmin/env"
       dest: "{{ tapis_remote_data_dir }}/skadmin/env"
       mode: preserve
-
-  - name: Copy proxy
-    ansible.builtin.copy:
-      src: "{{ tapis_local_dir }}/proxy/"
-      dest: "{{ tapis_remote_dir }}/proxy/"
-      mode: preserve
-  
-  - name: Generate Baseburnup
-    include_role: 
-      name: baseburnup
-    vars:
-      tapisctl_action: 'generate'
-      tapisdir: "{{tapis_remote_dir}}"
-      tapisdatadir: "{{tapis_remote_data_dir}}"
-
-  - name: Copy admin
-    ansible.builtin.copy:
-      src: "{{ tapis_local_dir }}/admin/"
-      dest: "{{ tapis_remote_dir }}/admin/"
-    vars:
-      tapisdatadir: "{{ tapis_remote_data_dir }}"
     
 
 

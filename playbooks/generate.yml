@@ -15,8 +15,14 @@
   - name: create tapisdir 
     file: 
       path: '{{ tapisdir }}'
-      state: directory    
+      state: directory
       
+  - name: create tapisdatadir 
+    file: 
+      path: '{{ tapisdatadir }}'
+      state: directory
+
+
 ### tapis components
 
   - name: baseburnup role

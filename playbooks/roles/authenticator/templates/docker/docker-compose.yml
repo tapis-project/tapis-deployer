@@ -73,6 +73,10 @@ services:
     depends_on:
         authenticator-postgres:
             condition: service_healthy
+    ulimits:
+        nofile:
+            soft: 1024
+            hard: 4096
     healthcheck:
         test: slapcat
 
