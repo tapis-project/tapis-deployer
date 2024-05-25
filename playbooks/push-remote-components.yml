@@ -10,9 +10,20 @@
   vars:
     # Grab the tapisdir & tapisdatadir from the first [0] host in the tapis_installs group.
     # This should be the path on the "main" deployment host
-    tapis_remote_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
-    tapis_remote_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
+    # tapis_remote_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
+    tapis_remote_dir: "{{ remotedir | default(hostvars[groups['tapis_installs'][0]]['tapisdir']) }}"
+    # tapis_remote_data_dir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
+    tapis_remote_data_dir: "{{ remotedatadir | default(hostvars[groups['tapis_installs'][0]]['tapisdatadir']) }}"
   tasks:
+
+  - name: Set default values for vars
+    include_role: 
+      name: get_defaults
+
+  - name: override local dirs
+    ansible.builtin.set_fact:
+      tapisdir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
+      tapisdatadir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
 
   - name: debug1 tapis_remote_dir
     ansible.builtin.debug:
@@ -24,10 +35,21 @@
       var: tapis_remote_data_dir 
     failed_when: tapis_remote_data_dir is not defined
 
+  - name: debug2 tapisdir
+    ansible.builtin.debug:
+      var: tapisdir 
+    failed_when: tapisdir is not defined
+
+  - name: debug2 tapisdatadir
+    ansible.builtin.debug:
+      var: tapisdatadir 
+    failed_when: tapisdatadir is not defined
+
   - name: print remote components
     ansible.builtin.debug:
       var: item
-    loop: "{{ remote_components }}"
+    # loop: "{{ remote_components }}"
+    loop: "{{ components_to_deploy }}"
 
   - name: Create remote dirs
     ansible.builtin.file:
@@ -37,20 +59,45 @@
     - "{{ tapis_remote_dir }}"
     - "{{ tapis_remote_data_dir }}"
     - "{{ tapis_remote_data_dir }}/skadmin"
+  
+  - name: Create remote component dirs
+    ansible.builtin.file:
+      path: "{{tapis_remote_dir}}/{{item}}"
+      state: directory
+    loop: "{{ components_to_deploy }}"
+
+  - name: Create remote data dirs
+    ansible.builtin.file:
+      path: "{{tapis_remote_data_dir}}/{{ item }}"
+      state: directory
+    loop: "{{ components_to_deploy }}"
 
   - name: Copy remote components 
     ansible.builtin.copy:
       # localhost
-      src: "{{ tapis_remote_dir }}/{{ item }}/"
+      src: "{{ tapisdir }}/{{ item }}/"
       # remote host
       dest: "{{ tapis_remote_dir }}/{{ item }}/"
       mode: preserve
-    loop: "{{ remote_components }}"
+    # loop: "{{ remote_components }}"
+    loop: "{{ components_to_deploy }}"
     
   - name: Copy skadmin env
     ansible.builtin.copy:
-      src: "{{ tapis_remote_data_dir }}/skadmin/env"
+      src: "{{ tapisdatadir }}/skadmin/env"
       dest: "{{ tapis_remote_data_dir }}/skadmin/env"
+      mode: preserve
+
+  - name: Copy burnup
+    ansible.builtin.copy:
+      src: "{{ tapisdir }}/burnup"
+      dest: "{{ tapis_remote_dir }}/burnup"
+      mode: preserve
+
+  - name: Copy burndown
+    ansible.builtin.copy:
+      src: "{{ tapisdir }}/burndown"
+      dest: "{{ tapis_remote_dir }}/burndown"
       mode: preserve
     
 

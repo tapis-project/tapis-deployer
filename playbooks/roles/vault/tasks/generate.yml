@@ -1,4 +1,27 @@
 ---
+# - name: set_remote_locations
+#   ansible.builtin.debug: 
+#     var: rh
+#   vars:
+#     remote_host: "{{ rh }}"
+#   loop: "{{ groups['remote_hosts'] }}"
+#   loop_control:
+#     loop_var: rh
+
+# - name: debug vault location
+#   ansible.builtin.debug: 
+#     msg: "{{ groups['remote_hosts'] | map('extract', hostvars, 'components_to_deploy') | list | # grab remotedatadir from the one that has vault }}"
+
+# - name: fail
+#   ansible.builtin.debug:
+#     var: thingy
+#   failed_when: thingy is not defined
+
+# - name: override local dirs
+#   ansible.builtin.set_fact:
+#     tapisdir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdir'] }}"
+#     tapisdatadir: "{{ hostvars[groups['tapis_installs'][0]]['tapisdatadir'] }}"
+
 
 - name: vault tree
   include_role:
