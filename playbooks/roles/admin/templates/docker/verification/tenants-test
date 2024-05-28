@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # tenants
-source functions
-gettoken
+
 # should return 200 and JSON with tenants list.
 
 curl {{admin_devtenant_url}}/v3/tenants | jq

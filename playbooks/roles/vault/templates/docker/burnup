@@ -26,12 +26,17 @@ then
 fi 
 
 # check if vault is unsealed already
-sleep 5
-if [ `docker exec -it vault vault status -format=json | jq -r .sealed` == "false" ]
+#sleep 5
+if VAULTSTAT=`docker exec -it vault vault status -format=json`
 then
-  echo "Vault is up and unsealed." 
-  exit 0
+  echo $VAULTSTAT
+  if [ `echo $VAULTSTAT | jq -r .sealed` == "false" ]
+  then
+    echo "Vault is up and unsealed."
+    exit 0
+  fi
 fi
+
 
 # TODO: should we do an initialized check? requires more logic in further checks
 # check if vault is initialized
@@ -96,7 +101,7 @@ then
 fi
 
 # give vault some time to get fully booted up before the following services try to use it
-sleep 30
+#sleep 30
 
 exit 0
 
