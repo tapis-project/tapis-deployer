@@ -10,3 +10,4 @@ systems_postgres_pvc: systems-postgres-vol01
 systems_globus_client_id: null
 systems_heap_max: 3G
 systems_heap_min: 1G
+systems_port: 8084
