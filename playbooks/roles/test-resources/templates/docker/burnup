@@ -4,8 +4,6 @@ echo "burnup test-resources:"
 
 mkdir -p {{ tapisdatadir }}/test-resources
 
-export UID_GID="$(id -u):$(id -g)"
-
 #docker compose up -d
 
 SCRIPT_DIR=$(dirname $0)

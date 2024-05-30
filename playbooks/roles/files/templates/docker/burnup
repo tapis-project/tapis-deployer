@@ -8,12 +8,6 @@ mkdir -p {{ tapisdatadir }}/files/postgres
 mkdir -p {{ tapisdatadir }}/files/minio
 mkdir -p {{ tapisdatadir }}/files/irods
 
-MYUID=`id -u`
-
-export UID_GID="$(id -u):$(id -g)"
-
-docker run -it --rm -v {{ tapisdatadir }}/files:/files {{ files_util_image }} chown $MYUID /files
-
 python3 ../admin/util/parse_skexport -c files -d {{ tapisdatadir }}
 
 docker compose up -d

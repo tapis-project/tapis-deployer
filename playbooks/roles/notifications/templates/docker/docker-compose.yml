@@ -9,7 +9,6 @@ services:
 
   notifications-api:
     container_name: notifications-api
-    user: ${UID_GID}
     image: {{ notifications_api_image }} 
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
@@ -79,7 +78,6 @@ services:
 
   notifications-dispatcher:
     container_name: notifications-dispatcher
-    user: ${UID_GID}
     image: {{ notifications_dispatcher_image }}
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
