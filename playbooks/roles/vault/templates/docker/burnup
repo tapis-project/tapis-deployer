@@ -25,6 +25,14 @@ then
   exit 1
 fi 
 
+# wait until vault is healthy
+until [ "`docker inspect -f {% raw %}{{.State.Health.Status}}{% endraw %} vault`" == "healthy" ]
+do
+  echo -n "Waiting for vault to be healthy. Status: "
+  docker inspect -f {% raw %}{{.State.Health.Status}}{% endraw %} vault
+  sleep 1
+done
+
 # check if vault is unsealed already
 #sleep 5
 if VAULTSTAT=`docker exec -it vault vault status -format=json`
