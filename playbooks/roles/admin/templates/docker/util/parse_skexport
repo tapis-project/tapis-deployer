@@ -252,7 +252,7 @@ with open(infile, 'r') as lines:
                         output_dict["MONGO_URI"] = f"mongodb://restheart:{skexport_value}@restheart-mongo:27017/?authSource=admin"
                     if "public_key" in key or "private_key" in key or "privatekey" in key:
                         if args.verbose:
-                            print(f'Key {key} is a signing token. Need to make sure it\'s quoted')
+                            print(f'Key {key} is a signing token. Need to make sure its quoted')
                         output_dict[key] = f'"{skexport_value}"'
         except KeyError:
             pass
