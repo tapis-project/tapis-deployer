@@ -6,21 +6,6 @@ networks:
 
 
 services:
-  monitoring-elasticsearch:
-    container_name: monitoring-elasticsearch
-    image: {{ monitoring_elasticsearch_image }}
-    networks: 
-      - tapis
-    env_file:
-      - {{ tapisdatadir }}/monitoring/env
-    environment:
-      - discovery.type=single-node
-      - search.max_buckets=65535
-      - ES_JAVA_OPTS=-Xmx8G -Xmx8G -Dlog4j2.formatMsgNoLookups=true
-      - xpack.security.enabled=false
-      - cluster.routing.allocation.disk.watermark.enable_for_single_data_node=true
-    volumes:
-      - {{ tapisdatadir}}/monitoring/elasticsearch/data:/usr/share/elasticsearch/data
 
   monitoring-grafana:
     container_name: monitoring-grafana
@@ -39,17 +24,6 @@ services:
       - {{ tapisdatadir }}/monitoring/grafana/data:/var/lib/grafana
       - ./prometheus-datasources.yml:/etc/grafana/provisioning/datasources/prometheus.yaml
     user: "0"
-
-  monitoring-kibana:
-    container_name: monitoring-kibana
-    image: {{ monitoring_kibana_image }}
-    env_file:
-      - {{ tapisdatadir }}/monitoring/env
-    networks: 
-      - tapis
-    environment:
-      - ELASTICSEARCH_HOSTS=http://monitoring-elasticsearch:9200
-      - ELASTICSEARCH_URL=http://monitoring-elasticsearch:9200
 
   monitoring-prometheus:
     container_name: monitoring-prometheus

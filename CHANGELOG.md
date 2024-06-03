@@ -1,5 +1,12 @@
 # Changelog 
 
+## 1.6.3 
+
+### Service Updates
+
+- Removed Monitoring-Kibana & Monitoring-Elasticsearch components. 
+
+
 ## 1.6.2
 
 ### Service Updates
