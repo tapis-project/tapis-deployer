@@ -16,8 +16,8 @@ services:
         container_name: actors-mongo
         image: {{ actors_mongo_image }}
         environment:
-            - MONGO_INITDB_ROOT_USERNAME: admin
-            - MONGO_REPLICA_SET_NAME: rs0
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_REPLICA_SET_NAME: rs0
         env_file:
             - {{ tapisdatadir }}/actors/env
         # volumes:
@@ -160,7 +160,7 @@ services:
             - tapis
 
     actors-spawner:
-        contianer_name: actors-spawner
+        container_name: actors-spawner
         image: {{ actors_core_image }}
         command: "python3 -u /home/tapis/actors/spawner.py"
         volumes:

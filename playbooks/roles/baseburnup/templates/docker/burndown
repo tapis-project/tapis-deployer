@@ -22,6 +22,12 @@ echo "Start: top-level-burndown"
 
 # actors
 
+{% if "actors" in components_to_deploy %}
+cd $mydir_absolute/actors
+./burndown
+{% endif %}
+
+
 # container-registry
 
 # globus-proxy

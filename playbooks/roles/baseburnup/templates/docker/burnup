@@ -99,7 +99,9 @@ burnup_or_exit apps
 
 ## tertiary services
 
-# actors
+{% if "actors" in components_to_deploy %}
+burnup_or_exit actors
+{% endif %}
 
 # container-registry
 
