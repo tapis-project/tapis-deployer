@@ -25,7 +25,7 @@ services:
         #     - ./runtime_files/certs/mongo-replica-set-keyfile:/keyfiles/metakeyfile
         volumes:
             - {{ tapisdatadir }}/actors/mongo/data:/data/db
-            - {{ tapisdatadir }}/actors/mongo/keyfile:keyfile-base
+            - {{ tapisdatadir }}/actors/mongo/keyfiles:/keyfiles
         networks:
             - tapis
         ulimits:
