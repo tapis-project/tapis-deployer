@@ -1,5 +1,16 @@
 # Changelog 
 
+## 1.6.3 
+
+### Service Updates
+
+- [Authenticator: 1.6.1 to 1.6.2 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
+- [Systems: 1.6.2 to 1.6.3 (tapis/systems)](Systems changes: https://github.com/tapis-project/tapis-systems/blob/1.6.3/CHANGELOG.md)
+- [Files: 1.6.2 to 1.6.3 (tapis/tapis-files, tapis/tapis-files-workers)](Files changes: https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Jobs: 1.6.2 to 1.6.3 (tapis/jobsworker, jobsmigrate, jobsapi)](Jobs changes: https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Globus-Proxy: 1.6.1 to 1.6.1 (tapis/globus-proxy)](Globus Proxy changes: https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+- Removed Monitoring-Kibana & Monitoring-Elasticsearch components. These may be left in burndown scripts for now but will be removed in a future release.
+
 ## 1.6.2
 
 ### Service Updates

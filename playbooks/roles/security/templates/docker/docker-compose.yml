@@ -50,7 +50,6 @@ services:
 
     security-api:
         container_name: security-api
-        user: ${UID_GID}
         image: {{ security_api_image }}
         environment:
             - TAPIS_SITE_ID={{ security_service_site_id }}

@@ -21,9 +21,6 @@ services:
     networks:
       - tapis
     healthcheck:
-      test: [ "CMD", "wget", "--spider", "--proxy", "off", "http://127.0.0.1:8200/v1/sys/health?standbyok=true" ]
-      interval: 10s
-      timeout: 3s
-      retries: 10
-      start_period: 5s
+      # Just waiting for status to actually give output
+      test: vault status | grep Value
 

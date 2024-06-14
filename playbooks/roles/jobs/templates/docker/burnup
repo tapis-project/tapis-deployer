@@ -5,11 +5,6 @@ echo "burnup jobs:"
 mkdir -p {{ tapisdatadir }}/jobs
 mkdir -p {{ tapisdatadir }}/jobs/postgres
 
-export MYUID="$(id -u)"
-export UID_GID="$(id -u):$(id -g)"
-
-docker run -it --rm -v {{ tapisdatadir }}/jobs:/jobs {{ jobs_util_image }} chown $MYUID /jobs
-
 python3 ../admin/util/parse_skexport -c jobs -d {{ tapisdatadir }}
 
 docker compose up -d

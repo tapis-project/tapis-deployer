@@ -99,11 +99,17 @@ burnup_or_exit apps
 
 ## tertiary services
 
-# actors
+{% if "actors" in components_to_deploy %}
+burnup_or_exit actors
+{% endif %}
 
 # container-registry
 
 # globus-proxy
+
+{% if "globus-proxy" in components_to_deploy %}
+burnup_or_exit globus-proxy
+{% endif %}
 
 {% if "meta" in components_to_deploy %}
 burnup_or_exit meta
