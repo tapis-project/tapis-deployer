@@ -7,4 +7,4 @@ gettoken
 # should return 200 and JSON with token
 
 export pass=`grep ^LDAP_ROOTPASS {{ tapisdatadir }}/authenticator/env | awk -F= '{print $2}' | tr -d '"'`
-docker run --rm -it --network tapis tapis/centosutil:1.4.0 ldapsearch -x -H ldap://authenticator-ldap:389 -Z -D "cn=admin,dc=tapis" -w "$pass" -b "ou=tenants.dev,dc=tapis"
+docker run --rm -it --network tapis tapis/centosutil:1.4.0 ldapsearch -x -H ldap://authenticator-ldap:389 -D "cn=admin,dc=tapis" -w "$pass" -b "ou=tenants.dev,dc=tapis"

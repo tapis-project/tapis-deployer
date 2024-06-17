@@ -12,7 +12,6 @@ services:
         image: {{ tokens_api_image }}
         volumes:
             - ./tokens-config.json:/home/tapis/config.json
-            - ../admin/verification/tokens-test:/home/tapis/healthcheck
         networks:
             - tapis
         env_file: 

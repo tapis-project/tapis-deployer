@@ -2,6 +2,4 @@
 
 echo "burndown apps:"
 
-export UID_GID="$(id -u):$(id -g)"
-
 docker compose down

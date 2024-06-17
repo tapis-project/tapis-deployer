@@ -11,7 +11,6 @@ services:
     container_name: notifications-api
     restart_policy: unless-stopped
     # user: ${UID_GID}
-    user: root
     image: {{ notifications_api_image }} 
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
@@ -31,6 +30,10 @@ services:
       notifications-rabbitmq:
         condition: service_healthy
     command: java -Xms{{ notifications_heap_min }} -Xmx{{ notifications_heap_max }} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -cp "notifications.jar:dependencies/*" edu.utexas.tacc.tapis.notifications.api.NotificationsApplication
+{% if notifications_port is not none %}
+    ports: 
+      - "{{notifications_port}}:8080"
+{% endif %}
     
   notifications-init-db:
     container_name: notifications-init-db
@@ -81,7 +84,7 @@ services:
     container_name: notifications-dispatcher
     restart_policy: unless-stopped
     # user: ${UID_GID}
-    user: root
+    # user: root
     image: {{ notifications_dispatcher_image }}
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}

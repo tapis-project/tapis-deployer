@@ -21,4 +21,7 @@ services:
       - {{ vault_data_dir }}/certs:/vault/certs
     networks:
       - tapis
+    healthcheck:
+      # Just waiting for status to actually give output
+      test: vault status | grep Value
 

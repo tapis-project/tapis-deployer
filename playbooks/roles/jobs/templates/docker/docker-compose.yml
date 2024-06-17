@@ -9,8 +9,6 @@ services:
     jobs-api:
         restart_policy: unless-stopped
         container_name: jobs-api
-        # user: ${UID_GID}
-        user: root
         networks:
           - tapis
         image: {{ jobs_api_image }}
@@ -98,7 +96,6 @@ services:
 
     jobs-altqueue:
         # user: ${UID_GID}
-        user: root
         container_name: jobs-altqueue
         restart_policy: unless-stopped
         image: {{ jobs_worker_image }}
@@ -158,7 +155,6 @@ services:
         container_name: jobs-deadletter
         restart_policy: unless-stopped
         # user: ${UID_GID}
-        user: root
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -187,7 +183,6 @@ services:
         container_name: jobs-eventqueue
         restart_policy: unless-stopped
         # user: ${UID_GID}
-        user: root
         image: {{ jobs_worker_image }}
         environment:
             - TAPIS_SITE_ID={{ jobs_service_site_id }}
@@ -216,7 +211,6 @@ services:
         container_name: jobs-workers
         restart_policy: unless-stopped
         # user: ${UID_GID}
-        user: root
         image: {{ jobs_worker_image }}
         environment:
 {% if jobs_node_name == true %}

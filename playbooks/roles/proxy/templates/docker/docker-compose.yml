@@ -15,6 +15,9 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./locations:/etc/nginx/conf.d/locations:ro
+      - {{ proxy_nginx_cert_file }}:/tmp/ssl/tls.crt:ro
+      - {{ proxy_nginx_cert_key }}:/tmp/ssl/tls.key:ro
+      - ./token-revoked.json:/etc/nginx/html/token-revoked.json
       - {{proxy_nginx_cert_file}}:/tmp/ssl/tls.crt:ro
       - {{proxy_nginx_cert_key}}:/tmp/ssl/tls.key:ro
       - ./token-revoked.json:/etc/nginx/html/token-revoked.json

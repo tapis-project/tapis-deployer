@@ -54,7 +54,7 @@ services:
         container_name: security-api
         restart_policy: unless-stopped
         #user: ${UID_GID}
-        user: root
+        # user: root
         image: {{ security_api_image }}
         environment:
             - TAPIS_SITE_ID={{ security_service_site_id }}
