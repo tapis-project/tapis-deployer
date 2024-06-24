@@ -89,7 +89,6 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
       - MYSQL_USER=chords_demo_user
-      - MYSQL_DATABASE=CHORDS_SEEDED_production
     env_file:
       - {{ tapisdatadir }}/streams/env
     logging:
