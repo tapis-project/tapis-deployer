@@ -18,12 +18,8 @@ services:
       - {{ proxy_nginx_cert_file }}:/tmp/ssl/tls.crt:ro
       - {{ proxy_nginx_cert_key }}:/tmp/ssl/tls.key:ro
       - ./token-revoked.json:/etc/nginx/html/token-revoked.json
-      - {{proxy_nginx_cert_file}}:/tmp/ssl/tls.crt:ro
-      - {{proxy_nginx_cert_key}}:/tmp/ssl/tls.key:ro
-      - ./token-revoked.json:/etc/nginx/html/token-revoked.json
     networks:
       - tapis
-    restart: always
   
   site-router:
     container_name: site-router
@@ -35,7 +31,6 @@ services:
       - ./site-router-config.json:/home/tapis/config.json:ro
     networks:
       - tapis
-    restart: always
   
   site-router-redis:
     container_name: site-router-redis
@@ -47,4 +42,3 @@ services:
       - {{ tapisdatadir }}/proxy-site-router-redis:/data
     networks:
       - tapis
-    restart: always

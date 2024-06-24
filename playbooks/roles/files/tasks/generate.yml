@@ -3,16 +3,19 @@
 - name: get remote host
   ansible.builtin.set_fact:
     remote_hosts: "{{ groups['remote_hosts'] }}"
+  when: "{{ groups['remote_hosts'] is defined }}"
 
 - name: debug remote host
   ansible.builtin.debug:
     var: remote_hosts
+  when: "{{ groups['remote_hosts'] is defined }}"
 
 - name: find host with component
   ansible.builtin.debug:
     msg: 'files is hosted on {{ remote_host }}'
   vars: 
     remote_host: "{{ map('extract', remote_hosts, 'components_to_deploy') }}"
+  when: "{{ groups['remote_hosts'] is defined }}"
 
 
 # - name: debug files location
