@@ -14,4 +14,8 @@ kubectl delete -f apps
 kubectl delete -f stern-fluentd
 
 #Jobs
- kubectl delete -f monitor-init-user.yml
+kubectl delete -f monitor-init-user.yml
+
+# 1.6.3 Removed elasticsearch & kibana from install. Putting these here to shut down existing.
+kubectl delete deploy/monitoring-elasticsearch
+kubectl delete deploy/monitoring-kibana

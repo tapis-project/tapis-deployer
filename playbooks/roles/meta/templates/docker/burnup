@@ -4,11 +4,6 @@ echo "burnup meta:"
 
 mkdir -p {{ tapisdatadir }}/meta/mongodb/data
 
-export MYUID="$(id -u)"
-export UID_GID="$(id -u):$(id -g)"
-
-docker run -it --rm -v {{ tapisdatadir }}/meta:/meta {{ meta_util_image }} chown $MYUID /meta
-
 python3 ../admin/util/parse_skexport -c meta -d {{ tapisdatadir }}
 
 docker compose up -d

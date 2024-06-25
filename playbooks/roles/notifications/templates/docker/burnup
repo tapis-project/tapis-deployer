@@ -5,11 +5,6 @@ echo "burnup notifications:"
 mkdir -p {{ tapisdatadir }}/notifications
 mkdir -p {{ tapisdatadir }}/notifications/postgres
 
-MYUID=`id -u`
-export UID_GID="$(id -u):$(id -g)"
-
-docker run -it --rm -v {{ tapisdatadir }}/notifications:/notifications {{ notifications_util_image }} chown $MYUID /notifications
-
 python3 ../admin/util/parse_skexport -c notifications -d {{ tapisdatadir }}
 
 docker compose up -d

@@ -17,8 +17,8 @@ services:
       - MINIO_ACCESS_KEY={{ test_resources_minio_1_user }}
       - MINIO_SECRET_KEY={{ test_resources_minio_1_password }}
     ports:
-      - "{{ test_resources_minio_1_server_port }}:9000"
-      - "{{ test_resources_minio_1_console_port }}:9001"
+      - {{ test_resources_minio_1_server_port }}:9000
+      - {{ test_resources_minio_1_console_port }}:9001
     networks: 
       - tapis
     volumes:
@@ -29,7 +29,7 @@ services:
     container_name: irods-1
     image: mjstealey/irods-provider-postgres:4.2.4
     ports:
-      - "{{ test_resources_irods_1_port }}:22"
+      - {{ test_resources_irods_1_port }}:22
     networks: 
       - tapis
 
@@ -39,7 +39,7 @@ services:
       context: .
       dockerfile: ssh/Dockerfile.ssh
     ports:
-      - "{{ test_resources_ssh_1_port }}:22"
+      - {{ test_resources_ssh_1_port }}:22
     networks: 
       - tapis
 
@@ -49,7 +49,7 @@ services:
       context: .
       dockerfile: ssh/Dockerfile.ssh
     ports:
-      - "{{ test_resources_ssh_2_port }}:22"
+      - {{ test_resources_ssh_2_port }}:22
     networks: 
       - tapis
 
@@ -59,7 +59,7 @@ services:
       context: .
       dockerfile: slurm/Dockerfile.ssh
     ports:
-      - "{{ test_resources_slurm_1_port }}:22"
+      - {{ test_resources_slurm_1_port }}:22
     networks: 
       - tapis
     privileged: true
