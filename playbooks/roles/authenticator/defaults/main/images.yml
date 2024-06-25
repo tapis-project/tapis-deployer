@@ -1,4 +1,4 @@
-authenticator_api_image: tapis/authenticator:1.6.2
-authenticator_migrations_image: tapis/authenticator-migrations:1.6.2
+authenticator_api_image: tapis/authenticator:{{ authenticator_service_version }}
+authenticator_migrations_image: tapis/authenticator-migrations:{{ authenticator_service_version }}
 authenticator_postgres_image: postgres:11.4
 authenticator_ldap_image: tacc/slapd:1
