@@ -8,7 +8,7 @@
 - [Systems: 1.6.2 to 1.6.3 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/1.6.3/CHANGELOG.md)
 - [Files: 1.6.2 to 1.6.3 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
 - [Jobs: 1.6.2 to 1.6.3 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
-- [Globus-Proxy: 1.6.1 to 1.6.1 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+- [Globus-Proxy: 1.6.0 to 1.6.2 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
 - Removed Monitoring-Kibana & Monitoring-Elasticsearch components. These may be left in burndown scripts for now but will be removed in a future release.
 
 ## 1.6.2
