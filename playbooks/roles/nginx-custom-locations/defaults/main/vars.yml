@@ -31,4 +31,5 @@ proxy_nginx_service_list:
   - tenants
   - tokens
   - workflows
+  - tapisui
 
