@@ -6,6 +6,7 @@ networks:
 
 
 services:
+<<<<<<< HEAD
   monitoring-elasticsearch:
     container_name: monitoring-elasticsearch
     restart_policy: unless-stopped
@@ -22,6 +23,8 @@ services:
       - cluster.routing.allocation.disk.watermark.enable_for_single_data_node=true
     volumes:
       - {{ tapisdatadir}}/monitoring/elasticsearch/data:/usr/share/elasticsearch/data
+=======
+>>>>>>> dev
 
   monitoring-grafana:
     container_name: monitoring-grafana
@@ -42,6 +45,7 @@ services:
       - ./prometheus-datasources.yml:/etc/grafana/provisioning/datasources/prometheus.yaml
     user: "0"
 
+<<<<<<< HEAD
   monitoring-kibana:
     container_name: monitoring-kibana
     restart_policy: unless-stopped
@@ -54,6 +58,8 @@ services:
       - ELASTICSEARCH_HOSTS=http://monitoring-elasticsearch:9200
       - ELASTICSEARCH_URL=http://monitoring-elasticsearch:9200
 
+=======
+>>>>>>> dev
   monitoring-prometheus:
     container_name: monitoring-prometheus
     restart_policy: unless-stopped

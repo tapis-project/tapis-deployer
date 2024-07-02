@@ -111,6 +111,10 @@ burnup_or_exit container-registry
 burnup_or_exit globus-proxy
 {% endif %}
 
+{% if "globus-proxy" in components_to_deploy %}
+burnup_or_exit globus-proxy
+{% endif %}
+
 {% if "meta" in components_to_deploy %}
 burnup_or_exit meta
 {% endif %}

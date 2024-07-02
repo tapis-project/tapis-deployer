@@ -16,16 +16,13 @@ services:
         container_name: actors-mongo
         image: {{ actors_mongo_image }}
         environment:
-            - MONGO_INITDB_ROOT_USERNAME: admin
-            - MONGO_REPLICA_SET_NAME: rs0
+            MONGO_INITDB_ROOT_USERNAME: admin
+            MONGO_REPLICA_SET_NAME: rs0
         env_file:
             - {{ tapisdatadir }}/actors/env
-        # volumes:
-        #     - ./runtime_files/certs:/data/ssl
-        #     - ./runtime_files/certs/mongo-replica-set-keyfile:/keyfiles/metakeyfile
         volumes:
             - {{ tapisdatadir }}/actors/mongo/data:/data/db
-            - {{ tapisdatadir }}/actors/mongo/keyfile:keyfile-base
+            - {{ tapisdatadir }}/actors/mongo/mongo-replica-set-keyfile:/keyfiles/metakeyfile
         networks:
             - tapis
         ulimits:
@@ -73,10 +70,7 @@ services:
         networks:
             - tapis
         volumes:
-#             - ./config-local.json:/home/tapis/config.json
-          - "./actors-config.json:/etc/nginx/sites-enabled/flask-project"
-# #            - ./images/nginx/nginx.conf:/etc/nginx/nginx.conf
-# #            - ./images/nginx/sites-enabled:/etc/nginx/sites-enabled
+            - ./nginx.conf:/etc/nginx/conf/nginx.conf
         restart: always
         depends_on:
             actors-mongo:
@@ -85,13 +79,10 @@ services:
     actors-reg:
         container_name: actors-reg
         image: {{ actors_core_image }}
-        # ports:
-        #     - "127.0.0.1:5000:5000"
         volumes:
-        #     - ./config-local.json:/home/tapis/config.json
           - "./actors-config.json:/home/tapis/config.json"
-        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
-        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         environment:
             # abaco_host_path: ${abaco_path}
             abaco_host_path: "{{ tapisdatadir }}/actors"
@@ -111,12 +102,9 @@ services:
         container_name: actors-mes
         image: {{ actors_core_image }}
         volumes:
-        #     - ./config-local.json:/home/tapis/config.json
           - "./actors-config.json:/home/tapis/config.json"
-        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
-        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
-        # ports:
-        #     - "127.0.0.1:5001:5000"
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         environment:
             # abaco_host_path: ${abaco_path}
             abaco_host_path: "{{ tapisdatadir }}/actors"
@@ -137,12 +125,11 @@ services:
         container_name: actors-admin
         image: {{ actors_core_image }}
         volumes:
-        #     - ./config-local.json:/home/tapis/config.json
           - "./actors-config.json:/home/tapis/config.json"
-        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
-        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
-        ports:
-            - "127.0.0.1:5003:5000"
+        # ports:
+        #     - "127.0.0.1:5003:5000"
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         environment:
             # abaco_host_path: ${abaco_path}
             abaco_host_path: "{{ tapisdatadir }}/actors"
@@ -160,15 +147,13 @@ services:
             - tapis
 
     actors-spawner:
-        contianer_name: actors-spawner
+        container_name: actors-spawner
         image: {{ actors_core_image }}
         command: "python3 -u /home/tapis/actors/spawner.py"
         volumes:
-        #     - ./config-local.json:/home/tapis/config.json
           - "./actors-config.json:/home/tapis/config.json"
-        #     - /var/run/docker.sock:/var/run/docker.sock
-        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
-        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         environment:
             # abaco_host_path: ${abaco_path}
             abaco_host_path: "{{ tapisdatadir }}/actors"
@@ -188,12 +173,11 @@ services:
         image: {{ actors_core_image }}
         command: /home/tapis/actors/health_check.sh
         volumes:
-            - /:/host
-        #     - ./config-local.json:/home/tapis/config.json
+            #- /:/host # I didn't put this here, I don't think neccessary
             - "./actors-config.json:/home/tapis/config.json"
             - /var/run/docker.sock:/var/run/docker.sock
-        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
-        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         environment:
             # abaco_host_path: ${abaco_path}
             abaco_host_path: "{{ tapisdatadir }}/actors"
@@ -216,11 +200,9 @@ services:
         image: {{ actors_core_image }}
         command: "python3 -u /home/tapis/actors/events.py"
         volumes:
-        #     - ./config-local.json:/home/tapis/config.json
           - "./actors-config.json:/home/tapis/config.json"
-        #     - /var/run/docker.sock:/var/run/docker.sock
-        #     - ./abaco.log:/home/tapis/runtime_files/logs/service.log
-        #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         environment:
             # abaco_host_path: ${abaco_path}
             abaco_host_path: "{{ tapisdatadir }}/actors"
@@ -239,17 +221,6 @@ services:
         networks:
             - tapis
 
-    actors-grafana:
-        container_name: acrots-grafana
-        image: {{ actors_grafana_image }}
-        user: "104"
-        depends_on:
-            - actors-mongo
-            - actors-reg
-        networks:
-            - tapis
-        restart: always
-
     actors-metrics:
         container_name: actors-metrics
         image: {{ actors_core_image }}
@@ -262,6 +233,8 @@ services:
         #     - ./runtime_files/certs:/home/tapis/runtime_files/certs
         # ports:
         #     - "127.0.0.1:5004:5000"
+        env_file:
+            - {{ tapisdatadir }}/actors/env
         environment:
             # abaco_host_path: ${abaco_path}
             abaco_host_path: "{{ tapisdatadir }}/actors"
@@ -276,5 +249,3 @@ services:
             - actors-mongo
             - actors-reg
 
-# volumes:
-#     grafana_data: {}
