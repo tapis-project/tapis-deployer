@@ -15,6 +15,6 @@ security_image_pull_policy: Always
 # set to false if vault remote:
 # security_renew_sk_script: true
 security_renew_sk_script: false
-
+security_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
 # docker-specific vars
 
