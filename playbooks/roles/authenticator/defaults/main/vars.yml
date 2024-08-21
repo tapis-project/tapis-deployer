@@ -13,6 +13,7 @@ authenticator_ldap_pvc: authenticator-ldap-vol01
 authenticator_storage_class: "{{ global_storage_class }}"
 authenticator_dev_ldap_tenant_id: dev
 authenticator_service_tenants: ["*"]
+authenticator_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
 
 
 
