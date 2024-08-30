@@ -6,7 +6,7 @@
     "tenants": {{ authenticator_service_tenants | to_json }},
     "show_traceback": {{ authenticator_show_traceback | to_json }},
     "sql_db_url": "authenticator-postgres:5432",
-    "dev_ldap_tenant_id": "{{authenticator_dev_ldap_tenant_id}}",
+    "dev_ldap_tenant_id": "{{ authenticator_dev_ldap_tenant_id }}",
     "log_level": "{{authenticator_log_level}}",
     "version": "{{authenticator_service_version}}"
 }
