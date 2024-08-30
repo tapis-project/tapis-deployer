@@ -6,7 +6,7 @@ authenticator_show_traceback: false
 authenticator_image_pull_policy: Always
 authenticator_service_url: "{{ global_service_url }}"
 authenticator_service_site_id: "{{ global_site_id }}"
-authenticator_service_tenant_id: admin
+authenticator_service_tenant_id: "{{ global_service_tenant_id }}"
 authenticator_service_name: authenticator
 authenticator_postgres_pvc: authenticator-postgres-vol01
 authenticator_ldap_pvc: authenticator-ldap-vol01

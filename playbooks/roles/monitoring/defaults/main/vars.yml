@@ -1,7 +1,7 @@
 ---
 
 monitoring_service_url: "{{ global_service_url }}"
-monitoring_service_tenant_id: admin
+monitoring_service_tenant_id: "{{ global_service_tenant_id }}"
 monitoring_service_site_id: "{{ global_site_id }}"
 monitoring_service_name: monitoring
 monitoring_prometheus_external_label: 
