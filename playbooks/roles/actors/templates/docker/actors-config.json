@@ -6,7 +6,7 @@
   "service_name": "abaco",
   "service_password": "$env{SERVICE_PASSWORD}",
   "tenants": {{ actors_service_tenants | to_json }},
-  "version": "1.2.1",
+  "version": "1.6.0",
   "container_backend": "docker",
   "log_file": "",
   "log_level": "DEBUG",
@@ -21,8 +21,8 @@
   "mongo_replica_set": true,
   "admin_rabbitmq_user": "admin",
   "admin_rabbitmq_pass": "$env{RABBITMQ_PASSWORD}",
-  "rabbit_uri": "amqp://actors-rabbit:5672",
-  "rabbit_dash_host": "actors-rabbit-dash",
+  "rabbit_uri": "amqp://actors-rabbitmq:5672",
+  "rabbit_dash_host": "actors-rabbitmq",
   "spawner_abaco_conf_host_path": "$env{abaco_host_path}/config-local.json",
   "spawner_host_id": 0,
   "spawner_host_queues": [
@@ -62,13 +62,13 @@
     "default",
     "special"
   ],
-  "site_id": "quick",
+  "site_id": "{{ actors_service_site_id }}",
   "global_site_object": {
     "web_log_ex": 43200,
     "site_mongo_pass": "THISIsAtemP0raryPASs!",
     "site_rabbitmq_pass": "rEplac3meUSingSKplz!"
   },
-  "quick_site_object": {
+  "{{ actors_service_site_id }}_site_object": {
     "site_mongo_pass": "THISIsAtemP0raryPASs!",
     "site_rabbitmq_pass": "rEplac3meUSingSKplz!"
   },
