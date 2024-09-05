@@ -4,7 +4,14 @@
 
 ### Service Updates
 
-...
+
+- [Systems: 1.6.4 to 1.6.5 (tapis/systems)](Systems changes: https://github.com/tapis-project/tapis-systems/blob/1.6.5/CHANGELOG.md)
+- [Apps: 1.6.3 to 1.6.4 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/1.6.4/CHANGELOG.md)
+- [Files: 1.6.3 to 1.6.4 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Jobs: 1.6.3 to 1.6.4 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Security: 1.6.2 to 1.6.3 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+- [Globus-Proxy: 1.6.2 to 1.6.4 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+
 
 ## 1.6.3 
 
