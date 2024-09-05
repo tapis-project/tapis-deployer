@@ -12,5 +12,8 @@ data:
       "log_level": "{{globus_proxy_log_level}}",
       "tenants": {{globus_proxy_tenants|to_json}},
       "show_traceback": {{globus_proxy_show_traceback|to_json}},
-      "use_sk": true
+      "use_sk": true,
+      "client_id": "{{ globus_client_id }}",
+      "client_secret": "{{ globus_client_secret }}"
     }
+
