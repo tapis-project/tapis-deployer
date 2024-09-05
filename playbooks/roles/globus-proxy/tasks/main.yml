@@ -1,4 +1,11 @@
 ---
 
+
+- name: Check mandatory variables are defined
+  assert:
+    that:
+      - globus_client_id != None
+      - globus_client_secret != None
+
 - include_tasks: '{{ tapisctl_action }}.yml'
 

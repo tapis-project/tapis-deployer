@@ -12,6 +12,10 @@
 - [Security: 1.6.2 to 1.6.3 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
 - [Globus-Proxy: 1.6.2 to 1.6.4 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
 
+### Breaking Changes for Deployer Admins
+
+- If using the globus-proxy component, you must provide 2 variables in host_vars: `globus_client_id` and `globus_client_secret`. They correspond to the id and secret of the service client, as described here: https://docs.globus.org/guides/recipes/automate-with-service-account/ .
+
 
 ## 1.6.3 
 

@@ -9,4 +9,6 @@ globus_proxy_show_traceback: false
 globus_proxy_tenants:
   - dev
   - admin
+globus_client_id: null
+globus_client_secret: null
 
