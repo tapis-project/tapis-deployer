@@ -4,14 +4,13 @@ echo "burnup actors:"
 
 mkdir -p {{ tapisdatadir }}/actors
 mkdir -p {{ tapisdatadir }}/actors/mongo
-mkdir -p {{ tapisdatadir }}/actors/mongo/keyfile
 
 MYUID=`id -u`
 docker run -it --rm -v {{ tapisdatadir }}/actors:/actors {{ actors_util_image }} chown $MYUID /actors
 
 python3 ../admin/util/parse_skexport -c actors -d {{ tapisdatadir }}
 
-cat {{ tapisdatadir }}/actors/env | grep MONGO_INITDB_ROOT_PASSWORD | cut -d'"' -f 2 > {{ tapisdatadir }}/actors/mongo/keyfiles/metakeyfile
+cat {{ tapisdatadir }}/actors/env | grep MONGO_INITDB_ROOT_PASSWORD | cut -d'"' -f 2 > {{ tapisdatadir }}/actors/mongo/mongo-replica-set-keyfile
 
 docker compose up -d
 
