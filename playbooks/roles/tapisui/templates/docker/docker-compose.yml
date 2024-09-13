@@ -4,7 +4,7 @@ networks:
         external: true
 
 services:
-  tapisui:
+  tapisui-service:
     container_name: tapisui
     image: {{ tapisui_image }}
     environment:
