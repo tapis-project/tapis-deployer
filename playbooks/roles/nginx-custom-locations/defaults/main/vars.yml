@@ -3,7 +3,7 @@
 
 # proxy
 proxy_service_url: {{ global_service_url }}
-proxy_service_tenant_id: admin
+proxy_service_tenant_id: "{{ global_service_tenant_id }}"
 proxy_service_site_id: {{ proxy_site_id }}
 proxy_service_name: proxy
 proxy_primary_site_admin_tenant_base_url: {{ global_service_url }}

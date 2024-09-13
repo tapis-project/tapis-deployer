@@ -1,9 +1,8 @@
 ---
 
-
 # actors
 actors_service_url: '{{ global_service_url }}'
-actors_service_tenant_id: admin
+actors_service_tenant_id: '{{ global_service_tenant_id }}'
 actors_service_site_id: '{{ global_site_id }}'
 actors_service_name: actors
 actors_service_version: 1.7.0
