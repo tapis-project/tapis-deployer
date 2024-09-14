@@ -2,7 +2,7 @@
 
 apps_service_name: apps
 apps_service_site_id: "{{ global_site_id }}" 
-apps_service_tenant_id: admin
+apps_service_tenant_id: "{{ global_service_tenant_id }}"
 apps_service_url: "{{ global_service_url }}"
 apps_storage_class: "{{ global_storage_class }}"
 apps_enable_external: false

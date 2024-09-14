@@ -142,12 +142,12 @@ tenants = {
     "postgres_password": "DBCREDENTIAL_POSTGRES_TENANTS_POSTGRES_TENANTS_TENANTS_PASSWORD",
     "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_TENANTS_POSTGRES_TENANTS_TENANTS_PASSWORD",
     "service_password": "SERVICEPWD_TENANTS_PASSWORD",
-    "admin_tenant_public_key": "JWTSIGNING_ADMIN_PUBLICKEY",
+    "admin_tenant_public_key": "JWTSIGNING_{{ admin_service_tenant_id | upper }}_PUBLICKEY",
     "dev_tenant_public_key": "JWTSIGNING_DEV_PUBLICKEY" 
     }
 
 tokens = {
-    "site_admin_privatekey": "JWTSIGNING_ADMIN_PRIVATEKEY"
+    "site_admin_privatekey": "JWTSIGNING_{{ admin_service_tenant_id | upper }}_PRIVATEKEY"
     }
 
 vault = {"":""}
