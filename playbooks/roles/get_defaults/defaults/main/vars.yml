@@ -1,16 +1,36 @@
-global_service_tenant_id_default: admin
-tapisdir_default: '{{ ansible_env.HOME }}/.tapis/{{ inventory_hostname }}'
-tapisdatadir_default: '{{ ansible_env.HOME }}/.tapis-data/{{ inventory_hostname }}'
-global_vault_url_default: 'http://vault:8200'
-global_service_url_default: 'https://{{ global_service_tenant_id_default }}.{{ global_tapis_domain }}'
-global_devtenant_url_default: 'https://dev.{{ global_tapis_domain }}'
-global_primary_site_admin_tenant_base_url_default: 'https://admin.{{ global_tapis_domain }}'
+# these should be required to be set in host_vars
+global_tapis_domain: ''
+tapisdir: ''
+tapisdatadir_default: ''
+global_site_id: ''
+proxy_nginx_cert_file: ''
+proxy_nginx_cert_key: ''
 
 
-# A) There should be NO choice for primary sites, 
-# B) For associate sites, we should actually compute the field from the site record.. (or anyway, the 
-#    value needs to match what it is on the site record).
-components_to_deploy_default:
+# For primary sites, these should be left default 
+# For associate sites, these should be changed (and must be unique across the primary sites' tenant names)
+# ... AND the value needs to match what it is in the site record
+global_service_tenant_id: admin
+global_devtenant_id: dev
+
+# For primary site, this is the same as the global_tapis_domain
+# For associate site, it should be defined in host_vars
+global_service_domain: '{{ global_tapis_domain }}'
+
+# service urls
+# - should be same for primary site
+# - should be different for associate site
+
+global_primary_site_admin_tenant_base_url: 'https://{{ global_service_tenant_id }}.{{ global_service_domain }}'
+global_service_url: '{{ global_primary_site_admin_tenant_base_url }}'
+global_devtenant_url: 'https://{{ global_devtenant_id }}.{{ global_tapis_domain }}'
+
+
+### relatively safe defaults below
+
+global_vault_url: http://vault:8200
+
+components_to_deploy:
   - actors
   - admin
   - apps
@@ -34,4 +54,8 @@ components_to_deploy_default:
   - vault
 #  - workflows  
 #  - test-resources
+
+
+
+
 

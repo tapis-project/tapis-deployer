@@ -8,5 +8,5 @@ tokens_show_traceback: false
 tokens_use_allservices_password: false
 tokens_tenants: ["*"]
 tokens_image_pull_policy: Always
-tokens_service_tenant_id: admin
+tokens_service_tenant_id: '{{ global_service_tenant_id }}'
 tokens_service_name: tokens
