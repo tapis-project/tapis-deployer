@@ -1,22 +1,58 @@
 ---
 
-- name: Set default values for vars
-  ansible.builtin.set_fact:
-    global_service_tenant_id: '{{ global_service_tenant_id | default(global_service_tenant_id_default) }}'
-    tapisdir: '{{ tapisdir | default(tapisdir_default) }}'
-    tapisdatadir: '{{ tapisdatadir | default(tapisdatadir_default) }}'
-    global_vault_url: '{{ global_vault_url | default(global_vault_url_default) }}'
-    #global_service_url: '{{ global_service_url | default(global_service_url_default) }}'
-    global_service_url: '{{ global_service_url }}'
-    components_to_deploy: '{{ components_to_deploy | default(components_to_deploy_default) }}'
-    #global_devtenant_url: '{{ global_devtenant_url | default(global_devtenant_url_default) }}'
-    global_devtenant_url: '{{ global_devtenant_url }}'
-    #global_primary_site_admin_tenant_base_url: '{{ global_primary_site_admin_tenant_base_url | default(global_primary_site_admin_tenant_base_url_default) }}'
-    global_primary_site_admin_tenant_base_url: '{{ global_primary_site_admin_tenant_base_url }}'
+# Ensure global vars are defined and checked
 
-- name: Values being used
+- name: Test that important variables are present and not empty
+  assert:
+    that:
+      - tapisdir != ''
+      - tapisdatadir != ''
+      - components_to_deploy != ''
+      - global_service_tenant_id != ''
+      - global_devtenant_id != ''
+      - global_service_domain != ''
+      - global_primary_site_admin_tenant_base_url != ''
+      - global_service_url != ''
+      - global_devtenant_url != ''
+      - global_vault_url != ''
+
+- name: If associate site (site_type 2), check a few variables 
+  assert:
+    that:
+      - global_service_tenant_id != 'admin'
+      - global_devtenant_id != 'dev'
+      - global_tapis_domain != '{{ global_service_domain }}'
+  when:
+    - site_type == 2
+
+- name: Print important vars
   ansible.builtin.debug:
-    msg: 
-      - 'tapisdir: {{ tapisdir }}'
-      - 'tapisdatadir: {{ tapisdatadir }}'
-      - 'components_to_deploy: {{ components_to_deploy }}'
+    var: "{{ item }}" 
+  with_items:
+    - tapisdir
+    - tapisdatadir
+    - components_to_deploy
+    - global_service_tenant_id
+    - global_devtenant_id
+    - global_service_domain
+    - global_primary_site_admin_tenant_base_url
+    - global_service_url
+    - global_devtenant_url
+    - global_vault_url 
+
+
+# Use set_fact on global vars so the following roles can use them
+
+- name: Set global vars
+  ansible.builtin.set_fact:
+    tapisdir: '{{ tapisdir }}'
+    tapisdatadir: '{{ tapisdatadir }}'
+    components_to_deploy: '{{ components_to_deploy }}'
+    global_service_tenant_id: '{{ global_service_tenant_id }}'
+    global_devtenant_id: '{{ global_devtenant_id }}'
+    global_service_domain: '{{ global_service_domain }}'
+    global_primary_site_admin_tenant_base_url: '{{ global_primary_site_admin_tenant_base_url }}'
+    global_service_url: '{{ global_service_url }}'
+    global_devtenant_url: '{{ global_devtenant_url }}'
+    global_vault_url: '{{ global_vault_url }}'
+

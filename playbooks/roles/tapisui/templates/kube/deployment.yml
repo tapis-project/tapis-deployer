@@ -15,8 +15,6 @@ spec:
         - image: {{ tapisui_image }}
           imagePullPolicy: Always
           name: tapisui
-          ports:
-            - containerPort: 3000
           resources: {}
           tty: true
           env:

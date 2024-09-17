@@ -15,6 +15,7 @@
 - [Globus-Proxy: 1.6.4 to 1.7.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
 - [Workflows: 1.6.0 to 1.7.0 (tapis/workflows-api, tapis/workflows-pipelines, tapis/workflow-engine-streams)](https://github.com/tapis-project/tapis-workflows/blob/release-1.7.0/CHANGELOG.md)
 - [Pods: 1.6.0 to 1.7.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/dev/CHANGELOG.md)
+- [TapisUI: 1.7.0 (tapis/tapisui)](https://github.com/tapis-project/tapis-ui/blob/dev/CHANGELOG.md)
 
 ### Breaking Changes for Deployer Admins
 
