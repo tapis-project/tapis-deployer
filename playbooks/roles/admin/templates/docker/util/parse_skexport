@@ -28,7 +28,7 @@ apps = {
 authenticator = {
     "POSTGRES_PASSWORD": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
     "postgres_password": "DBCREDENTIAL_POSTGRES_POSTGRES_AUTHENTICATOR_AUTHENTICATOR_PASSWORD",
-    "LDAP_ROOTPASS": "USER_ADMIN_AUTHENTICATOR_LDAP_TAPIS_DEV_PASSWORD",
+    "LDAP_ROOTPASS": "USER_{{ global_service_tenant_id | upper }}_AUTHENTICATOR_LDAP_TAPIS_DEV_PASSWORD",
     "service_password": "SERVICEPWD_AUTHENTICATOR_PASSWORD"
     }
                 
@@ -158,7 +158,7 @@ workflows = {"":""}
 # parse args
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', '--comp', help='Tapis component to export env file for', required=True)
-parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible', required=True)
+parser.add_argument('-d', '--dir', help='Tapis data dir as defined in the ansible host vars', required=True)
 parser.add_argument('-v', '--verbose', help='Display debug information', action='store_true')
 args = parser.parse_args()
 
@@ -219,8 +219,12 @@ if component == 'security':
     r = requests.get('http://localhost:8200/v1/auth/approle/role/sk/role-id', headers=headers)
     if args.verbose:
         print(f'getting role-id, have:: {r.json()}')
-    output_dict['TAPIS_SK_VAULT_ROLE_ID'] =  r.json()['data']['role_id']
-    output_dict['VAULT_ROLEID'] =  r.json()['data']['role_id']
+
+    try:
+        output_dict['TAPIS_SK_VAULT_ROLE_ID'] =  r.json()['data']['role_id']
+        output_dict['VAULT_ROLEID'] =  r.json()['data']['role_id']
+    except KeyError as e:
+        print(f'Encountered key error while parsing {r.json()}:: {e}')
 
     if args.verbose:
         print(f'''populating values for security, have:
@@ -246,6 +250,10 @@ with open(infile, 'r') as lines:
                     output_dict[key] = skexport_value
                     if key == 'MONGO_INITDB_ROOT_PASSWORD':
                         output_dict["MONGO_URI"] = f"mongodb://restheart:{skexport_value}@restheart-mongo:27017/?authSource=admin"
+                if "public_key" in key or "private_key" in key or "privatekey" in key:
+                        if args.verbose:
+                            print(f'Key {key} is a signing token. Need to make sure its quoted')
+                        output_dict[key] = f'"{skexport_value}"'
         except KeyError:
             pass
 
@@ -253,7 +261,7 @@ if args.verbose:
     print(f'Completed mapping. Writing {output_dict}')
     
 for key in output_dict:
-    outfile.write(f'{key}="{output_dict[key]}"\n')
+    outfile.write(f'{key}={output_dict[key]}\n')
             
 
 outfile.close() 
