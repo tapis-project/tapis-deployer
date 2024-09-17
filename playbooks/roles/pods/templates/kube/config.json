@@ -47,5 +47,12 @@
         "log_ex": 43200
     },
     "{{ pods_service_site_id }}_tenant_object": {
-    }
+    },
+    "compute_queues": [
+        {
+            "queue_name": "default",
+            "default": true,
+            "description": "running with no Kubernetes extras"
+        }
+    ]
 }

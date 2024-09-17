@@ -2,7 +2,7 @@
     "service_name": "tokens",
     "primary_site_admin_tenant_base_url": "{{ tokens_service_url }}",
     "service_site_id": "{{ tokens_service_site_id }}",
-    "service_tenant_id": "admin",
+    "service_tenant_id": "{{ tokens_service_tenant_id }}",
     "tenants": {{ tokens_tenants|to_json }},
     "log_level": "INFO",
     "use_allservices_password": {{tokens_use_allservices_password|to_json}},

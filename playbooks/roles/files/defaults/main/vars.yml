@@ -4,7 +4,7 @@ files_node_selector: null
 files_rabbitmq_hostname: files-rabbitmq
 files_service_name: files
 files_service_site_id: "{{ global_site_id }}"
-files_service_tenant_id: admin
+files_service_tenant_id: "{{ global_service_tenant_id }}" 
 files_service_url: "{{ global_service_url }}"
 files_replicas: 1
 files_files_debug: true

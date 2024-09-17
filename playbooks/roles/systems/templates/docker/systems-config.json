@@ -1,7 +1,7 @@
 {
-    "service_site_url": "https://admin.develop.tapis.io",
-    "service_tenant_id": "admin",
-    "site_id": "tacc",
+    "service_site_url": "{{ systems_service_url }}",
+    "service_tenant_id": "{{ systems_service_tenant_id }}",
+    "site_id": "{{ systems_service_site_id }}",
     "service_name": "systems",
-    "globus_client_id": "494d441c-99cf-4117-bd78-9b85cb0f12ff"
+    "globus_client_id": "{{ systems_globus_client_id }}"
 }

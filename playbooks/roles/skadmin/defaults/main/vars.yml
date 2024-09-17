@@ -3,7 +3,7 @@
 skadmin_service_name: skadmin
 skadmin_service_site_id: "{{ global_site_id }}"
 skadmin_service_url: "{{ global_service_url }}"
-skadmin_service_tenant_id: admin
+skadmin_service_tenant_id: "{{ global_service_tenant_id }}"
 skadmin_vault_url: "{{ global_vault_url }}"
 skadmin_passwords: true
 skadmin_image_pull_policy: Always

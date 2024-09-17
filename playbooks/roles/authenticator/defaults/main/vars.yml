@@ -1,18 +1,19 @@
 ---
 
-authenticator_service_version: 1.6.2
+authenticator_service_version: 1.7.0
 authenticator_log_level: INFO
 authenticator_show_traceback: false
 authenticator_image_pull_policy: Always
 authenticator_service_url: "{{ global_service_url }}"
 authenticator_service_site_id: "{{ global_site_id }}"
-authenticator_service_tenant_id: admin
+authenticator_service_tenant_id: "{{ global_service_tenant_id }}"
 authenticator_service_name: authenticator
 authenticator_postgres_pvc: authenticator-postgres-vol01
 authenticator_ldap_pvc: authenticator-ldap-vol01
 authenticator_storage_class: "{{ global_storage_class }}"
 authenticator_dev_ldap_tenant_id: dev
 authenticator_service_tenants: ["*"]
+authenticator_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
 
 
 
