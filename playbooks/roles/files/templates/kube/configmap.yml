@@ -5,7 +5,7 @@ data:
 {% if files_log_level == true %}
   LOG_LEVEL: info
 {% endif %}
-  DB_HOST: files-postgres
+  DB_HOST: {{files_postgres_hostname}}
   DB_NAME: tapisfiles
   DB_USERNAME: tapisfiles
   POSTGRES_DB: tapisfiles

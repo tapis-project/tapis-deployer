@@ -4,14 +4,14 @@ echo "files:"
 
 mkdir -p {{ tapisdatadir }}/files
 mkdir -p {{ tapisdatadir }}/files/rabbitmq
-mkdir -p {{ tapisdatadir }}/files/postgres
+mkdir -p {{ tapisdatadir }}/files/postgres_16
 mkdir -p {{ tapisdatadir }}/files/minio
 mkdir -p {{ tapisdatadir }}/files/irods
 
 kubectl apply -f configmap.yml
 kubectl apply -f files-config.yml
 
-pushd ./postgres
+pushd ./postgres_16
 ./burnup
 popd
 

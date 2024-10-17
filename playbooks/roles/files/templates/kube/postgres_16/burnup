@@ -1,0 +1,14 @@
+#!/bin/bash
+
+kubectl apply -f service.yml 
+kubectl apply -f pg-16-pvc.yml 
+kubectl apply -f deploy.yml 
+kubectl wait --for=condition=available deploy/files-postgres-16
+
+# give postgres a moment to come up
+sleep 2
+
+# Initialize the db (this needs more thought - be sure to update the variables to point to the right host)
+kubectl create configmap files-init-db-configmap --from-file files-init-db-sh
+kubectl create -f files-init-db.yml
+kubectl wait --timeout=120s --for=condition=complete job/files-init-db
