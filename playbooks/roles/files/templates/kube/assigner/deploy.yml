@@ -3,19 +3,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: files-workers
-  name: files-workers
+    app: files-assigner
+  name: files-assigner
 spec:
-  replicas: {{files_worker_replicas}}
+  replicas: 1
   selector:
     matchLabels:
-      app: files-workers
+      app: files-assigner
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: files-workers
+        app: files-assigner
     spec:
 {% if files_node_selector is not none %}
       nodeSelector:
@@ -70,9 +70,9 @@ spec:
                   key: globus_client_id
 {% endif %}
 
-          image: {{ files_workers_image }}
+          image: {{ files_assigner_image }}
           imagePullPolicy: Always
-          name: files-workers
+          name: files-assigner
           stdin: true
           tty: true
       restartPolicy: Always

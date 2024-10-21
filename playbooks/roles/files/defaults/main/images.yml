@@ -1,5 +1,6 @@
 files_api_image: tapis/tapis-files:1.7.0
 files_workers_image: tapis/tapis-files-workers:1.7.0
+files_assigner_image: tapis/tapis-files-assigner:1.7.0
 files_postgres_image: postgres:11
 files_migrations_image: postgres:11
 files_minio_image: minio/minio:RELEASE.2024-09-09T16-59-28Z

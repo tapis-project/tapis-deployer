@@ -7,7 +7,8 @@ files_service_name: files
 files_service_site_id: "{{ global_site_id }}"
 files_service_tenant_id: "{{ global_service_tenant_id }}" 
 files_service_url: "{{ global_service_url }}"
-files_replicas: 1
+files_worker_replicas: 2
+files_api_replicas: 1
 files_files_debug: true
 files_site_id: true
 files_log_level: info

@@ -6,7 +6,7 @@ metadata:
     app: files-api
   name:  files-api
 spec:
-  replicas: {{files_replicas}}
+  replicas: {{files_api_replicas}}
   selector:
     matchLabels:
       app: files-api
