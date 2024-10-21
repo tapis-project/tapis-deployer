@@ -82,11 +82,11 @@ if [[ -z $PG_HOST ]]; then
 fi
 
 if [[ -z $PG_USER ]]; then 
-  PG_USER=tapis_files
+  PG_USER=tapisfiles
 fi
 
 if [[ -z $PG_DATABASE ]]; then 
-  PG_DATABASE=tapisfilesdb
+  PG_DATABASE=tapisfiles
 fi
 
 if [[ -z $PG_PORT ]]; then 
