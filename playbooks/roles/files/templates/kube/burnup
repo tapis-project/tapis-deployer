@@ -23,6 +23,10 @@ pushd ./rabbitmq
 ./burnup
 popd
 
+pushd ./assigner
+./burnup
+popd
+
 pushd ./api
 ./burnup
 popd

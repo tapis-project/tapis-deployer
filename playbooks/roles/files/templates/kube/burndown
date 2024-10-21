@@ -2,6 +2,10 @@
 
 echo "files:"
 
+pushd ./assigner
+./burdown
+popd
+
 pushd ./worker
 ./burndown
 popd
