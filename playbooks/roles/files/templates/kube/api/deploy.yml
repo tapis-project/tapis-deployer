@@ -78,6 +78,11 @@ spec:
             configMapKeyRef:
               name: files-config
               key: globus_client_id
+ 
+        - name: TAPIS_DB_CONNECTION_POOL_SIZE
+          value: "10"
+        - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
+          value: "5"
 {% endif %}
 
       hostname: files-api

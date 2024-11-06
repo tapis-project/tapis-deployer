@@ -16,4 +16,5 @@ files_storage_class: "{{ global_storage_class }}"
 files_rabbitmq_pvc: files-rabbitmq-data
 files_postgres_pvc: files-pgdata
 files_node_name: true
+files_use_topology_spread_constraints: true
 

@@ -17,6 +17,16 @@ spec:
       labels:
         app: files-workers
     spec:
+{% if files_use_topology_spread_constraints %}
+        topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app: files-workers
+{% endif %}
+
 {% if files_node_selector is not none %}
       nodeSelector:
         exempt: "yes"
@@ -69,6 +79,14 @@ spec:
                   name: files-config
                   key: globus_client_id
 {% endif %}
+            - name: CHILD_THREAD_POOL_SIZE
+              value: "20"
+            - name: PARENT_THREAD_POOL_SIZE
+              value: "10"
+            - name: TAPIS_DB_CONNECTION_POOL_SIZE
+              value: "10"
+            - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
+              value: "5"
 
           image: {{ files_workers_image }}
           imagePullPolicy: Always
