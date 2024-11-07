@@ -1,3 +1,4 @@
-vault_image: vault:1.8.3
+# vault_image: vault:1.8.3
+vault_image: openbao/openbao:2.0.2
 vault_alpine_image: alpine:latest
 vault_util_image: tapis/ubutil2204:1.7.0
