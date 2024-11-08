@@ -7,3 +7,4 @@ data:
   "service_tenant_id": "{{jobs_service_tenant_id}}"
   "site_id": "{{jobs_service_site_id}}"
   "service_name": "{{jobs_service_name}}"
+  "tapis_auditing_enabled": "{{jobs_auditing_enabled}}"
