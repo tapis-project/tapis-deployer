@@ -9,7 +9,7 @@
 
 ### Service Updates
 
-- [Vault: 1.8.3 to 1.18.1 (hashicorp/vault:1.18)](https://github.com/hashicorp/vault/releases/tag/v1.16.3)
+- [Vault: 1.8.3 to 1.16.3 (hashicorp/vault:1.18)](https://github.com/hashicorp/vault/releases/tag/v1.16.3)
 
 
 ## 1.7.0 
