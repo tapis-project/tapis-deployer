@@ -4,12 +4,12 @@
 
 ### Breaking Changes for Deployer Admins
 
-- Note that we updated the Hashicorp Vault image by many release steps (1.8.3 to 1.18.1). While this did not cause issues in our testing, please be sure you have a good Vault backup before proceeding with the updagrade.
+- Note that we updated the Hashicorp Vault image by many release steps (1.8.3 to 1.16.3). While this did not cause issues in our testing, please be sure you have a good Vault backup before proceeding with the updagrade.
 - 
 
 ### Service Updates
 
-- [Vault: 1.8.3 to 1.18.1 (hashicorp/vault:1.18)](https://github.com/hashicorp/vault/releases/tag/v1.18.1)
+- [Vault: 1.8.3 to 1.18.1 (hashicorp/vault:1.18)](https://github.com/hashicorp/vault/releases/tag/v1.16.3)
 
 
 ## 1.7.0 
