@@ -1,0 +1,4 @@
+ml_hub_service_url: "{{ global_service_url }}"
+ml_hub_service_tenant_id: "{{ global_service_tenant_id }}"
+ml_hub_service_site_id: "{{ global_site_id }}"
+ml_hub_service_name: ml_hub
