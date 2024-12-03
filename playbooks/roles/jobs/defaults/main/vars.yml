@@ -10,4 +10,4 @@ jobs_rabbitmq_pvc: jobs-rabbitmq-vol01
 jobs_node_selector: null
 jobs_node_name: true
 jobs_port: 8082
-jobs_auditing_enabled: "true"
+jobs_auditing_enabled: "false"
