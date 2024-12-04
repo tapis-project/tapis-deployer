@@ -39,7 +39,7 @@ spec:
               configMapKeyRef:
                 name: systems-config
                 key: service_site_url
-{% if systems_globus_client_id is defined %}
+{% if systems_globus_client_id is not none %}
           - name: TAPIS_GLOBUS_CLIENT_ID
             valueFrom:
               configMapKeyRef:
@@ -56,7 +56,7 @@ spec:
               secretKeyRef:
                 name: tapis-systems-secrets
                 key: service-password
-  {% if systems_tms_enabled is defined %}
+{% if systems_tms_enabled is not none %}
           - name: TAPIS_TMS_ENABLED
             value: {{ systems_tms_enabled }}
           - name: TAPIS_TMS_SERVER_URL
@@ -67,4 +67,4 @@ spec:
             value: {{ systems_tms_client_id }}
           - name: TAPIS_TMS_CLIENT_SECRET
             value: {{ systems_tms_client_secret }}
-  {% endif %}
+{% endif %}
