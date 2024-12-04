@@ -78,7 +78,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z $PG_HOST ]]; then 
-  PG_HOST=files-postgres
+  PG_HOST=files-postgres-16
 fi
 
 if [[ -z $PG_USER ]]; then 

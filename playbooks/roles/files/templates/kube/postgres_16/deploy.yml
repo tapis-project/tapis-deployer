@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: files-postgres-16
+  name: files-postgres-16
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: files-postgres-16
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: files-postgres-16
+    spec:
+      containers:
+      - name: files-postgres-16
+        image: postgres:16
+        ports:
+          - containerPort: 5432
+        resources:
+          requests:
+            cpu: "1000m"
+          limits:
+            cpu: "1000m"
+        env:
+        - name: PGDATA
+          value: "/pgdata/data"
+        - name: TOKENS_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: files-config
+              key: service_site_url
+        - name: TENANTS_SERVICE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: files-config
+              key: service_site_url
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-files-secrets
+              key: postgres-password
+        envFrom:
+        - configMapRef:
+            name: files-environment-vars
+        volumeMounts:
+        - mountPath: /pgdata
+          name: pg-16-data
+          subPath: postgres
+      hostname: tapisfile-postgres-16
+      restartPolicy: Always
+      volumes:
+      - name: pg-16-data
+        persistentVolumeClaim:
+          claimName: files-pg-16-data

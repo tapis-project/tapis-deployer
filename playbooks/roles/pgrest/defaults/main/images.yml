@@ -1,3 +1,3 @@
-pgrest_api_image: tapis/pgrest-api:1.7.0
+pgrest_api_image: tapis/pgrest-api:1.8.0
 pgrest_postgres_image: postgres:13
-pgrest_util_image: tapis/ubutil2204:1.7.0
+pgrest_util_image: tapis/ubutil2204:1.8.0

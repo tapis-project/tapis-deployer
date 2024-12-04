@@ -33,7 +33,7 @@ spec:
             secretKeyRef:
               name: tapis-jobs-secrets
               key: service-password
-        - name: TAPIS_DB_CONNECTION_POOS_SIZE
+        - name: TAPIS_DB_CONNECTION_POOL_SIZE
           value: "2"
         - name: TAPIS_DB_USER
           value: "tapis"

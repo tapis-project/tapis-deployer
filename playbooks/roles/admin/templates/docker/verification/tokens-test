@@ -4,8 +4,8 @@
 s=`grep SERVICEPWD_TENANTS_PASSWORD {{ tapisdatadir }}/skadmin/env | awk -F= '{print $2}' | tr -d " \t\n\r"`
 
 # tokens
-source functions
-gettoken
+# source functions
+# gettoken
 # should return 200 and JSON with token
 
 curl -u "tenants:$s" -H "Content-type: application/json" -d '{"token_tenant_id": "admin", "account_type": "service", "token_username": "tenants", "target_site_id": "{{ admin_service_site_id }}"}'  {{ admin_devtenant_url }}/v3/tokens

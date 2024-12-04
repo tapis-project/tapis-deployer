@@ -2,6 +2,10 @@
 
 echo "files:"
 
+pushd ./assigner
+./burdown
+popd
+
 pushd ./worker
 ./burndown
 popd
@@ -18,7 +22,12 @@ pushd ./pgadmin
 ./burndown
 popd
 
+# this burndown is used only for the upgrade.  Will be removed in a future version
 pushd ./postgres
+./burndown
+popd
+
+pushd ./postgres_16
 ./burndown
 popd
 

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: files-migrate-pg-11-to-16-vars-configmap
+data:
+  "PG_11_POD": "files-postgres"
+  "PG_11_HOST": "files-postgres"
+  "PG_11_ADMIN_USER": "tapisfiles"
+#  "PG_11_ADMIN_USER_PASSWORD": - defined in job yml file
+  "PG_11_TAPIS_USER": "tapisfiles"
+#  "PG_11_TAPIS_USER_PASSWORD": - defined in job yml file
+  "PG_11_PORT": "5432"
+  "PG_11_DATABASE": "tapisfiles"
+  "PG_11_SCHEMA": "public"
+  "PG_16_POD": "files-postgres-16"
+  "PG_16_HOST": "files-postgres-16"
+  "PG_16_ADMIN_USER": "tapisfiles" 
+#  "PG_16_ADMIN_USER_PASSWORD": - defined in job yml file
+  "PG_16_TAPIS_USER": "tapisfiles"
+#  "PG_16_TAPIS_USER_PASSWORD": - defined in job yml file
+  "PG_16_PORT": "5432"
+  "PG_16_DATABASE": "tapisfiles" 
+  "PG_16_SCHEMA": "public" 
+

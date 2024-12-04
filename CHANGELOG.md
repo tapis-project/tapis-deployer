@@ -1,5 +1,29 @@
 # Changelog 
 
+## 1.8.0
+
+### Breaking Changes for Deployer Admins
+
+- Note that we updated the Hashicorp Vault image by many release steps (1.8.3 to 1.16.3). While this did not cause issues in our testing, please be sure you have a good Vault backup before proceeding with the updagrade.
+
+### Service Updates
+
+- [Apps: 1.7.0 to 1.8.0 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/dev/CHANGELOG.md)
+- [Abaco/Actors: 1.7.0 to 1.8.0 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md)
+- [Authenticator: 1.7.0 to 1.8.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
+- [Files: 1.7.0 to 1.8.0 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Globus-Proxy: 1.7.0 to 1.8.0 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+- [Jobs: 1.7.0 to 1.8.0 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Meta: 1.7.0 to 1.8.0 (tapis/metaapi, tapis-meta-rh-server)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
+- [Notifications: 1.7.0 to 1.8.0 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+- [Pods: 1.7.0 to 1.8.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/dev/CHANGELOG.md)
+- [Security: 1.7.0 to 1.8.0 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+- [Systems: 1.7.0 to 1.8.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Workflows: 1.7.0 to 1.8.0 (tapis/workflows-api, tapis/workflows-pipelines, tapis/workflow-engine-streams)](https://github.com/tapis-project/tapis-workflows/blob/release-1.7.0/CHANGELOG.md)
+- [TapisUI: 1.7.0 to 1.8.0 (tapis/tapisui)](https://github.com/tapis-project/tapis-ui/blob/dev/CHANGELOG.md)
+- [Vault: 1.8.3 to 1.16.3 (hashicorp/vault:1.16.3)](https://github.com/hashicorp/vault/releases/tag/v1.16.3)
+
+
 ## 1.7.0 
 
 ### Service Updates
