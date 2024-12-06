@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: files-postgres-16
-        image: postgres:16
+        image: {{ files_postgres16_image }}
         ports:
           - containerPort: 5432
         resources:
@@ -57,4 +57,4 @@ spec:
       volumes:
       - name: pg-16-data
         persistentVolumeClaim:
-          claimName: files-pg-16-data
+          claimName: {{ files_postgres16_pvc }}

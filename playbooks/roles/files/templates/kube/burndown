@@ -3,7 +3,7 @@
 echo "files:"
 
 pushd ./assigner
-./burdown
+./burndown
 popd
 
 pushd ./worker

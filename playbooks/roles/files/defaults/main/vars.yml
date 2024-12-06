@@ -15,6 +15,7 @@ files_log_level: info
 files_storage_class: "{{ global_storage_class }}"
 files_rabbitmq_pvc: files-rabbitmq-data
 files_postgres_pvc: files-pgdata
+files_postgres16_pvc: files-pg-16-data
 files_node_name: true
 files_use_topology_spread_constraints: true
 files_audit_enabled: false
