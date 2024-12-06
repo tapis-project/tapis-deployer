@@ -58,7 +58,7 @@ spec:
                 key: service-password
 {% if systems_tms_enabled is not none %}
           - name: TAPIS_TMS_ENABLED
-            value: {{ systems_tms_enabled }}
+            value: "{{ systems_tms_enabled }}"
           - name: TAPIS_TMS_SERVER_URL
             value: {{ systems_tms_server_url }}
           - name: TAPIS_TMS_TENANT

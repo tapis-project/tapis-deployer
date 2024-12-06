@@ -18,15 +18,14 @@ spec:
         app: files-workers
     spec:
 {% if files_use_topology_spread_constraints %}
-        topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: files-workers
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: files-workers
 {% endif %}
-
 {% if files_node_selector is not none %}
       nodeSelector:
         exempt: "yes"
@@ -80,7 +79,7 @@ spec:
                   key: globus_client_id
 {% endif %}
             - name: TAPIS_AUDIT_ENABLED
-              value: {{ files_audit_enabled }}
+              value: "{{ files_audit_enabled }}"
             - name: CHILD_THREAD_POOL_SIZE
               value: "20"
             - name: PARENT_THREAD_POOL_SIZE
@@ -89,7 +88,6 @@ spec:
               value: "10"
             - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
               value: "5"
-
           image: {{ files_workers_image }}
           imagePullPolicy: Always
           name: files-workers

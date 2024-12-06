@@ -4,11 +4,11 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: pg-16-data
-  name: files-pg-16-data
+  name: {{ files_postgres16_pvc }}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: rbd-new
+  storageClassName: {{ files_storage_class }}
   resources:
     requests:
       storage: 10G
