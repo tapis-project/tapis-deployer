@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: files-migrate-pg-11-to-16
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: files-migrate-pg-11-to-16
+        image: postgres:16
+        imagePullPolicy: Always
+        command: ["/tmp/files-migrate-pg-11-to-16-sh-configmap", "migrate"]
+        volumeMounts:
+        - name: files-migrate-pg-11-to-16-vol
+          mountPath: /tmp
+        envFrom:
+        - configMapRef:
+            name: files-environment-vars
+        - configMapRef:
+            name: files-migrate-pg-11-to-16-vars-configmap
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-files-secrets
+              key: postgres-password
+        - name: PG_11_ADMIN_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-files-secrets
+              key: postgres-password
+        - name: PG_11_TAPIS_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-files-secrets
+              key: postgres-password
+        - name: PG_16_ADMIN_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-files-secrets
+              key: postgres-password
+        - name: PG_16_TAPIS_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-files-secrets
+              key: postgres-password
+      volumes:
+      - name: files-migrate-pg-11-to-16-vol
+        configMap:
+          name: files-migrate-pg-11-to-16-sh-configmap
+          defaultMode: 0777
+  backoffLimit: 4
+

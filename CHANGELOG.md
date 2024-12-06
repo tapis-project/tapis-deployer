@@ -1,5 +1,55 @@
 # Changelog 
 
+## 1.8.0
+
+### Breaking Changes for Deployer Admins
+
+- Note that we updated the Hashicorp Vault image by many release steps (1.8.3 to 1.16.3). While this did not cause issues in our testing, please be sure you have a good Vault backup before proceeding with the updagrade.
+
+- The files postgres data must be migrated to the new postgres 16 container before deploying 1.8.0.
+  The new version will have a burnup script for a files-postgres-16 container, and
+  it uses a new (empty) pvc.  Before bringing all files services up, you must 
+  bring up the new files-postgres-16 container, and migrate the postgres data
+  from the files-postgres container to the files-postgres-16 container.  The best
+  place to get information about this is the postgres docs.  This could be done 
+  manually (using dbdump/dbdumpall).  One thing to note is that passwords for
+  postgres users will not be migrated and must be reset due to changes in the
+  way that postgres hashes the passwords, so be sure to find the db user passwords
+  before you get started.  This could be scripted and an example of how that might 
+  be done is included.  Here is the information on the examples:
+  
+  -  Backup your current database in case something goes wrong.
+  -  After deployment, burn down all files pods EXCEPT files-postgres. 
+  -  Verify that the scripts look correct for your environment.  Check the variables 
+     are defined in postgres_16/migrate/files-migrate-pg-11-to-16-vars-configmap.yml
+  -  In postgres_16 directory, cd into migrate, and run migrate.sh.
+  -  Check table counts after the job completes (these will be located in stdout for 
+     the script).  Check for errors, etc.
+  -  cd into the files/postgres directory (postgres - not postgres_16), and burndown 
+     the old postgres.
+  -  Once the data is successfully migrated and verified, burndown any files services 
+     that are currently running and restart.  To do this, cd into the files directory 
+     and run the burndown and burnup scripts.
+
+
+### Service Updates
+
+- [Apps: 1.7.0 to 1.8.0 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/dev/CHANGELOG.md)
+- [Abaco/Actors: 1.7.0 to 1.8.0 (abaco/core-v3)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md)
+- [Authenticator: 1.7.0 to 1.8.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
+- [Files: 1.7.0 to 1.8.0 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Globus-Proxy: 1.7.0 to 1.8.0 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
+- [Jobs: 1.7.0 to 1.8.0 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Meta: 1.7.0 to 1.8.0 (tapis/metaapi, tapis-meta-rh-server)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
+- [Notifications: 1.7.0 to 1.8.0 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+- [Pods: 1.7.0 to 1.8.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/dev/CHANGELOG.md)
+- [Security: 1.7.0 to 1.8.0 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+- [Systems: 1.7.0 to 1.8.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Workflows: 1.7.0 to 1.8.0 (tapis/workflows-api, tapis/workflows-pipelines, tapis/workflow-engine-streams)](https://github.com/tapis-project/tapis-workflows/blob/release-1.7.0/CHANGELOG.md)
+- [TapisUI: 1.7.0 to 1.8.0 (tapis/tapisui)](https://github.com/tapis-project/tapis-ui/blob/dev/CHANGELOG.md)
+- [Vault: 1.8.3 to 1.16.3 (hashicorp/vault:1.16.3)](https://github.com/hashicorp/vault/releases/tag/v1.16.3)
+
+
 ## 1.7.0 
 
 ### Service Updates

@@ -83,6 +83,8 @@ spec:
           value: "/v3/jobs"
         - name: TAPIS_REQUEST_LOGGING_INGORE_SUFFIXES
           value: "/healthcheck;/ready;/hello"
+        - name: TAPIS_AUDITING_ENABLED
+          value: "{{ jobs_auditing_enabled }}"
 #        - name: TAPIS_LOG_DIRECTORY
 #          value: "/opt/tomcat/logs"
         - name: CATALINA_OPTS 

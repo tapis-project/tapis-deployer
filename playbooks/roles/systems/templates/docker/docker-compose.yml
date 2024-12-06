@@ -21,10 +21,10 @@ services:
         depends_on:
             systems-migrations:
                 condition: service_completed_successfully
-    {% if systems_port is not none %}
+{% if systems_port is not none %}
     ports: 
             - "{{systems_port}}:8080"
-    {% endif %}
+{% endif %}
         
     systems-postgres:
         container_name: systems-postgres

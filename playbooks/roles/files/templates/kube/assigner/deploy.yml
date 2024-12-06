@@ -1,0 +1,78 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: files-assigner
+  name: files-assigner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: files-assigner
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: files-assigner
+    spec:
+{% if files_node_selector is not none %}
+      nodeSelector:
+        exempt: "yes"
+{% endif %}
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: files-environment-vars
+          env:
+{% if files_node_name == true %}
+            - name: TAPIS_LOCAL_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+{% endif %}
+            - name: TOKENS_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: files-config
+                  key: service_site_url
+            - name: TENANTS_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: files-config
+                  key: service_site_url
+            - name: TAPIS_SITE_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: files-config
+                  key: site_id
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-files-secrets
+                  key: rabbitmq-password
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-files-secrets
+                  key: postgres-password
+            - name: SERVICE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tapis-files-secrets
+                  key: service-password
+{% if systems_globus_client_id is defined %}
+            - name: TAPIS_GLOBUS_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: files-config
+                  key: globus_client_id
+{% endif %}
+
+          image: {{ files_assigner_image }}
+          imagePullPolicy: Always
+          name: files-assigner
+          stdin: true
+          tty: true
+      restartPolicy: Always

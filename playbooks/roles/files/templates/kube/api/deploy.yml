@@ -6,7 +6,7 @@ metadata:
     app: files-api
   name:  files-api
 spec:
-  replicas: {{files_replicas}}
+  replicas: {{files_api_replicas}}
   selector:
     matchLabels:
       app: files-api
@@ -78,6 +78,12 @@ spec:
             configMapKeyRef:
               name: files-config
               key: globus_client_id
+        - name: TAPIS_AUDIT_ENABLED
+          value: "{{ files_audit_enabled }}"
+        - name: TAPIS_DB_CONNECTION_POOL_SIZE
+          value: "10"
+        - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
+          value: "5"
 {% endif %}
 
       hostname: files-api

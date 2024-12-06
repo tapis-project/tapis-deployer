@@ -1,10 +1,12 @@
-files_api_image: tapis/tapis-files:1.7.0
-files_workers_image: tapis/tapis-files-workers:1.7.0
+files_api_image: tapis/tapis-files:1.8.0
+files_workers_image: tapis/tapis-files-workers:1.8.0
+files_assigner_image: tapis/tapis-files-assigner:1.8.0
 files_postgres_image: postgres:11
+files_postgres16_image: postgres:16
 files_migrations_image: postgres:11
 files_minio_image: minio/minio:RELEASE.2024-09-09T16-59-28Z
 files_irods_provider_postgres_image: mjstealey/irods-provider-postgres:4.2.4
 files_pgadmin_image: dpage/pgadmin4:6.20
 files_rabbitmq_image: rabbitmq:3.8.11-management
 files_rabbitmq_management_image: rabbitmq:3-management-alpine
-files_util_image: tapis/ubutil2204:1.7.0
+files_util_image: tapis/ubutil2204:1.8.0
