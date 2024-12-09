@@ -1,5 +1,5 @@
 services:
-  hub:
+  ml-hub-models:
     # image: tapis/models-api:dev
     image: {{ ml_hub_models_api_image }}
     # build:
@@ -16,7 +16,7 @@ services:
     # volumes:
       # - ./hub:/home/tapis        # for live debugging w/ Jupyter
 
-  inference:
+  ml-hub-inference:
     # image: tapis/inference-api:dev
     image: {{ ml_hub_inference_api_image }}
     # build:

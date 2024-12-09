@@ -1,5 +1,8 @@
 ---
 
+- name: ml-hub vars
+  include_vars:
+    file: ../defaults/images.yml
 
 - name: ml-hub tree
   include_role:
