@@ -48,9 +48,6 @@ services:
       - {{ tapisdatadir }}/files/env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-    profiles:
-      - migration
-    command: echo 'this is a test of the emergency broadcast system'
 
 
   files-migrations:
@@ -92,6 +89,24 @@ services:
     depends_on:
       files-api: 
         condition: service_started
+
+  files-assigner:
+    container_name: files-assigner
+    image: {{ files_assigner_image }} 
+    networks:
+      - tapis
+    env_file:
+      - {{ tapisdatadir }}/files/env
+    environment:
+{% if files_node_name == true %}
+      - TAPIS_LOCAL_NODE_NAME={{ global_tapis_domain }}
+{% endif %}
+      - TOKENS_SERVICE_URL={{ files_service_url }}
+      - TENANTS_SERVICE_URL={{ files_service_url }}
+      - TAPIS_SITE_ID{{ files_service_site_id }}
+{% if systems_globus_client_id is defined %}
+      - TAPIS_GLOBUS_CLIENT_ID={{ systems_globus_client_id }}
+{% endif %}
 
   files-api:
     container_name: files-api
