@@ -10,5 +10,11 @@ mkdir -p {{ tapisdatadir }}/files/irods
 
 python3 ../admin/util/parse_skexport -c files -d {{ tapisdatadir }}
 
-docker compose up -d
+if [ "$1" = "--migrate" ]; then
+    echo beginning migration from {{ files_migrations_image }} to {{ files_postgres_image }}
+    docker compose --profile migration up -d
+else
+    docker compose up -d
+fi
+
 
