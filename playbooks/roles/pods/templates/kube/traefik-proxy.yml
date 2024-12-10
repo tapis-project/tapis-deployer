@@ -17,8 +17,8 @@ spec:
         image: {{ pods_traefik_image }}
         resources:
           requests:
-            cpu: "500m"
-            memory: "1G"
+            cpu: "400m"
+            memory: "600M"
           limits:
             cpu: "3"
             memory: "3G"
@@ -28,12 +28,17 @@ spec:
           - name: dash
             containerPort: 8080
         args:
-        - --tracing=false
+        ## This is used as the static Traefik config so we don't need extra files
+        - --api.true
+        #- --api.insecure=true
         - --api.dashboard=true
-        - --api.insecure=true
+
         - --accesslog=true
-        - --log.level=INFO # INFO | DEBUG
-        - --certificatesresolvers.tlsletsencrypt.acme.tlschallenge=true
+        - --tracing=false
+        - --log.level=TRACE # TRACE | DEBUG | INFO
+        
+        ## Certificate resolver
+        - --certificatesresolvers.tlsletsencrypt.acme.tlschallenge=true                                                                                        
         - --certificatesresolvers.tlsletsencrypt.acme.storage=/etc/traefik3/acme.json
         # To use letsencrypts staging server, to avoid rate limiting when testing
         #- --certificatesresolvers.tlsletsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
@@ -43,19 +48,23 @@ spec:
         #- --certificatesresolvers.tlsletsencrypt.acme.eab.kid=fromwebsite
         #- --certificatesresolvers.tlsletsencrypt.acme.eab.hmacencoded=fromwebsite
 
+        ## Entrypoints
+        - --entrypoints.web.address=:80
+        - --entrypoints.web.asdefault=true
+        ## timeout definitions, ensure haproxy and nginx are also >= to these values.
+        - --entrypoints.web.transport.respondingtimeouts.readtimeout=3600
+        - --entrypoints.web.transport.respondingtimeouts.idletimeout=3600
+        - --entrypoints.web.transport.respondingtimeouts.writetimeout=3600
+
+        ## Define providers for the dynamic config
         - --providers.http=true
         - --providers.http.endpoint=http://pods-api:8000/traefik-config
         volumeMounts:
-        - name: pods-traefik-conf
-          mountPath: /etc/traefik2/
         - name: acme-storage
           mountPath: /etc/traefik3/acme.json
           subPath: acme.json
 
       volumes:
-      - name: pods-traefik-conf
-        configMap:
-          name: pods-traefik-conf
       - name: acme-storage
         persistentVolumeClaim:
           claimName: pods-traefik-vol01

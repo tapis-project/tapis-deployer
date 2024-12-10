@@ -10,7 +10,7 @@ data:
         listen 80;
         server_name abaco.org;
         charset utf-8;
-        resolver 10.96.0.10;
+        resolver coredns.kube-system.svc.cluster.local valid=10s;
 
         access_log /dev/stdout;
     

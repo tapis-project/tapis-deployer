@@ -15,6 +15,7 @@ spec:
       - name: pods-postgres
         image: {{ pods_postgres_image }}
         imagePullPolicy: Always
+        args: ["-c", "max_connections=500"]
         resources:
           requests:
             cpu: "500m"
