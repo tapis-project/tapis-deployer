@@ -1,0 +1,30 @@
+#!/bin/bash
+
+echo "This is an example of a migration script. Edit and understand what it does before using."
+exit 1
+
+export ADMIN_USER=tapisfiles
+export DATABASE_NAME=tapisfiles
+export ADMIN_USER_PASSWORD=
+export PG_11_CONTAINER=files-postgres-11
+export PG_16_CONTAINER=files-postgres
+
+
+
+docker exec -i ${PG_11_CONTAINER} pg_dumpall --no-password --no-role-passwords --username ${ADMIN_USER} -l ${DATABASE_NAME} | docker exec -i ${PG_16_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME}
+docker exec -i ${PG_16_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "alter user ${ADMIN_USER} with password '${ADMIN_USER_PASSWORD}'"
+
+echo old::
+docker exec -i ${PG_11_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  flyway_schema_history"
+docker exec -i ${PG_11_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  transfer_tasks"
+docker exec -i ${PG_11_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  transfer_tasks_child"
+docker exec -i ${PG_11_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  transfer_tasks_parent"
+docker exec -i ${PG_11_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  files_postits"
+
+
+echo new::
+docker exec -i ${PG_16_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  flyway_schema_history"
+docker exec -i ${PG_16_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  transfer_tasks"
+docker exec -i ${PG_16_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  transfer_tasks_child"
+docker exec -i ${PG_16_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  transfer_tasks_parent"
+docker exec -i ${PG_16_CONTAINER} psql --username ${ADMIN_USER} ${DATABASE_NAME} -c "select count (*) from  files_postits"

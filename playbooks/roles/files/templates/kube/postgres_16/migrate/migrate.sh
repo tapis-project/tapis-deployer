@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "This is an example of a migration script. Edit and understand what it does before using."
+exit 1
+
 #setup migration configmap, and get some things out of it
 kubectl create -f files-migrate-pg-11-to-16-vars-configmap.yml
 POSTGRES_11_POD=$(kubectl get configmap files-migrate-pg-11-to-16-vars-configmap -o jsonpath="{.data.PG_11_POD}")
