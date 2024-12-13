@@ -7,6 +7,9 @@ tapisdatadir: '$HOME/tmp/{{ inventory_hostname }}-data'
 global_tapis_domain: quick.example.com
 global_site_id: tapisquickstart-docker1
 
+# Turn auditing off by default
+global_auditing_enabled: 'false'
+
 # global
 site_type: 1
 

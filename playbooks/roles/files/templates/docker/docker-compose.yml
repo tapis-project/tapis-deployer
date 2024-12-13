@@ -86,6 +86,7 @@ services:
       - RABBITMQ_HOSTNAME=files-rabbitmq
       - RABBITMQ_USERNAME=tapisfiles
       - RABBITMQ_VHOST=tapisfiles
+      - TAPIS_AUDITING_ENABLED={{ global_auditing_enabled }}
     depends_on:
       files-api: 
         condition: service_started
@@ -132,6 +133,7 @@ services:
       - RABBITMQ_HOSTNAME=files-rabbitmq
       - RABBITMQ_USERNAME=tapisfiles
       - RABBITMQ_VHOST=tapisfiles
+      - TAPIS_AUDITING_ENABLED={{ global_auditing_enabled }}
     depends_on:
       files-postgres:
         condition: service_healthy

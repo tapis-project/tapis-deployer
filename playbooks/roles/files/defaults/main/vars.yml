@@ -18,5 +18,3 @@ files_postgres_pvc: files-pgdata
 files_postgres16_pvc: files-pg-16-data
 files_node_name: true
 files_use_topology_spread_constraints: true
-files_audit_enabled: false
-

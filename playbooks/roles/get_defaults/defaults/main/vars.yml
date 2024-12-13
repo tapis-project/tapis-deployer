@@ -25,6 +25,8 @@ global_primary_site_admin_tenant_base_url: 'https://{{ global_service_tenant_id 
 global_service_url: '{{ global_primary_site_admin_tenant_base_url }}'
 global_devtenant_url: 'https://{{ global_devtenant_id }}.{{ global_tapis_domain }}'
 
+# Turn auditing off by default
+global_auditing_enabled: 'false'
 
 ### relatively safe defaults below
 
