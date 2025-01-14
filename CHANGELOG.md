@@ -1,5 +1,28 @@
 # Changelog 
 
+## 1.8.1
+
+Tapis 1.8.1 contains an update to Java 21 and improved handling of expired service JWTs for all Java based services.
+
+### Service Updates
+
+- [Security: 1.8.0 to 1.8.1 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+  - ???.
+- [Systems: 1.8.0 to 1.8.1 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+  - Support for Trust Manager System (TMS) ssh keys.
+  - ???.
+- [Apps: 1.8.0 to 1.8.1 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/dev/CHANGELOG.md)
+  - Bug fix for update of *maxMinutes* using *putApp* endpoint.
+  - ???.
+- [Jobs: 1.8.0 to 1.8.1 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+  - Add support for scheduler profile hidden option PARTITION.
+  - Add readycheck endpoint.
+  - Mark endpoints *ready* and *hello* as deprecated.
+- [Files: 1.6.0 to 1.6.1 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+  - ???.
+- [Notifications: 1.8.0 to 1.8.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+
+
 ## 1.8.0
 
 ### Breaking Changes for Deployer Admins
@@ -138,7 +161,6 @@ Tapis 1.6.1 contains a number of new features, enhancements and bug fixes.  In a
   - Refactored codebase to improve reliability.
 - [Notifications: 1.6.0 to 1.6.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
 - [Globus-Proxy: 1.6.0 to 1.6.1 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
-
 
 
 ## 1.6.0 
