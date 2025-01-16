@@ -56,7 +56,6 @@ spec:
               secretKeyRef:
                 name: tapis-systems-secrets
                 key: service-password
-{% if systems_tms_enabled is not none %}
           - name: TAPIS_TMS_ENABLED
             value: "{{ systems_tms_enabled }}"
           - name: TAPIS_TMS_SERVER_URL
@@ -66,5 +65,7 @@ spec:
           - name: TAPIS_TMS_CLIENT_ID
             value: {{ systems_tms_client_id }}
           - name: TAPIS_TMS_CLIENT_SECRET
-            value: {{ systems_tms_client_secret }}
-{% endif %}
+            valueFrom:
+              secretKeyRef:
+                name: tapis-systems-secrets
+                key: tms-client-key
