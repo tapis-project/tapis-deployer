@@ -6,8 +6,8 @@ kubectl apply -f ../apps-config.yml
 # Setup the PVC for postgres
 kubectl apply -f pvc.yml
 
-# Start postgres and pgadmin services.
-# This establishes any externally accessible ports. E.g. pgadmin NodePort service.
+# Start postgres service.
+# This establishes any externally accessible ports. Services configured with a NodePort.
 # Typically services are not removed during burndown so the ports will remain the same.
 kubectl apply -f service.yml
 

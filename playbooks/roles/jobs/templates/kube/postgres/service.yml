@@ -3,6 +3,7 @@ kind: Service
 metadata:  
   name: jobs-postgres
 spec:
+  type: NodePort
   selector:    
     app: jobs-postgres
   ports:  

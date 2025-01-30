@@ -12,7 +12,6 @@ kubectl apply -f pvc.yml
 kubectl apply -f service.yml 
 
 kubectl apply -f deploy.yml
-kubectl apply -f pgadmin.yml 
 
 kubectl wait --for=condition=available deploy/jobs-postgres
 
