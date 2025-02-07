@@ -1,0 +1,18 @@
+#!/bin/bash
+# 
+# Bring up the new postgres without initializing the service tables.
+
+# Set up configmap for systems
+kubectl apply -f ../systems-config.yml
+
+# Set up the PVC for postgres
+kubectl apply -f ../postgres_16/pvc-postgres-16.yml
+
+# Start new postgres
+kubectl apply -f ../postgres_16/service.yml
+
+# Start postgres pod
+kubectl apply -f ../postgres_16/deploy.yml
+
+# Wait for postgres to finish coming up
+kubectl wait --timeout=120s --for=condition=available deploy/systems-postgres-16

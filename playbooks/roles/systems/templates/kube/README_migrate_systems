@@ -1,7 +1,7 @@
 Instructions for manually migrating to a new version of postgres.
 For example, from version 12.4 to version 16.
 ==================================================================
-Service: Applications
+Service: Systems
 ==================================================================
 
 There should be a directory in place for the new postgres deployment, for
