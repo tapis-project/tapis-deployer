@@ -6,4 +6,4 @@ kubectl delete configmap systems-init-db-configmap
 # kubectl delete -f pgadmin.yml
 kubectl delete -f deploy.yml
 
-# if you want to delete postgres disk, run this:  kubectl delete -f pvc.yml
+# if you want to delete postgres disk, run this:  kubectl delete -f pvc-postgres.yml

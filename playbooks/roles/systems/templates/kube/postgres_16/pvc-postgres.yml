@@ -1,12 +1,11 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: systems-postgres-16-vol
+  name: {{systems_postgres_pvc}}
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: cinder-csi
+  storageClassName: {{systems_storage_class}}
   resources:
     requests:
       storage: 20Gi
-
