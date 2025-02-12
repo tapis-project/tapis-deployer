@@ -63,6 +63,6 @@ spec:
             value: "{{notifications_mail_host}}"
           - name: TAPIS_SMTP_PORT
             value: "{{notifications_mail_port}}"
-          - name: TAPIS_SMTP_FROM_NAME
-            value: "{{notifications_mail_from_name}}"
+          - name: TAPIS_SMTP_FROM_ADDRESS
+            value: "{{notifications_mail_from_address}}"
 
