@@ -4,7 +4,7 @@
 kubectl apply -f ../systems-config.yml
 
 # Setup the PVC for postgres
-kubectl apply -f pvc-postgres-16.yml
+kubectl apply -f pvc-postgres.yml
 
 # Start postgres and pgadmin services.
 # This establishes any externally accessible ports. E.g. pgadmin NodePort service.

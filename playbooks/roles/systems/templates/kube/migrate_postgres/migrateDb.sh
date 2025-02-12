@@ -61,11 +61,11 @@ getTableCounts ${FROM_PG_CONTAINER} ${FROM_ADMIN_USER} ${BEFORE_MIGRATE_FILE}
 
 getTableCounts ${TO_PG_CONTAINER} ${TO_ADMIN_USER} ${AFTER_MIGRATE_FILE}
 
-echo =+++++++++++++++++= cat before count  =+++++++++++++++++=
+echo "=+++++++++++++++++= cat before count  =+++++++++++++++++="
 cat ${BEFORE_MIGRATE_FILE} 
-echo =+++++++++++++++++= cat after count  =++++++++++++++++++=
+echo "=+++++++++++++++++= cat after count  =++++++++++++++++++="
 cat ${AFTER_MIGRATE_FILE}
-echo =++++++++++++++++++++= count diffs =++++++++++++++++++++=
+echo "=++++++++++++++++++++= count diffs =++++++++++++++++++++="
 echo diff ${BEFORE_MIGRATE_FILE} ${AFTER_MIGRATE_FILE}
 diff ${BEFORE_MIGRATE_FILE} ${AFTER_MIGRATE_FILE}
-echo =++++++++++++++++++++= count diffs =++++++++++++++++++++=
+echo "=++++++++++++++++++++= count diffs =++++++++++++++++++++="

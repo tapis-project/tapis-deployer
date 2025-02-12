@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: apps-postgres-16
-        image: postgres:16
+        image: {{ apps_postgres_image }}
         ports:
         - name: postgres
           containerPort: 5432
@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: apps-pg-data
         persistentVolumeClaim:
-          claimName: apps-postgres-16-vol
+          claimName: {{apps_postgres_pvc}}
