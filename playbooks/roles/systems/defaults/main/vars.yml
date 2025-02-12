@@ -6,7 +6,7 @@ systems_service_site_id: "{{ global_site_id }}"
 systems_service_tenant_id: "{{ global_service_tenant_id }}" 
 systems_service_url: "{{ global_service_url }}"
 systems_storage_class: "{{ global_storage_class }}"
-systems_postgres_pvc: systems-postgres-vol01
+systems_postgres_pvc: systems-postgres-16-vol
 systems_globus_client_id: null
 systems_tms_enabled: null
 systems_tms_server_url: null
