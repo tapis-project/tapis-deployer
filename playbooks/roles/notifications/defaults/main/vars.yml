@@ -9,9 +9,9 @@ notifications_postgres_pvc: notifications-postgres-16-vol
 notifications_rabbitmq_pvc: notifications-rabbitmq-vol01
 notifications_mail_provider: SMTP
 notifications_mail_host: relay.example.com
+notifications_mail_from_name: no-reply@nowhere.com
 notifications_mail_port: 25
 notifications_heap_min: 1g
 notifications_heap_max: 4g
-
 notifications_port: 8083
 
