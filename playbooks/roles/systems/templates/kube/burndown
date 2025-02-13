@@ -17,3 +17,5 @@ cd $here/postgres_16
 
 cd $here
 kubectl delete -f systems-config.yml
+
+cd $here

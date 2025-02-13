@@ -7,4 +7,6 @@ here=`pwd`
 
 cd $here/../api
 ./burndown
+cd $here/../dispatcher
+./burndown
 cd $here

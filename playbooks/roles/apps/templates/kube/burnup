@@ -20,3 +20,4 @@ cd $here/postgres_16
 cd $here/api
 ./burnup
 
+cd $here

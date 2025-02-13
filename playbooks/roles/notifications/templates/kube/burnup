@@ -25,3 +25,5 @@ cd $here/dispatcher
 
 cd $here/api
 ./burnup
+
+cd $here

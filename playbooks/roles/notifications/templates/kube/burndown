@@ -24,3 +24,5 @@ cd $here/postgres_16
 
 cd $here
 kubectl delete -f notifications-config.yml
+
+cd $here

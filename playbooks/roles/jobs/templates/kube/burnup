@@ -28,3 +28,4 @@ cd $here/workers
 cd $here/readers
 ./burnup
 
+cd $here

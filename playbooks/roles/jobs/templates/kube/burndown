@@ -21,3 +21,5 @@ cd $here/rabbitmq
 
 cd $here/postgres_16
 ./burndown
+
+cd $here
