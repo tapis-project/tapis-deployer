@@ -14,7 +14,7 @@ mkdir -p {{ tapisdatadir }}/systems
 cd $here
 kubectl apply -f systems-config.yml
 
-cd $here/postgres
+cd $here/postgres_16
 ./burnup
 
 cd $here/api

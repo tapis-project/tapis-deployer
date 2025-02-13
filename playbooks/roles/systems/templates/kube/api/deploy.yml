@@ -26,7 +26,7 @@ spec:
             name: "jvm-debug"
         env:
           - name: TAPIS_DB_JDBC_URL
-            value: jdbc:postgresql://systems-postgres:5432/tapissysdb
+            value: jdbc:postgresql://systems-postgres-16:5432/tapissysdb
           - name: TAPIS_DB_USER
             value: tapis_sys
           - name: TAPIS_SITE_ID

@@ -13,7 +13,7 @@ mkdir -p {{ tapisdatadir }}/jobs/rabbitmq
 cd $here
 kubectl apply -f jobs-config.yml
 
-cd $here/postgres
+cd $here/postgres_16
 ./burnup
 
 cd $here/rabbitmq
