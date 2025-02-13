@@ -90,7 +90,7 @@ services:
       - TAPIS_MAIL_PROVIDER={{notifications_mail_provider}}
       - TAPIS_SMTP_HOST={{notifications_mail_host}}
       - TAPIS_SMTP_PORT={{notifications_mail_port}}
-      - TAPIS_SMTP_FROM_NAME={{notifications_mail_from_name}}
+      - TAPIS_SMTP_FROM_ADDRESS={{notifications_mail_from_address}}
     env_file:
       - {{ tapisdatadir }}/notifications/env
     networks:
