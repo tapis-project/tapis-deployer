@@ -54,3 +54,5 @@ for example (see also migrate.env file):
 
 10. Once the new database has been thoroughly tested and you are confident
    everything is working as expected, the old PVC volume may be deleted.
+
+11. Update database backup processes and scripts to use the new deployment name.
