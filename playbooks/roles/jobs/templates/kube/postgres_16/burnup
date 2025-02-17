@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Set up configmap for jobs
+kubectl apply -f ../jobs-config.yml
+
+kubectl apply -f pvc-postgres.yml
+kubectl apply -f service.yml
+kubectl apply -f deploy.yml
+kubectl apply -f pgadmin.yml
+
+kubectl wait --timeout=120s --for=condition=available deploy/jobs-postgres-16
+

@@ -14,7 +14,7 @@ kubectl apply -f notifications-config.yml
 
 # Deploy postgres and api
 
-cd $here/postgres
+cd $here/postgres_16
 ./burnup
 
 cd $here/rabbitmq
@@ -25,3 +25,5 @@ cd $here/dispatcher
 
 cd $here/api
 ./burnup
+
+cd $here

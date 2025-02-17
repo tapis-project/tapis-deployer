@@ -12,8 +12,10 @@ here=`pwd`
 cd $here/api
 ./burndown
 
-cd $here/postgres
+cd $here/postgres_16
 ./burndown
 
 cd $here
 kubectl delete -f apps-config.yml
+
+cd $here

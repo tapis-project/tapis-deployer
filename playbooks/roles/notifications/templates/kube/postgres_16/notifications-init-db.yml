@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: notifications-init-db
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: notifications-init-db
+        image: {{ notifications_postgres_image }}
+        imagePullPolicy: Always
+        command: ["/tmp/notifications-init-db-sh"]
+        volumeMounts:
+        - name: notifications-init-db-vol
+          mountPath: /tmp
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-notifications-secrets
+              key: postgres-password
+      volumes:
+      - name: notifications-init-db-vol
+        configMap:
+          name: notifications-init-db-configmap
+          defaultMode: 0777
+  backoffLimit: 4

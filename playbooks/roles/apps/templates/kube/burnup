@@ -14,9 +14,10 @@ kubectl apply -f apps-config.yml
 
 
 # Deploy postgres and api
-cd $here/postgres
+cd $here/postgres_16
 ./burnup
 
 cd $here/api
 ./burnup
 
+cd $here
