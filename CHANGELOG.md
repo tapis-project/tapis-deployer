@@ -1,5 +1,31 @@
 # Changelog 
 
+## 1.8.1
+
+### Breaking Changes for Deployer Admins
+
+- Note that you must be at Tapis Deployer 1.8.0 before moving to 1.8.1+. Database changes to the files postgres are assumed to have been done, so if you are still on pre-1.8.0, you must do the upgrade to 1.8.0 first.
+- Warning: Support for runtime option SINGULARITY_START has been deprecated. Support will be removed in a future release. If you have a need for this option please contact Tapis support (cicsupport@tacc.utexas.edu).
+
+### Service Updates
+
+- Java services (Security, Apps, Files, Jobs, Notifications, Systems) have been updated to use Java 21 (from Java 17).  
+- Java services changes: 
+  - improved handling of expired service JWTs.
+- Security changes:  
+  - Add readycheck endpoint.
+  - Mark endpoints *ready* and *hello* as deprecated.
+
+### Service Updates
+
+- [Apps: 1.8.0 to 1.8.1 (tapis/apps)](https://github.com/tapis-project/tapis-apps/blob/dev/CHANGELOG.md)
+- [Files: 1.8.0 to 1.8.2 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
+- [Jobs: 1.8.0 to 1.8.2 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Notifications: 1.8.0 to 1.8.1 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+- [Systems: 1.8.0 to 1.8.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Security: 1.8.0 to 1.8.1 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
+
+
 ## 1.8.0
 
 ### Breaking Changes for Deployer Admins
