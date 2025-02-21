@@ -1,4 +1,4 @@
-meta_api_image: tapis/metaapi:1.8.0
+meta_api_image: tapis/metaapi:1.8.1
 meta_rh_server_image: tapis/tapis-meta-rh-server:1.8.0
 meta_mongo_exporter_image: tapis/mqe:1.8.0
 meta_mongo_singlenode_image: tapis/mongo-singlenode:1.8.0
