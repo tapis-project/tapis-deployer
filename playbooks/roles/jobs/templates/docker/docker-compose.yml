@@ -25,7 +25,7 @@ services:
             - TAPIS_QUEUE_USER=jobs
             - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES=/v3/jobs
             - TAPIS_REQUEST_LOGGING_INGORE_SUFFIXES=/healthcheck;/ready;/hello
-            - TAPIS_AUDITING_ENABLED={{ jobs_auditing_enabled }}
+            - TAPIS_AUDITING_ENABLED={{ global_auditing_enabled }}
             - CATALINA_OPTS=-Xms1g -Xmx3g --add-opens java.base/java.time=ALL-UNNAMED
         env_file:
             - {{ tapisdatadir }}/jobs/env
@@ -215,7 +215,7 @@ services:
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
             - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES=/v3/jobs
-            - TAPIS_AUDITING_ENABLED={{ jobs_auditing_enabled }}
+            - TAPIS_AUDITING_ENABLED={{ global_auditing_enabled }}
             - JAVA_OPTS=-Xms1g -Xmx1g
             - MAIN_CLASS=edu.utexas.tacc.tapis.jobs.worker.JobWorker
             - JOBS_PARMS=-n wkr-DefaultQueue -q tapis.jobq.submit.DefaultQueue -w 100

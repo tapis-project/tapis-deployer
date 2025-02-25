@@ -66,5 +66,8 @@ spec:
           - name: TAPIS_TMS_CLIENT_ID
             value: {{ systems_tms_client_id }}
           - name: TAPIS_TMS_CLIENT_SECRET
-            value: {{ systems_tms_client_secret }}
+            valueFrom:
+              secretKeyRef:
+                name: tapis-systems-secrets
+                key: tms-client-key
 {% endif %}
