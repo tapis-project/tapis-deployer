@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# Stop services that connect to the DB
+#
+
+here=`pwd`
+cd $here/../api
+./burndown
+cd $here

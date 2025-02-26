@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{security_postgres_pvc}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{security_storage_class}}
+  resources:
+    requests:
+      storage: 20Gi
+
