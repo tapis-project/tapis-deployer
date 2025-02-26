@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sk-pgadmin
+spec:
+  selector:
+    matchLabels:
+      app: sk-pgadmin
+  template:
+    metadata:
+      labels:
+        app: sk-pgadmin
+    spec:
+      containers:
+      - name: sk-pgadmin
+        image: {{ security_pgadmin_image }}
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: "wow@example.com"
+        - name: PGADMIN_DEFAULT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-sk-secrets 
+              key: pgadmin-password

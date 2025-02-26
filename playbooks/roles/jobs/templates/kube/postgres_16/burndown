@@ -1,0 +1,5 @@
+#!/bin/bash
+
+kubectl delete -f deploy.yml
+
+# if you want to delete postgres disk, run this:  kubectl delete -f pvc-postgres.yml

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+kubectl delete -f notifications-init-db.yml
+kubectl delete configmap notifications-init-db-configmap
+# Leave pgadmin up so we do not have to create server each time.
+# kubectl delete -f pgadmin.yml
+kubectl delete -f deploy.yml
+
+# if you want to delete postgres disk, run this:  kubectl delete -f pvc-postgres.yml

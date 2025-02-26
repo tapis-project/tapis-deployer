@@ -19,8 +19,10 @@ cd $here/dispatcher
 cd $here/rabbitmq
 ./burndown
 
-cd $here/postgres
+cd $here/postgres_16
 ./burndown
 
 cd $here
 kubectl delete -f notifications-config.yml
+
+cd $here

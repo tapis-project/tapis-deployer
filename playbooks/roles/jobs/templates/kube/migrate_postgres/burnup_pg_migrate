@@ -1,0 +1,20 @@
+#!/bin/bash
+# 
+# Bring up the new postgres without initializing the service tables.
+# Set up env
+. ./migrate.env
+
+# Set up configmap for jobs
+kubectl apply -f ../jobs-config.yml
+
+# Set up the PVC for postgres
+kubectl apply -f ../$PG_DIR_NEW/pvc-postgres.yml
+
+# Start new postgres
+kubectl apply -f ../$PG_DIR_NEW/service.yml
+
+# Start postgres pod
+kubectl apply -f ../$PG_DIR_NEW/deploy.yml
+
+# Wait for postgres to finish coming up
+kubectl wait --timeout=120s --for=condition=available deploy/$PG_DEPLOY_NAME

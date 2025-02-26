@@ -9,7 +9,7 @@ mkdir -p {{ tapisdatadir }}/security
 kubectl apply -f security-kernel-config.yml
 
 echo "security security-kernel:"
-cd $here/postgres
+cd $here/postgres_16
 ./burnup
 
 # vault secret renewed in here
