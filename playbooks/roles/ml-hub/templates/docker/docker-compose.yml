@@ -1,13 +1,14 @@
+networks:
+  tapis:
+    name: tapis
+    external: true
+
 services:
   ml-hub:
     # image: tapis/models-api:dev
     image: {{ ml_hub_models_api_image }}
-    # build:
-    #   context: ./hub
-    #   dockerfile: Dockerfile
-    # ports:
-    #   - "5001:5001"
-    #   - "8881:8881"
+    networks:
+      - tapis
     container_name: ml-hub
     environment:
       - ENV=dev
@@ -20,12 +21,8 @@ services:
   ml-hub-inference:
     # image: tapis/inference-api:dev
     image: {{ ml_hub_inference_api_image }}
-    # build:
-    #   context: ./inference
-    #   dockerfile: Dockerfile
-    # ports:
-    #   - "5002:5002"
-    #   - "8882:8882"
+    networks:
+      - tapis
     container_name: ml-hub-inference
     environment:
       - ENV=dev
