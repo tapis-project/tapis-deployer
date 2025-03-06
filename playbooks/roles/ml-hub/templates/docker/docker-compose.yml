@@ -1,5 +1,5 @@
 services:
-  ml-hub-models:
+  ml-hub:
     # image: tapis/models-api:dev
     image: {{ ml_hub_models_api_image }}
     # build:
@@ -8,13 +8,14 @@ services:
     # ports:
     #   - "5001:5001"
     #   - "8881:8881"
-    container_name: ml-hub-models
+    container_name: ml-hub
     environment:
       - ENV=dev
       - API_PORT=5001
       - JUPYTER_PORT=8881
-    # volumes:
+    volumes:
       # - ./hub:/home/tapis        # for live debugging w/ Jupyter
+      - ./ml-hub-config.json:/home/tapis/config.json
 
   ml-hub-inference:
     # image: tapis/inference-api:dev
@@ -33,3 +34,4 @@ services:
     volumes:
       - {{ tapisdatadir }}/mlhub/inference/cache:/root/.cache    # for caching models
       # - ./inference:/home/tapis  # for live debugging w/ Jupyter
+      - ./ml-hub-config.json:/home/tapis/config.json

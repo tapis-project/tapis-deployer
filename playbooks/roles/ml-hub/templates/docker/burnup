@@ -9,6 +9,6 @@ export UID_GID="$(id -u):$(id -g)"
 
 docker run -it --rm -v {{ tapisdatadir }}/ml-hub:/ml-hub {{ ml_hub_util_image }} chown $MYUID /ml-hub
 
-python3 ../admin/util/parse_skexport -c ml-hub -d {{ tapisdatadir }}
+# python3 ../admin/util/parse_skexport -c ml-hub -d {{ tapisdatadir }}
 
 docker compose up -d

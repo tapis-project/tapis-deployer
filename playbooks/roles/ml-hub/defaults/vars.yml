@@ -1,4 +1,11 @@
+mlhub_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
+ml_hub_service_site_id: "{{ global_site_id }}"
+mlhub_log_level: INFO
+ml_hub_tenants:
+  - dev
+  - admin
 ml_hub_service_url: "{{ global_service_url }}"
 ml_hub_service_tenant_id: "{{ global_service_tenant_id }}"
 ml_hub_service_site_id: "{{ global_site_id }}"
 ml_hub_service_name: ml_hub
+ml_hub_show_traceback: false
