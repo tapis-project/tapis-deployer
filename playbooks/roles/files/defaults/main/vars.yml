@@ -2,16 +2,19 @@
 
 files_node_selector: null
 files_rabbitmq_hostname: files-rabbitmq
+files_postgres_hostname: files-postgres-16
 files_service_name: files
 files_service_site_id: "{{ global_site_id }}"
 files_service_tenant_id: "{{ global_service_tenant_id }}" 
 files_service_url: "{{ global_service_url }}"
-files_replicas: 1
+files_worker_replicas: 2
+files_api_replicas: 1
 files_files_debug: true
 files_site_id: true
 files_log_level: info
 files_storage_class: "{{ global_storage_class }}"
 files_rabbitmq_pvc: files-rabbitmq-data
 files_postgres_pvc: files-pgdata
+files_postgres16_pvc: files-pg-16-data
 files_node_name: true
-
+files_use_topology_spread_constraints: true

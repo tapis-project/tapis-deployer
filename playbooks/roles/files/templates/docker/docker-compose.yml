@@ -33,6 +33,23 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
 
+  files-postgres-11:
+    container_name: files-postgres-11
+    image: {{ files_migrations_image }}
+    environment:
+     - POSTGRES_USER=tapisfiles
+     - POSTGRES_DATABASE=tapisfiles
+     - PGDATA=/pgdata/data
+    volumes:
+      - {{ tapisdatadir }}/files/postgres/11:/pgdata
+    networks:
+      - tapis
+    env_file:
+      - {{ tapisdatadir }}/files/env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+
+
   files-migrations:
     container_name: files-migrations
     image: {{ files_migrations_image }}
@@ -44,28 +61,6 @@ services:
     networks:
       - tapis
     command: chmod +x files-init-db-sh; /files-init-db-sh
-
-  # files-minio:
-  #   container_name: files-minio
-  #   image: {{ files_minio_image }}
-  #   command: server /data
-  #   environment:
-  #     - MINIO_ACCESS_KEY=user
-  #     - MINIO_SECRET_KEY=password
-  #   volumes:
-  #     - {{ tapisdatadir }}/files/minio:/data
-  #   networks:
-  #     - tapis
-  #   env_file:
-  #     - {{ tapisdatadir }}/files/env
-
-  # files-irods:
-  #   container_name: files-irods
-  #   image: {{ files_irods_provider_postgres_image }}
-  #   networks:
-  #     - tapis
-  #   env_file:
-  #     - {{ tapisdatadir }}/files/env
 
   files-workers:
     container_name: files-workers
@@ -91,9 +86,28 @@ services:
       - RABBITMQ_HOSTNAME=files-rabbitmq
       - RABBITMQ_USERNAME=tapisfiles
       - RABBITMQ_VHOST=tapisfiles
+      - TAPIS_AUDITING_ENABLED={{ global_auditing_enabled }}
     depends_on:
       files-api: 
         condition: service_started
+
+  files-assigner:
+    container_name: files-assigner
+    image: {{ files_assigner_image }} 
+    networks:
+      - tapis
+    env_file:
+      - {{ tapisdatadir }}/files/env
+    environment:
+{% if files_node_name == true %}
+      - TAPIS_LOCAL_NODE_NAME={{ global_tapis_domain }}
+{% endif %}
+      - TOKENS_SERVICE_URL={{ files_service_url }}
+      - TENANTS_SERVICE_URL={{ files_service_url }}
+      - TAPIS_SITE_ID{{ files_service_site_id }}
+{% if systems_globus_client_id is defined %}
+      - TAPIS_GLOBUS_CLIENT_ID={{ systems_globus_client_id }}
+{% endif %}
 
   files-api:
     container_name: files-api
@@ -119,27 +133,9 @@ services:
       - RABBITMQ_HOSTNAME=files-rabbitmq
       - RABBITMQ_USERNAME=tapisfiles
       - RABBITMQ_VHOST=tapisfiles
-      # - JAVA_OPTS=-Xdebug -Xmx3g
-      # - MAIN_CLASS=edu.utexas.tacc.tapis.files.api.FilesApplication
-      # - JOBS_PARMS=-n rdr-alt
+      - TAPIS_AUDITING_ENABLED={{ global_auditing_enabled }}
     depends_on:
       files-postgres:
         condition: service_healthy
       files-rabbitmq:
         condition: service_healthy
-
-  # files-ssh-machine:
-  #   container_name: files-ssh-machine
-  #   build:
-  #     context: ..
-  #     dockerfile: ./deploy/Dockerfile.ssh-machine
-  #   ports:
-  #     - "2222:22"
-
-  # files-ssh-machine2:
-  #   container_name: files-ssh2
-  #   build:
-  #     context: ..
-  #     dockerfile: ./deploy/Dockerfile.ssh-machine
-  #   ports:
-  #     - "2223:22"

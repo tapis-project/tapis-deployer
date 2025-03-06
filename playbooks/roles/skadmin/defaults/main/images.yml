@@ -1,4 +1,4 @@
-skadmin_securityexport_image: tapis/securityexport:1.7.0
-skadmin_skadminutil_image: tapis/skadminutil:1.7.0
-skadmin_securityadmin_image: tapis/securityadmin:1.7.0
-skadmin_util_image: tapis/ubutil:1.7.0
+skadmin_securityexport_image: tapis/securityexport:1.8.1
+skadmin_skadminutil_image: tapis/skadminutil:1.8.0
+skadmin_securityadmin_image: tapis/securityadmin:1.8.1
+skadmin_util_image: tapis/ubutil:1.8.0

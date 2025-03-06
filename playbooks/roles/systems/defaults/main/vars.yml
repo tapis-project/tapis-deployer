@@ -8,6 +8,10 @@ systems_service_url: "{{ global_service_url }}"
 systems_storage_class: "{{ global_storage_class }}"
 systems_postgres_pvc: systems-postgres-vol01
 systems_globus_client_id: null
+systems_tms_enabled: null
+systems_tms_server_url: null
+systems_tms_tenant: null
+systems_tms_client_id: null
 systems_heap_max: 3G
 systems_heap_min: 1G
 systems_port: 8084
