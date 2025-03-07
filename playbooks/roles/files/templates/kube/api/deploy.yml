@@ -79,7 +79,7 @@ spec:
               name: files-config
               key: globus_client_id
         - name: TAPIS_AUDITING_ENABLED
-          value: "{{ global_auditing_enabled }}"
+          value: "{{ files_auditing_enabled }}"
         - name: TAPIS_DB_CONNECTION_POOL_SIZE
           value: "10"
         - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
