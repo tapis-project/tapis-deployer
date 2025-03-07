@@ -15,6 +15,7 @@
       - global_service_url != ''
       - global_devtenant_url != ''
       - global_vault_url != ''
+      - global_auditing_enabled != ''
 
 - name: If associate site (site_type 2), check a few variables 
   assert:
@@ -39,7 +40,7 @@
     - global_service_url
     - global_devtenant_url
     - global_vault_url 
-
+    - global_auditing_enabled
 
 # Use set_fact on global vars so the following roles can use them
 
@@ -55,4 +56,5 @@
     global_service_url: '{{ global_service_url }}'
     global_devtenant_url: '{{ global_devtenant_url }}'
     global_vault_url: '{{ global_vault_url }}'
+    global_auditing_enabled: '{{ global_auditing_enabled }}'
 
