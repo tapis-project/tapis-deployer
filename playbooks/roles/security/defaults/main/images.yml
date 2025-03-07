@@ -1,6 +1,6 @@
 security_pgadmin_image: dpage/pgadmin4:6.20
 security_skadminutil_image: tapis/skadminutil:1.8.0
-security_postgres_image: postgres:12.4
+security_postgres_image: postgres:16
 security_api_image: tapis/securityapi:1.8.2
 security_migrations_image: tapis/securitymigrate:1.8.2
 security_util_image: tapis/ubutil:1.8.0

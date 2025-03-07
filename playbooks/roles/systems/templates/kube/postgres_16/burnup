@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Set up configmap for systems
+kubectl apply -f ../systems-config.yml
+
+# Setup the PVC for postgres
+kubectl apply -f pvc-postgres.yml
+
+# Start postgres and pgadmin services.
+# This establishes any externally accessible ports. E.g. pgadmin NodePort service.
+# Typically services are not removed during burndown so the ports will remain the same.
+kubectl apply -f service.yml
+
+# Start postgres pod
+kubectl apply -f deploy.yml
+
+# Start pgadmin pod
+kubectl apply -f pgadmin.yml
+
+# Wait for postgres to finish coming up
+kubectl wait --timeout=120s --for=condition=available deploy/systems-postgres-16
+
+# Initialize the DB
+kubectl create configmap systems-init-db-configmap --from-file systems-init-db-sh
+kubectl create -f systems-init-db.yml
+kubectl wait --timeout=120s --for=condition=complete job/systems-init-db
