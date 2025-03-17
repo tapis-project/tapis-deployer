@@ -1,0 +1,58 @@
+Instructions for manually migrating to a new version of postgres.
+For example, from version 12.4 to version 16.
+==================================================================
+Service: Systems
+==================================================================
+
+There should be a directory in place for the new postgres deployment, for
+example a directory named *postgres_16*.
+There should also be a directory named *migrate_postgres* containing the scripts
+and files to be used during the migration process.
+
+Please follow these steps:
+
+Example code below assumes PG_DIR_OLD and PG_DIR_NEW are set to the old and new postgres directories,
+for example (see also migrate.env file):
+  export PG_DIR_OLD=postgres
+  export PG_DIR_NEW=postgres_16
+
+1. Update settings in migrate_postgres/migrate.env
+   - Set properties for connecting to old and new DB
+   - Check and update if needed the values for PG_DIR_OLD, PG_DIR_NEW and PG_DEPLOY_NAME
+   - Check and update if needed the properties for the old and new containers.
+
+2. Shut down processes that connect to the DB, such as a front-end api service
+   and any worker processes using burndown_pg_migrate:
+     cd migrate_postgres
+     ./burndown_pg_migrate
+     cd ..
+
+3. Backup the DB in case of any issues with the migration.
+
+4. Bring up the new postgres without initializing the service tables using burnup_pg_migrate:
+     cd migrate_postgres
+     ./burnup_pg_migrate
+     cd ..
+
+5. Run the migrate script migrateDb.sh:
+     cd migrate_postgres
+     ./migrateDb.sh
+     cd ..
+
+6. Check the before and after table counts once the script completes.
+   Results will be located in stdout from the script. Check for errors, etc.
+
+7. Bring down the old postgres:
+     cd $PG_DIR_OLD
+     ./burndown
+     cd ..
+
+8. Bring up the service by running the top level burnup script.
+
+9. Verify the service has started without errors. Check that the service is getting
+   data from the new DB by calling an endpoint to list resources.
+
+10. Once the new database has been thoroughly tested and you are confident
+   everything is working as expected, the old PVC volume may be deleted.
+
+11. Update database backup processes and scripts to use the new deployment name.

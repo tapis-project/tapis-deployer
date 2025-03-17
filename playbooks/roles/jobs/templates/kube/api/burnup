@@ -9,5 +9,5 @@ kubectl wait --for=condition=complete job/jobs-migrate
 kubectl apply -f service.yml 
 
 # Start the jobs service.
-kubectl apply -f api.yml 
+kubectl apply -f deploy.yml 
 kubectl wait --for=condition=available deploy/jobs-api

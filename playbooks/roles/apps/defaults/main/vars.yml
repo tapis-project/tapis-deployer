@@ -7,7 +7,7 @@ apps_service_url: "{{ global_service_url }}"
 apps_storage_class: "{{ global_storage_class }}"
 apps_enable_external: false
 apps_monitor_password: null
-apps_postgres_pvc: apps-postgres-vol01
+apps_postgres_pvc: apps-postgres-16-vol
 apps_service_password: null
 apps_postgres_password: null
 apps_pgadmin_password: null

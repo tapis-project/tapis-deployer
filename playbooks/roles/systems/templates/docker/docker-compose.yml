@@ -9,6 +9,10 @@ services:
         image: {{ systems_api_image }}
         networks:
             - tapis
+{% if systems_port is not none %}
+        ports: 
+            - "{{systems_port}}:8080"
+{% endif %}
         env_file:
             {{ tapisdatadir }}/systems/env
         environment:
@@ -21,10 +25,6 @@ services:
         depends_on:
             systems-migrations:
                 condition: service_completed_successfully
-{% if systems_port is not none %}
-    ports: 
-            - "{{systems_port}}:8080"
-{% endif %}
         
     systems-postgres:
         container_name: systems-postgres
