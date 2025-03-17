@@ -18,7 +18,7 @@ spec:
         imagePullPolicy: Always
         env:
           - name: TAPIS_DB_JDBC_URL
-            value: jdbc:postgresql://notifications-postgres:5432/tapisntfdb
+            value: jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb
           - name: TAPIS_DB_USER
             value: tapis_ntf
           - name: TAPIS_SITE_ID
@@ -63,3 +63,6 @@ spec:
             value: "{{notifications_mail_host}}"
           - name: TAPIS_SMTP_PORT
             value: "{{notifications_mail_port}}"
+          - name: TAPIS_SMTP_FROM_ADDRESS
+            value: "{{notifications_mail_from_address}}"
+

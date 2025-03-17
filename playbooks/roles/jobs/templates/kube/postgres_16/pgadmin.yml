@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-pgadmin
+spec:
+  selector:
+    matchLabels:
+      app: jobs-pgadmin
+  template:
+    metadata:
+      labels:
+        app: jobs-pgadmin
+    spec:
+      containers:
+      - name: jobs-pgadmin
+        image: {{ jobs_pgadmin_image }}
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: "wow@example.com"
+        - name: PGADMIN_DEFAULT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: pgadmin-password
