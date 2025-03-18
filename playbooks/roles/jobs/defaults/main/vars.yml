@@ -4,7 +4,6 @@ jobs_service_name: jobs
 jobs_service_site_id: "{{ global_site_id }}"
 jobs_service_tenant_id: "{{ global_service_tenant_id }}"
 jobs_service_url: "{{ global_service_url }}"
-jobs_postgres_pvc: jobs-postgres-16-vol
 jobs_storage_class: "{{ global_storage_class }}"
 jobs_rabbitmq_pvc: jobs-rabbitmq-vol01
 jobs_node_selector: null

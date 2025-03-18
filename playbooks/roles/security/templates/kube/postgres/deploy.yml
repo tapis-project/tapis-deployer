@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: sk-postgres
-        image: {{ security_postgres_image }}
+        image: postgres:12.4
         ports:
         - name: postgres
           containerPort: 5432
@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: sk-pg-data
         persistentVolumeClaim:
-          claimName: {{security_postgres_pvc}}
+          claimName: sk-postgres-vol02

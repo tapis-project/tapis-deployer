@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{notifications_postgres_pvc}}
+  name: notifications-postgres-vol01
 spec:
   accessModes:
     - ReadWriteOnce
