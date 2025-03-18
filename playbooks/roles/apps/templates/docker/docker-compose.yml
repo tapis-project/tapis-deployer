@@ -29,7 +29,7 @@ services:
 
     apps-postgres:
         container_name: apps-postgres
-        image: {{ apps_postgres_image }}
+        image: postgres:12.4
         networks:
             - tapis
         environment:
@@ -43,7 +43,7 @@ services:
 
     apps-migrations:
         container_name: apps-migrations
-        image: {{ apps_postgres_image }}
+        image: postgres:12.4
         networks:
             - tapis
         env_file:

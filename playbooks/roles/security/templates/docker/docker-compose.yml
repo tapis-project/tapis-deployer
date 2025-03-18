@@ -8,7 +8,7 @@ networks:
 services:
     sk-postgres:
         container_name: sk-postgres
-        image: {{ security_postgres_image }}
+        image: postgres:12.4
         networks:
             - tapis
         volumes:
