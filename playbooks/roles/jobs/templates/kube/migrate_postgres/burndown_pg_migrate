@@ -5,13 +5,13 @@
 
 here=`pwd`
 
-cd $here/readers
+cd $here/../readers
 ./burndown
 
-cd $here/workers
+cd $here/../workers
 ./burndown
 
-cd $here/api
+cd $here/../api
 ./burndown
 
 cd $here
