@@ -15,7 +15,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: HOST
-          value: "sk-postgres"
+          value: "sk-postgres-16"
         - name: PORT
           value: "5432"
         - name: USER
