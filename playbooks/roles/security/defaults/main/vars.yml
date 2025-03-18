@@ -7,7 +7,6 @@ security_service_name: security
 security_service_site_id: "{{ global_site_id }}"
 security_service_tenant_id: "{{ global_service_tenant_id }}"
 security_service_url: "{{ global_service_url }}"
-security_postgres_pvc: sk-postgres-16-vol
 security_storage_class: "{{ global_storage_class }}"
 security_vault_url: "{{ global_vault_url }}"
 security_volumes: true
