@@ -3,7 +3,7 @@
 echo "burnup notifications:"
 
 mkdir -p {{ tapisdatadir }}/notifications
-mkdir -p {{ tapisdatadir }}/notifications/postgres
+mkdir -p {{ tapisdatadir }}/notifications/postgres_16
 
 python3 ../admin/util/parse_skexport -c notifications -d {{ tapisdatadir }}
 
