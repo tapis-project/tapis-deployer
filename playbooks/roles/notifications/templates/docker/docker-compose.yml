@@ -13,7 +13,7 @@ services:
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
       - TAPIS_TENANT_SVC_BASEURL={{ notifications_service_url }}
-      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres:5432/tapisntfdb
+      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb
       - TAPIS_DB_USER=tapis_ntf
       - TAPIS_QUEUE_HOST=notifications-rabbitmq
       - TAPIS_QUEUE_ADMIN_USER=tapis
@@ -23,7 +23,7 @@ services:
     networks: 
       - tapis
     depends_on:
-      notifications-postgres:
+      notifications-postgres-16:
         condition: service_healthy
       notifications-rabbitmq:
         condition: service_healthy
@@ -35,7 +35,7 @@ services:
     
   notifications-init-db:
     container_name: notifications-init-db
-    image: postgres:12.4
+    image: postgres:16
     command: bash -c "chmod +x /tmp/notifications-init-db-sh && /tmp/notifications-init-db-sh"
     volumes:
       - ./notifications-init-db-sh:/tmp/notifications-init-db-sh
@@ -44,12 +44,12 @@ services:
     networks: 
       - tapis
     depends_on:
-      notifications-postgres:
+      notifications-postgres-16:
         condition: service_healthy
 
-  notifications-postgres:
-    container_name: notifications-postgres
-    image: postgres:12.4
+  notifications-postgres-16:
+    container_name: notifications-postgres-16
+    image: postgres:16
     environment:
       - PGDATA=/pgdata/data
     env_file:
@@ -57,7 +57,7 @@ services:
     networks: 
       - tapis
     volumes:
-      - {{ tapisdatadir }}/notifications/postgres:/pgdata
+      - {{ tapisdatadir }}/notifications/postgres_16:/pgdata
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
 
@@ -71,7 +71,7 @@ services:
 #    networks:
 #      - tapis
 #    depends_on:
-#      notifications-postgres:
+#      notifications-postgres-16:
 #        condition: service_healthy
 #      notifications-rabbitmq:
 #        condition: service_healthy
@@ -82,7 +82,7 @@ services:
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
       - TAPIS_TENANT_SVC_BASEURL={{ notifications_service_url }}
-      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres:5432/tapisntfdb
+      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb
       - TAPIS_DB_USER=tapis_ntf
       - TAPIS_QUEUE_HOST=notifications-rabbitmq
       - TAPIS_QUEUE_ADMIN_USER=tapis
@@ -97,7 +97,7 @@ services:
       - tapis
     command: java -Xms{{ notifications_heap_min }} -Xmx{{ notifications_heap_max }} --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -cp "notifications.jar:dependencies/*" edu.utexas.tacc.tapis.notifications.DispatchApplication
     depends_on:
-      notifications-postgres:
+      notifications-postgres-16:
         condition: service_healthy
       notifications-rabbitmq:
         condition: service_healthy
