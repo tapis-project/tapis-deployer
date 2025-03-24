@@ -11,7 +11,7 @@ services:
         networks:
             - tapis
         environment:
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://apps-postgres:5432/tapisappdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://apps-postgres-16:5432/tapisappdb
             - TAPIS_DB_USER=tapis_app
             - TAPIS_SITE_ID={{ apps_service_site_id }}
             - TAPIS_TENANT_SVC_BASEURL={{ apps_service_url }}
@@ -27,9 +27,9 @@ services:
     {% endif %}
         
 
-    apps-postgres:
-        container_name: apps-postgres
-        image: postgres:12.4
+    apps-postgres-16:
+        container_name: apps-postgres-16
+        image: postgres:16
         networks:
             - tapis
         environment:
@@ -37,21 +37,21 @@ services:
         env_file:
             - {{ tapisdatadir }}/apps/env
         volumes:
-            - {{ tapisdatadir }}/apps/postgres:/pgdata
+            - {{ tapisdatadir }}/apps/postgres_16:/pgdata
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U postgres"]
 
     apps-migrations:
-        container_name: apps-migrations
-        image: postgres:12.4
+        container_name: apps-migrations-16
+        image: postgres:16
         networks:
             - tapis
         env_file:
             - {{ tapisdatadir }}/apps/env
         volumes:
-            - {{ tapisdatadir }}/apps/postgres:/pgdata
+            - {{ tapisdatadir }}/apps/postgres_16:/pgdata
             - ./apps-init-db-sh:/init-db
         command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"
         depends_on:
-            apps-postgres:
+            apps-postgres-16:
                 condition: service_healthy

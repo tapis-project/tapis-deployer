@@ -3,7 +3,7 @@
 echo "burnup jobs:"
 
 mkdir -p {{ tapisdatadir }}/jobs
-mkdir -p {{ tapisdatadir }}/jobs/postgres
+mkdir -p {{ tapisdatadir }}/jobs/postgres_16
 
 python3 ../admin/util/parse_skexport -c jobs -d {{ tapisdatadir }}
 
