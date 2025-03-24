@@ -3,7 +3,7 @@
 echo "burnup systems:"
 
 mkdir -p {{ tapisdatadir }}/systems
-mkdir -p {{ tapisdatadir }}/systems/postgres
+mkdir -p {{ tapisdatadir }}/systems/postgres_16
 
 #MYUID=`id -u`
 #docker run -it --rm -v {{ tapisdatadir }}/systems:/systems {{ systems_util_image }} chown $MYUID /systems

@@ -3,7 +3,7 @@
 echo "burnup apps:"
 
 mkdir -p {{ tapisdatadir }}/apps
-mkdir -p {{ tapisdatadir }}/apps/postgres
+mkdir -p {{ tapisdatadir }}/apps/postgres_16
 
 python3 ../admin/util/parse_skexport -c apps -d {{ tapisdatadir }}
 

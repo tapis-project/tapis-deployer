@@ -4,7 +4,7 @@
 # Postgres password must be set in env var POSTGRES_PASSWORD
 
 if [ -z "$DB_HOST" ]; then
-  DB_HOST=apps-postgres
+  DB_HOST=apps-postgres-16
 fi
 
 DB_USER=postgres
