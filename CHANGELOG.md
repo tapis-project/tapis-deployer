@@ -20,7 +20,7 @@
 
 - [Authenticator: 1.8.0 to 1.8.2 (tapis/authenticator, tapis/authenticator-migrations, tapis/authenticator-tests)](https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md)
 - [Files: 1.8.2 to 1.8.3 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
-- [Jobs: 1.8.2 to 1.8.3 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
+- [Jobs: 1.8.2 to 1.8.4 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Security: 1.8.0 to 1.8.1 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
 - [Meta: 1.8.0 to 1.8.1 (tapis/metaapi)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
 
