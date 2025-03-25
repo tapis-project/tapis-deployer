@@ -3,7 +3,7 @@
 echo "burnup security:"
 
 mkdir -p {{ tapisdatadir }}/security
-mkdir -p {{ tapisdatadir }}/security/postgres
+mkdir -p {{ tapisdatadir }}/security/postgres_16
 
 python3 ../admin/util/parse_skexport -c security -d {{ tapisdatadir }}
 

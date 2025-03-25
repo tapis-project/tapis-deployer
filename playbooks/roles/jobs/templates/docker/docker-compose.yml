@@ -19,7 +19,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -39,17 +39,17 @@ services:
             - "{{jobs_port}}:8080"
     {% endif %}
 
-    jobs-postgres:
-        container_name: jobs-postgres
+    jobs-postgres-16:
+        container_name: jobs-postgres-16
         networks:
             - tapis
-        image: {{ jobs_postgres_image }}
+        image: postgres:16
         environment:
             - PGDATA=/pgdata/data
         env_file:
             - {{ tapisdatadir }}/jobs/env
         volumes:
-            - {{ tapisdatadir }}/jobs/postgres:/pgdata
+            - {{ tapisdatadir }}/jobs/postgres_16:/pgdata
         healthcheck:
             test: pg_isready -U postgres
     
@@ -59,18 +59,18 @@ services:
             - tapis
         image: {{ jobs_migrations_image }}
         environment:
-            - HOST=jobs-postgres
+            - HOST=jobs-postgres-16
             - PORT=5432
             - USER=postgres
         env_file:
             - {{ tapisdatadir }}/jobs/env
         depends_on:
-            jobs-postgres:
+            jobs-postgres-16:
                 condition: service_healthy
 
     # jobs-pgadmin:
     #     container_name: jobs-pgadmin
-    #     image: {{ jobs_postgres_image }}
+    #     image: postgres:16
     #     environment:
     #         - PGDATA=/pgdata/data
     #     env_file:
@@ -105,7 +105,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -129,7 +129,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -155,7 +155,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -181,7 +181,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -210,7 +210,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs

@@ -9,10 +9,14 @@ services:
         image: {{ systems_api_image }}
         networks:
             - tapis
+{% if systems_port is not none %}
+        ports: 
+            - "{{systems_port}}:8080"
+{% endif %}
         env_file:
             {{ tapisdatadir }}/systems/env
         environment:
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://systems-postgres:5432/tapissysdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://systems-postgres-16:5432/tapissysdb
             - TAPIS_SITE_ID={{ systems_service_site_id }}
             - TAPIS_TENANT_SVC_BASEURL={{ systems_service_url }}
             - TAPIS_GLOBUS_CLIENT_ID
@@ -21,14 +25,10 @@ services:
         depends_on:
             systems-migrations:
                 condition: service_completed_successfully
-{% if systems_port is not none %}
-    ports: 
-            - "{{systems_port}}:8080"
-{% endif %}
         
-    systems-postgres:
-        container_name: systems-postgres
-        image: {{ systems_postgres_image }}
+    systems-postgres-16:
+        container_name: systems-postgres-16
+        image: postgres:16
         networks:
             - tapis
         env_file:
@@ -36,13 +36,13 @@ services:
         environment:
             - PGDATA=/pgdata/data
         volumes:
-            - {{ tapisdatadir }}/systems/postgres:/pgdata
+            - {{ tapisdatadir }}/systems/postgres_16:/pgdata
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U postgres"]
 
     systems-migrations:
         container_name: systems-migrations
-        image: {{ systems_postgres_image }}
+        image: postgres:16
         networks:
             - tapis
         volumes:
@@ -51,5 +51,5 @@ services:
             {{ tapisdatadir }}/systems/env
         command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"
         depends_on:
-            systems-postgres:
+            systems-postgres-16:
                 condition: service_healthy

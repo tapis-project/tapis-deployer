@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: jobs-postgres-16
-        image: {{ jobs_postgres_image }}
+        image: postgres:16
         ports:
         - name: postgres
           containerPort: 5432
@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: jobs-pg-data
         persistentVolumeClaim:
-          claimName: {{jobs_postgres_pvc}}
+          claimName: jobs-postgres-16-vol

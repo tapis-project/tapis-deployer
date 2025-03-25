@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: notifications-postgres-16
-        image: {{ notifications_postgres_image }}
+        image: postgres:16
         ports:
         - name: postgres
           containerPort: 5432
@@ -31,4 +31,4 @@ spec:
       volumes:
       - name: notifications-pg-data
         persistentVolumeClaim:
-          claimName: {{notifications_postgres_pvc}}
+          claimName: notifications-postgres-16-vol
