@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-hub
+spec:
+  selector:
+    matchLabels:
+      app: ml-hub
+  template:
+    metadata:
+      labels:
+        app: ml-hub
+    spec:
+      containers:
+      - name: ml-hub
+        image: {{ ml_hub_models_api_image }}
+        imagePullPolicy: Always
+        ports:
+        - name: ml-hub
+          containerPort: 5001
+        - name: ml-hub-jupyter
+          containerPort: 8881
+        volumeMounts:
+        - name: ml-hub-config
+          mountPath: /home/tapis/config.json
+          subPath: ml_hub-config.json
+
+      - name: ml-hub-inference
+        image: {{ ml_hub_inference_api_image }}
+        imagePullPolicy: Always
+        ports:
+        - name: ml-hub-inference
+          containerPort: 5002
+        - name: ml-hub-inference-jupyter
+          containerPort: 8882
+        volumeMounts:
+        - name: ml-hub-config
+          mountPath: /home/tapis/config.json
+          subPath: ml-hub-config.json
+      volumes:
+      - name: ml-hub-config
+        configMap:
+          name: ml-hub-config
+
+
