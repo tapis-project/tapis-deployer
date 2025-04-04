@@ -1,0 +1,4 @@
+---
+mlhub_models_api_image: tapis/models-api:dev
+mlhub_nfs_server_image: itsthenetwork/nfs-server-alpine:latest
+mlhub_traefik_image: traefik:v3.2

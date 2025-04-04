@@ -1,0 +1,10 @@
+---
+
+
+- name: mlhub tree
+  include_role:
+    name: template-filetree
+  vars:
+    calling_rolename: mlhub
+    tree_name: mlhub
+

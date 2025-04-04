@@ -18,7 +18,7 @@ spec:
       serviceAccountName: mlhub-traefik-account
       containers:
         - name: traefik
-          image: traefik:v3.2
+          image: {{mlhub_traefik_image}}
           args:
             - --api.insecure
             - --providers.kubernetesingress
