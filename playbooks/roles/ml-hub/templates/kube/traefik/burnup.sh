@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+$here=`pwd`
+
+kubectl apply -f "$here/cr.yaml" \
+              -f "$here/service-account.yaml" \
+              -f "$here/crb.yaml" \
+              -f "$here/traefik-dynamic-config.yaml" \
+              -f "$here/deployment.yaml" \
+              -f "$here/web-service.yaml" \
+              -f "$here/dashboard-service.yaml"
