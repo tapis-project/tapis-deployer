@@ -5,3 +5,4 @@ mlhub_service_site_id: "{{ global_site_id }}"
 mlhub_service_tenant_id: admin
 mlhub_service_url: "{{ global_service_url }}"
 mlhub_tapis_dev_url: "{{ global_devtenant_url }}"
+# NFS_SERVER_COMPONENT_IP
