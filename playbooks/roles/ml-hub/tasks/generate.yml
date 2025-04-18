@@ -1,14 +1,14 @@
 ---
 
-- name: ml-hub vars
+- name: mlhub vars
   include_vars:
     file: ../defaults/images.yml
 
-- name: ml-hub tree
+- name: mlhub tree
   include_role:
     name: template-filetree
   vars:
-    calling_rolename: ml-hub
-    tree_name: ml-hub
+    calling_rolename: mlhub
+    tree_name: mlhub
 
 

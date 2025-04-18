@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#set -e
+
+here=`pwd`
+
+kubectl delete -f "$here/deployment.yaml" 
+kubectl delete -f "$here/traefik-dynamic-config.yaml"

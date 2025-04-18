@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "mlhub:"
+
+here=`pwd`
+
+cd $here/traefik
+./burndown
+
+cd $here/nfs
+./burndown
+
+cd $here/models
+./burndown 
+
+cd $here/postgres
+./burndown
+
+cd $here/inference
+./burndown
+
+cd $here/datasets
+./burndown
+
+cd $here/tarining
+./burndown
+
+cd $here

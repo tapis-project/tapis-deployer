@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo "burndown ml-hub:"
+echo "burndown mlhub:"
 
 docker compose down
