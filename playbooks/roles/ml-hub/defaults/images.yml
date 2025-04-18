@@ -1,6 +1,0 @@
-mlhub_models_api_image: tapis/models-api:1.8.0
-mlhub_inference_api_image: tapis/inference-api:1.8.0
-mlhub_util_image: tapis/ubutil2204:1.7.0
-mlhub_nfs_image: itsthenetwork/nfs-server-alpine:latest
-mlhub_traefik_image: traefik:v3.2
-

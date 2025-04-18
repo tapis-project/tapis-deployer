@@ -31,7 +31,7 @@ cd $here/inference
 cd $here/datasets
 ./burnup
 
-cd $here/tarining
+cd $here/training
 ./burnup
 
 cd $here
