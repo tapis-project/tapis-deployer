@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: systems-postgres-16-vol
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{systems_storage_class}}
+  resources:
+    requests:
+      storage: 20Gi

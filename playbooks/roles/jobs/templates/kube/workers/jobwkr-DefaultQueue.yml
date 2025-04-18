@@ -53,7 +53,7 @@ spec:
               name: tapis-jobs-secrets
               key: tapis-postgres-password
         - name: TAPIS_DB_JDBC_URL
-          value: "jdbc:postgresql://jobs-postgres:5432/tapisjobsdb"
+          value: "jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb"
         - name: TAPIS_QUEUE_HOST
           value: jobs-rabbitmq
         - name: TAPIS_QUEUE_ADMIN_USER
@@ -73,7 +73,7 @@ spec:
         - name: TAPIS_REQUEST_LOGGING_FILTER_PREFIXES
           value: "/v3/jobs"
         - name: TAPIS_AUDITING_ENABLED
-          value: "{{ global_auditing_enabled }}"
+          value: "{{ jobs_auditing_enabled }}"
         - name: JAVA_OPTS 
           value: "-Xms1g -Xmx4g"
         - name: MAIN_CLASS

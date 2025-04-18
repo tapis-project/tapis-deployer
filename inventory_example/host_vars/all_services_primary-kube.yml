@@ -19,7 +19,7 @@ global_storage_class: rbd-new
 global_primary_site_admin_tenant_base_url: https://admin.develop.tapis.io
 
 # Flag for audit log recording
-global_auditing_enabled: 'false'
+global_auditing_enabled: false
 
 # location of the nginx cert files
 proxy_nginx_cert_file: $HOME/ssl/wild.develop.tapis.io.pem

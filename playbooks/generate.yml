@@ -16,7 +16,6 @@
       path: '{{ tapisdir }}'
       state: directory
 
-
 ### tapis components
 
   - name: baseburnup role

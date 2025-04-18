@@ -6,13 +6,13 @@ networks:
     
 
 services:
-    sk-postgres:
-        container_name: sk-postgres
-        image: {{ security_postgres_image }}
+    sk-postgres-16:
+        container_name: sk-postgres-16
+        image: postgres:16
         networks:
             - tapis
         volumes:
-            - {{ tapisdatadir }}/security/postgres:/pgdata
+            - {{ tapisdatadir }}/security/postgres_16:/pgdata
         environment:
             - PGDATA=/pgdata/data
         env_file:
@@ -35,7 +35,7 @@ services:
     security-migrations:
         container_name: security-migrations
         environment:
-            - HOST=sk-postgres
+            - HOST=sk-postgres-16
             - PORT=5432 
             - USER=postgres
         image: {{ security_migrations_image }}
@@ -44,7 +44,7 @@ services:
         networks:
             - tapis
         depends_on:
-            sk-postgres:
+            sk-postgres-16:
                 condition: service_healthy
 
 
@@ -58,7 +58,7 @@ services:
             - TAPIS_SK_VAULT_ADDRESS={{ security_vault_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://sk-postgres:5432/tapissecdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://sk-postgres-16:5432/tapissecdb
             - TAPIS_REQUEST_LOGGING_FILTER_PREFIXES=/v3/security
             - TAPIS_REQUEST_LOGGING_IGNORE_SUFFIXES="/healthcheck;/ready;/hello"
             - TAPIS_LOG_DIRECTORY=/opt/tomcat/logs
@@ -68,7 +68,7 @@ services:
         networks:
             - tapis
         depends_on:
-            sk-postgres:
+            sk-postgres-16:
                 condition: service_started
             security-migrations:
                 condition: service_completed_successfully

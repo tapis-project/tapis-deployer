@@ -2,7 +2,7 @@
 
 # Migrate the db and start the service.
 kubectl apply -f ../security-kernel-config.yml
-kubectl wait --for=condition=available deploy/sk-postgres
+kubectl wait --for=condition=available deploy/sk-postgres-16
 kubectl apply -f migrate.yml 
 kubectl wait --for=condition=complete job/sk-migrate
 kubectl apply -f service.yml 

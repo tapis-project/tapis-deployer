@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jobs-postgres-16-vol
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{jobs_storage_class}}
+  resources:
+    requests:
+      storage: 20Gi

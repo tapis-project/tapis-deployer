@@ -79,7 +79,7 @@ spec:
                   key: globus_client_id
 {% endif %}
             - name: TAPIS_AUDITING_ENABLED
-              value: "{{ global_auditing_enabled }}"
+              value: "{{ files_auditing_enabled }}"
             - name: CHILD_THREAD_POOL_SIZE
               value: "20"
             - name: PARENT_THREAD_POOL_SIZE

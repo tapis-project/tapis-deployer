@@ -80,7 +80,7 @@ spec:
               name: tapis-sk-secrets
               key: tapis-postgres-password
         - name: TAPIS_DB_JDBC_URL
-          value: "jdbc:postgresql://sk-postgres:5432/tapissecdb"
+          value: "jdbc:postgresql://sk-postgres-16:5432/tapissecdb"
         - name: TAPIS_REQUEST_LOGGING_FILTER_PREFIXES
           value: "/v3/security"
         - name: TAPIS_REQUEST_LOGGING_IGNORE_SUFFIXES
