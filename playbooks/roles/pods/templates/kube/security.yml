@@ -16,7 +16,7 @@ metadata:
   name: pods-role
 rules:
 - apiGroups: [""]
-  resources: ["pods", "services", "pods/exec"]
+  resources: ["pods", "services", "pods/exec", "secrets"]
   verbs: ["list", "create", "get", "watch", "delete"]
 - apiGroups: [""]
   resources: ["pods/log"]
