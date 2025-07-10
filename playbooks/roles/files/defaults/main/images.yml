@@ -1,6 +1,6 @@
 files_api_image: tapis/tapis-files:1.9.0
 files_workers_image: tapis/tapis-files-workers:1.9.0
-files_assigner_image: tapis/tapis-files-assigner:1.8.3
+files_assigner_image: tapis/tapis-files-assigner:1.9.0
 files_postgres_image: postgres:16
 files_postgres16_image: postgres:16
 files_migrations_image: postgres:11
