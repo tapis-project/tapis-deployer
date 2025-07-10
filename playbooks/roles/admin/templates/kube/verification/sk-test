@@ -3,13 +3,10 @@
 
 #port=`kubectl get service sk-api -o json | jq ".spec.ports[].nodePort"`
 
-echo "hello"
-curl {{ admin_service_url }}/v3/security/hello
-
 echo
 
-echo "ready"
-curl {{ admin_service_url }}/v3/security/ready
+echo "readycheck"
+curl {{ admin_service_url }}/v3/security/readycheck
 
 echo
 
