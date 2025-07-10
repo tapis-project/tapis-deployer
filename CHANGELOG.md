@@ -26,7 +26,7 @@ In this release:
 - [Files: 1.8.3 to 1.9.0 (tapis/tapis-files, tapis/tapis-files-workers)](https://github.com/tapis-project/tapis-files/blob/dev/CHANGELOG.md)
 - [Globus-Proxy: 1.8.0 to 1.9.0 (tapis/globus-proxy)](https://github.com/tapis-project/globus-proxy/blob/dev/CHANGELOG.md)
 - [Jobs: 1.8.5 to 1.9.0 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
-- [Meta: 1.8.0 to 1.9.0 (tapis/metaapi, tapis-meta-rh-server)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
+- [Meta: 1.8.2 to 1.9.0 (tapis/metaapi, tapis-meta-rh-server)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
 - [Notifications: 1.8.1 to 1.9.0 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
 - [Pods: 1.8.0 to 1.9.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/dev/CHANGELOG.md)
 - [Security: 1.8.1 to 1.9.0 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
