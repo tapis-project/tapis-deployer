@@ -2,5 +2,5 @@
 
 
 - name: Check mandatory variables are defined
-- include_tasks: '{{ tapisctl_action }}.yml'
+  include_tasks: '{{ tapisctl_action }}.yml'
 
