@@ -1,5 +1,26 @@
 # Changelog 
 
+## 1.9.0
+
+This release:
+
+- ...
+
+
+## 1.8.3
+
+This release:
+
+- Contains increased testing and bug fixes in the auth stack.
+- Provides utilities for OIDC auth with ./well-known/openid-configuration endpoint.
+- Fixes issues in tokens which only lists local development endpoints in servers. Default is no validation. Services should not need to make changes.
+
+### Service Updates
+
+- [Authenticator: 1.8.2 to 1.8.3 (tapis/authenticator, tapis/authenticator-migrations, tapis/authenticator-tests)](https://github.com/tapis-project/authenticator/blob/dev/CHANGELOG.md)
+- [Tenants: 1.8.0 to 1.8.1 (tapis/tenants-api, tapis/tenants-api-migrations, tapis/tenants-api-tests)](https://github.com/tapis-project/tenants-api/blob/dev/CHANGELOG.md)
+- [Tokens: 1.8.0 to 1.8.1 (tapis/tokens-api, tapis/tokens-api-tests)](https://github.com/tapis-project/tokens-api/blob/dev/CHANGELOG.md)
+
 ## 1.8.2
 
 ### Breaking Changes for Deployer Admins

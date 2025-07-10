@@ -10,7 +10,8 @@ kubectl apply -f security.yml
 
 # Configs
 kubectl create configmap pods-config --from-file=config.json
-#kubectl create configmap pods-traefik-conf --from-file=traefik.yml
+## create empty cm so that pods can edit it later
+kubectl create configmap pods-traefik-conf --from-literal=traefik.yml=
 
 # PVC
 kubectl apply -f rabbitmq-pvc.yml
