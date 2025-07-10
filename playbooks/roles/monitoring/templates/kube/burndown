@@ -8,6 +8,7 @@ echo "monitoring:"
 # Configs
 kubectl apply -f secrets.yml 
 kubectl delete -f monitoring-config.yml
+kubectl delete -f monitor-init-user.yml
 
 # Apps
 kubectl delete -f apps
@@ -15,6 +16,7 @@ kubectl delete -f apps
 
 #Jobs
 kubectl delete -f monitor-init-user.yml
+
 
 # 1.6.3 Removed elasticsearch & kibana from install. Putting these here to shut down existing.
 #kubectl delete deploy/monitoring-elasticsearch
