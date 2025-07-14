@@ -1,8 +1,8 @@
-meta_api_image: tapis/metaapi:1.8.1
-meta_rh_server_image: tapis/tapis-meta-rh-server:1.8.0
-meta_mongo_exporter_image: tapis/mqe:1.8.0
-meta_mongo_singlenode_image: tapis/mongo-singlenode:1.8.0
-meta_mongodb_backup_image: tapis/mongodb-backup:1.8.0
-meta_mongobackup_image: tapis/mongobackup:1.8.0
+meta_api_image: tapis/metaapi:1.9.0
+meta_rh_server_image: tapis/tapis-meta-rh-server:1.9.0
+meta_mongo_exporter_image: tapis/mqe:1.9.0
+meta_mongo_singlenode_image: tapis/mongo-singlenode:1.9.0
+meta_mongodb_backup_image: tapis/mongodb-backup:1.9.0
+meta_mongobackup_image: tapis/mongobackup:1.9.0
 meta_alpine_image: alpine:3.17
-meta_util_image: tapis/ubutil2204:1.8.0
+meta_util_image: tapis/ubutil2204:1.9.0

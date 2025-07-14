@@ -20,4 +20,4 @@ kubectl apply -f service.yml
 {% endif %}
 
 kubectl apply -f api.yml 
-kubectl wait --for=condition=available deploy/sk-api
+kubectl wait --timeout=120s --for=condition=available deploy/sk-api

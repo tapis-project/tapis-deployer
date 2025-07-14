@@ -27,17 +27,3 @@ spec:
     port: 9090
     targetPort: 9090
 
----
-# Grafana Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: monitoring-grafana
-spec:
-  selector:
-    app: monitoring-grafana
-  type: NodePort
-  ports:
-  - name: monitoring-grafana
-    port: 3000
-    targetPort: 3000

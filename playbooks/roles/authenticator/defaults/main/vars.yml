@@ -1,6 +1,6 @@
 ---
 
-authenticator_service_version: 1.8.3
+authenticator_service_version: 1.9.0
 authenticator_log_level: INFO
 authenticator_show_traceback: false
 authenticator_image_pull_policy: Always
