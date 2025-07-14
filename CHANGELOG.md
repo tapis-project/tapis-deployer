@@ -17,6 +17,8 @@ In this release:
 - Support for runtime option SINGULARITY_START has been removed.
 - Security: Deprecated endpoints ready and sayHello have been removed. Use endpoint readycheck instead.
 - Jobs: Deprecated endpoints ready and sayHello have been removed. Use endpoint readycheck instead.
+- Authenticator: Slightly modified OIDC flows. Please ensure flows are still functional after update.
+- Pods: Changes to templates and combining objects.
 
 ### Service Updates
 
@@ -28,14 +30,15 @@ In this release:
 - [Jobs: 1.8.5 to 1.9.0 (tapis/jobsworker, jobsmigrate, jobsapi)](https://github.com/tapis-project/tapis-jobs/blob/dev/tapis-jobsapi/CHANGELOG.md)
 - [Meta: 1.8.2 to 1.9.0 (tapis/metaapi, tapis-meta-rh-server)](https://github.com/tapis-project/tapis-meta/blob/dev/CHANGELOG.md)
 - [Notifications: 1.8.1 to 1.9.0 (tapis/notifications, notifications-dispatcher)](https://github.com/tapis-project/tapis-notifications/blob/dev/CHANGELOG.md)
+- [PgREST: 1.8.0 to 1.9.0 (tapis/pgrest-api)](https://github.com/tapis-project/paas/blob/prod/CHANGELOG.md)
 - [Pods: 1.8.0 to 1.9.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/dev/CHANGELOG.md)
 - [Security: 1.8.1 to 1.9.0 (tapis/securitymigrate, securityadmin, securityapi, securityexport)](https://github.com/tapis-project/tapis-security/blob/dev/tapis-securityapi/CHANGELOG.md)
 - [Systems: 1.8.2 to 1.9.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
 - [Workflows: 1.8.0 to 1.9.0 (tapis/workflows-api, tapis/workflows-pipelines, tapis/workflow-engine-streams)](https://github.com/tapis-project/tapis-workflows/blob/release-1.7.0/CHANGELOG.md)
-- [Tenants: 1.8.1 to 1.9.0 (tapis/tenants-api, tapis/tenants-api-migrations, tapis/tenants-api-tests)](https://github.com/tapis-project/tenants-api/blob/dev/CHANGELOG.md)
-- [Tokens: 1.8.1 to 1.9.0 (tapis/tokens-api, tapis/tokens-api-tests)](https://github.com/tapis-project/tokens-api/blob/dev/CHANGELOG.md)
+- [Tenants: 1.8.4 to 1.9.0 (tapis/tenants-api, tapis/tenants-api-migrations, tapis/tenants-api-tests)](https://github.com/tapis-project/tenants-api/blob/dev/CHANGELOG.md)
+- [Tokens: 1.8.4 to 1.9.0 (tapis/tokens-api, tapis/tokens-api-tests)](https://github.com/tapis-project/tokens-api/blob/dev/CHANGELOG.md)
 - [TapisUI: 1.8.0 to 1.9.1 (tapis/tapisui)](https://github.com/tapis-project/tapis-ui/blob/dev/CHANGELOG.md)
-
+- [tapipy-tapisservice: 1.8.4 to 1.9.0 (tapis/flaskbase)](https://github.com/tapis-project/tapipy-tapisservice/blob/dev/CHANGELOG.md)
 
 
 ## 1.8.3
