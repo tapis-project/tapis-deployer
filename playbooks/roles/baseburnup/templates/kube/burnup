@@ -326,6 +326,10 @@ secondary_services() {
   container-registry
 {% endif %}
 
+{% if  "mlhub" in components_to_deploy %}
+  mlhub
+{% endif %}
+
 {% if  "monitoring" in components_to_deploy %}
   monitoring
 {% endif %}
