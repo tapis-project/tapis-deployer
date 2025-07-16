@@ -12,6 +12,7 @@ systems_tms_server_url: null
 systems_tms_tenant: null
 systems_tms_client_id: null
 systems_tms_allowed_tenants: null
+systems_tms_client_secret: null
 systems_heap_max: 3G
 systems_heap_min: 1G
 systems_port: 8084
