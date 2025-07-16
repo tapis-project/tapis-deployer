@@ -11,4 +11,4 @@ spec:
   storageClassName: {{ files_storage_class }}
   resources:
     requests:
-      storage: 10G
+      storage: 40G
