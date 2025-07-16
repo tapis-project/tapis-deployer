@@ -65,6 +65,8 @@ spec:
             value: {{ systems_tms_tenant }}
           - name: TAPIS_TMS_CLIENT_ID
             value: {{ systems_tms_client_id }}
+          - name: TAPIS_TMS_ALLOWED_TENANTS
+            value: {{ systems_tms_allowed_tenants }}
           - name: TAPIS_TMS_CLIENT_SECRET
             valueFrom:
               secretKeyRef:
