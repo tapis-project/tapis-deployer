@@ -1,4 +1,4 @@
 #!/bin/bash
 
-kubectl apply -f mlhub-service.yaml
+kubectl apply -f mlhub-service.yml
 
