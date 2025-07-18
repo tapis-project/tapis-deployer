@@ -2,5 +2,5 @@
 
 # Set up configmap for meta
 
-kubectl apply -f mongo-backup-claim0-pvc.yaml
-kubectl apply -f mongo-backup-deployment.yaml
+kubectl apply -f mongo-backup-claim0-pvc.yml
+kubectl apply -f mongo-backup-deployment.yml
