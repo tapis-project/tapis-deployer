@@ -1,5 +1,13 @@
 # Changelog 
 
+## 2025.09.09 
+
+In this release:
+
+- Tapis project is switching to a new date-based versioning scheme. 
+
+
+
 ## 1.9.0
 
 In this release:
