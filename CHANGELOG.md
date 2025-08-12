@@ -1,10 +1,11 @@
 # Changelog 
 
-## 2025.09.09 
+## 25.09
 
 In this release:
 
 - Tapis project is switching to a new date-based versioning scheme. 
+- [Systems: 1.9.1 to 1.9.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
 
 
 
