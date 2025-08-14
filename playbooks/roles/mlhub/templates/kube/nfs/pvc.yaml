@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: standard
+  storageClassName: {{ mlhub_storage_class }}
   resources:
     requests:
       storage: 20Gi
