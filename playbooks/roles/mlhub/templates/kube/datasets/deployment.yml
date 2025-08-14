@@ -26,8 +26,8 @@ spec:
           - name: SHARED_DATA
             value: /srv/mlub
         image: tapis/datasets-api:local
-        imagePullPolicy: Never
-        name: datasets-api
+        imagePullPolicy: Always
+        name: mlhub-datasets-api
         ports:
           - containerPort: 8000
             name: webserver

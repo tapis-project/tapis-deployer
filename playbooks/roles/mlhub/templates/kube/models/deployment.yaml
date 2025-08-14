@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: models-api-deployment
+  name: mlhub-models-api-deployment
 spec:
   selector:
     matchLabels:
@@ -27,7 +27,7 @@ spec:
               value: /srv/mlhub
           image: {{mlhub_models_api_image}}
           imagePullPolicy: Never
-          name: models-api
+          name: mlhub-models-api
           ports:
             - containerPort: 8000
               name: webserver
