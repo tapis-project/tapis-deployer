@@ -5,11 +5,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: models-api-deployment
+      app: mlhub-models-api-deployment
   template:
     metadata:
       labels:
-        app: models-api-deployment
+        app: mlhub-models-api-deployment
     spec:
       containers:
         - env:
