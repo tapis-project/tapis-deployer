@@ -26,4 +26,3 @@ cd $here/training
 ./burndown
 
 cd $here
-

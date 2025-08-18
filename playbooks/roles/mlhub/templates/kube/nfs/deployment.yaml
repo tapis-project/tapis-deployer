@@ -17,7 +17,11 @@ spec:
         command: ["sh", "-c", "mkdir -p /nfsshare/mlhub/models /nfsshare/mlhub/datasets /nfsshare/mlhub/inference /nfsshare/mlhub/training"]
       containers:
       - name: mlhub-nfs-server
+<<<<<<< HEAD
         image: {{mlhub_nfs_server_image}}
+=======
+        image: {{ mlhub_nfs_image }}
+>>>>>>> mlhub
         securityContext:
           privileged: true
         env:

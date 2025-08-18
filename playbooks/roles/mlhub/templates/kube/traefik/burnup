@@ -1,15 +1,10 @@
 #!/bin/bash
 
-set -e
+#set -e
 
 here=`pwd`
 
-# kubectl apply -f "$here/cr.yaml" \
-            #   -f "$here/service-account.yaml" \
-            #   -f "$here/crb.yaml" \
-kubectl apply -f "$here/traefik-dynamic-config.yaml" \
-              -f "$here/deployment.yaml" \
-              -f "$here/web-service.yaml" \
-              -f "$here/dashboard-service.yaml"
-kubectl apply -f mlhub-service.yaml
-
+kubectl apply -f "$here/traefik-dynamic-config.yaml" 
+kubectl apply -f "$here/deployment.yaml" 
+kubectl apply -f "$here/web-service.yaml" 
+kubectl apply -f "$here/dashboard-service.yaml"

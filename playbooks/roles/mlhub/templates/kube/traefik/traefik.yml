@@ -15,18 +15,15 @@ spec:
       labels:
         app: mlhub-web-traefik-deployment
     spec:
-      #serviceAccountName: mlhub-traefik-account
-      serviceAccountName: mlhub-serviceaccount
       containers:
         - name: traefik
           image: {{ mlhub_traefik_image }}
           args:
             - --api.insecure
-            - --providers.kubernetesingress
+            #- --providers.kubernetesingress
             - --accesslog=true
-            - --providers.file.directory=/etc/traefik
-            # - --providers.file.filename=/etc/traefik/dynamic-config.yaml
-            - --providers.kubernetesingress.disableClusterScopeResources=true
+#            - --proviiders.file.directory=/etc/traefik
+            - --providers.file.filename=/etc/traefik/dynamic-config.yaml
           ports:
             - name: web
               containerPort: 80
