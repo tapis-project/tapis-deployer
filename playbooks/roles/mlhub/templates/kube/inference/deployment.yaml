@@ -35,12 +35,3 @@ spec:
             name: webserver
         resources: {}
         tty: true
-      #   volumeMounts:
-      #       - name: nfs-server-mount
-      #         mountPath: /srv/mlhub/
-      #         subPath: inference
-      # volumes:
-      #   - name: nfs-server-mount
-      #     nfs: 
-      #       server: '{{ NFS_SERVER_COMPONENT_IP }}'
-      #       path: /
