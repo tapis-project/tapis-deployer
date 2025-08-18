@@ -41,6 +41,7 @@ components_to_deploy:
   - globus-proxy
   - jobs
   - meta
+  - mlhub
 #  - monitoring
   - notifications
 #  - pgrest
