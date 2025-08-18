@@ -1,6 +1,6 @@
 ---
 
-authenticator_service_version: 1.8.2
+authenticator_service_version: 1.9.0
 authenticator_log_level: INFO
 authenticator_show_traceback: false
 authenticator_image_pull_policy: Always
@@ -14,7 +14,3 @@ authenticator_storage_class: "{{ global_storage_class }}"
 authenticator_dev_ldap_tenant_id: dev
 authenticator_service_tenants: ["*"]
 authenticator_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
-
-
-
-

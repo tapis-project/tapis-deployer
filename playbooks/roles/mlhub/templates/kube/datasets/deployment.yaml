@@ -25,7 +25,7 @@ spec:
             value: debug
           - name: SHARED_DATA
             value: /srv/mlub
-        image: tapis/datasets-api:local
+        image: {{mlhub_datasets_api_image}}
         imagePullPolicy: Always
         name: mlhub-datasets-api
         ports:

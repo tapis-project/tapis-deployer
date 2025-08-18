@@ -11,3 +11,5 @@ kubectl apply -f "$here/traefik-dynamic-config.yaml" \
               -f "$here/deployment.yaml" \
               -f "$here/web-service.yaml" \
               -f "$here/dashboard-service.yaml"
+kubectl apply -f mlhub-service.yaml
+
