@@ -25,13 +25,8 @@ spec:
               value: debug
             - name: SHARED_DATA
               value: /srv/mlhub
-<<<<<<< HEAD
-          image: {{mlhub_models_api_image}}
-          imagePullPolicy: Never
-=======
           image: {{ mlhub_models_api_image }}
           imagePullPolicy: Always
->>>>>>> mlhub
           name: mlhub-models-api
           ports:
             - containerPort: 8000
