@@ -4,7 +4,7 @@
 
 here=`pwd`
 
-kubectl apply -f "$here/traefik-dynamic-config.yaml" 
-kubectl apply -f "$here/deployment.yaml" 
-kubectl apply -f "$here/web-service.yaml" 
-kubectl apply -f "$here/dashboard-service.yaml"
+# app
+kubectl apply -f "$here/mlhub-service.yaml"
+kubectl apply -f "$here/traefik-dynamic-config.yaml"
+kubectl apply -f "$here/traefik.yaml"

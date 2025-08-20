@@ -5,50 +5,58 @@ metadata:
 data:
   dynamic-config.yaml: |-
     http:
+      middlewares:
+        path-strip-v3:
+          stripPrefix:
+            prefixes:
+             - "/v3/mlhub"
       routers:
         dashboard:
-          rule: (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+          #rule: (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+          rule: "PathPrefix(`/v3/mlhub/dashboard`)"
+          middlewares:
+           - "path-strip-v3"
           service: api@internal
 
         models-api:
-          rule: "PathPrefix(`/v3/mlhub/models`)"
+          rule: "PathPrefix(`/v3/mlhub/models-api`)"
+          middlewares:
+           - "path-strip-v3"
           service: models-api
-        
+
         datasets-api:
-          rule: "PathPrefix(`/v3/mlhub/datasets`)"
+          rule: "PathPrefix(`/v3/mlhub/datasets-api`)"
+          middlewares:
+           - "path-strip-v3"
           service: datasets-api
 
         inference-api:
-          rule: "PathPrefix(`/v3/mlhub/inference`)"
+          rule: "PathPrefix(`/v3/mlhub/inference-api`)"
+          middlewares:
+           - "path-strip-v3"
           service: inference-api
 
         training-api:
-          rule: "PathPrefix(`/v3/mlhub/training`)"
+          rule: "PathPrefix(`/v3/mlhub/training-api`)"
+          middlewares:
+           - "path-strip-v3"
           service: training-api
 
       services:
         models-api:
           loadBalancer:
             servers:
-            - url: http://models-api-service:8000
+             - url: http://mlhub-models-api-service:8000
+            #- url: http://pods-api:8000
         datasets-api:
           loadBalancer:
             servers:
-            - url: http://datasets-api-service:8000
+             - url: http://mlhub-datasets-api-service:8000
         inference-api:
           loadBalancer:
             servers:
-            - url: http://inference-api-service:8000
+             - url: http://mlhub-inference-api-service:8000
         training-api:
           loadBalancer:
             servers:
-            - url: http://training-api-service:8000
-
-
-
-
-
-
-
-
-
+             - url: http://mlhub-training-api-service:8000

@@ -7,5 +7,7 @@ kubectl delete configmap tapis-nginx-locations
 kubectl create configmap tapis-nginx-config --from-file=nginx.conf
 kubectl create configmap tapis-nginx-locations --from-file=locations
 
+sleep 1
+
 # restart gracefully
 kubectl rollout restart deploy/tapis-nginx
