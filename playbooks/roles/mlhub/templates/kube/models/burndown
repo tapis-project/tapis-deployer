@@ -2,6 +2,6 @@
 
 set -e
 
-rm "$here/deployment.yaml.bak"
+rm "$here/deployment.yml.bak"
 
-kubectl delete -f "$here/deployment.yaml"
+kubectl delete -f "$here/deployment.yml"

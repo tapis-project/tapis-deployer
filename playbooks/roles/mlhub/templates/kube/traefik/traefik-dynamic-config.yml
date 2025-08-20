@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: traefik-dynamic-config
 data:
-  dynamic-config.yaml: |-
+  dynamic-config.yml: |-
     http:
       middlewares:
         path-strip-v3:

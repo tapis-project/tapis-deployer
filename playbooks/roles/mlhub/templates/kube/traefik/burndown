@@ -4,5 +4,5 @@ set -e
 
 here=`pwd`
 
-kubectl delete -f "$here/traefik.yaml"
-kubectl delete -f "$here/traefik-dynamic-config.yaml"
+kubectl delete -f "$here/traefik.yml"
+kubectl delete -f "$here/traefik-dynamic-config.yml"

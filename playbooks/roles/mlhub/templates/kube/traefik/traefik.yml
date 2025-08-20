@@ -30,7 +30,7 @@ spec:
             - --log.level=TRACE # TRACE|DEBUG|INFO
             #- --providers.kubernetesingress
             - --providers.file=true
-            - --providers.file.filename=/etc/traefik/dynamic-config.yaml
+            - --providers.file.filename=/etc/traefik/dynamic-config.yml
             # Default Static bits
             - --entrypoints.web.address=:80
             - --entrypoints.web.asdefault=true
@@ -39,8 +39,8 @@ spec:
               containerPort: 80
           volumeMounts:
           - name: dynamic-config
-            mountPath: /etc/traefik/dynamic-config.yaml
-            subPath: dynamic-config.yaml
+            mountPath: /etc/traefik/dynamic-config.yml
+            subPath: dynamic-config.yml
       volumes:
       - name: dynamic-config
         configMap:
