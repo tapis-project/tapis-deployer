@@ -40,8 +40,8 @@ spec:
               value: "5672"
             - name: ARTIFACT_OP_MQ_USER
               value: dev
-          image: tapis/mlhub-artifact-publisher:local
-          imagePullPolicy: Never
+          image: tapis/mlhub-artifact-publisher:dev
+          imagePullPolicy: Always
           name: artifact-publisher
           resources: {}
           tty: true
