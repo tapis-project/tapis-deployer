@@ -2,6 +2,6 @@
 
 set -e
 
-$here=`pwd`
+here=`pwd`
 
 kubectl delete -f "$here/deployment.yml"
