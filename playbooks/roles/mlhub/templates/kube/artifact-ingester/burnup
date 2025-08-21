@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+here=`pwd`
+nfsServerIp=$(kubectl get service mlhub-nfs-server-service -o jsonpath='{.spec.clusterIP}')
+nfsServerIpTemplate="\*\* NFS_SERVER_COMPONENT_IP \*\*"
+
+# Replace the template with the nfs server ip
+sed -i.bak "s|${nfsServerIpTemplate}|${nfsServerIp}|g" "$here/deployment.yml"
+rm "$here/deployment.yml.bak"
+
+kubectl apply -f "$here/deployment.yml"
+
+# Return the manifest back to the template
+sed -i.bak "s|${nfsServerIp}|${nfsServerIpTemplate}|g" "$here/deployment.yml"
+rm "$here/deployment.yml.bak"
