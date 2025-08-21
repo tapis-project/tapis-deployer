@@ -8,11 +8,11 @@ nfsServerIpTemplate="\*\* NFS_SERVER_COMPONENT_IP \*\*"
 
 # Replace the template with the nfs server ip
 sed -i.bak "s|${nfsServerIpTemplate}|${nfsServerIp}|g" "$here/deployment.yml"
-rm "$rootDir/deploy/local/minikube/deployment.yml.bak"
+rm "$here/deployment.yml.bak"
 
 kubectl apply -f "$rootDir/deploy/local/minikube/service.yml" \
     -f "$rootDir/deploy/local/minikube/deployment.yml"
 
 # Return the manifest back to the template
 sed -i.bak "s|${nfsServerIp}|${nfsServerIpTemplate}|g" "$here/deployment.yml"
-rm "$rootDir/deploy/local/minikube/deployment.yml.bak"
+rm "$here/deployment.yml.bak"
