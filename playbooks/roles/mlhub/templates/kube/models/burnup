@@ -3,7 +3,7 @@
 set -e
 
 here=`pwd`
-nfsServerIp=$2
+nfsServerIp=$1
 nfsServerIpTemplate="\*\* NFS_SERVER_COMPONENT_IP \*\*"
 
 # Replace the template with the nfs server ip

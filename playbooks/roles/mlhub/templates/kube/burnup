@@ -7,11 +7,14 @@ here=`pwd`
 # Make data dirs
 mkdir -p {{ tapisdatadir }}/mlhub
 mkdir -p {{ tapisdatadir }}/mlhub/nfs
-mkdir -p {{ tapisdatadir }}/mlhub/postgres
-mkdir -p {{ tapisdatadir }}/mlhub/datasets
-mkdir -p {{ tapisdatadir }}/mlhub/inference
 mkdir -p {{ tapisdatadir }}/mlhub/models
-mkdir -p {{ tapisdatadir }}/mlhub/training
+mkdir -p {{ tapisdatadir }}/mlhub/artifact-ingester
+mkdir -p {{ tapisdatadir }}/mlhub/artifact-publisher
+mkdir -p {{ tapisdatadir }}/mlhub/artifact-db
+mkdir -p {{ tapisdatadir }}/mlhub/artifact-mq
+# mkdir -p {{ tapisdatadir }}/mlhub/datasets
+# mkdir -p {{ tapisdatadir }}/mlhub/inference
+# mkdir -p {{ tapisdatadir }}/mlhub/training
 
 cd $here/traefik
 ./burnup
@@ -19,19 +22,21 @@ cd $here/traefik
 cd $here/nfs
 ./burnup
 
+echo "Waiting 5 seconds for nfs server to start"
+sleep 5
+
+nfsServerServiceIp=$(kubectl get service mlhub-nfs-server-service -o jsonpath='{.spec.clusterIP}')
+
 cd $here/models
-./burnup 
+./burnup $nfsServerServiceIp
 
-cd $here/postgres
-./burnup
+# cd $here/inference
+# ./burnup
 
-cd $here/inference
-./burnup
+# cd $here/datasets
+# ./burnup
 
-cd $here/datasets
-./burnup
-
-cd $here/training
-./burnup
+# cd $here/training
+# ./burnup
 
 cd $here

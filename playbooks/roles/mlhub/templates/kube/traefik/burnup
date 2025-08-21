@@ -5,6 +5,6 @@
 here=`pwd`
 
 # app
-kubectl apply -f "$here/mlhub-service.yml"
+kubectl apply -f "$here/service.yml"
 kubectl apply -f "$here/traefik-dynamic-config.yml"
 kubectl apply -f "$here/traefik.yml"
