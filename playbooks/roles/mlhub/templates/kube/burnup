@@ -1,8 +1,37 @@
 #!/bin/bash
 
+echo "mlhub:"
+
 here=`pwd`
+
+# Make data dirs
+mkdir -p {{ tapisdatadir }}/mlhub
+mkdir -p {{ tapisdatadir }}/mlhub/nfs
+mkdir -p {{ tapisdatadir }}/mlhub/postgres
+mkdir -p {{ tapisdatadir }}/mlhub/datasets
+mkdir -p {{ tapisdatadir }}/mlhub/inference
+mkdir -p {{ tapisdatadir }}/mlhub/models
+mkdir -p {{ tapisdatadir }}/mlhub/training
 
 cd $here/traefik
 ./burnup
 
+cd $here/nfs
+./burnup
 
+cd $here/models
+./burnup 
+
+cd $here/postgres
+./burnup
+
+cd $here/inference
+./burnup
+
+cd $here/datasets
+./burnup
+
+cd $here/training
+./burnup
+
+cd $here
