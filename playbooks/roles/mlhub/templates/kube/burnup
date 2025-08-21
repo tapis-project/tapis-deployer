@@ -25,10 +25,8 @@ cd $here/nfs
 echo "Waiting 5 seconds for nfs server to start"
 sleep 5
 
-nfsServerServiceIp=$(kubectl get service mlhub-nfs-server-service -o jsonpath='{.spec.clusterIP}')
-
 cd $here/models
-./burnup $nfsServerServiceIp
+./burnup
 
 # cd $here/inference
 # ./burnup

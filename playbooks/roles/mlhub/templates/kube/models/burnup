@@ -3,7 +3,8 @@
 set -e
 
 here=`pwd`
-nfsServerIp=$1
+nfsServerIp=$(kubectl get service mlhub-nfs-server-service -o jsonpath='{.spec.clusterIP}')
+
 nfsServerIpTemplate="\*\* NFS_SERVER_COMPONENT_IP \*\*"
 
 # Replace the template with the nfs server ip
