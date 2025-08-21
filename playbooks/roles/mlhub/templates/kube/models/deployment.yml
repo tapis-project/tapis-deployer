@@ -35,7 +35,7 @@ spec:
               value: debug
             - name: SHARED_DATA
               value: /srv/mlhub
-          image: tapis/models-api:local
+          image: {{ mlhub_models_api_image }}
           imagePullPolicy: Never
           name: models-api
           ports:
