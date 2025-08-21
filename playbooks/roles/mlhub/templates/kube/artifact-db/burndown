@@ -4,4 +4,4 @@ set -e
 
 $here=`pwd`
 
-kubectl delete -f "$here/deployment.yaml"
+kubectl delete -f "$here/deployment.yml"
