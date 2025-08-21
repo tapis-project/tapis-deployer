@@ -1,1 +1,9 @@
 ---
+mlhub_service_name: mlhub
+mlhub_log_level: INFO
+mlhub_service_site_id: "{{ global_site_id }}"
+mlhub_service_tenant_id: admin
+mlhub_service_url: "{{ global_service_url }}"
+mlhub_tapis_dev_url: "{{ global_devtenant_url }}"
+mlhub_storage_class: "{{ global_storage_class }}"
+# NFS_SERVER_COMPONENT_IP
