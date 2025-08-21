@@ -5,7 +5,7 @@ metadata:
     app: mlhub-artifact-publisher-deployment
   name: mlhub-artifact-publisher-deployment
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: mlhub-artifact-publisher-deployment
