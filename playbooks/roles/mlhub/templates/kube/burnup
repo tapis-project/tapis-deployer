@@ -25,6 +25,21 @@ cd $here/nfs
 echo "Waiting 5 seconds for nfs server to start"
 sleep 5
 
+cd $here/artifact-db
+./burnup
+
+cd $here/artifact-mq
+./burnup
+
+cd $here/artifact-ingester
+./burnup
+
+cd $here/artifact-publisher
+./burnup
+
+echo "Waiting 5 seconds for artifact suite to start"
+sleep 5
+
 cd $here/models
 ./burnup
 
