@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: mongodb
-          image: mongo:8
+          image: {{ mlhub_artifact_db_image }}
+          imagePullPolicy: Always
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
               value: "admin"

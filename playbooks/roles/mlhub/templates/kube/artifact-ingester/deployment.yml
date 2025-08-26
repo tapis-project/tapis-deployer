@@ -40,7 +40,7 @@ spec:
               value: "5672"
             - name: ARTIFACT_OP_MQ_USER
               value: dev
-          image: tapis/mlhub-artifact-ingester:dev
+          image: {{ mlhub_artifact_ingester_image }}
           imagePullPolicy: Always
           name: artifact-ingester
           resources: {}

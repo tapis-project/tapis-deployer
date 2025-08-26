@@ -15,7 +15,8 @@ spec:
       restartPolicy: Always
       containers:
       - name: mlhub-artifact-mq
-        image: rabbitmq:3.9.11-management
+        image: {{ mlhub_artifact_mq_image }}
+        imagePullPolicy: Always
         ports:
         - name: rabbitmq
           containerPort: 5672

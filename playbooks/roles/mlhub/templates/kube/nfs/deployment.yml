@@ -18,6 +18,7 @@ spec:
       containers:
       - name: mlhub-nfs-server
         image: {{ mlhub_nfs_server_image }}
+        imagePullPolicy: Always
         securityContext:
           privileged: true
         env:
