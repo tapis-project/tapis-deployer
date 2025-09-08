@@ -19,7 +19,7 @@ services:
 
   files-postgres:
     container_name: files-postgres
-    image: {{ files_postgres_image }}
+    image: {{ files_postgres16_image }}
     environment:
      - POSTGRES_USER=tapisfiles
      - POSTGRES_DATABASE=tapisfiles

@@ -9,7 +9,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: notifications-init-db
-        image: postgres:16
+        image: {{ notifications_postgres16_image }}
         imagePullPolicy: Always
         command: ["/tmp/notifications-init-db-sh"]
         volumeMounts:

@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: systems-postgres-16
-        image: postgres:16
+        image: {{ systems_postgres16_image }}
         ports:
         - name: postgres
           containerPort: 5432

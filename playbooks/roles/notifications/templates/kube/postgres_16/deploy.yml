@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: notifications-postgres-16
-        image: postgres:16
+        image: {{ notifications_postgres16_image }}
         ports:
         - name: postgres
           containerPort: 5432
