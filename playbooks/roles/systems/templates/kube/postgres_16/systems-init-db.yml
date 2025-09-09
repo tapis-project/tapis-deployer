@@ -9,7 +9,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: systems-init-db
-        image: postgres:16.10
+        image: {{ systems_postgres16_image }}
         imagePullPolicy: Always
         command: ["/tmp/systems-init-db-sh"]
         volumeMounts:
