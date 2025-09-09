@@ -4,7 +4,7 @@
 # Postgres password must be set in env var POSTGRES_PASSWORD
 
 if [ -z "$DB_HOST" ]; then
-  DB_HOST=notifications-postgres-16
+  DB_HOST=jobs-postgres-16
 fi
 
 if [ -z "$DB_PORT" ]; then
@@ -14,12 +14,18 @@ fi
 PSQL_CMD="psql --host=${DB_HOST} --port=${DB_PORT}"
 
 DB_USER=postgres
-DB_NAME=tapisntfdb
-export TAPIS_DB_USER=tapis_ntf
-export TAPIS_DB_SCHEMA=tapis_ntf
+DB_NAME=tapisjobsdb
+export TAPIS_DB_USER=tapis
+export TAPIS_DB_SCHEMA=tapis_jobs
+export TAPIS_OLD_SCHEMA=public
 
 if [ -z "${POSTGRES_PASSWORD}" ]; then
   echo "Please set env var POSTGRES_PASSWORD before running this script"
+  exit 1
+fi
+
+if [ -z "${TAPIS_DB_PASSWORD}" ]; then
+  echo "Please set env var TAPIS_DB_PASSWORD before running this script"
   exit 1
 fi
 
@@ -31,7 +37,6 @@ echo "SELECT 'CREATE DATABASE ${DB_NAME} ENCODING=\"UTF8\" LC_COLLATE=\"en_US.ut
   WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${DB_NAME}')\gexec" \
   | $PSQL_CMD --username=${DB_USER}
 
-
 # Run sql to create user and schema if they do not exist
 $PSQL_CMD --username=${DB_USER} --dbname=${DB_NAME} -q << EOB
 -- Create user if it does not exist
@@ -42,10 +47,27 @@ BEGIN
   RAISE NOTICE 'User already exists. User name: ${TAPIS_DB_USER}';
 END
 \$\$;
-ALTER USER ${TAPIS_DB_USER} WITH ENCRYPTED PASSWORD '${POSTGRES_PASSWORD}';
+ALTER USER ${TAPIS_DB_USER} WITH ENCRYPTED PASSWORD '${TAPIS_DB_PASSWORD}';
 GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${TAPIS_DB_USER};
 
 -- Create schema if it does not exist
 CREATE SCHEMA IF NOT EXISTS ${TAPIS_DB_SCHEMA} AUTHORIZATION ${TAPIS_DB_USER};
 ALTER ROLE ${TAPIS_DB_USER} SET search_path = '${TAPIS_DB_SCHEMA}';
+EOB
+# If tables are still in old schema move them to new schema.
+# NOTE: This will move indexes also
+$PSQL_CMD --username=${DB_USER} --dbname=${DB_NAME} -q << EOB
+DO
+\$\$DECLARE
+   p_table regclass;
+BEGIN
+   SET LOCAL search_path='${TAPIS_OLD_SCHEMA}';
+   FOR p_table IN
+      SELECT oid FROM pg_class
+      WHERE relnamespace = '${TAPIS_OLD_SCHEMA}'::regnamespace
+        AND relkind = 'r'
+   LOOP
+      EXECUTE format('ALTER TABLE %s SET SCHEMA ${TAPIS_DB_SCHEMA}', p_table);
+   END LOOP;
+END;\$\$;
 EOB

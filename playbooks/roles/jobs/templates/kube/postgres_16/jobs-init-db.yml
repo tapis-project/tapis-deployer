@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jobs-init-db
+spec:
+  ttlSecondsAfterFinished: 6000
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: jobs-init-db
+        image: postgres:16
+        imagePullPolicy: Always
+        command: ["/tmp/jobs-init-db-sh"]
+        volumeMounts:
+        - name: jobs-init-db-vol
+          mountPath: /tmp
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: postgres-password
+        - name: TAPIS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tapis-jobs-secrets
+              key: tapis-postgres-password
+      volumes:
+      - name: jobs-init-db-vol
+        configMap:
+          name: jobs-init-db-configmap
+          defaultMode: 0777
+  backoffLimit: 4
