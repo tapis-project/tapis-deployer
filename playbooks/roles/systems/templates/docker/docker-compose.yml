@@ -28,7 +28,7 @@ services:
         
     systems-postgres-16:
         container_name: systems-postgres-16
-        image: postgres:16
+        image: postgres:16.10
         networks:
             - tapis
         env_file:
@@ -42,7 +42,7 @@ services:
 
     systems-migrations:
         container_name: systems-migrations
-        image: postgres:16
+        image: postgres:16.10
         networks:
             - tapis
         volumes:
