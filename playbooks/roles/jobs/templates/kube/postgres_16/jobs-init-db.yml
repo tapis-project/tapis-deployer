@@ -26,6 +26,8 @@ spec:
             secretKeyRef:
               name: tapis-jobs-secrets
               key: tapis-postgres-password
+        - name: MONITOR_PASSWORD
+          value: 60f0c5bf8ed23120fc60
       volumes:
       - name: jobs-init-db-vol
         configMap:

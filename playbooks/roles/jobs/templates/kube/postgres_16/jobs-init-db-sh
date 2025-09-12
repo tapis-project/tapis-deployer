@@ -1,7 +1,8 @@
 #!/bin/bash
 # Script to initialize service DB using psql
 # Create database, user and schema
-# Postgres password must be set in env var POSTGRES_PASSWORD
+# Postgres password must be set in env var POSTGRES_PASSWORD and Tapis specific user password
+#   must be set in TAPIS_DB_PASSWORD
 
 if [ -z "$DB_HOST" ]; then
   DB_HOST=jobs-postgres-16
@@ -13,8 +14,8 @@ fi
 
 PSQL_CMD="psql --host=${DB_HOST} --port=${DB_PORT}"
 
-DB_USER=postgres
 DB_NAME=tapisjobsdb
+PG_DB_USER=postgres
 export TAPIS_DB_USER=tapis
 export TAPIS_DB_SCHEMA=tapis_jobs
 export TAPIS_OLD_SCHEMA=public
@@ -32,13 +33,17 @@ fi
 # Put PGPASSWORD in environment for psql to pick up
 export PGPASSWORD=${POSTGRES_PASSWORD}
 
+#
 # Run psql command to create database if it does not exist
+#
 echo "SELECT 'CREATE DATABASE ${DB_NAME} ENCODING=\"UTF8\" LC_COLLATE=\"en_US.utf8\" LC_CTYPE=\"en_US.utf8\" ' \
   WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${DB_NAME}')\gexec" \
-  | $PSQL_CMD --username=${DB_USER}
+  | $PSQL_CMD --username=${PG_DB_USER}
 
+#
 # Run sql to create user and schema if they do not exist
-$PSQL_CMD --username=${DB_USER} --dbname=${DB_NAME} -q << EOB
+#
+$PSQL_CMD --username=${PG_DB_USER} --dbname=${DB_NAME} -q << EOB
 -- Create user if it does not exist
 DO \$\$
 BEGIN
@@ -48,15 +53,22 @@ BEGIN
 END
 \$\$;
 ALTER USER ${TAPIS_DB_USER} WITH ENCRYPTED PASSWORD '${TAPIS_DB_PASSWORD}';
-GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${TAPIS_DB_USER};
 
 -- Create schema if it does not exist
 CREATE SCHEMA IF NOT EXISTS ${TAPIS_DB_SCHEMA} AUTHORIZATION ${TAPIS_DB_USER};
+EOB
+# Make sure user has full access to public and tapis_jobs schemas
+$PSQL_CMD --username=${PG_DB_USER} --dbname=${DB_NAME} -q << EOB
+GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${TAPIS_DB_USER};
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA ${TAPIS_DB_SCHEMA} TO ${TAPIS_DB_USER};
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA ${TAPIS_OLD_SCHEMA} TO ${TAPIS_DB_USER};
 ALTER ROLE ${TAPIS_DB_USER} SET search_path = '${TAPIS_DB_SCHEMA}';
 EOB
-# If tables are still in old schema move them to new schema.
-# NOTE: This will move indexes also
-$PSQL_CMD --username=${DB_USER} --dbname=${DB_NAME} -q << EOB
+#
+# If tables are still in old schema move them to new schema
+# NOTE: This will move indexes also, but enum types must be moved separately. Enum types are moved in flyway migration.
+#
+$PSQL_CMD --username=${PG_DB_USER} --dbname=${DB_NAME} -q << EOB
 DO
 \$\$DECLARE
    p_table regclass;
