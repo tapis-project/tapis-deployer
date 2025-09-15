@@ -18,7 +18,7 @@ To start up postgres and pgadmin:
 To find pgadmin port:
 ```
     kubectl get services | grep systems-pgadmin
-    systems-pgadmin        NodePort    10.102.160.197   <none>        80:30031/TCP
+    systems-pgadmin        ClusterIP    10.102.160.197   <none>        80:30031/TCP
 ```
  
 Pgadmin available at http://mykubeingress.example.com:30031
@@ -65,7 +65,7 @@ Label the pod so the debug service can find it.
 k label pod/systems-api-9d7456fc6-26wrf podname=systems-api-debug
 ```
 
-Create a service which will expose the debug port (8000) as a NodePort
+Create a service which will expose the debug port (8000) as a ClusterIP
 ```
 k create -f api/service_debug.yml
 ```
@@ -73,7 +73,7 @@ k create -f api/service_debug.yml
 Determine port for debugger, e.g.
 ```
 k get all | grep systems-api-debug
-service/systems-api-debug        NodePort    10.96.180.48     <none>        8000:32066/TCP      42s
+service/systems-api-debug        ClusterIP    10.96.180.48     <none>        8000:32066/TCP      42s
 ```
 
 jvm debugger should be able to attach to http://mykube.example.com:32066
