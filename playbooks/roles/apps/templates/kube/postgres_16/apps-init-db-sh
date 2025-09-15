@@ -49,7 +49,8 @@ CREATE SCHEMA IF NOT EXISTS ${TAPIS_DB_SCHEMA} AUTHORIZATION ${TAPIS_DB_USER};
 ALTER ROLE ${TAPIS_DB_USER} SET search_path = '${TAPIS_DB_SCHEMA}';
 EOB
 
-# this is the password :60f0c5bf8ed23120fc60
+{% if apps_monitor_password is defined and apps_monitor_password %}
+# this is the password :{{ apps_monitor_password }}
 # end
 
 ### hammock/mpackard 20210616
@@ -80,3 +81,4 @@ GRANT CONNECT ON DATABASE tapisappdb TO monitor;
 GRANT USAGE ON SCHEMA tapis_app TO monitor;
 
 EOB
+{% endif %}

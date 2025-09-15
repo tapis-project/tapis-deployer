@@ -25,7 +25,6 @@ services:
     ports: 
             - "{{apps_port}}:8080"
     {% endif %}
-        
 
     apps-postgres-16:
         container_name: apps-postgres-16

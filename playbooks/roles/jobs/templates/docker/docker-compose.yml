@@ -4,7 +4,6 @@ networks:
         name: tapis
         external: true
 
-
 services:
     jobs-api:
         container_name: jobs-api
@@ -35,15 +34,15 @@ services:
             jobs-rabbitmq:
                 condition: service_healthy
     {% if jobs_port is not none %}
-    ports: 
+    ports:
             - "{{jobs_port}}:8080"
     {% endif %}
 
     jobs-postgres-16:
         container_name: jobs-postgres-16
+        image: {{ jobs_postgres16_image }}
         networks:
             - tapis
-        image: {{ jobs_postgres16_image }}
         environment:
             - PGDATA=/pgdata/data
         env_file:
@@ -51,32 +50,22 @@ services:
         volumes:
             - {{ tapisdatadir }}/jobs/postgres_16:/pgdata
         healthcheck:
-            test: pg_isready -U postgres
-    
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+
     jobs-migrations:
-        container_name: jobs-migrations
+        container_name: jobs-migrations-16
+        image: {{ jobs_postgres16_image }}
         networks: 
             - tapis
-        image: {{ jobs_migrations_image }}
-        environment:
-            - HOST=jobs-postgres-16
-            - PORT=5432
-            - USER=postgres
         env_file:
             - {{ tapisdatadir }}/jobs/env
+        volumes:
+            - {{ tapisdatadir }}/jobs/postgres_16:/pgdata
+            - ./jobs-init-db-sh:/init-db
+        command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"
         depends_on:
             jobs-postgres-16:
                 condition: service_healthy
-
-    # jobs-pgadmin:
-    #     container_name: jobs-pgadmin
-    #     image: {{ jobs_postgres16_image }}
-    #     environment:
-    #         - PGDATA=/pgdata/data
-    #     env_file:
-    #         - {{ tapisdatadir }}/jobs/env
-    #     volumes:
-    #         - {{ tapisdatadir }}/jobs/jobs-pg-data:/pgdata
 
     jobs-rabbitmq:
         container_name: jobs-rabbitmq
