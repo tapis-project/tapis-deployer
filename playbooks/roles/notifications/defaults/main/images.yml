@@ -3,3 +3,4 @@ notifications_rabbitmq_image: rabbitmq:3.8.11-management
 notifications_util_image: tapis/ubutil2204:1.9.0
 notifications_api_image: tapis/notifications:1.9.0
 notifications_dispatcher_image: tapis/notifications-dispatcher:1.9.0
+notifications_postgres16_image: postgres:16.9

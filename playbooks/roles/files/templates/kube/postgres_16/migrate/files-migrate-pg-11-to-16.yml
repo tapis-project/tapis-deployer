@@ -9,7 +9,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: files-migrate-pg-11-to-16
-        image: postgres:16
+        image: {{ files_postgres16_image }}
         imagePullPolicy: Always
         command: ["/tmp/files-migrate-pg-11-to-16-sh-configmap", "migrate"]
         volumeMounts:

@@ -1,5 +1,22 @@
 # Changelog 
 
+## 25Q4
+
+In this release:
+
+- Tapis project is switching to a new date-based versioning scheme. 
+- [Systems: 1.9.1 to 1.9.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+
+
+### Breaking Changes for Deployer Admins
+
+- Postgres 16 database image is being explicitly set to :16.9 (previously it was just :16). If you have restarted Postgres since last update this may cause your images to be at newer than 16.9. See below for fix.
+- Old (pre-1.9.0) Postgres deployments have been removed from deployer. 
+
+Accidental Postgres update procedures:
+
+The fix for starting Postgres 16.9 is ... TBD
+
 ## 1.9.0
 
 In this release:

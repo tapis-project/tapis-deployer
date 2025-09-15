@@ -17,8 +17,8 @@ The organization of tapis-deploy/meta/backup is as follows.
 * burndown                                          #  stop automated backup container
 * burnup                                               #  start automated backup container
 * km                                                      #  pod runtime information
-* mongo-backup-claim0-pvc.yaml        #  persistent claim store for backups and logs
-* mongo-backup-deployment.yaml       #   deployment yaml for backup container
+* mongo-backup-claim0-pvc.yml        #  persistent claim store for backups and logs
+* mongo-backup-deployment.yml       #   deployment yaml for backup container
 * README.md                                      #  this file
 * pbm                                                    # dir of possible replacement candidate using Percona Backup for MongoDB
 
