@@ -4,15 +4,15 @@
 # Postgres password must be set in env var POSTGRES_PASSWORD and Tapis specific user password
 #   must be set in TAPIS_DB_PASSWORD
 
-if [ -z "$DB_HOST" ]; then
-  DB_HOST=jobs-postgres-16
+if [ -z "$TAPIS_DB_HOST" ]; then
+  TAPIS_DB_HOST=jobs-postgres-16
 fi
 
-if [ -z "$DB_PORT" ]; then
-  DB_PORT=5432
+if [ -z "$TAPIS_DB_PORT" ]; then
+  TAPIS_DB_PORT=5432
 fi
 
-PSQL_CMD="psql --host=${DB_HOST} --port=${DB_PORT}"
+PSQL_CMD="psql --host=${TAPIS_DB_HOST} --port=${TAPIS_DB_PORT}"
 
 DB_NAME=tapisjobsdb
 PG_DB_USER=postgres
@@ -65,8 +65,9 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA ${TAPIS_OLD_SCHEMA}
 ALTER ROLE ${TAPIS_DB_USER} SET search_path = '${TAPIS_DB_SCHEMA}';
 EOB
 #
-# If tables are still in old schema move them to new schema
-# NOTE: This will move indexes also, but enum types must be moved separately. Enum types are moved in flyway migration.
+# If tables are still in old schema move them to new schema and update owner
+# NOTE: This will move indexes also, but enum types must be moved separately.
+# NOTE: The flyway_schema_history table is owned by the postgres user so cannot be done as part of flyway migration.
 #
 $PSQL_CMD --username=${PG_DB_USER} --dbname=${DB_NAME} -q << EOB
 DO
@@ -80,6 +81,25 @@ BEGIN
         AND relkind = 'r'
    LOOP
       EXECUTE format('ALTER TABLE %s SET SCHEMA ${TAPIS_DB_SCHEMA}', p_table);
+      EXECUTE format('ALTER TABLE %s OWNER TO ${TAPIS_DB_USER}', p_table);
    END LOOP;
+END;\$\$;
+EOB
+#
+# Move types from the public schema to the tapis_jobs schema and update owner
+# NOTE: They are owned by the postgres user so cannot be done as part of flyway migration.
+#
+$PSQL_CMD --username=${PG_DB_USER} --dbname=${DB_NAME} -q << EOB
+DO \$\$
+DECLARE t TEXT;
+BEGIN FOR t IN
+  SELECT t.typname FROM pg_type t
+    JOIN  pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typtype = 'e' AND n.nspname = 'public'
+    AND t.typname in ('job_event_enum','job_status_enum','job_remote_outcome_enum')
+  LOOP
+    EXECUTE format('ALTER TYPE ${TAPIS_OLD_SCHEMA}.%s SET SCHEMA ${TAPIS_DB_SCHEMA}', t);
+    EXECUTE format('ALTER TYPE ${TAPIS_DB_SCHEMA}.%s OWNER TO ${TAPIS_DB_USER}', t);
+  END LOOP;
 END;\$\$;
 EOB

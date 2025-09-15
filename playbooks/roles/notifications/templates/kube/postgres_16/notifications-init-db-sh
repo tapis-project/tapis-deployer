@@ -3,15 +3,15 @@
 # Create database, user and schema
 # Postgres password must be set in env var POSTGRES_PASSWORD
 
-if [ -z "$DB_HOST" ]; then
-  DB_HOST=notifications-postgres-16
+if [ -z "$TAPIS_DB_HOST" ]; then
+  TAPIS_DB_HOST=notifications-postgres-16
 fi
 
-if [ -z "$DB_PORT" ]; then
-  DB_PORT=5432
+if [ -z "$TAPIS_DB_PORT" ]; then
+  TAPIS_DB_PORT=5432
 fi
 
-PSQL_CMD="psql --host=${DB_HOST} --port=${DB_PORT}"
+PSQL_CMD="psql --host=${TAPIS_DB_HOST} --port=${TAPIS_DB_PORT}"
 
 DB_USER=postgres
 DB_NAME=tapisntfdb
