@@ -43,7 +43,7 @@ services:
         container_name: jobs-postgres-16
         networks:
             - tapis
-        image: postgres:16
+        image: {{ jobs_postgres16_image }}
         environment:
             - PGDATA=/pgdata/data
         env_file:
@@ -70,7 +70,7 @@ services:
 
     # jobs-pgadmin:
     #     container_name: jobs-pgadmin
-    #     image: postgres:16
+    #     image: {{ jobs_postgres16_image }}
     #     environment:
     #         - PGDATA=/pgdata/data
     #     env_file:

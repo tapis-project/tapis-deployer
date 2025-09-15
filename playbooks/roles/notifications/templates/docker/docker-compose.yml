@@ -35,7 +35,7 @@ services:
     
   notifications-init-db:
     container_name: notifications-init-db
-    image: postgres:16
+    image: {{ notifications_postgres16_image }}
     command: bash -c "chmod +x /tmp/notifications-init-db-sh && /tmp/notifications-init-db-sh"
     volumes:
       - ./notifications-init-db-sh:/tmp/notifications-init-db-sh
@@ -49,7 +49,7 @@ services:
 
   notifications-postgres-16:
     container_name: notifications-postgres-16
-    image: postgres:16
+    image: {{ notifications_postgres16_image }}
     environment:
       - PGDATA=/pgdata/data
     env_file:

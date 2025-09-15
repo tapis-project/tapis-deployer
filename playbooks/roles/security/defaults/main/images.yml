@@ -3,3 +3,4 @@ security_skadminutil_image: tapis/skadminutil:1.9.0
 security_api_image: tapis/securityapi:1.9.0
 security_migrations_image: tapis/securitymigrate:1.9.0
 security_util_image: tapis/ubutil:1.9.0
+security_postgres16_image: postgres:16.9
