@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: pods-rabbitmq
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: pods-rabbitmq
   ports:
@@ -18,7 +18,7 @@ kind: Service
 metadata:
   name: pods-rabbitmq-dash
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: pods-rabbitmq
   ports:
@@ -32,7 +32,7 @@ kind: Service
 metadata:
   name: pods-postgres
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: pods-postgres
   ports:
@@ -72,7 +72,7 @@ kind: Service
 metadata:
   name: pods-traefik-dash
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: pods-traefik
   ports:

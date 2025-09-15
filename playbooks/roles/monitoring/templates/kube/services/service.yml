@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     app: monitoring-tapis-exporter
-  type: NodePort
+  type: ClusterIP
   ports:
   - name: monitoring-exporter
     port: 8000
@@ -21,7 +21,7 @@ metadata:
 spec:
   selector:    
     app: monitoring-prometheus
-  type: NodePort
+  type: ClusterIP
   ports:  
   - name: monitoring-prometheus
     port: 9090

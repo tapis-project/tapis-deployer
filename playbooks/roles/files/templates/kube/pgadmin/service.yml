@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: files-pgadmin
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: files-pgadmin
   ports:

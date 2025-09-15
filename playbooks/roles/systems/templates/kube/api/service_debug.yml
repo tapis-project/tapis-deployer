@@ -3,7 +3,7 @@ kind: Service
 metadata:  
   name: systems-api-debug
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     podname: systems-api-debug
   ports:  

@@ -17,7 +17,7 @@ kind: Service
 metadata:  
   name: restheart-debug
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     app: restheart
   ports:  
@@ -31,7 +31,7 @@ kind: Service
 metadata:  
   name: restheart-security
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     app: restheart-security
   ports:  
