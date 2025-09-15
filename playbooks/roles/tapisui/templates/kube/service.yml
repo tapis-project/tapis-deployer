@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: tapisui-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: tapisui-deployment
   ports:

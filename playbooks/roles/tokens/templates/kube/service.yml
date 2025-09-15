@@ -10,7 +10,7 @@ spec:
   - name: tokens-api
     port: 5000
     targetPort: 5000
-  type: NodePort
+  type: ClusterIP
 
 
 

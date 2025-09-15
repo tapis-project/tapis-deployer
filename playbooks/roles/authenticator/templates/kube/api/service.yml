@@ -10,6 +10,6 @@ spec:
   - name: authenticator-api
     port: 5000
     targetPort: 5000
-  type: NodePort
+  type: ClusterIP
 
 
