@@ -4,7 +4,7 @@ kind: Service
 metadata:  
   name: tenants-api
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     app: tenants-api
   ports:  

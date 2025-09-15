@@ -3,6 +3,7 @@ kind: Service
 metadata:  
   name: jobs-rabbitmq
 spec:
+  type: ClusterIP
   selector:    
     app: jobs-rabbitmq
   ports:  
@@ -19,7 +20,7 @@ kind: Service
 metadata:  
   name: jobs-rabbitmq-mgmt
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     app: jobs-rabbitmq
   ports:  

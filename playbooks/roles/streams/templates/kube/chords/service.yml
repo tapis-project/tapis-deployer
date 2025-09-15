@@ -3,7 +3,7 @@ kind: Service
 metadata:  
   name: chords-app
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     app: chords-app
   ports:  

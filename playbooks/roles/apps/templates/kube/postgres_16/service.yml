@@ -3,6 +3,7 @@ kind: Service
 metadata:  
   name: apps-postgres-16
 spec:
+  type: ClusterIP
   selector:    
     app: apps-postgres-16
   ports:  
@@ -18,7 +19,7 @@ kind: Service
 metadata:
   name: apps-pgadmin
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: apps-pgadmin
   ports:
@@ -32,7 +33,7 @@ kind: Service
 metadata:
   name: apps-postgres-external
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: apps-postgres
   ports:

@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:    
     app: registry
-  type: NodePort
+  type: ClusterIP
   ports:  
   - name: registry
     port: 5000

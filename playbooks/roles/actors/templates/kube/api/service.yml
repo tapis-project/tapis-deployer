@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: actors-nginx
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: actors-nginx
   ports:
@@ -18,7 +18,7 @@ kind: Service
 metadata:
   name: actors-mongo
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: actors-mongo
   ports:
@@ -32,7 +32,7 @@ kind: Service
 metadata:
   name: actors-rabbit
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: actors-rabbit
   ports:

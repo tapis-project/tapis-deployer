@@ -18,7 +18,7 @@ kind: Service
 metadata:
   name: systems-pgadmin
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: systems-pgadmin
   ports:

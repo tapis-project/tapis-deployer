@@ -4,7 +4,7 @@ kind: Service
 metadata:  
   name: site-router-api
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     app: site-router-api
   ports:  

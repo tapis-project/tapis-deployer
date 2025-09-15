@@ -3,7 +3,7 @@ kind: Service
 metadata:  
   name: notifications-api
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     app: notifications-api
   ports:  

@@ -3,6 +3,7 @@ kind: Service
 metadata:  
   name: notifications-postgres
 spec:
+  type: ClusterIP
   selector:    
     app: notifications-postgres
   ports:  
@@ -18,7 +19,7 @@ kind: Service
 metadata:
   name: notifications-pgadmin
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: notifications-pgadmin
   ports:
