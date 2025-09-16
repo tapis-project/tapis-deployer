@@ -1,4 +1,10 @@
 #!/bin/bash
 
-kubectl apply -f mlhub-service.yml
+#set -e
 
+here=`pwd`
+
+# app
+kubectl apply -f "$here/service.yml"
+kubectl apply -f "$here/traefik-dynamic-config.yml"
+kubectl apply -f "$here/traefik.yml"

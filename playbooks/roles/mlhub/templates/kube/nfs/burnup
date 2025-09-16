@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+here=`pwd`
+
+kubectl apply -f "$here/service.yml" \
+    -f "$here/pvc.yml" \
+    -f "$here/deployment.yml" \
+    
