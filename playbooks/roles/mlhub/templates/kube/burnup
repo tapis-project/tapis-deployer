@@ -1,8 +1,55 @@
 #!/bin/bash
 
+echo "mlhub:"
+
 here=`pwd`
+
+# Make data dirs
+mkdir -p {{ tapisdatadir }}/mlhub
+mkdir -p {{ tapisdatadir }}/mlhub/nfs
+mkdir -p {{ tapisdatadir }}/mlhub/models
+mkdir -p {{ tapisdatadir }}/mlhub/artifact-ingester
+mkdir -p {{ tapisdatadir }}/mlhub/artifact-publisher
+mkdir -p {{ tapisdatadir }}/mlhub/artifact-db
+mkdir -p {{ tapisdatadir }}/mlhub/artifact-mq
+# mkdir -p {{ tapisdatadir }}/mlhub/datasets
+# mkdir -p {{ tapisdatadir }}/mlhub/inference
+# mkdir -p {{ tapisdatadir }}/mlhub/training
 
 cd $here/traefik
 ./burnup
 
+cd $here/nfs
+./burnup
 
+echo "Waiting 5 seconds for nfs server to start"
+sleep 5
+
+cd $here/artifact-db
+./burnup
+
+cd $here/artifact-mq
+./burnup
+
+cd $here/artifact-ingester
+./burnup
+
+cd $here/artifact-publisher
+./burnup
+
+echo "Waiting 5 seconds for artifact suite to start"
+sleep 5
+
+cd $here/models
+./burnup
+
+# cd $here/inference
+# ./burnup
+
+# cd $here/datasets
+# ./burnup
+
+# cd $here/training
+# ./burnup
+
+cd $here

@@ -5,4 +5,20 @@ here=`pwd`
 cd $here/traefik
 ./burndown
 
+cd $here/nfs
+./burndown
 
+cd $here/artifact-db
+./burndown
+
+cd $here/artifact-mq
+./burndown
+
+cd $here/artifact-ingester
+./burndown
+
+cd $here/artifact-publisher
+./burndown
+
+cd $here/models
+./burndown
