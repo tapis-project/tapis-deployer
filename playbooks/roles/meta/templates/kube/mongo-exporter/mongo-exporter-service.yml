@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: mongo-exporter
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: mongo-exporter
   ports:
