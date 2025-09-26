@@ -9,7 +9,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: jobs-init-db
-        image: postgres:16
+        image: {{ jobs_postgres16_image }}
         imagePullPolicy: Always
         command: ["/tmp/jobs-init-db-sh"]
         volumeMounts:
