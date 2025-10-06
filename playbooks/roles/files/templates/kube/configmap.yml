@@ -10,9 +10,4 @@ data:
   DB_USERNAME: tapisfiles
   POSTGRES_DB: tapisfiles
   POSTGRES_USER: tapisfiles
-  RABBITMQ_DEFAULT_USER: tapisfiles
-  RABBITMQ_DEFAULT_VHOST: tapisfiles
-  RABBITMQ_HOSTNAME: {{files_rabbitmq_hostname}}
-  RABBITMQ_USERNAME: tapisfiles
-  RABBITMQ_VHOST: tapisfiles
 kind: ConfigMap

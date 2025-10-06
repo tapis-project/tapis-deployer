@@ -78,6 +78,8 @@ spec:
             configMapKeyRef:
               name: files-config
               key: globus_client_id
+        - name: DB_URL
+          value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesAPI
         - name: TAPIS_AUDITING_ENABLED
           value: "{{ files_auditing_enabled }}"
         - name: TAPIS_DB_CONNECTION_POOL_SIZE

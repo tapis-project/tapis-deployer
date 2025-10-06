@@ -56,11 +56,6 @@ spec:
                 configMapKeyRef:
                   name: files-config
                   key: site_id
-            - name: RABBITMQ_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: tapis-files-secrets
-                  key: rabbitmq-password
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -78,6 +73,8 @@ spec:
                   name: files-config
                   key: globus_client_id
 {% endif %}
+            - name: DB_URL
+              value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesWorker
             - name: TAPIS_AUDITING_ENABLED
               value: "{{ files_auditing_enabled }}"
             - name: CHILD_THREAD_POOL_SIZE
@@ -88,9 +85,12 @@ spec:
               value: "10"
             - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
               value: "5"
+            - name: TAPIS_FILES_WORKER_ACCEPTED_TRANSFER_TYPES
+              value: "TRANSFER_TYPE_PARENT, TRANSFER_TYPE_CHILD"
           image: {{ files_workers_image }}
           imagePullPolicy: Always
           name: files-workers
           stdin: true
           tty: true
+      terminationGracePeriodSeconds: 45
       restartPolicy: Always

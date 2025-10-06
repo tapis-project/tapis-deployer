@@ -3,20 +3,29 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: files-assigner
-  name: files-assigner
+    app: files-archive-workers
+  name: files-archive-workers
 spec:
-  replicas: 1
+  replicas: {{files_worker_replicas}}
   selector:
     matchLabels:
-      app: files-assigner
+      app: files-archive-workers
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: files-assigner
+        app: files-archive-workers
     spec:
+{% if files_use_topology_spread_constraints %}
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: files-archive-workers
+{% endif %}
 {% if files_node_selector is not none %}
       nodeSelector:
         exempt: "yes"
@@ -65,11 +74,23 @@ spec:
                   key: globus_client_id
 {% endif %}
             - name: DB_URL
-              value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesAssigner
-
-          image: {{ files_assigner_image }}
+              value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesArchiveWorker
+            - name: TAPIS_AUDITING_ENABLED
+              value: "{{ files_auditing_enabled }}"
+            - name: CHILD_THREAD_POOL_SIZE
+              value: "20"
+            - name: PARENT_THREAD_POOL_SIZE
+              value: "10"
+            - name: TAPIS_DB_CONNECTION_POOL_SIZE
+              value: "10"
+            - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
+              value: "5"
+            - name: TAPIS_FILES_WORKER_ACCEPTED_TRANSFER_TYPES
+              value: "TRANSFER_TYPE_ARCHIVE"
+          image: {{ files_workers_image }}
           imagePullPolicy: Always
-          name: files-assigner
+          name: files-archive-workers
           stdin: true
           tty: true
+      terminationGracePeriodSeconds: 45
       restartPolicy: Always
