@@ -18,7 +18,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobsapi
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -94,7 +94,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobsaltq
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -118,7 +118,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobsrecovery
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -144,7 +144,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobsdeadltrq
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -170,7 +170,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobseventq
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -199,7 +199,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobswrkr
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
