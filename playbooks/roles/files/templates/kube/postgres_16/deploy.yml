@@ -31,23 +31,24 @@ spec:
         - name: PGDATA
           value: "/pgdata/data"
         - name: TOKENS_SERVICE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: files-config
-              key: service_site_url
+          value: {{files_service_url}}
         - name: TENANTS_SERVICE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: files-config
-              key: service_site_url
+          value: {{files_service_url}}
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-files-secrets
               key: postgres-password
-        envFrom:
-        - configMapRef:
-            name: files-environment-vars
+        - name: DB_HOST
+          value: {{files_postgres_hostname}}
+        - name: DB_NAME
+          value: tapisfiles
+        - name: DB_USERNAME
+          value: tapisfiles
+        - name: POSTGRES_DB
+          value: tapisfiles
+        - name: POSTGRES_USER
+          value: tapisfiles
         volumeMounts:
         - mountPath: /pgdata
           name: pg-16-data

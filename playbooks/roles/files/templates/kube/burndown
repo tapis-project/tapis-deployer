@@ -21,5 +21,4 @@ cd ${here}/postgres_16
 
 cd ${here}
 
-kubectl delete -f files-config.yml
 kubectl delete -f configmap.yml

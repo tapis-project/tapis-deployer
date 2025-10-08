@@ -31,66 +31,53 @@ spec:
         exempt: "yes"
 {% endif %}
       containers:
-        - envFrom:
-            - configMapRef:
-                name: files-environment-vars
-          env:
+        env:
 {% if files_node_name == true %}
-            - name: TAPIS_LOCAL_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
+          - name: TAPIS_LOCAL_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
 {% endif %}
-            - name: TOKENS_SERVICE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: files-config
-                  key: service_site_url
-            - name: TENANTS_SERVICE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: files-config
-                  key: service_site_url
-            - name: TAPIS_SITE_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: files-config
-                  key: site_id
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: tapis-files-secrets
-                  key: postgres-password
-            - name: SERVICE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: tapis-files-secrets
-                  key: service-password
+          - name: TOKENS_SERVICE_URL
+            value: {{files_service_url}}
+          - name: TENANTS_SERVICE_URL
+            value: {{files_service_url}}
+          - name: TAPIS_SITE_ID
+            value: {{files_service_site_id}}
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: tapis-files-secrets
+                key: postgres-password
+          - name: SERVICE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: tapis-files-secrets
+                key: service-password
 {% if systems_globus_client_id is defined %}
-            - name: TAPIS_GLOBUS_CLIENT_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: files-config
-                  key: globus_client_id
+          - name: TAPIS_GLOBUS_CLIENT_ID
+            value: {{systems_globus_client_id}}
 {% endif %}
-            - name: DB_URL
-              value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesArchiveWorker
-            - name: TAPIS_AUDITING_ENABLED
-              value: "{{ files_auditing_enabled }}"
-            - name: CHILD_THREAD_POOL_SIZE
-              value: "20"
-            - name: PARENT_THREAD_POOL_SIZE
-              value: "10"
-            - name: TAPIS_DB_CONNECTION_POOL_SIZE
-              value: "10"
-            - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
-              value: "5"
-            - name: TAPIS_FILES_WORKER_ACCEPTED_TRANSFER_TYPES
-              value: "TRANSFER_TYPE_ARCHIVE"
-          image: {{ files_workers_image }}
-          imagePullPolicy: Always
-          name: files-archive-workers
-          stdin: true
-          tty: true
+          - name: DB_URL
+            value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesArchiveWorker
+          - name: TAPIS_AUDITING_ENABLED
+            value: "{{ files_auditing_enabled }}"
+          - name: CHILD_THREAD_POOL_SIZE
+            value: "20"
+          - name: PARENT_THREAD_POOL_SIZE
+            value: "10"
+          - name: TAPIS_DB_CONNECTION_POOL_SIZE
+            value: "10"
+          - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
+            value: "5"
+          - name: TAPIS_FILES_WORKER_ACCEPTED_TRANSFER_TYPES
+            value: "TRANSFER_TYPE_ARCHIVE"
+          - name: DB_USERNAME
+            value: tapisfiles
+        image: {{ files_workers_image }}
+        imagePullPolicy: Always
+        name: files-archive-workers
+        stdin: true
+        tty: true
       terminationGracePeriodSeconds: 45
       restartPolicy: Always

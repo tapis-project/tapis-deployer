@@ -9,7 +9,6 @@ mkdir -p {{ tapisdatadir }}/files/minio
 mkdir -p {{ tapisdatadir }}/files/irods
 
 kubectl apply -f configmap.yml
-kubectl apply -f files-config.yml
 
 here=`pwd`
 
