@@ -1,0 +1,16 @@
+The service database role (i.e. user) and schema are initially created when the postgres database for the Tapis
+ service is first deployed. The script containing SQL is run using a kubernetes job.
+
+In a Tapis deployment the files may be found under tapis-kube/<service_name>/postgres_16.
+The two main files involved are *<service_name>-init-db-sh* and *<service_name>-init-db.yml*.
+Burndown involves:
+  kubectl delete -f <service_name>-init-db.yml
+Burnup involves:
+  kubectl create configmap <service_name>-init-db-configmap --from-file <service_name>-init-db-sh
+  kubectl create -f <service_name>-init-db.yml
+  kubectl wait --timeout=120s --for=condition=complete job/<service_name>-init-db
+
+Each time the service starts up a flyway migration is run to bring the DB schema up to date as needed.
+This happens as part of application (SystemsApplication.java) startup.
+The calling sequence is:
+   SystemsApplication.svc.initService -> SystemsServiceImpl.dao.migrateDB() -> SystemsDaoImpl.flyway.migrate()

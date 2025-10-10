@@ -11,7 +11,7 @@ services:
         networks:
             - tapis
         environment:
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://apps-postgres-16:5432/tapisappdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://apps-postgres-16:5432/tapisappdb?ApplicationName=appapi
             - TAPIS_DB_USER=tapis_app
             - TAPIS_SITE_ID={{ apps_service_site_id }}
             - TAPIS_TENANT_SVC_BASEURL={{ apps_service_url }}
