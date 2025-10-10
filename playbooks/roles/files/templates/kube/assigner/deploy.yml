@@ -22,7 +22,7 @@ spec:
         exempt: "yes"
 {% endif %}
       containers:
-        env:
+      - env:
 {% if files_node_name == true %}
           - name: TAPIS_LOCAL_NODE_NAME
             valueFrom:
