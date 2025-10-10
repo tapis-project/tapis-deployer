@@ -2,34 +2,23 @@
 
 echo "files:"
 
-pushd ./assigner
-./burndown
-popd
+here=`pwd`
 
-pushd ./worker
+cd ${here}/assigner
 ./burndown
-popd
 
-pushd ./api
+cd ${here}/worker
 ./burndown
-popd
 
-pushd ./rabbitmq
+cd ${here}/api
 ./burndown
-popd
 
-pushd ./pgadmin
+cd ${here}/pgadmin
 ./burndown
-popd
 
-# this burndown is used only for the upgrade.  Will be removed in a future version
-pushd ./postgres
+cd ${here}/postgres_16
 ./burndown
-popd
 
-pushd ./postgres_16
-./burndown
-popd
+cd ${here}
 
-kubectl delete -f files-config.yml
 kubectl delete -f configmap.yml
