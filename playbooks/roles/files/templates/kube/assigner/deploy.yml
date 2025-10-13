@@ -53,6 +53,10 @@ spec:
             value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesAssigner
           - name: DB_USERNAME
             value: tapisfiles
+          - name: TAPIS_DB_CONNECTION_POOL_SIZE
+            value: "5"
+          - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
+            value: "2"
         image: {{ files_assigner_image }}
         imagePullPolicy: Always
         name: files-assigner
