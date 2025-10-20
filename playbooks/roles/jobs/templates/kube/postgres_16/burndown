@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Cleanup of init-db
+kubectl delete -f jobs-init-db.yml
+kubectl delete configmap jobs-init-db-configmap
+
 kubectl delete -f deploy.yml
 
 # if you want to delete postgres disk, run this:  kubectl delete -f pvc-postgres.yml

@@ -3,19 +3,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: files-workers
-  name: files-workers
+    app: files-archive-workers
+  name: files-archive-workers
 spec:
   replicas: {{files_worker_replicas}}
   selector:
     matchLabels:
-      app: files-workers
+      app: files-archive-workers
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: files-workers
+        app: files-archive-workers
     spec:
 {% if files_use_topology_spread_constraints %}
       topologySpreadConstraints:
@@ -24,7 +24,7 @@ spec:
         whenUnsatisfiable: DoNotSchedule
         labelSelector:
           matchLabels:
-            app: files-workers
+            app: files-archive-workers
 {% endif %}
 {% if files_node_selector is not none %}
       nodeSelector:
@@ -59,7 +59,7 @@ spec:
             value: {{systems_globus_client_id}}
 {% endif %}
           - name: DB_URL
-            value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesWorker
+            value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesArchiveWorker
           - name: TAPIS_AUDITING_ENABLED
             value: "{{ files_auditing_enabled }}"
           - name: CHILD_THREAD_POOL_SIZE
@@ -71,12 +71,12 @@ spec:
           - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
             value: "5"
           - name: TAPIS_FILES_WORKER_ACCEPTED_TRANSFER_TYPES
-            value: "TRANSFER_TYPE_PARENT, TRANSFER_TYPE_CHILD"
+            value: "TRANSFER_TYPE_ARCHIVE"
           - name: DB_USERNAME
             value: tapisfiles
         image: {{ files_workers_image }}
         imagePullPolicy: Always
-        name: files-workers
+        name: files-archive-workers
         stdin: true
         tty: true
       terminationGracePeriodSeconds: 45

@@ -1,3 +1,4 @@
 #!/bin/bash
 
 kubectl delete -f deploy.yml
+kubectl delete -f deploy_archive_workers.yml

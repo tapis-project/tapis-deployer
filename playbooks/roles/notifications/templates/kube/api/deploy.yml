@@ -22,7 +22,7 @@ spec:
             name: "jvm-debug"
         env:
           - name: TAPIS_DB_JDBC_URL
-            value: jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb
+            value: jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb?ApplicationName=ntfapi
           - name: TAPIS_DB_USER
             value: tapis_ntf
           - name: TAPIS_SITE_ID

@@ -32,9 +32,6 @@ spec:
         - name: "files-debug"
           containerPort: 8000
 {%  endif %}
-        envFrom:
-        - configMapRef:
-            name: files-environment-vars
         env:
 {% if files_node_name == true %}
         - name: TAPIS_LOCAL_NODE_NAME
@@ -43,25 +40,11 @@ spec:
               fieldPath: spec.nodeName
 {% endif %}
         - name: TAPIS_SITE_ID
-          valueFrom:
-            configMapKeyRef:
-              name: files-config
-              key: site_id
+          value: {{files_service_site_id}}
         - name: TOKENS_SERVICE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: files-config
-              key: service_site_url
+          value: {{files_service_url}}
         - name: TENANTS_SERVICE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: files-config
-              key: service_site_url
-        - name: RABBITMQ_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: tapis-files-secrets
-              key: rabbitmq-password
+          value: {{files_service_url}}
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -74,16 +57,17 @@ spec:
               key: service-password
 {% if systems_globus_client_id is defined %}
         - name: TAPIS_GLOBUS_CLIENT_ID
-          valueFrom:
-            configMapKeyRef:
-              name: files-config
-              key: globus_client_id
+          value: {{systems_globus_client_id}}
+        - name: DB_URL
+          value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesAPI
         - name: TAPIS_AUDITING_ENABLED
           value: "{{ files_auditing_enabled }}"
         - name: TAPIS_DB_CONNECTION_POOL_SIZE
           value: "10"
         - name: TAPIS_DB_CONNECTION_POOL_CORE_SIZE
           value: "5"
+        - name: DB_USERNAME
+          value: tapisfiles
 {% endif %}
 
       hostname: files-api
