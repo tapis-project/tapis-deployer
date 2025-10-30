@@ -21,6 +21,10 @@ kubectl apply -f pgadmin.yml
 kubectl wait --timeout=120s --for=condition=available deploy/apps-postgres-16
 
 # Initialize the DB
+# First, remove any artifacts from a previous run
+kubectl delete -f apps-init-db.yml
+kubectl delete configmap apps-init-db-configmap
+# Run the init script
 kubectl create configmap apps-init-db-configmap --from-file apps-init-db-sh
 kubectl create -f apps-init-db.yml
 kubectl wait --timeout=120s --for=condition=complete job/apps-init-db
