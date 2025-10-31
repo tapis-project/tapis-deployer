@@ -18,6 +18,7 @@ In this release:
 
 ### Service Updates
 - [Systems: 1.9.1 to 25Q4.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Jobs: 1.9.0 to 25Q4.0 (tapis/jobs)](https://github.com/tapis-project/tapis-jobs/blob/dev/CHANGELOG.md)
 - [Authenticator: 1.9.0 to 25Q4.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
 
 ## 1.9.0
