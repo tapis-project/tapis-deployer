@@ -10,7 +10,7 @@ spec:
       containers:
       # TAPIS Apps
       - name: monitor-init-user-apps
-        image: {{ monitoring_postgres_image }}
+        image: postgres:16.9
         imagePullPolicy: Always
         command: ["/tmp/monitor-init-user-sh"]
         volumeMounts:
@@ -37,7 +37,7 @@ spec:
               key: postgres-ro-password
       # TAPIS Authenticator
       - name: monitor-init-user-authenticator
-        image: {{ monitoring_postgres_image }}
+        image: postgres:16.9
         imagePullPolicy: Always
         command: ["/tmp/monitor-init-user-sh"]
         volumeMounts:
@@ -61,10 +61,10 @@ spec:
           valueFrom:
             secretKeyRef:
               name: tapis-monitoring-secrets
-              key: postgres-ro-password              
+              key: postgres-ro-password
       # TAPIS Jobs
       - name: monitor-init-user-jobs
-        image: {{ monitoring_postgres_image }}
+        image: postgres:16.9
         imagePullPolicy: Always
         command: ["/tmp/monitor-init-user-sh"]
         volumeMounts:
@@ -95,3 +95,4 @@ spec:
           name: monitor-init-user-configmap
           defaultMode: 0555
   backoffLimit: 4
+
