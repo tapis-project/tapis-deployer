@@ -5,7 +5,7 @@
 In this release:
 
 - Tapis project is switching to a new date-based versioning scheme. 
-- [Systems: 1.9.1 to 1.9.2 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+
 
 
 ### Breaking Changes for Deployer Admins
@@ -13,9 +13,13 @@ In this release:
 - Postgres 16 database image is being explicitly set to :16.9 (previously it was just :16). If you have restarted Postgres since last update this may cause your images to be at newer than 16.9. See below for fix.
 - Old (pre-1.9.0) Postgres deployments have been removed from deployer. 
 
-Accidental Postgres update procedures:
+### Breaking Changes for Service APIs
+- Authenticator: Added support for filtering tenant login by posix group in the tacc-all ldap. Make sure login flows are still functioning. DB schema has been modified to account for always allowing authorization for a client. Login will break without running DB migrations 
 
-The fix for starting Postgres 16.9 is ... TBD
+### Service Updates
+- [Systems: 1.9.1 to 25Q4.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Jobs: 1.9.0 to 25Q4.0 (tapis/jobs)](https://github.com/tapis-project/tapis-jobs/blob/dev/CHANGELOG.md)
+- [Authenticator: 1.9.0 to 25Q4.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
 
 ## 1.9.0
 
