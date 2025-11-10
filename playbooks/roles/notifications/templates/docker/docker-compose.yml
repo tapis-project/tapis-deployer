@@ -13,7 +13,7 @@ services:
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
       - TAPIS_TENANT_SVC_BASEURL={{ notifications_service_url }}
-      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb
+      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb?ApplicationName=ntfapi
       - TAPIS_DB_USER=tapis_ntf
       - TAPIS_QUEUE_HOST=notifications-rabbitmq
       - TAPIS_QUEUE_ADMIN_USER=tapis
@@ -35,7 +35,7 @@ services:
     
   notifications-init-db:
     container_name: notifications-init-db
-    image: postgres:16
+    image: {{ notifications_postgres16_image }}
     command: bash -c "chmod +x /tmp/notifications-init-db-sh && /tmp/notifications-init-db-sh"
     volumes:
       - ./notifications-init-db-sh:/tmp/notifications-init-db-sh
@@ -49,7 +49,7 @@ services:
 
   notifications-postgres-16:
     container_name: notifications-postgres-16
-    image: postgres:16
+    image: {{ notifications_postgres16_image }}
     environment:
       - PGDATA=/pgdata/data
     env_file:
@@ -82,7 +82,7 @@ services:
     environment:
       - TAPIS_SITE_ID={{ notifications_service_site_id }}
       - TAPIS_TENANT_SVC_BASEURL={{ notifications_service_url }}
-      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb
+      - TAPIS_DB_JDBC_URL=jdbc:postgresql://notifications-postgres-16:5432/tapisntfdb?ApplicationName=ntfdispatch
       - TAPIS_DB_USER=tapis_ntf
       - TAPIS_QUEUE_HOST=notifications-rabbitmq
       - TAPIS_QUEUE_ADMIN_USER=tapis

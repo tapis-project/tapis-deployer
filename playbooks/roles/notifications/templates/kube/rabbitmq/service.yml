@@ -19,7 +19,7 @@ kind: Service
 metadata:
   name: notifications-rabbitmq-mgmt
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: notifications-rabbitmq
   ports:

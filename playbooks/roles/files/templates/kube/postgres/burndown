@@ -1,8 +1,0 @@
-#!/bin/bash
-
-#remove init script and config map
-kubectl delete -f files-init-db.yml
-kubectl delete configmap files-init-db-configmap
-
-#delete postgres pod
-kubectl delete -f deploy.yml

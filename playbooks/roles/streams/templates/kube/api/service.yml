@@ -3,7 +3,7 @@ kind: Service
 metadata:  
   name: streams-api
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:    
     app: streams-api
   ports:  

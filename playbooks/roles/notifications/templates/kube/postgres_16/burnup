@@ -4,7 +4,7 @@
 kubectl apply -f pvc-postgres.yml
 
 # Start postgres and pgadmin services.
-# This establishes any externally accessible ports. E.g. pgadmin NodePort service.
+# This establishes any externally accessible ports. E.g. pgadmin ClusterIP service.
 # Typically services are not removed during burndown so the ports will remain the same.
 kubectl apply -f service.yml
 
@@ -18,6 +18,10 @@ kubectl apply -f pgadmin.yml
 kubectl wait --timeout=120s --for=condition=available deploy/notifications-postgres-16
 
 # Initialize the DB
+# First, remove any artifacts from a previous run
+kubectl delete -f notifications-init-db.yml
+kubectl delete configmap notifications-init-db-configmap
+# Run the init script
 kubectl create configmap notifications-init-db-configmap --from-file notifications-init-db-sh
 kubectl create -f notifications-init-db.yml
 kubectl wait --timeout=120s --for=condition=complete job/notifications-init-db

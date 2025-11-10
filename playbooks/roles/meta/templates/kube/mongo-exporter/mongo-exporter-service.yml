@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-exporter
+spec:
+  type: ClusterIP
+  selector:
+    app: mongo-exporter
+  ports:
+    - name: "9412"
+      port: 9412
+      targetPort: 9412
+
+

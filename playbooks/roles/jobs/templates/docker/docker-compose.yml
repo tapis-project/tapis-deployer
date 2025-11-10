@@ -4,7 +4,6 @@ networks:
         name: tapis
         external: true
 
-
 services:
     jobs-api:
         container_name: jobs-api
@@ -19,7 +18,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobsapi
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -35,15 +34,15 @@ services:
             jobs-rabbitmq:
                 condition: service_healthy
     {% if jobs_port is not none %}
-    ports: 
+    ports:
             - "{{jobs_port}}:8080"
     {% endif %}
 
     jobs-postgres-16:
         container_name: jobs-postgres-16
+        image: {{ jobs_postgres16_image }}
         networks:
             - tapis
-        image: postgres:16
         environment:
             - PGDATA=/pgdata/data
         env_file:
@@ -51,32 +50,22 @@ services:
         volumes:
             - {{ tapisdatadir }}/jobs/postgres_16:/pgdata
         healthcheck:
-            test: pg_isready -U postgres
-    
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+
     jobs-migrations:
-        container_name: jobs-migrations
+        container_name: jobs-migrations-16
+        image: {{ jobs_postgres16_image }}
         networks: 
             - tapis
-        image: {{ jobs_migrations_image }}
-        environment:
-            - HOST=jobs-postgres-16
-            - PORT=5432
-            - USER=postgres
         env_file:
             - {{ tapisdatadir }}/jobs/env
+        volumes:
+            - {{ tapisdatadir }}/jobs/postgres_16:/pgdata
+            - ./jobs-init-db-sh:/init-db
+        command: bash -c "cp /init-db /local_initdb && echo 100 && chown $(whoami) /local_initdb && echo 200 && chmod +x /local_initdb && echo 300 && /local_initdb"
         depends_on:
             jobs-postgres-16:
                 condition: service_healthy
-
-    # jobs-pgadmin:
-    #     container_name: jobs-pgadmin
-    #     image: postgres:16
-    #     environment:
-    #         - PGDATA=/pgdata/data
-    #     env_file:
-    #         - {{ tapisdatadir }}/jobs/env
-    #     volumes:
-    #         - {{ tapisdatadir }}/jobs/jobs-pg-data:/pgdata
 
     jobs-rabbitmq:
         container_name: jobs-rabbitmq
@@ -105,7 +94,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobsaltq
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -129,7 +118,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobsrecovery
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -155,7 +144,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobsdeadltrq
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -181,7 +170,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=2
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobseventq
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs
@@ -210,7 +199,7 @@ services:
             - TAPIS_TENANT_SVC_BASEURL={{ jobs_service_url }}
             - TAPIS_DB_CONNECTION_POOL_SIZE=10
             - TAPIS_DB_USER=tapis
-            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb
+            - TAPIS_DB_JDBC_URL=jdbc:postgresql://jobs-postgres-16:5432/tapisjobsdb?ApplicationName=jobswrkr
             - TAPIS_QUEUE_HOST=jobs-rabbitmq
             - TAPIS_QUEUE_ADMIN_USER=tapis
             - TAPIS_QUEUE_USER=jobs

@@ -9,21 +9,29 @@ spec:
       restartPolicy: Never
       containers:
       - name: files-init-db
-        image: postgres:16
+        image: {{ files_postgres16_image }}
         imagePullPolicy: Always
         command: ["/tmp/files-init-db-sh"]
         volumeMounts:
         - name: files-init-db-vol
           mountPath: /tmp
-        envFrom:
-        - configMapRef:
-            name: files-environment-vars
         env:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: tapis-files-secrets
               key: postgres-password
+
+        - name: DB_HOST
+          value: {{files_postgres_hostname}}
+        - name: DB_NAME
+          value: tapisfiles
+        - name: DB_USERNAME
+          value: tapisfiles
+        - name: POSTGRES_DB
+          value: tapisfiles
+        - name: POSTGRES_USER
+          value: tapisfiles
       volumes:
       - name: files-init-db-vol
         configMap:
