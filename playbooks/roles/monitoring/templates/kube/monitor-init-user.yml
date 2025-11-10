@@ -18,7 +18,7 @@ spec:
           mountPath: /tmp
         env:
         - name: DB_HOST
-          value: apps-postgres
+          value: apps-postgres-16
         - name: DB_USER
           value: postgres
         - name: DB_NAME
@@ -72,7 +72,7 @@ spec:
           mountPath: /tmp
         env:
         - name: DB_HOST
-          value: jobs-postgres
+          value: jobs-postgres-16
         - name: DB_USER
           value: postgres
         - name: DB_NAME
