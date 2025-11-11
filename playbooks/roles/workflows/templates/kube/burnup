@@ -19,7 +19,7 @@ kubectl wait --for=condition=available deploy/workflows-rabbitmq-deployment --ti
 cd $here/nfs-server
 ./burnup
 
-kubectl wait --for=condition=available deploy/workflows-nsf-server-deployment --timeout=120s
+kubectl wait --for=condition=available deploy/workflows-nfs-server-deployment --timeout=120s
 
 # workflow engine
 cd $here/engine
