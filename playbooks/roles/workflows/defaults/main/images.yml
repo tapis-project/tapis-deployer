@@ -1,6 +1,6 @@
-workflows_api_image: tapis/workflows-api:1.9.0
-workflows_pipelines_image: tapis/workflows-pipelines:1.9.0
-workflows_engine_streams_image: tapis/workflow-engine-streams:1.9.0
+workflows_api_image: tapis/workflows-api:25Q4.0
+workflows_pipelines_image: tapis/workflows-pipelines:25Q4.0
+workflows_engine_streams_image: tapis/workflow-engine-streams:25Q4.0
 workflows_mysql_image: mysql:8
 workflows_rabbitmq_image: rabbitmq:3.9.11-management
 workflows_registry_image: registry:2

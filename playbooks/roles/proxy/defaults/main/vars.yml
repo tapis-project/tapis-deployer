@@ -6,7 +6,7 @@ proxy_service_site_id: "{{ global_site_id }}"
 proxy_service_name: proxy
 proxy_primary_site_admin_tenant_base_url: "{{ global_primary_site_admin_tenant_base_url }}"
 proxy_site_router_pvc: site-router-redis-vol01
-proxy_site_router_api_version: 1.9.0
+proxy_site_router_api_version: 25Q4.0
 proxy_storage_class: "{{ global_storage_class }}"
 proxy_nginx_cert_file: $HOME/cert.pem
 proxy_nginx_cert_key: $HOME/cert.key

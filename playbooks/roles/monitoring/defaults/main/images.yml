@@ -1,4 +1,4 @@
-monitoring_tapis_exporter_image: tapis/exporter:1.9.0
+monitoring_tapis_exporter_image: tapis/exporter:25Q4.0
 monitoring_alpine_image: alpine:3.6
 monitoring_postgres_image: postgres:16.9
 monitoring_elasticsearch_image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
@@ -6,5 +6,4 @@ monitoring_kibana_image: docker.elastic.co/kibana/kibana:7.17.9
 monitoring_grafana_image: grafana/grafana:8.5.5
 monitoring_prometheus_image: prom/prometheus:v2.38.0
 monitoring_thanos_image: quay.io/thanos/thanos:v0.8.0
-monitoring_util_image: tapis/ubutil2204:1.9.0
-monitoring_postgres_image: bitnami/postgresql:14
+monitoring_util_image: tapis/ubutil2204:25Q4.0

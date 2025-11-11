@@ -1,1 +1,1 @@
-globus_proxy_api_image: tapis/globus-proxy:1.9.0
+globus_proxy_api_image: tapis/globus-proxy:25Q4.0
