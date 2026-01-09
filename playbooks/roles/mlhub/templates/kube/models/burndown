@@ -5,3 +5,4 @@ set -e
 here=`pwd`
 
 kubectl delete -f "$here/deployment.yml"
+kubectl delete -f "$here/tapis-deployment-strategies-cm.yaml"
