@@ -4,7 +4,13 @@
 
 In this release:
 
-- # TODO !!! 
+- # TODO!!! 
+
+## 25Q4
+
+In this release:
+
+- Tapis project is switching to a new date-based versioning scheme. 
 
 
 
@@ -17,9 +23,9 @@ In this release:
 - Authenticator: Added support for filtering tenant login by posix group in the tacc-all ldap. Make sure login flows are still functioning. DB schema has been modified to account for always allowing authorization for a client. Login will break without running DB migrations 
 
 ### Service Updates
-- [Systems: 1.9.1 to 26Q1.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
-- [Jobs: 1.9.0 to 26Q1.0 (tapis/jobs)](https://github.com/tapis-project/tapis-jobs/blob/dev/CHANGELOG.md)
-- [Authenticator: 1.9.0 to 26Q1.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
+- [Systems: 1.9.1 to 25Q4.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Jobs: 1.9.0 to 25Q4.0 (tapis/jobs)](https://github.com/tapis-project/tapis-jobs/blob/dev/CHANGELOG.md)
+- [Authenticator: 1.9.0 to 25Q4.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/staging/CHANGELOG.md)
 
 ## 1.9.0
 
