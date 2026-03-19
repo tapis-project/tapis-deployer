@@ -125,6 +125,11 @@ meta(){
   ./burnup
 }
 
+mlhub(){
+  cd $here/mlhub
+  ./burnup
+}
+
 monitoring(){
   cd $here/monitoring
   ./burnup

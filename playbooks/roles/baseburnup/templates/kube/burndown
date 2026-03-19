@@ -54,6 +54,11 @@ meta(){
   ./burndown
 }
 
+mlhub(){
+  cd $here/mlhub
+  ./burndown
+}
+
 monitoring(){
   cd $here/monitoring
   ./burndown
