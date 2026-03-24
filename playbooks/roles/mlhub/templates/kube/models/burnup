@@ -11,6 +11,8 @@ nfsServerIpTemplate="\*\* NFS_SERVER_COMPONENT_IP \*\*"
 sed -i.bak "s|${nfsServerIpTemplate}|${nfsServerIp}|g" "$here/deployment.yml"
 rm "$here/deployment.yml.bak"
 
+kubectl apply -f "$here/tapis-deployment-strategies-cm.yaml"
+
 kubectl apply -f "$here/service.yml" \
     -f "$here/deployment.yml"
 

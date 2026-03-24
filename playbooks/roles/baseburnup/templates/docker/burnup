@@ -120,8 +120,14 @@ burnup_or_exit actors
 burnup_or_exit globus-proxy
 {% endif %}
 
+# meta
 {% if "meta" in components_to_deploy %}
 burnup_or_exit meta
+{% endif %}
+
+# mlhub
+{% if "mlhub" in compoennts_to_deploy %}
+burnup_or_exit mlhub
 {% endif %}
 
 # monitoring
