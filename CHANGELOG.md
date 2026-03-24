@@ -4,15 +4,37 @@
 
 In this release:
 
-- # TODO!!! 
+- Systems: Adds support for new listType values: SHARED_DIRECT, READ_PERM, MINE and defining *schedulerOptions* as part of a *LogicalQueue*
+- Apps: Several bug fixes
+- Jobs: Support for merging of *schedulerOptions* defined in a system *logicalQueue* and logging improvements.
+- Files: Improved handling of connection failures during file transfers.
+- Authenticator: Added support for filtering tenant login by posix group.
+- Pods: Large migration to new volume_mount nomenclature.
+
+### Breaking Changes for Deployer Admins
+
+- Note that you must be at Tapis Deployer 25Q4 before moving to 26Q1. Database changes to several postgres databases are assumed to have been done, so if you are still on pre-25Q4, you must do the upgrade to 25Q4 first.
+
+### Breaking Changes for Service APIs
+- Authenticator: Added support for filtering tenant login by posix group in the tacc-all ldap. Make sure login flows are still functioning. DB schema has been modified to account for always allowing authorization for a client. Login will break without running DB migrations
+- Pods: Large migration to new volume_mount nomenclature. Migrations take care of this automatically, but change user requests to match and be aware
+
+### Service Updates
+- [Systems: 25Q4.0 to 26Q1.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Jobs: 25Q4.0 to 26Q1.0 (tapis/jobs)](https://github.com/tapis-project/tapis-jobs/blob/dev/CHANGELOG.md)
+- [Authenticator: 25Q4.0 to 26Q1.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
+- [TapisUI: 25Q4.0 to 26Q1.0 (tapis/tapisui)](https://github.com/tapis-project/tapis-ui/blob/main/CHANGELOG.md)
+- [Tokens: 25Q4.0 to 26Q1.0 (tapis/tokens-api, tapis/tokens-api-tests)](https://github.com/tapis-project/tokens-api/blob/prod/CHANGELOG.md)
+- [Tenants: 25Q4.0 to 26Q1.0 (tapis/tenants-api, tapis/tenants-api-migrations, tapis/tenants-api-tests)](https://github.com/tapis-project/tenants-api/blob/prod/CHANGELOG.md)
+- [Pods: 25Q4.0 to 26Q1.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md)
+- [Abaco/Actors: 25Q4.0 to 26Q1.0 (abaco/core-v3, abaco/nginxk8s)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md)
+- [PgREST: 25Q4.0 to 26Q1.0 (tapis/pgrest-api)](https://github.com/tapis-project/paas/blob/prod/CHANGELOG.md)
 
 ## 25Q4
 
 In this release:
 
 - Tapis project is switching to a new date-based versioning scheme. 
-
-
 
 ### Breaking Changes for Deployer Admins
 
