@@ -1,24 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-here=`pwd`
+set -e
 
-cd $here/traefik
-./burndown
+here=$(pwd)
 
-cd $here/nfs
-./burndown
+cd "$here/traefik"
+./burndown.sh
 
-cd $here/artifact-db
-./burndown
+cd "$here/nfs"
+./burndown.sh
 
-cd $here/artifact-mq
-./burndown
+cd "$here/mongo"
+./burndown.sh
 
-cd $here/artifact-ingester
-./burndown
+cd "$here/rabbit"
+./burndown.sh
 
-cd $here/artifact-publisher
-./burndown
+cd "$here/artifact-ingester"
+./burndown.sh
 
-cd $here/models
-./burndown
+cd "$here/artifact-publisher"
+./burndown.sh
+
+cd "$here/models"
+./burndown.sh

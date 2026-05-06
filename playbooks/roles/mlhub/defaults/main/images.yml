@@ -1,11 +1,28 @@
 ---
-mlhub_models_api_image: tapis/models-api:dev
-mlhub_datasets_api_image: tapis/datasets-api:dev
-mlhub_inference_api_image: tapis/inference-api:dev
-mlhub_training_api_image: tapis/training-api:dev
-mlhub_nfs_server_image: itsthenetwork/nfs-server-alpine:latest
-mlhub_traefik_image: traefik:v3.2
+# APIs
+mlhub_models_api_image: tapis/mlhub-models-api:dev
+mlhub_datasets_api_image: tapis/mlhub-datasets-api:dev
+mlhub_deployments_api_image: tapis/mlhub-deployments-api:dev
+mlhub_agents_api_image: tapis/mlhub-agents-api:dev
+
+# Workers
 mlhub_artifact_ingester_image: tapis/mlhub-artifact-ingester:dev
 mlhub_artifact_publisher_image: tapis/mlhub-artifact-publisher:dev
-mlhub_artifact_db_image: mongo:8.0.13
-mlhub_artifact_mq_image: rabbitmq:3.9.11-management
+mlhub_model_deployment_controller_image: tapis/mlhub-model-deployment-controller:dev
+
+# Migrations
+mlhub_federated_identity_migrator_image: tapis/mlhub-federated-identities-migrator:dev
+mlhub_models_migrator_image: tapis/mlhub-models-migrator:dev
+mlhub_principals_migrator_image: tapis/mlhub-principals-migrator:dev
+
+# Infra
+mlhub_rabbit_image: rabbitmq:3.9.11-management                  # Message broker
+mlhub_mongo_image: mongo:8.0.13                                 # Mongo
+mlhub_mongo_init_container_image: busybox:1.36                  # Mongo keyfile initializer
+mlhub_mongo_sidecar_image: rtsp/mongosh:latest                        # Mongo initializing sidecar
+mlhub_nfs_server_image: itsthenetwork/nfs-server-alpine:latest  # Network file server
+mlhub_traefik_image: traefik:v3.2                               # Reverse proxy
+
+# ETL
+mlhub_hf_etl_extract_image: tapis/mlhub-hf-model-etl-extract:dev
+mlhub_hf_etl_transform_load: tapis/mlhub-hf-model-etl-transform-load:dev

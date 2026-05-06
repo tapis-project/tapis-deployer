@@ -126,7 +126,7 @@ burnup_or_exit meta
 {% endif %}
 
 # mlhub
-{% if "mlhub" in compoennts_to_deploy %}
+{% if "mlhub" in components_to_deploy %}
 burnup_or_exit mlhub
 {% endif %}
 
