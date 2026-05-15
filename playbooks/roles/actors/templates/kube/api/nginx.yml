@@ -14,14 +14,14 @@ spec:
     spec:
       containers:
       - name: actors-nginx
-        image: {{ actors_nginxk8s_image }}
+        image: {{ proxy_nginx_image }}
         imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 80 
         volumeMounts:
         - name: actors-nginx-config
-          mountPath: /etc/nginx/sites-enabled/flask-project
+          mountPath: /etc/nginx/conf.d/abaco.conf
           subPath: flask-project
       volumes:
       - name: actors-nginx-config
