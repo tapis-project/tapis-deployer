@@ -66,11 +66,11 @@ services:
 
     actors-nginx:
         container_name: actors-nginx
-        image: {{ actors_nginx_image }}
+        image: {{ proxy_nginx_image }}
         networks:
             - tapis
         volumes:
-            - ./nginx.conf:/etc/nginx/conf/nginx.conf
+            - ./nginx.conf:/etc/nginx/conf/abaco.conf
         restart: always
         depends_on:
             actors-mongo:
