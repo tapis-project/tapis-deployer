@@ -14,6 +14,7 @@ In this release:
 ### Breaking Changes for Deployer Admins
 
 - Note that you must be at Tapis Deployer 25Q4 before moving to 26Q1. Database changes to several postgres databases are assumed to have been done, so if you are still on pre-25Q4, you must do the upgrade to 25Q4 first.
+- The systems service must run a kubernetes job to initialize the systems service credential metadata. The readme for this process can be found in the [systems release readme](https://github.com/tapis-project/tapis-systems/blob/dev/release/credinfoinitjob/README_credinfoinitjob).
 
 ### Breaking Changes for Service APIs
 - Authenticator: Added support for filtering tenant login by posix group in the tacc-all ldap. Make sure login flows are still functioning. DB schema has been modified to account for always allowing authorization for a client. Login will break without running DB migrations
