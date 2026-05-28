@@ -2,7 +2,7 @@
 
 set -e
 
-mongoSecretsDir=~/mlhub
+mongoSecretsDir="{{ tapisdatadir }}/mlhub/mongo"
 mongoKeyfileFilename=mongo-keyfile
 mongoKeyfilePath="$mongoSecretsDir/$mongoKeyfileFilename"
 
