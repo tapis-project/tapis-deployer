@@ -17,62 +17,144 @@ data:
         location /docs {
             root /;
         }
-    
+
+        #proxy_hide_header 'Access-Control-Allow-Origin';
+        #proxy_hide_header 'Access-Control-Allow-Methods';
+        #proxy_hide_header 'Access-Control-Allow-Headers';
+        #proxy_hide_header 'Access-Control-Allow-Credentials';
+
         location ~* ^/v3/actors/admin(.*) {
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' 'http://localhost:3000' always;
+                add_header 'Access-Control-Allow-Credentials' 'false' always;
+                add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Accept, Content-Type, Authorization, x-tapis-token' always;
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
             proxy_pass http://actors-admin.{{actors_kube_domain}}:5000/actors/admin$1$is_args$args;
             proxy_set_header Host $host;
+            proxy_pass_request_headers on;
         }
     
         location ~* ^/v3/actors/(.*)/messages(.*) {
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' 'http://localhost:3000' always;
+                add_header 'Access-Control-Allow-Credentials' 'false' always;
+                add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Accept, Content-Type, Authorization, x-tapis-token' always;
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
             proxy_pass http://actors-mes.{{actors_kube_domain}}:5000/actors/$1/messages$is_args$args;
             proxy_set_header Host $host;
+            proxy_pass_request_headers on;
         }
     
         location ~ ^/v3/actors/search/(.*) {
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' 'http://localhost:3000' always;
+                add_header 'Access-Control-Allow-Credentials' 'false' always;
+                add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Accept, Content-Type, Authorization, x-tapis-token' always;
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
             proxy_pass http://actors-reg.{{actors_kube_domain}}:5000/actors/search/$1$is_args$args;
             proxy_set_header Host $host;
+            proxy_pass_request_headers on;
         }
     
         location ~ /v3/actors/(.*)/workers(.*) {
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' 'http://localhost:3000' always;
+                add_header 'Access-Control-Allow-Credentials' 'false' always;
+                add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Accept, Content-Type, Authorization, x-tapis-token' always;
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
             proxy_pass http://actors-admin.{{actors_kube_domain}}:5000/actors/$1/workers$2$is_args$args;
             proxy_set_header Host $host;
+            proxy_pass_request_headers on;
         }
     
         location ~ /v3/actors/aliases/(.*)/permissions {
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' 'http://localhost:3000' always;
+                add_header 'Access-Control-Allow-Credentials' 'false' always;
+                add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Accept, Content-Type, Authorization, x-tapis-token' always;
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
             proxy_pass http://actors-admin.{{actors_kube_domain}}:5000/actors/aliases/$1/permissions$is_args$args;
             proxy_set_header Host $host;
+            proxy_pass_request_headers on;
         }
     
         location ~ /v3/actors/(.*)/permissions {
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' 'http://localhost:3000' always;
+                add_header 'Access-Control-Allow-Credentials' 'false' always;
+                add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Accept, Content-Type, Authorization, x-tapis-token' always;
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
             proxy_pass http://actors-admin.{{actors_kube_domain}}:5000/actors/$1/permissions$is_args$args;
             proxy_set_header Host $host;
+            proxy_pass_request_headers on;
         }
     
         location ~ ^/v3/actors(.*) {
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' 'http://localhost:3000' always;
+                add_header 'Access-Control-Allow-Credentials' 'false' always;
+                add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Accept, Content-Type, Authorization, x-tapis-token' always;
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain; charset=utf-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
             proxy_pass http://actors-reg.{{actors_kube_domain}}:5000/actors$1$is_args$args;
             proxy_set_header Host $host;
+            proxy_pass_request_headers on;
         }
     
-        # custom 400 errors:
-        error_page 404  /404.json;
-        location /404.json{
-            root json;
+        # custom 40x errors:
+        error_page 404 /404.json;
+        location /404.json {
+            return 404 '{"status": "error", "message": "Invalid request: the requested URL is not an Abaco endpoint.", "version": "unknown", "result": null}';
         }
-    
-        error_page 400 401 402 403 405  /40x.json;
-        location /40x.json{
-            root json;
+
+        error_page 400 401 402 403 405 /40x.json;
+        location /40x.json {
+            return 400 '{"status": "error", "message": "Invalid request: The Abaco service does not know how to fulfill the request.", "version": "unknown", "result": null}';
         }
-    
-        # custom 500 errors:
-        error_page 502  /502.json;
-        location /502.json{
-            root json;
+
+        # custom 50x errors:
+        error_page 502 /502.json;
+        location /502.json {
+            return 502 '{"status": "error", "message": "Timeout error waiting on Abaco service response. The server may be busy or overloaded.", "version": "unknown", "result": null}';
         }
-    
+
         error_page 500 501 503 504 /50x.json;
-        location /50x.json{
-            root json;
+        location /50x.json {
+            return 500 '{"status": "error", "message": "Unable to parse Abaco service response. The server may be misconfigured or overloaded.", "version": "unknown", "result": null}';
         }
     
     }
