@@ -6,7 +6,7 @@ echo "mlhub:"
 
 here=$(pwd)
 
-overlay=$1
+overlay="{{ mlhub_env }}"
 
 cd "$here/traefik"
 ./burnup.sh "$overlay"
