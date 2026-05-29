@@ -58,6 +58,7 @@ spec:
 {% if systems_globus_client_id is defined %}
         - name: TAPIS_GLOBUS_CLIENT_ID
           value: {{systems_globus_client_id}}
+{% endif %}
         - name: DB_URL
           value: jdbc:postgresql://{{files_postgres_hostname}}:5432/tapisfiles?ApplicationName=FilesAPI
         - name: TAPIS_AUDITING_ENABLED
@@ -68,7 +69,6 @@ spec:
           value: "5"
         - name: DB_USERNAME
           value: tapisfiles
-{% endif %}
 
       hostname: files-api
       restartPolicy: Always
