@@ -144,8 +144,8 @@ spec:
         - name: mongo-keyfile-writable
           emptyDir: {}
   persistentVolumeClaimRetentionPolicy:
-    whenDeleted: Delete
-    whenScaled: Delete 
+    whenDeleted: Retain
+    whenScaled: Retain 
   volumeClaimTemplates:
     - metadata:
         name: mongodb-data
