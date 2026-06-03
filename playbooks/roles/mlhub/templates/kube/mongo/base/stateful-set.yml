@@ -145,10 +145,12 @@ spec:
           emptyDir: {}
   persistentVolumeClaimRetentionPolicy:
     whenDeleted: Retain
-    whenScaled: Retain 
+    whenScaled: Retain
   volumeClaimTemplates:
     - metadata:
         name: mongodb-data
       spec:
         accessModes: [ "ReadWriteOnce" ]
-        resources: {}
+        resources:
+          requests:
+            storage: 20Gi

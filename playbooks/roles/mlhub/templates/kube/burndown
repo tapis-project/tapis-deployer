@@ -4,23 +4,25 @@ set -e
 
 here=$(pwd)
 
+overlay="{{ mlhub_env }}"
+
 cd "$here/traefik"
-./burndown.sh
+./burndown.sh "$overlay"
 
 cd "$here/nfs"
-./burndown.sh
+./burndown.sh "$overlay"
 
 cd "$here/mongo"
-./burndown.sh
+./burndown.sh "$overlay"
 
 cd "$here/rabbit"
-./burndown.sh
+./burndown.sh "$overlay"
 
 cd "$here/artifact-ingester"
-./burndown.sh
+./burndown.sh "$overlay"
 
 cd "$here/artifact-publisher"
-./burndown.sh
+./burndown.sh "$overlay"
 
 cd "$here/models"
-./burndown.sh
+./burndown.sh "$overlay"
