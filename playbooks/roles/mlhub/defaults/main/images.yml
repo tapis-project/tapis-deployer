@@ -1,11 +1,28 @@
 ---
-mlhub_models_api_image: tapis/models-api:dev
-mlhub_datasets_api_image: tapis/datasets-api:dev
-mlhub_inference_api_image: tapis/inference-api:dev
-mlhub_training_api_image: tapis/training-api:dev
-mlhub_nfs_server_image: itsthenetwork/nfs-server-alpine:latest
-mlhub_traefik_image: traefik:v3.2
-mlhub_artifact_ingester_image: tapis/mlhub-artifact-ingester:dev
-mlhub_artifact_publisher_image: tapis/mlhub-artifact-publisher:dev
-mlhub_artifact_db_image: mongo:8.0.13
-mlhub_artifact_mq_image: rabbitmq:3.9.11-management
+# APIs
+mlhub_models_api_image: tapis/mlhub-models-api:26Q2.0
+mlhub_datasets_api_image: tapis/mlhub-datasets-api:26Q2.0
+mlhub_deployments_api_image: tapis/mlhub-deployments-api:26Q2.0
+mlhub_agents_api_image: tapis/mlhub-agents-api:26Q2.0
+
+# Workers
+mlhub_artifact_ingester_image: tapis/mlhub-artifact-ingester:26Q2.0
+mlhub_artifact_publisher_image: tapis/mlhub-artifact-publisher:26Q2.0
+mlhub_model_deployment_controller_image: tapis/mlhub-model-deployment-controller:26Q2.0
+
+# Migrations
+mlhub_federated_identity_migrator_image: tapis/mlhub-federated-identities-migrator:26Q2.0
+mlhub_models_migrator_image: tapis/mlhub-models-migrator:26Q2.0
+mlhub_principals_migrator_image: tapis/mlhub-principals-migrator:26Q2.0
+
+# Infra
+mlhub_rabbit_image: rabbitmq:3.9.11-management                  # Message broker
+mlhub_mongo_image: mongo:8.0.13                                 # Mongo
+mlhub_mongo_init_container_image: busybox:1.36                  # Mongo keyfile initializer
+mlhub_mongo_sidecar_image: rtsp/mongosh:2.8.2                   # Mongo initializing sidecar - sha256:77f11e6c30695c7b32041c76b9bf08b2272927884c7329efd46c4dfde82dd502
+mlhub_nfs_server_image: itsthenetwork/nfs-server-alpine:12      # Network file server
+mlhub_traefik_image: traefik:v3.2                               # Reverse proxy
+
+# ETL
+mlhub_hf_etl_extract_image: tapis/mlhub-hf-model-etl-extract:26Q2.0
+mlhub_hf_etl_transform_load: tapis/mlhub-hf-model-etl-transform-load:26Q2.0

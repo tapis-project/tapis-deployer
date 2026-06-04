@@ -1,24 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-here=`pwd`
+set -e
 
-cd $here/traefik
-./burndown
+here=$(pwd)
 
-cd $here/nfs
-./burndown
+overlay="{{ mlhub_env }}"
 
-cd $here/artifact-db
-./burndown
+cd "$here/traefik"
+./burndown.sh "$overlay"
 
-cd $here/artifact-mq
-./burndown
+cd "$here/nfs"
+./burndown.sh "$overlay"
 
-cd $here/artifact-ingester
-./burndown
+cd "$here/mongo"
+./burndown.sh "$overlay"
 
-cd $here/artifact-publisher
-./burndown
+cd "$here/rabbit"
+./burndown.sh "$overlay"
 
-cd $here/models
-./burndown
+cd "$here/artifact-ingester"
+./burndown.sh "$overlay"
+
+cd "$here/artifact-publisher"
+./burndown.sh "$overlay"
+
+cd "$here/models"
+./burndown.sh "$overlay"
