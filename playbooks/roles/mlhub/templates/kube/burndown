@@ -24,3 +24,6 @@ cd "$here/artifact-publisher"
 
 cd "$here/models"
 ./burndown.sh "$overlay"
+
+cd "$here/model-deployment-controller"
+./burndown.sh "$overlay"
