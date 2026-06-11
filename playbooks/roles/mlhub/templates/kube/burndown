@@ -7,6 +7,12 @@ overlay="{{ mlhub_env }}"
 cd "$here/traefik"
 ./burndown.sh "$overlay"
 
+cd "$here/models"
+./burndown.sh "$overlay"
+
+cd "$here/deployments"
+./burndown.sh "$overlay"
+
 cd "$here/nfs"
 ./burndown.sh "$overlay"
 
@@ -20,9 +26,6 @@ cd "$here/artifact-ingester"
 ./burndown.sh "$overlay"
 
 cd "$here/artifact-publisher"
-./burndown.sh "$overlay"
-
-cd "$here/models"
 ./burndown.sh "$overlay"
 
 cd "$here/model-deployment-controller"
