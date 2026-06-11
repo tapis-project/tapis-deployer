@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 here=$(pwd)
 
 overlay="{{ mlhub_env }}"
