@@ -22,6 +22,7 @@ proxy_nginx_service_list:
   - jobs
   - meta
   - monitoring
+  - mlhub
   - notifications
   - pgrest
   - security

@@ -16,14 +16,11 @@ metadata:
   name: pods-role
 rules:
 - apiGroups: [""]
-  resources: ["pods", "services", "pods/exec", "secrets"]
-  verbs: ["list", "create", "get", "watch", "delete"]
+  resources: ["pods", "services", "pods/exec", "secrets", "events", "configmaps"]
+  verbs: ["list", "create", "get", "watch", "delete", "update", "patch"]
 - apiGroups: [""]
   resources: ["pods/log"]
   verbs: ["list", "get", "watch"]
-- apiGroups: [""]
-  resources: ["configmaps"]
-  verbs: ["list", "get", "patch", "watch"]
 - apiGroups: [""]
   resources: ["persistentvolumeclaims"]
   verbs: ["list", "get", "create"]

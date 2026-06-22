@@ -1,55 +1,68 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 echo "mlhub:"
 
-here=`pwd`
+here=$(pwd)
 
-# Make data dirs
-mkdir -p {{ tapisdatadir }}/mlhub
-mkdir -p {{ tapisdatadir }}/mlhub/nfs
-mkdir -p {{ tapisdatadir }}/mlhub/models
-mkdir -p {{ tapisdatadir }}/mlhub/artifact-ingester
-mkdir -p {{ tapisdatadir }}/mlhub/artifact-publisher
-mkdir -p {{ tapisdatadir }}/mlhub/artifact-db
-mkdir -p {{ tapisdatadir }}/mlhub/artifact-mq
-# mkdir -p {{ tapisdatadir }}/mlhub/datasets
-# mkdir -p {{ tapisdatadir }}/mlhub/inference
-# mkdir -p {{ tapisdatadir }}/mlhub/training
+overlay="{{ mlhub_env }}"
 
-cd $here/traefik
-./burnup
+cd "$here/traefik"
+./burnup.sh "$overlay"
 
-cd $here/nfs
-./burnup
+cd "$here/nfs"
+./burnup.sh "$overlay"
 
 echo "Waiting 5 seconds for nfs server to start"
 sleep 5
 
-cd $here/artifact-db
-./burnup
+cd "$here/mongo"
+./burnup.sh "$overlay"
 
-cd $here/artifact-mq
-./burnup
+cd "$here/rabbit"
+./burnup.sh "$overlay"
 
-cd $here/artifact-ingester
-./burnup
+echo "Waiting 5 seconds to let rabbit warm up"
 
-cd $here/artifact-publisher
-./burnup
+cd "$here/artifact-ingester"
+./burnup.sh "$overlay"
 
-echo "Waiting 5 seconds for artifact suite to start"
+cd "$here/artifact-publisher"
+./burnup.sh "$overlay"
+
+cd "$here/model-deployment-controller"
+./burnup.sh "$overlay"
+
+echo "Waiting 5 seconds for async workers to start and connect to rabbit"
 sleep 5
 
-cd $here/models
-./burnup
+echo "Starting Migrations"
 
-# cd $here/inference
-# ./burnup
+cd "$here/migrations/models-migrator"
+./burnup.sh "$overlay"
+
+cd "$here/migrations/principals-migrator"
+./burnup.sh "$overlay"
+
+cd "$here/migrations/federated-identities-migrator"
+./burnup.sh "$overlay"
+
+echo "All migrations started"
+
+echo "Starting APIs"
+
+cd "$here/models"
+./burnup.sh "$overlay"
+
+cd "$here/deployments"
+./burnup.sh "$overlay"
+
+
+echo "Starting ETL Pipelines"
+
+cd "$here/model-metadata-etl-pipelines/hf-model-etl"
+./run.sh "$overlay"
 
 # cd $here/datasets
-# ./burnup
-
-# cd $here/training
-# ./burnup
-
-cd $here
+# ./burnup.sh
