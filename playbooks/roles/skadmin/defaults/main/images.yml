@@ -1,4 +1,4 @@
-skadmin_securityexport_image: tapis/securityexport:26Q1.0
-skadmin_skadminutil_image: tapis/skadminutil:26Q1.0
-skadmin_securityadmin_image: tapis/securityadmin:26Q1.0
-skadmin_util_image: tapis/ubutil:26Q1.0
+skadmin_securityexport_image: tapis/securityexport:26Q2.0
+skadmin_skadminutil_image: tapis/skadminutil:26Q2.0
+skadmin_securityadmin_image: tapis/securityadmin:26Q2.0
+skadmin_util_image: tapis/ubutil:26Q2.0
