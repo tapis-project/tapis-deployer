@@ -2,6 +2,11 @@ resources:
   - ../../base
   - ../../../../site-configs/overlays/tapisstage
 
+secretGenerator:
+  - name: mlhub-huggingface-secrets
+    literals:
+    - token={{ mlhub_etl_hf_token }}
+
 patches:
   - target:
       kind: Job
@@ -32,5 +37,7 @@ patches:
                 env:
                   - name: MAX_PROCESSABLE_ENTRIES
                     value: "5000"
+                  - name: MONGO_HOST
+                    value: mlhub-mongo-stateful-set-0.mlhub-mongo-headless-service.tapisstage.svc.cluster.local
                 image: tapis/mlhub-hf-model-etl-transform-load:staging
                 imagePullPolicy: Always

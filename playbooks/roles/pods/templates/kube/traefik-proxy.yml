@@ -34,6 +34,11 @@ spec:
         - --api.dashboard=true
 
         - --accesslog=true
+        - --accesslog.format=json
+        - --accesslog.fields.headers.defaultmode=keep
+        - --accesslog.fields.headers.names.X-Tapis-User=keep
+        - --accesslog.fields.headers.names.X-Tapis-Token=redact
+        
         - --tracing=false
         - --log.level=TRACE # TRACE | DEBUG | INFO
         
