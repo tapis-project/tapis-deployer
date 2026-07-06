@@ -18,3 +18,16 @@ proxy_nginx_service_list: '{{ components_to_deploy }}'
 proxy_pgrest_custom_block: ''
 proxy_meta_custom_block: ''
 
+# nginx deployment sizing. Override per-install in host_vars as needed.
+# 2 replicas give zero-downtime config rollouts and remove the single point of failure.
+proxy_nginx_replicas: 2
+# Resource requests/limits for the nginx container. nginx is lightweight but is the
+# front door for all API traffic, so we request a small floor and cap to protect the node.
+proxy_nginx_resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: '1'
+    memory: 256Mi
+

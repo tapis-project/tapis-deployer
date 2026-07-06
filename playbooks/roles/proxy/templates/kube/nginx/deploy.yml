@@ -3,9 +3,17 @@ kind: Deployment
 metadata:
   name: tapis-nginx
 spec:
+  replicas: {{ proxy_nginx_replicas }}
   selector:
     matchLabels:
       app: tapis-nginx
+  # Zero-downtime rollouts: bring up a new pod before removing an old one so there
+  # is never a gap in the front-door proxy during config/image changes.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -19,6 +27,38 @@ spec:
           containerPort: 80
         - name: https
           containerPort: 443
+        resources:
+{{ proxy_nginx_resources | to_nice_yaml(indent=2) | indent(10, true) }}
+        # Probe the plain-HTTP redirect server on :80. It serves on :80 in every
+        # configuration (pods/non-pods), and a 301 response counts as healthy.
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          timeoutSeconds: 3
+          failureThreshold: 3
+        # TODO: enable once reviewed with the kube cluster manager.
+        # nginx must bind privileged ports 80/443, so we keep NET_BIND_SERVICE but
+        # drop every other capability and block privilege escalation.
+        # securityContext:
+        #   allowPrivilegeEscalation: false
+        #   capabilities:
+        #     drop:
+        #       - ALL
+        #     add:
+        #       - NET_BIND_SERVICE
+        #   seccompProfile:
+        #     type: RuntimeDefault
         volumeMounts:
         - name: config
           mountPath: /etc/nginx/nginx.conf

@@ -208,6 +208,11 @@ def main():
     images_v3 = get_tapis_images_for_deployer_version(version_3)
     comparison_1 = compare_deployer_version_images(images_v1, images_v2)
     comparison_2 = compare_deployer_version_images(images_v1, images_v3)
+    print("images_v1: ", images_v1)
+    print('images_v2: ', images_v2) 
+    print('images_v3: ', images_v3) 
+    print('comparison_1: ', comparison_1)
+    print('comparison_2: ', comparison_2)
     return images_v1, images_v2, images_v3, comparison_1, comparison_2
 
 if __name__ == '__main__':

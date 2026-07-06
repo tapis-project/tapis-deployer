@@ -20,9 +20,13 @@ In this release:
   - Allow subscription names to contain the symbol "@".
 - Jobs:
   - Skip fetch and mkdir for *archiveSystem* if *archiveMode* is NEVER.
+- Deployer:
+  - Major speedup of deployment-code generation. The `template-filetree` role no longer renders files with a per-file `with_community.general.filetree` + `ansible.builtin.template` loop; it now renders each component's whole `templates/<flavor>/` tree in a single in-process task via a new `template_tree` action plugin (`playbooks/roles/template-filetree/action_plugins/template_tree.py`). In a full 21-component run this cut wall time from ~465s to ~12s (~39x) while producing byte-for-byte identical output (file contents and modes).
+  - The `template_tree` plugin reproduces the `ansible.builtin.template` rendering path exactly: `AnsibleEnvironment`, `trim_blocks` on, `lstrip_blocks` off, the same include searchpath and `template_*` vars, and `mode: preserve`. No template files or per-component role wiring changed, so generated artifacts are unaffected.
 
 ### Breaking Changes for Deployer Admins
 - N/A
+- Note (non-breaking): generation now relies on the bundled `template_tree` action plugin instead of the `community.general.filetree` lookup. The plugin ships with the deployer and loads automatically, so no operator action is required. The `community.general` collection is still used elsewhere; keep installing it as before.
 
 ### Breaking Changes for Service APIs
 - N/A
