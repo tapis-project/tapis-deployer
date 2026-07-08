@@ -1,3 +1,4 @@
 #!/bin/bash
 
+kubectl delete -f jobwkr2-DefaultQueue.yml
 kubectl delete -f jobwkr-DefaultQueue.yml

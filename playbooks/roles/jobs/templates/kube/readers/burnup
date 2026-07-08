@@ -3,9 +3,13 @@
 # Set up configmap for jobs
 kubectl apply -f ../jobs-config.yml
 
-# Start the queue readers.   
+# Start the queue readers.
+# Wait up to 3 minutes for the critical services to be available.
+#    recovery - recover blocked jobs
+#    eventqueue - subscription notifications
 kubectl apply -f jobrdr-Recovery.yml
 kubectl apply -f jobrdr-AltQueue.yml
 kubectl apply -f jobrdr-DeadLetter.yml 
 kubectl apply -f jobrdr-EventQueue.yml
-kubectl wait --for=condition=available deploy/jobs-rdr-recovery
+kubectl wait --timeout=180s --for=condition=available deploy/jobs-rdr-recovery
+kubectl wait --timeout=180s --for=condition=available deploy/jobs-rdr-eventqueue
