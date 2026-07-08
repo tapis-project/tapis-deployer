@@ -9,5 +9,5 @@ kubectl apply -f service.yml
 
 kubectl apply -f deploy.yml
 
-kubectl wait --for=condition=available deploy/jobs-rabbitmq
+kubectl wait --timeout=180s --for=condition=available deploy/jobs-rabbitmq
 

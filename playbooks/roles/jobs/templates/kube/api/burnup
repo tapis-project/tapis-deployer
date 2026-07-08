@@ -8,4 +8,4 @@ kubectl apply -f service.yml
 
 # Start the jobs service.
 kubectl apply -f deploy.yml 
-kubectl wait --for=condition=available deploy/jobs-api
+kubectl wait --timeout=180s --for=condition=available deploy/jobs-api
