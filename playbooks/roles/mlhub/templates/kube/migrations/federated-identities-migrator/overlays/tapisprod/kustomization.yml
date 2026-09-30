@@ -15,7 +15,7 @@ patches:
           spec:
             containers:
               - name: federated-identities-migrator
-                image: tapis/mlhub-federated-identities-migrator:26Q2.1
+                image: tapis/mlhub-federated-identities-migrator:26Q2.3
                 imagePullPolicy: Always
                 resources: {}
                 env:
