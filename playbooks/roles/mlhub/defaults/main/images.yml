@@ -1,19 +1,23 @@
 ---
 # APIs
-mlhub_models_api_image: tapis/mlhub-models-api:26Q2.1
-mlhub_datasets_api_image: tapis/mlhub-datasets-api:26Q2.1
-mlhub_deployments_api_image: tapis/mlhub-deployments-api:26Q2.1
-mlhub_agents_api_image: tapis/mlhub-agents-api:26Q2.1
+mlhub_models_api_image: tapis/mlhub-models-api:26Q2.3
+mlhub_datasets_api_image: tapis/mlhub-datasets-api:26Q2.3
+mlhub_deployments_api_image: tapis/mlhub-deployments-api:26Q2.3
+mlhub_agents_api_image: tapis/mlhub-agents-api:26Q2.3
 
 # Workers
-mlhub_artifact_ingester_image: tapis/mlhub-artifact-ingester:26Q2.1
-mlhub_artifact_publisher_image: tapis/mlhub-artifact-publisher:26Q2.1
-mlhub_model_deployment_controller_image: tapis/mlhub-model-deployment-controller:26Q2.1
+mlhub_artifact_ingester_image: tapis/mlhub-artifact-ingester:26Q2.3
+mlhub_artifact_publisher_image: tapis/mlhub-artifact-publisher:26Q2.3
+mlhub_model_deployment_controller_image: tapis/mlhub-model-deployment-controller:26Q2.3
 
 # Migrations
-mlhub_federated_identity_migrator_image: tapis/mlhub-federated-identities-migrator:26Q2.1
-mlhub_models_migrator_image: tapis/mlhub-models-migrator:26Q2.1
-mlhub_principals_migrator_image: tapis/mlhub-principals-migrator:26Q2.1
+mlhub_federated_identity_migrator_image: tapis/mlhub-federated-identities-migrator:26Q2.3
+mlhub_models_migrator_image: tapis/mlhub-models-migrator:26Q2.3
+mlhub_principals_migrator_image: tapis/mlhub-principals-migrator:26Q2.3
+mlhub_deployments_migrator_image: tapis/mlhub-deployments-migrator:26Q2.3
+
+# Seeders
+mlhub_hpc_cluster_seeder_image: tapis/mlhub-hpc-cluster-seeder:26Q2.3
 
 # Infra
 mlhub_rabbit_image: rabbitmq:3.9.11-management                  # Message broker
@@ -24,5 +28,7 @@ mlhub_nfs_server_image: itsthenetwork/nfs-server-alpine:12      # Network file s
 mlhub_traefik_image: traefik:v3.2                               # Reverse proxy
 
 # ETL
-mlhub_hf_etl_extract_image: tapis/mlhub-hf-model-etl-extract:26Q2.1
-mlhub_hf_etl_transform_load: tapis/mlhub-hf-model-etl-transform-load:26Q2.1
+mlhub_hf_etl_extract_image: tapis/mlhub-hf-model-etl-extract:26Q2.3
+mlhub_hf_etl_transform_load: tapis/mlhub-hf-model-etl-transform-load:26Q2.3
+mlhub_hf_dataset_etl_extract_image: tapis/mlhub-hf-dataset-etl-extract:26Q2.3
+mlhub_hf_dataset_etl_transform_load_image: tapis/mlhub-hf-dataset-etl-transform-load:26Q2.3

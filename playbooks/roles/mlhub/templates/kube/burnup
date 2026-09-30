@@ -75,5 +75,8 @@ cd "$here/model-etl-pipelines/hf-model-etl"
 cd "$here/dataset-etl-pipelines/hf-dataset-etl"
 ./run.sh "$overlay"
 
-# cd $here/datasets
-# ./burnup.sh
+cd "$here/datasets"
+./burnup.sh "$overlay"
+
+cd "$here/agents"
+./burnup.sh "$overlay"
