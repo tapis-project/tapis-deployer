@@ -89,7 +89,7 @@ CHANGELOG_URLS = {
     },
     "workflows": {
       "url": "https://raw.githubusercontent.com/tapis-project/tapis-workflows/prod/CHANGELOG.md",
-      "images": ["tapis/workflows-api", "tapis/workflows-pipelines", "tapis/workflow-engine-streams"],
+      "images": ["tapis/workflows-api", "tapis/workflows-pipelines"],
     },
 
 }
