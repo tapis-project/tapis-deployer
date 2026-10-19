@@ -1,5 +1,44 @@
 # Changelog 
 
+## 26Q3
+
+In this release:
+- Authenticator:
+  - Initial support for TMS as an auth provider
+  - Fix various issues with login pages
+- MLHub:
+  - Derive deployment options for Models using the HPC cluster queue / FlexServ / Model compatibility matrix
+  - Deployment Target endpoints in the Deployments API
+  - Register directories and files as Datasets on Tapis Systems
+- Systems:
+  - Incremental improvements. No new features or bug fixes.
+- Apps:
+  - Incremental improvements. No new features one minor bug fix.
+- Notifications:
+  - Incremental improvements. No new features or bug fixes.
+- Jobs:
+  - Add support for cancelling of BATCH type jobs where runtime is ZIP.
+  - Fix issue with ServiceConnection tester used in job recovery.
+  - Add attribute condition to records returned by getJobList.
+
+### Breaking Changes for Deployer Admins
+- N/A
+
+### Breaking Changes for Service APIs
+- N/A
+
+### Service Updates
+- [Systems: 26Q2.0 to 26Q3.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Jobs: 26Q2.0 to 26Q3.0 (tapis/jobs)](https://github.com/tapis-project/tapis-jobs/blob/dev/CHANGELOG.md)
+- [Authenticator: 26Q2.0 to 26Q3.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
+- [TapisUI: 26Q2.0 to 26Q3.0 (tapis/tapisui)](https://github.com/tapis-project/tapis-ui/blob/main/CHANGELOG.md)
+- [Tokens: 26Q2.0 to 26Q3.0 (tapis/tokens-api, tapis/tokens-api-tests)](https://github.com/tapis-project/tokens-api/blob/prod/CHANGELOG.md)
+- [Tenants: 26Q2.0 to 26Q3.0 (tapis/tenants-api, tapis/tenants-api-migrations, tapis/tenants-api-tests)](https://github.com/tapis-project/tenants-api/blob/prod/CHANGELOG.md)
+- [Pods: 26Q2.0 to 26Q3.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md)
+- [Abaco/Actors: 26Q2.0 to 26Q3.0 (abaco/core-v3, abaco/nginxk8s)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md)
+- [PgREST: 26Q2.0 to 26Q3.0 (tapis/pgrest-api)](https://github.com/tapis-project/paas/blob/prod/CHANGELOG.md)
+
+
 
 ## 26Q2
 
@@ -28,15 +67,15 @@ In this release:
 - N/A
 
 ### Service Updates
-- [Systems: 26Q1.0 to 26Q2.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
-- [Jobs: 26Q1.0 to 226Q2.0 (tapis/jobs)](https://github.com/tapis-project/tapis-jobs/blob/dev/CHANGELOG.md)
-- [Authenticator: 26Q1.0 to 26Q2.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
-- [TapisUI: 26Q1.0 to 26Q2.0 (tapis/tapisui)](https://github.com/tapis-project/tapis-ui/blob/main/CHANGELOG.md)
-- [Tokens: 26Q1.0 to 26Q2.0 (tapis/tokens-api, tapis/tokens-api-tests)](https://github.com/tapis-project/tokens-api/blob/prod/CHANGELOG.md)
-- [Tenants: 26Q1.0 to 26Q2.0 (tapis/tenants-api, tapis/tenants-api-migrations, tapis/tenants-api-tests)](https://github.com/tapis-project/tenants-api/blob/prod/CHANGELOG.md)
-- [Pods: 26Q1.0 to 26Q2.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md)
-- [Abaco/Actors: 26Q1.0 to 26Q2.0 (abaco/core-v3, abaco/nginxk8s)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md)
-- [PgREST: 26Q1.0 to 26Q2.0 (tapis/pgrest-api)](https://github.com/tapis-project/paas/blob/prod/CHANGELOG.md)
+- [Systems: 26Q1.0 to 26Q3.0 (tapis/systems)](https://github.com/tapis-project/tapis-systems/blob/dev/CHANGELOG.md)
+- [Jobs: 26Q1.0 to 226Q3.0 (tapis/jobs)](https://github.com/tapis-project/tapis-jobs/blob/dev/CHANGELOG.md)
+- [Authenticator: 26Q1.0 to 26Q3.0 (tapis/authenticator, tapis/authenticator-migrations)](https://github.com/tapis-project/authenticator/blob/prod/CHANGELOG.md)
+- [TapisUI: 26Q1.0 to 26Q3.0 (tapis/tapisui)](https://github.com/tapis-project/tapis-ui/blob/main/CHANGELOG.md)
+- [Tokens: 26Q1.0 to 26Q3.0 (tapis/tokens-api, tapis/tokens-api-tests)](https://github.com/tapis-project/tokens-api/blob/prod/CHANGELOG.md)
+- [Tenants: 26Q1.0 to 26Q3.0 (tapis/tenants-api, tapis/tenants-api-migrations, tapis/tenants-api-tests)](https://github.com/tapis-project/tenants-api/blob/prod/CHANGELOG.md)
+- [Pods: 26Q1.0 to 26Q3.0 (tapis/pods-api)](https://github.com/tapis-project/pods_service/blob/prod/CHANGELOG.md)
+- [Abaco/Actors: 26Q1.0 to 26Q3.0 (abaco/core-v3, abaco/nginxk8s)](https://github.com/TACC/abaco/blob/prod-v3/CHANGELOG.md)
+- [PgREST: 26Q1.0 to 26Q3.0 (tapis/pgrest-api)](https://github.com/tapis-project/paas/blob/prod/CHANGELOG.md)
 
 
 ## 26Q1

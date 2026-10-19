@@ -18,5 +18,5 @@ kubectl delete configmap jobs-init-db-configmap
 # Run the init script
 kubectl create configmap jobs-init-db-configmap --from-file jobs-init-db-sh
 kubectl create -f jobs-init-db.yml
-kubectl wait --timeout=120s --for=condition=complete job/jobs-init-db
+kubectl wait --timeout=180s --for=condition=complete job/jobs-init-db
 
