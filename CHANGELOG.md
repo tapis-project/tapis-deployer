@@ -40,7 +40,7 @@ In this release:
 
 
 
-## 26Q3.0
+## 26Q2
 
 In this release:
 
