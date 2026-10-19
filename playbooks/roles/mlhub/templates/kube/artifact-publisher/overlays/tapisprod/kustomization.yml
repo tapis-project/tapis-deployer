@@ -16,6 +16,6 @@ patches:
           spec:
             containers:
               - name: artifact-publisher
-                image: tapis/mlhub-artifact-publisher:26Q3.0.3
+                image: tapis/mlhub-artifact-publisher:26Q3.0
                 imagePullPolicy: Always
                 resources: {}
