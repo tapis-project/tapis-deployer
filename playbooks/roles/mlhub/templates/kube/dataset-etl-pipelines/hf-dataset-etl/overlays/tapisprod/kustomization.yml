@@ -24,13 +24,14 @@ patches:
               - name: extract
                 env:
                   - name: MAX_RECORDS
-                    value: "5000000"
+                    value: "5000"
                 image: tapis/mlhub-hf-dataset-etl-extract:26Q3.1
+                imagePullPolicy: Always
             containers:
               - name: hf-dataset-etl
                 env:
                   - name: MAX_PROCESSABLE_ENTRIES
-                    value: "5000000"
+                    value: "5000"
                   - name: MONGO_HOST
                     value: mlhub-mongo-stateful-set-0.mlhub-mongo-headless-service.tapisprod.svc.cluster.local
                 image: tapis/mlhub-hf-dataset-etl-transform-load:26Q3.1
