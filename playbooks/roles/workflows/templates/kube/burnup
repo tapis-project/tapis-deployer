@@ -25,9 +25,6 @@ kubectl wait --for=condition=available deploy/workflows-nfs-server-deployment --
 cd $here/engine
 ./burnup
 
-cd $here/engine-streams
-./burnup
-
 # api
 cd $here/api
 ./burnup
