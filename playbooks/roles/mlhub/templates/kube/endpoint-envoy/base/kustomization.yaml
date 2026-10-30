@@ -1,6 +1,6 @@
 resources:
   - deployment.yaml
-  - network-policy.yaml
+  #- network-policy.yaml
   - service.yaml
 
 configMapGenerator:
