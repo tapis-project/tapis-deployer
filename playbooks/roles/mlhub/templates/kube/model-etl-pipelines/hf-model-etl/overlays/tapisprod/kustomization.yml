@@ -28,14 +28,15 @@ patches:
                   - name: RUST_LOG
                     value: debug
                   - name: MAX_RECORDS
-                    value: '5000000'
-                image: tapis/mlhub-hf-model-etl-extract:26Q3.0
+                    value: '5000'
+                image: tapis/mlhub-hf-model-etl-extract:26Q3.1
+                imagePullPolicy: Always
             containers:
               - name: hf-model-etl
                 env:
                   - name: MAX_PROCESSABLE_ENTRIES
-                    value: "5000000"
+                    value: "5000"
                   - name: MONGO_HOST
                     value: mlhub-mongo-stateful-set-0.mlhub-mongo-headless-service.tapisprod.svc.cluster.local
-                image: tapis/mlhub-hf-model-etl-transform-load:26Q3.0
+                image: tapis/mlhub-hf-model-etl-transform-load:26Q3.1
                 imagePullPolicy: Always

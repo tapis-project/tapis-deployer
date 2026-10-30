@@ -26,6 +26,7 @@ patches:
                   - name: MAX_RECORDS
                     value: "5000"
                 image: tapis/mlhub-hf-dataset-etl-extract:staging
+                imagePullPolicy: Always
             containers:
               - name: hf-dataset-etl
                 env:
