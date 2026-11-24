@@ -25,6 +25,11 @@ spec:
             secretKeyRef:
               name: tapis-authenticator-secrets
               key: dev-ldap-bind-credential
+        - name: AUTHENTICATOR_APP_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tapis-authenticator-secrets
+              key: AUTHENTICATOR_APP_SECRET_KEY
         - name: postgres_password
           valueFrom:
             secretKeyRef:
